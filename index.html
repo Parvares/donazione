@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donazione Biblioteca Elsa Morante</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            max-width: 600px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover:enabled {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Donazione alla Biblioteca Elsa Morante</h1>
+    <p>
+        Io sottoscritto <strong>(nome)</strong> <strong>(cognome)</strong>..............................................
+        Tessera n..................... Tel. ............................. e-mail................................................
+        dono alla Biblioteca le risorse documentarie (max. 10 unità) di cui in allegato e autorizzo la biblioteca a destinarli all’uso che riterrà più opportuno 
+        (acquisizione al patrimonio, scambio, dono, bookcrossing o scarto, nel caso in cui, a giudizio insindacabile della biblioteca, i materiali risultino inutilizzabili) 
+        senza alcun vincolo per la biblioteca stessa nei miei confronti.
+    </p>
+    <form id="donationForm">
+        <label>
+            <input type="checkbox" id="acceptCheckbox">
+            Ho letto e accetto il disciplinare.
+        </label>
+        <br><br>
+        <button id="downloadButton" disabled>Scarica il File</button>
+    </form>
+    <script>
+        const checkbox = document.getElementById('acceptCheckbox');
+        const button = document.getElementById('downloadButton');
+
+        checkbox.addEventListener('change', () => {
+            button.disabled = !checkbox.checked;
+        });
+
+        button.addEventListener('click', (e) => {
+            e.preventDefault(); // Previene il refresh della pagina
+            window.location.href = 'donazione.xlsx'; // Link al file Excel caricato nel repository
+        });
+    </script>
+</body>
+</html>
