@@ -292,7 +292,7 @@
             const bookDiv = document.createElement('div');
             bookDiv.className = 'book-entry';
             bookCount++;
-            bookDiv.innerHTML = `
+            bookDiv.innerHTML = 
                 <div class="book-counter">${bookCount}</div>
                 <div class="form-group">
                     <label>Titolo: *</label>
@@ -316,7 +316,7 @@
                 </div>
                 <button type="button" class="remove-book" onclick="removeBook(this)">Rimuovi</button>
                 <button type="button" class="add-book" onclick="createBookEntry()">+ Aggiungi Libro</button>
-            `;
+            ;
             document.getElementById('bookList').appendChild(bookDiv);
             updateBookCounters();
         }
@@ -338,7 +338,7 @@
 
 
         function generateExcel(formData, books) {
-            const documentText = `DONAZIONE ALLA BIBLIOTECA ELSA MORANTE
+            const documentText = DONAZIONE ALLA BIBLIOTECA ELSA MORANTE
 
 
 Io sottoscritto ${formData.nome} ${formData.cognome}
@@ -351,7 +351,7 @@ dono alla Biblioteca le risorse documentarie allegate e autorizzo la biblioteca 
 
 
 Data: ${new Date().toLocaleDateString('it-IT')}
-`;
+;
 
 
             const wb = XLSX.utils.book_new();
@@ -403,7 +403,7 @@ Data: ${new Date().toLocaleDateString('it-IT')}
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `donazione_${formData.cognome}_${formData.nome}.xlsx`;
+            a.download = donazione_${formData.cognome}_${formData.nome}.xlsx;
             a.click();
             window.URL.revokeObjectURL(url);
         }
