@@ -1,8 +1,13 @@
+/**
+ * Generates an Excel file for library book donations
+ * @param {Object} formData - Donor information (nome, cognome, tessera, telefono, email)
+ * @param {Array<Object>} books - Array of book objects (title, author, publisher, year, isbn)
+ */
 function generateExcel(formData, books) {
-    // Creiamo il workbook
+    // Create new workbook
     const wb = XLSX.utils.book_new();
     
-    // Stili per il documento
+    // Document styles
     const styles = {
         headerStyle: { 
             fill: { fgColor: { rgb: "2C3E50" } },
@@ -31,7 +36,7 @@ function generateExcel(formData, books) {
         }
     };
 
-    // Foglio 1: Dichiarazione di donazione
+    // Sheet 1: Donation Declaration
     const declarationData = [
         [{ v: "DONAZIONE ALLA BIBLIOTECA ELSA MORANTE", s: styles.headerStyle }],
         [""],
@@ -56,7 +61,7 @@ function generateExcel(formData, books) {
     ws1['!cols'] = [{ wch: 30 }, { wch: 50 }];
     ws1['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 1 } }];
 
-    // Foglio 2: Lista dei libri
+    // Sheet 2: Book List
     const headers = ['N°', 'Titolo', 'Autore', 'Editore', 'Anno', 'ISBN'];
     const booksData = books.map((book, index) => [
         index + 1,
@@ -74,17 +79,17 @@ function generateExcel(formData, books) {
         ...booksData
     ]);
 
-    // Impostazione larghezza colonne per il foglio libri
+    // Set column widths for books sheet
     ws2['!cols'] = [
-        { wch: 5 },  // N°
-        { wch: 40 }, // Titolo
-        { wch: 30 }, // Autore
-        { wch: 25 }, // Editore
-        { wch: 10 }, // Anno
-        { wch: 15 }  // ISBN
+        { wch: 5 },   // N°
+        { wch: 40 },  // Titolo
+        { wch: 30 },  // Autore
+        { wch: 25 },  // Editore
+        { wch: 10 },  // Anno
+        { wch: 15 }   // ISBN
     ];
 
-    // Applica stili alle celle della tabella libri
+    // Apply styles to table cells
     const range = XLSX.utils.decode_range(ws2['!ref']);
     for (let R = 0; R <= range.e.r; ++R) {
         for (let C = 0; C <= range.e.c; ++C) {
@@ -92,26 +97,26 @@ function generateExcel(formData, books) {
             if (!ws2[cell_ref]) continue;
             
             if (R === 0) {
-                // Titolo principale
+                // Main title
                 ws2[cell_ref].s = styles.headerStyle;
             } else if (R === 2) {
-                // Header tabella
+                // Table header
                 ws2[cell_ref].s = styles.tableHeader;
             } else if (R > 2) {
-                // Contenuto tabella
+                // Table content
                 ws2[cell_ref].s = styles.normalText;
             }
         }
     }
 
-    // Merge della cella del titolo
+    // Merge title cell
     ws2['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 5 } }];
 
-    // Aggiungi i fogli al workbook
+    // Add sheets to workbook
     XLSX.utils.book_append_sheet(wb, ws1, "Dichiarazione");
     XLSX.utils.book_append_sheet(wb, ws2, "Lista Libri");
 
-    // Genera e scarica il file
+    // Generate and download file
     const fileName = `donazione_${formData.cognome}_${formData.nome}_${new Date().toISOString().split('T')[0]}.xlsx`;
     XLSX.writeFile(wb, fileName);
 }
