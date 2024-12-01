@@ -347,12 +347,11 @@
     worksheet.getCell('A4').value = 'DATI DONATORE';
     worksheet.getCell('A4').style = { ...headerStyle, alignment: { horizontal: 'left', vertical: 'middle' } };
     worksheet.getCell('C4').style = headerStyle;
-
-    // Nome e Cognome, Tessera, Telefono, Email con formattazione separata
+    
     worksheet.mergeCells('A5:B5');
     worksheet.mergeCells('C5:G5');
     worksheet.getCell('A5').value = 'Nome e Cognome:';
-    worksheet.getCell('C5').value = `${formData.nome} ${formData.cognome}`;
+    worksheet.getCell('C5').value = ${formData.nome} ${formData.cognome};
     
     worksheet.mergeCells('A6:B6');
     worksheet.mergeCells('C6:G6');
@@ -371,22 +370,16 @@
 
     // Applica stili ai dati del donatore
     for (let row = 5; row <= 8; row++) {
-        worksheet.getCell(`A${row}`).style = { ...dataStyle, font: { bold: true } }; // Etichetta in grassetto
-        worksheet.getCell(`C${row}`).style = dataStyle; // Dati formattati
+        worksheet.getCell(A${row}).style = dataStyle;
+        worksheet.getCell(C${row}).style = dataStyle;
     }
 
-    // Aggiungi la stringa "DICHIARAZIONE"
-    worksheet.mergeCells('A10:G10');
-    const declarationCell = worksheet.getCell('A10');
-    declarationCell.value = 'DICHIARAZIONE';
-    declarationCell.style = { ...headerStyle, font: { size: 14, bold: true }, fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'f39c12' } } };
-
-    // Testo dichiarazione
+    // Testo dichiarazione (spostato giù di un rigo)
     worksheet.mergeCells('A11:G14');
     worksheet.getCell('A11').value = 'Con la presente dono alla Biblioteca le risorse documentarie elencate di seguito e autorizzo la biblioteca a destinarli all\'uso che riterrà più opportuno (acquisizione al patrimonio, scambio, dono, bookcrossing o scarto, nel caso in cui, a giudizio insindacabile della biblioteca, i materiali risultino inutilizzabili) senza alcun vincolo per la biblioteca stessa nei miei confronti.';
     worksheet.getCell('A11').style = { ...dataStyle, alignment: { wrapText: true, vertical: 'middle' } };
 
-    // Intestazione tabella libri
+    // Intestazione tabella libri (spostata giù di 2 righi)
     const headers = ['N.', 'Titolo', 'Autore', 'Editore', 'Anno', 'ISBN'];
     worksheet.getRow(16).values = headers;
     worksheet.getRow(16).eachCell(cell => {
@@ -406,11 +399,12 @@
     // Imposta larghezza colonne aggiornate
     worksheet.columns = [
         { width: 4 },    // N.
-        { width: 50 },   // Titolo (ampiamente allargata)
-        { width: 30 },   // Autore
-        { width: 30 },   // Editore
-        { width: 12 },   // Anno
-        { width: 20 },   // ISBN (ampiamente allargata)
+        { width: 40 },   // Titolo (allargata)
+        { width: 30 },   // Autore (leggermente allargata)
+        { width: 25 },   // Editore (leggermente allargata)
+        { width: 12 },   // Anno (leggermente allargata)
+        { width: 18 },   // ISBN (leggermente allargata)
+        { width: 10 }    // Extra space for merged cells
     ];
 
     // Genera il file
@@ -419,11 +413,10 @@
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `donazione_${formData.cognome}_${formData.nome}_${new Date().toLocaleDateString('it-IT').replace(/\//g, '-')}.xlsx`;
+    a.download = donazione_${formData.cognome}_${formData.nome}_${new Date().toLocaleDateString('it-IT').replace(/\//g, '-')}.xlsx;
     a.click();
     window.URL.revokeObjectURL(url);
 }
-
         
 
         // Event Listener per il form
