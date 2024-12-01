@@ -292,7 +292,7 @@
             const bookDiv = document.createElement('div');
             bookDiv.className = 'book-entry';
             bookCount++;
-            bookDiv.innerHTML = 
+            bookDiv.innerHTML = `
                 <div class="book-counter">${bookCount}</div>
                 <div class="form-group">
                     <label>Titolo: *</label>
@@ -316,7 +316,7 @@
                 </div>
                 <button type="button" class="remove-book" onclick="removeBook(this)">Rimuovi</button>
                 <button type="button" class="add-book" onclick="createBookEntry()">+ Aggiungi Libro</button>
-            ;
+            `;
             document.getElementById('bookList').appendChild(bookDiv);
             updateBookCounters();
         }
@@ -337,38 +337,49 @@
         }
 
 
-function generateExcel(formData, books) {
+        function generateExcel(formData, books) {
     const wb = XLSX.utils.book_new();
     
     // Preparazione dei dati per il documento
     const documentData = [
-        [{ v: 'Donazione alla Biblioteca Elsa Morante', s: { font: { bold: true } } }],
+        ['Donazione alla Biblioteca Elsa Morante'],
         [],
-        [{ v: 'Dati del Donatore', s: { font: { bold: true } } }],
-        [{ v: 'Nome', s: { font: { bold: true } } }, formData.nome],
-        [{ v: 'Cognome', s: { font: { bold: true } } }, formData.cognome],
-        [{ v: 'Numero Tessera', s: { font: { bold: true } } }, formData.tessera || 'Non specificato'],
-        [{ v: 'Telefono', s: { font: { bold: true } } }, formData.telefono || 'Non specificato'],
-        [{ v: 'Email', s: { font: { bold: true } } }, formData.email],
+        ['Dati del Donatore'],
+        ['Nome', formData.nome],
+        ['Cognome', formData.cognome],
+        ['Numero Tessera', formData.tessera || 'Non specificato'],
+        ['Telefono', formData.telefono || 'Non specificato'],
+        ['Email', formData.email],
         [],
-        [{ v: 'Dichiarazione', s: { font: { bold: true } } }],
+        ['Dichiarazione'],
         ['Io sottoscritto dichiaro di donare alla Biblioteca le risorse documentarie allegate e autorizzo la biblioteca a destinarli all\'uso che riterrà più opportuno.'],
         [],
-        ['Data Donazione', new Date().toLocaleDateString('it-IT')],
+        ['Data Donazione', new Date().toLocaleDateString('it-IT')]
+    ];
+
+    // Creazione del foglio per i dati del donatore
+    const donatorSheet = XLSX.utils.aoa_to_sheet(documentData);
+
+    // Impostazione dello stile per l'intestazione
+    const headerStyle = {
+        font: { bold: true, color: { rgb: '000000' } },
+        fill: { fgColor: { rgb: 'E0E0E0' } }
+    };
+
+    // Applicazione dello stile all'intestazione del documento
+    donatorSheet['A1'].s = headerStyle;
+    donatorSheet['A10'].s = headerStyle;
+
+    // Creazione del foglio per i libri
+    const booksData = [
+        ['Elenco dei Libri Donati'],
         [],
-        [{ v: 'Elenco Libri Donati', s: { font: { bold: true } } }],
-        [
-            { v: 'Titolo', s: { font: { bold: true } } }, 
-            { v: 'Autore', s: { font: { bold: true } } }, 
-            { v: 'Editore', s: { font: { bold: true } } }, 
-            { v: 'Anno', s: { font: { bold: true } } }, 
-            { v: 'ISBN', s: { font: { bold: true } } }
-        ]
+        ['Titolo', 'Autore', 'Editore', 'Anno', 'ISBN']
     ];
 
     // Aggiunta dei libri alla lista
     books.forEach(book => {
-        documentData.push([
+        booksData.push([
             book.title || 'Non specificato', 
             book.author || 'Non specificato', 
             book.publisher || 'Non specificato', 
@@ -377,21 +388,29 @@ function generateExcel(formData, books) {
         ]);
     });
 
-    // Creazione del foglio
-    const sheet = XLSX.utils.aoa_to_sheet(documentData);
+    const booksSheet = XLSX.utils.aoa_to_sheet(booksData);
+
+    // Stile per l'intestazione della tabella libri
+    booksSheet['A1'].s = headerStyle;
+    booksSheet['A3'].s = headerStyle;
 
     // Impostazione larghezza colonne
-    sheet['!cols'] = [
-        { wch: 40 },  // Prima colonna
-        { wch: 30 },  // Seconda colonna (per i libri, larghezza per più colonne)
-        { wch: 30 },
-        { wch: 30 },
-        { wch: 15 },
-        { wch: 20 }
+    donatorSheet['!cols'] = [
+        { wch: 20 },  // Larghezza colonna etichette
+        { wch: 30 }   // Larghezza colonna valori
     ];
 
-    // Aggiunta del foglio al workbook
-    XLSX.utils.book_append_sheet(wb, sheet, "Donazione Libri");
+    booksSheet['!cols'] = [
+        { wch: 40 },  // Titolo
+        { wch: 30 },  // Autore
+        { wch: 30 },  // Editore
+        { wch: 15 },  // Anno
+        { wch: 20 }   // ISBN
+    ];
+
+    // Aggiunta dei fogli al workbook
+    XLSX.utils.book_append_sheet(wb, donatorSheet, "Dettagli Donatore");
+    XLSX.utils.book_append_sheet(wb, booksSheet, "Libri Donati");
 
     // Generazione e download del file
     const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
@@ -407,11 +426,10 @@ function generateExcel(formData, books) {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = donazione_${formData.cognome}_${formData.nome}.xlsx;
+    a.download = `donazione_${formData.cognome}_${formData.nome}.xlsx`;
     a.click();
     window.URL.revokeObjectURL(url);
 }
-
 
         // Create the first book entry when the page loads
         document.addEventListener('DOMContentLoaded', createBookEntry);
@@ -469,3 +487,4 @@ function generateExcel(formData, books) {
     </script>
 </body>
 </html>
+
