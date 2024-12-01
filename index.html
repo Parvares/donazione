@@ -1,17 +1,28 @@
 function generateExcel(formData, books) {
-    const documentText = `DONAZIONE ALLA BIBLIOTECA ELSA MORANTE\nIo sottoscritto ${formData.nome} ${formData.cognome} Tessera n. ${formData.tessera || '_______________'} Tel. ${formData.telefono || '_______________'} e-mail ${formData.email}\ndono alla Biblioteca le risorse documentarie allegate e autorizzo la biblioteca a destinarli all'uso che riterrà più opportuno (acquisizione al patrimonio, scambio, dono, bookcrossing o scarto, nel caso in cui, a giudizio insindacabile della biblioteca, i materiali risultino inutilizzabili) senza alcun vincolo per la biblioteca stessa nei miei confronti.\n\nData: ${new Date().toLocaleDateString('it-IT')}`;
+    const documentText = `DONAZIONE ALLA BIBLIOTECA ELSA MORANTE
+Io sottoscritto ${formData.nome} ${formData.cognome}
+Tessera n. ${formData.tessera || '_______________'}
+Tel. ${formData.telefono || '_______________'}
+e-mail ${formData.email}
+dono alla Biblioteca le risorse documentarie allegate e autorizzo la biblioteca a destinarli all'uso che riterrà più opportuno (acquisizione al patrimonio, scambio, dono, bookcrossing o scarto, nel caso in cui, a giudizio insindacabile della biblioteca, i materiali risultino inutilizzabili) senza alcun vincolo per la biblioteca stessa nei miei confronti
+Data: ${new Date().toLocaleDateString('it-IT')}`;
 
     const wb = XLSX.utils.book_new();
+
     const ws_data = [
-        ['DONAZIONE ALLA BIBLIOTECA ELSA MORANTE'], // Title
-        [''], // Blank row
-        ...documentText.split('\n').map(line => [line]), // Document text
-        [''], // Blank row
-        ['Elenco dei libri donati:'], // Subtitle
-        [''], // Blank row
-        ['Titolo', 'Autore', 'Editore', 'Anno', 'ISBN'], // Table headers
-        ...books.map(book => [book.title, book.author, book.publisher, book.year, book.isbn]) // Book data
+        ['DONAZIONE ALLA BIBLIOTECA ELSA MORANTE'],
+        [documentText.split('\n')[0]],
+        [''],
+        ...documentText.split('\n').slice(1).map(line => [line]),
+        [''],
+        ['Elenco dei libri donati:'],
+        [''],
+        ['Titolo', 'Autore', 'Editore', 'Anno', 'ISBN']
     ];
+
+    books.forEach(book => {
+        ws_data.push([book.title, book.author, book.publisher, book.year, book.isbn]);
+    });
 
     const ws = XLSX.utils.aoa_to_sheet(ws_data);
 
@@ -24,65 +35,40 @@ function generateExcel(formData, books) {
         { wch: 15 }  // ISBN
     ];
 
-    // Merge cells for the main title
-    ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 4 } }];
+    // Apply styles to all cells
+    const range = XLSX.utils.decode_range(ws['!ref']);
+    for (let R = range.s.r; R <= range.e.r; ++R) {
+        for (let C = range.s.c; C <= range.e.c; ++C) {
+            const cell_address = XLSX.utils.encode_cell({ r: R, c: C });
+            if (!ws[cell_address]) continue;
 
-    // Apply styles to the main title
-    if (ws['A1']) {
-        ws['A1'].s = {
-            font: { bold: true, size: 16 },
-            alignment: { horizontal: 'center', vertical: 'center' },
-            fill: { fgColor: { rgb: 'FFCCFF' } }
-        };
-    }
-
-    // Apply styles to document text
-    for (let i = 2; i <= ws_data.length - 6; i++) {
-        const cell = ws[`A${i + 1}`];
-        if (cell) {
-            cell.s = {
-                alignment: { wrapText: true, vertical: 'top', horizontal: 'justify' },
-                font: { size: 12 }
-            };
-        }
-    }
-
-    // Style headers for the book list
-    ['A8', 'B8', 'C8', 'D8', 'E8'].forEach(cell => {
-        if (ws[cell]) {
-            ws[cell].s = {
-                font: { bold: true },
-                alignment: { horizontal: 'center', vertical: 'center' },
-                fill: { fgColor: { rgb: 'FFFFCC' } },
+            // General cell styles
+            ws[cell_address].s = {
+                font: { name: "Arial", sz: 11 },
+                alignment: { horizontal: "center", vertical: "center" },
                 border: {
-                    top: { style: 'thin', color: { rgb: '000000' } },
-                    bottom: { style: 'thin', color: { rgb: '000000' } },
-                    left: { style: 'thin', color: { rgb: '000000' } },
-                    right: { style: 'thin', color: { rgb: '000000' } }
+                    top: { style: "thin", color: { rgb: "000000" } },
+                    bottom: { style: "thin", color: { rgb: "000000" } },
+                    left: { style: "thin", color: { rgb: "000000" } },
+                    right: { style: "thin", color: { rgb: "000000" } }
                 }
             };
-        }
-    });
 
-    // Add borders to book data
-    books.forEach((_, idx) => {
-        const row = idx + 9; // Start from row 9
-        ['A', 'B', 'C', 'D', 'E'].forEach(col => {
-            const cell = ws[`${col}${row}`];
-            if (cell) {
-                cell.s = {
-                    border: {
-                        top: { style: 'thin', color: { rgb: '000000' } },
-                        bottom: { style: 'thin', color: { rgb: '000000' } },
-                        left: { style: 'thin', color: { rgb: '000000' } },
-                        right: { style: 'thin', color: { rgb: '000000' } }
-                    }
-                };
+            // Highlight headers
+            if (R === 7) {
+                ws[cell_address].s.font.bold = true;
+                ws[cell_address].s.fill = { fgColor: { rgb: "D9E1F2" } };
             }
-        });
-    });
+
+            // Alternate row colors
+            if (R > 7 && R % 2 === 0) {
+                ws[cell_address].s.fill = { fgColor: { rgb: "F2F2F2" } };
+            }
+        }
+    }
 
     XLSX.utils.book_append_sheet(wb, ws, "Donazione");
+
     const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
 
     function s2ab(s) {
