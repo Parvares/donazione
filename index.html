@@ -227,4 +227,34 @@
             ];
 
             books.forEach(book => {
-                textData
+                textData.push([`Titolo: ${book.titolo}`, `Autore: ${book.autore}`, `Editore: ${book.editore}`, `Anno: ${book.anno}`, `ISBN: ${book.isbn}`]);
+            });
+
+            // Crea un foglio Excel con i dati
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(textData);
+            XLSX.utils.book_append_sheet(wb, ws, "Dati Donazione");
+
+            // Genera un file Excel e fornisci il link di download
+            const file = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+            const blob = new Blob([s2ab(file)], { type: "application/octet-stream" });
+            const downloadLink = document.getElementById('downloadLink');
+            downloadLink.href = URL.createObjectURL(blob);
+            downloadLink.download = 'dati_donazione.xlsx';
+            downloadLink.classList.remove('hidden');
+            
+            document.getElementById('responseMessage').classList.remove('hidden');
+        });
+
+        // Funzione di supporto per convertire stringa a ArrayBuffer
+        function s2ab(s) {
+            const buf = new ArrayBuffer(s.length);
+            const view = new Uint8Array(buf);
+            for (let i = 0; i < s.length; i++) {
+                view[i] = s.charCodeAt(i) & 0xFF;
+            }
+            return buf;
+        }
+    </script>
+</body>
+</html>
