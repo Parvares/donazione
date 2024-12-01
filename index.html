@@ -342,22 +342,28 @@ function generateExcel(formData, books) {
     
     // Preparazione dei dati per il documento
     const documentData = [
-        ['Donazione alla Biblioteca Elsa Morante'],
+        [{ v: 'Donazione alla Biblioteca Elsa Morante', s: { font: { bold: true } } }],
         [],
-        ['Dati del Donatore'],
-        ['Nome', formData.nome],
-        ['Cognome', formData.cognome],
-        ['Numero Tessera', formData.tessera || 'Non specificato'],
-        ['Telefono', formData.telefono || 'Non specificato'],
-        ['Email', formData.email],
+        [{ v: 'Dati del Donatore', s: { font: { bold: true } } }],
+        [{ v: 'Nome', s: { font: { bold: true } } }, formData.nome],
+        [{ v: 'Cognome', s: { font: { bold: true } } }, formData.cognome],
+        [{ v: 'Numero Tessera', s: { font: { bold: true } } }, formData.tessera || 'Non specificato'],
+        [{ v: 'Telefono', s: { font: { bold: true } } }, formData.telefono || 'Non specificato'],
+        [{ v: 'Email', s: { font: { bold: true } } }, formData.email],
         [],
-        ['Dichiarazione'],
+        [{ v: 'Dichiarazione', s: { font: { bold: true } } }],
         ['Io sottoscritto dichiaro di donare alla Biblioteca le risorse documentarie allegate e autorizzo la biblioteca a destinarli all\'uso che riterrà più opportuno.'],
         [],
         ['Data Donazione', new Date().toLocaleDateString('it-IT')],
         [],
-        ['Elenco Libri Donati'],
-        ['Titolo', 'Autore', 'Editore', 'Anno', 'ISBN']
+        [{ v: 'Elenco Libri Donati', s: { font: { bold: true } } }],
+        [
+            { v: 'Titolo', s: { font: { bold: true } } }, 
+            { v: 'Autore', s: { font: { bold: true } } }, 
+            { v: 'Editore', s: { font: { bold: true } } }, 
+            { v: 'Anno', s: { font: { bold: true } } }, 
+            { v: 'ISBN', s: { font: { bold: true } } }
+        ]
     ];
 
     // Aggiunta dei libri alla lista
@@ -374,24 +380,14 @@ function generateExcel(formData, books) {
     // Creazione del foglio
     const sheet = XLSX.utils.aoa_to_sheet(documentData);
 
-    // Impostazione dello stile per l'intestazione
-    const headerStyle = {
-        font: { bold: true, color: { rgb: '000000' } },
-        fill: { fgColor: { rgb: 'E0E0E0' } }
-    };
-
-    // Applicazione degli stili alle intestazioni
-    const headerRows = [0, 2, 9, 14, 15]; // Righe che devono avere lo stile di intestazione
-    headerRows.forEach(rowIndex => {
-        if (sheet[`A${rowIndex + 1}`]) {
-            sheet[`A${rowIndex + 1}`].s = headerStyle;
-        }
-    });
-
     // Impostazione larghezza colonne
     sheet['!cols'] = [
-        { wch: 40 },  // Titolo/Etichetta
-        { wch: 30 }   // Valore
+        { wch: 40 },  // Prima colonna
+        { wch: 30 },  // Seconda colonna (per i libri, larghezza per più colonne)
+        { wch: 30 },
+        { wch: 30 },
+        { wch: 15 },
+        { wch: 20 }
     ];
 
     // Aggiunta del foglio al workbook
