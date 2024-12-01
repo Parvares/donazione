@@ -1,10 +1,14 @@
+Condividi
+
+
+Hai detto:
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Donazione alla Biblioteca Elsa Morante</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx-style/0.18.5/xlsx-style.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -13,12 +17,14 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+
         body {
             background-color: #f5f5f5;
             color: #333;
             line-height: 1.6;
             padding: 20px;
         }
+
 
         .container {
             max-width: 800px;
@@ -29,12 +35,14 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
+
         h1 {
             color: #2c3e50;
             text-align: center;
             margin-bottom: 30px;
             font-size: 2.2em;
         }
+
 
         h3 {
             color: #34495e;
@@ -43,9 +51,11 @@
             border-bottom: 2px solid #eee;
         }
 
+
         .form-group {
             margin-bottom: 20px;
         }
+
 
         label {
             display: block;
@@ -53,6 +63,7 @@
             color: #2c3e50;
             font-weight: 500;
         }
+
 
         input[type="text"],
         input[type="tel"],
@@ -65,12 +76,14 @@
             transition: border-color 0.3s ease;
         }
 
+
         input[type="text"]:focus,
         input[type="tel"]:focus,
         input[type="email"]:focus {
             border-color: #3498db;
             outline: none;
         }
+
 
         .book-entry {
             background-color: #f8f9fa;
@@ -82,10 +95,12 @@
             transition: transform 0.2s ease;
         }
 
+
         .book-entry:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
+
 
         .book-counter {
             position: absolute;
@@ -103,10 +118,12 @@
             font-weight: bold;
         }
 
+
         .button-group {
             text-align: center;
             margin: 20px 0;
         }
+
 
         button {
             padding: 12px 24px;
@@ -118,6 +135,7 @@
             transition: all 0.3s ease;
         }
 
+
         .add-book {
             background-color: #2ecc71;
             color: white;
@@ -125,10 +143,12 @@
             width: 100%;
         }
 
+
         .add-book:hover {
             background-color: #27ae60;
             transform: translateY(-2px);
         }
+
 
         .remove-book {
             background-color: #e74c3c;
@@ -140,9 +160,11 @@
             right: 10px;
         }
 
+
         .remove-book:hover {
             background-color: #c0392b;
         }
+
 
         button[type="submit"] {
             background-color: #3498db;
@@ -153,9 +175,11 @@
             display: block;
         }
 
+
         button[type="submit"]:hover {
             background-color: #2980b9;
         }
+
 
         .consent-box {
             background-color: #f8f9fa;
@@ -164,16 +188,19 @@
             margin: 20px 0;
         }
 
+
         .consent-box label {
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
+
         input[type="checkbox"] {
             width: 18px;
             height: 18px;
         }
+
 
         .info-box {
             background-color: #e1f5fe;
@@ -183,19 +210,23 @@
             border-radius: 0 5px 5px 0;
         }
 
+
         a {
             color: #3498db;
             text-decoration: none;
         }
 
+
         a:hover {
             text-decoration: underline;
         }
+
 
         @media (max-width: 600px) {
             .container {
                 padding: 15px;
             }
+
 
             button {
                 width: 100%;
@@ -211,6 +242,7 @@
         <div class="info-box">
             Compila il modulo per donare i tuoi libri alla biblioteca. Tutti i campi contrassegnati con * sono obbligatori.
         </div>
+
 
         <form id="donationForm">
             <h3>Dati Personali</h3>
@@ -229,6 +261,7 @@
                 <input type="text" id="tessera" name="tessera">
             </div>
 
+
             <div class="form-group">
                 <label for="telefono">Telefono:</label>
                 <input type="tel" id="telefono" name="telefono">
@@ -238,6 +271,7 @@
                 <label for="email">Email: *</label>
                 <input type="email" id="email" name="email" required>
             </div>
+
 
             <h3>Libri da donare</h3>
             <div id="bookList"></div>
@@ -253,151 +287,207 @@
         </form>
     </div>
 
+
     <script>
         let bookCount = 0;
+
 
         function createBookEntry() {
             const bookDiv = document.createElement('div');
             bookDiv.className = 'book-entry';
             bookCount++;
-            bookDiv.innerHTML = `
+            bookDiv.innerHTML = 
                 <div class="book-counter">${bookCount}</div>
                 <div class="form-group">
                     <label>Titolo: *</label>
                     <input type="text" class="book-title" required>
                 </div>
                 <div class="form-group">
-                    <label>Autore: *</label>
-                    <input type="text" class="book-author" required>
+                    <label>Autore:</label>
+                    <input type="text" class="book-author">
                 </div>
                 <div class="form-group">
-                    <label>Editore: *</label>
-                    <input type="text" class="book-publisher" required>
+                    <label>Editore:</label>
+                    <input type="text" class="book-publisher">
                 </div>
                 <div class="form-group">
-                    <label>Anno: *</label>
-                    <input type="text" class="book-year" required>
+                    <label>Anno:</label>
+                    <input type="text" class="book-year">
                 </div>
                 <div class="form-group">
                     <label>ISBN:</label>
                     <input type="text" class="book-isbn">
                 </div>
-                <button type="button" class="remove-book" onclick="removeBookEntry(this)">Rimuovi</button>
-            `;
+                <button type="button" class="remove-book" onclick="removeBook(this)">Rimuovi</button>
+                <button type="button" class="add-book" onclick="createBookEntry()">+ Aggiungi Libro</button>
+            ;
             document.getElementById('bookList').appendChild(bookDiv);
+            updateBookCounters();
         }
 
-        function removeBookEntry(button) {
+
+        function removeBook(button) {
             button.parentElement.remove();
             bookCount--;
             updateBookCounters();
         }
 
+
         function updateBookCounters() {
-            const bookCounters = document.querySelectorAll('.book-counter');
-            bookCounters.forEach((counter, index) => {
-                counter.textContent = index + 1;
+            const bookEntries = document.querySelectorAll('.book-entry');
+            bookEntries.forEach((entry, index) => {
+                entry.querySelector('.book-counter').textContent = index + 1;
             });
         }
 
-        document.getElementById('donationForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = {
-                nome: document.getElementById('nome').value,
-                cognome: document.getElementById('cognome').value,
-                tessera: document.getElementById('tessera').value,
-                telefono: document.getElementById('telefono').value,
-                email: document.getElementById('email').value
-            };
-
-            const books = [];
-            document.querySelectorAll('.book-entry').forEach(entry => {
-                books.push({
-                    title: entry.querySelector('.book-title').value,
-                    author: entry.querySelector('.book-author').value,
-                    publisher: entry.querySelector('.book-publisher').value,
-                    year: entry.querySelector('.book-year').value,
-                    isbn: entry.querySelector('.book-isbn').value
-                });
-            });
-
-            generateExcel(formData, books);
-        });
 
         function generateExcel(formData, books) {
-            const documentText = `DONAZIONE ALLA BIBLIOTECA ELSA MORANTE
+    const documentText = `DONAZIONE ALLA BIBLIOTECA ELSA MORANTE
 
 Io sottoscritto ${formData.nome} ${formData.cognome}
 Tessera n. ${formData.tessera || '_______________'} 
 Tel. ${formData.telefono || '_______________'} 
 e-mail ${formData.email}
 
-dono alla Biblioteca le risorse documentarie allegate...`;
+dono alla Biblioteca le risorse documentarie allegate e autorizzo la biblioteca a destinarli all'uso che riterrà più opportuno (acquisizione al patrimonio, scambio, dono, bookcrossing o scarto, nel caso in cui, a giudizio insindacabile della biblioteca, i materiali risultino inutilizzabili) senza alcun vincolo per la biblioteca stessa nei miei confronti
 
-            const wb = XLSX.utils.book_new();
-            const ws_data = [
-                [''],
-                ['Donazione alla Biblioteca Elsa Morante'],
-                [''],
-                ['Dati del Donatore', 'Nome', 'Cognome', 'Numero Tessera', 'Telefono', 'Email'],
-                [''],
-                ...documentText.split('\n').slice(1).map(line => [line]),
-                [''],
-                ['Dichiarazione'],
-                [''],
-                ['Titolo', 'Autore', 'Editore', 'Anno', 'ISBN']
-            ];
+Data: ${new Date().toLocaleDateString('it-IT')}
+`;
 
-            books.forEach(book => {
-                ws_data.push([book.title, book.author, book.publisher, book.year, book.isbn]);
-            });
+    const wb = XLSX.utils.book_new();
+    
+    const ws_data = [
+        ['Donazione alla Biblioteca Elsa Morante'],
+        ['', 'Nome', formData.nome],
+        ['', 'Cognome', formData.cognome],
+        ['', 'Numero Tessera', formData.tessera || '_______________'],
+        ['', 'Telefono', formData.telefono || '_______________'],
+        ['', 'Email', formData.email],
+        [''],
+        ['Dichiarazione'],
+        [documentText],
+        [''],
+        ['Elenco dei libri donati:'],
+        [''],
+        ['Titolo', 'Autore', 'Editore', 'Anno', 'ISBN'],
+    ];
 
-            const ws = XLSX.utils.aoa_to_sheet(ws_data);
+    // Add the books' details
+    books.forEach(book => {
+        ws_data.push([book.title, book.author, book.publisher, book.year, book.isbn]);
+    });
 
-            // Applicare il grassetto a determinate celle
-            ws['B2'].s = { font: { bold: true } }; // "Donazione alla Biblioteca Elsa Morante"
-            ws['A4'].s = { font: { bold: true } }; // "Dati del Donatore"
-            ws['B4'].s = { font: { bold: true } }; // "Nome"
-            ws['C4'].s = { font: { bold: true } }; // "Cognome"
-            ws['D4'].s = { font: { bold: true } }; // "Numero Tessera"
-            ws['E4'].s = { font: { bold: true } }; // "Telefono"
-            ws['F4'].s = { font: { bold: true } }; // "Email"
-            ws['A6'].s = { font: { bold: true } }; // "Dichiarazione"
-            ws['A8'].s = { font: { bold: true } }; // "Titolo"
-            ws['B8'].s = { font: { bold: true } }; // "Autore"
-            ws['C8'].s = { font: { bold: true } }; // "Editore"
-            ws['D8'].s = { font: { bold: true } }; // "Anno"
-            ws['E8'].s = { font: { bold: true } }; // "ISBN"
+    const ws = XLSX.utils.aoa_to_sheet(ws_data);
 
-            // Impostazione delle larghezze delle colonne
-            ws['!cols'] = [
-                { wch: 30 },
-                { wch: 20 },
-                { wch: 20 },
-                { wch: 10 },
-                { wch: 15 }
-            ];
+    // Apply bold to specific cells
+    const boldCells = [
+        { r: 0, c: 0 },  // "Donazione alla Biblioteca Elsa Morante" (A1)
+        { r: 1, c: 1 },  // "Nome" (A4)
+        { r: 2, c: 1 },  // "Cognome" (A5)
+        { r: 3, c: 1 },  // "Numero Tessera" (A6)
+        { r: 4, c: 1 },  // "Telefono" (A7)
+        { r: 5, c: 1 },  // "Email" (A8)
+        { r: 9, c: 0 },  // "Dichiarazione" (A10)
+        { r: 15, c: 0 }, // "Titolo" (A16)
+        { r: 15, c: 1 }, // "Autore" (B16)
+        { r: 15, c: 2 }, // "Editore" (C16)
+        { r: 15, c: 3 }, // "Anno" (D16)
+        { r: 15, c: 4 }, // "ISBN" (E16)
+    ];
 
-            XLSX.utils.book_append_sheet(wb, ws, "Donazione");
+    boldCells.forEach(cell => {
+        const cellRef = XLSX.utils.encode_cell(cell);
+        if (!ws[cellRef]) ws[cellRef] = {};  // Ensure the cell exists
+        ws[cellRef].s = {
+            font: {
+                bold: true
+            }
+        };
+    });
 
-            const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+    // Set column widths
+    ws['!cols'] = [
+        { wch: 30 },
+        { wch: 20 },
+        { wch: 20 },
+        { wch: 10 },
+        { wch: 15 }
+    ];
 
-            function s2ab(s) {
-                const buf = new ArrayBuffer(s.length);
-                const view = new Uint8Array(buf);
-                for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
-                return buf;
+    XLSX.utils.book_append_sheet(wb, ws, "Donazione");
+
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+
+    function s2ab(s) {
+        const buf = new ArrayBuffer(s.length);
+        const view = new Uint8Array(buf);
+        for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+        return buf;
+    }
+
+    const blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `donazione_${formData.cognome}_${formData.nome}.xlsx`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+}
+
+
+        // Create the first book entry when the page loads
+        document.addEventListener('DOMContentLoaded', createBookEntry);
+
+
+        document.getElementById('donationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const nome = document.getElementById('nome').value.trim();
+            const cognome = document.getElementById('cognome').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const tessera = document.getElementById('tessera').value.trim();
+            const telefono = document.getElementById('telefono').value.trim();
+            const acceptCheckbox = document.getElementById('accept');
+            
+            if (!nome || !cognome || !email) {
+                alert('Per favore compila tutti i campi obbligatori.');
+                return;
+            }
+            
+            if (!acceptCheckbox.checked) {
+                alert('Devi accettare i termini e le condizioni per procedere.');
+                return;
             }
 
-            const blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `donazione_${formData.cognome}_${formData.nome}.xlsx`;
-            a.click();
-            window.URL.revokeObjectURL(url);
-        }
+
+            const books = [];
+            document.querySelectorAll('.book-entry').forEach(bookDiv => {
+                const book = {
+                    title: bookDiv.querySelector('.book-title').value,
+                    author: bookDiv.querySelector('.book-author').value,
+                    publisher: bookDiv.querySelector('.book-publisher').value,
+                    year: bookDiv.querySelector('.book-year').value,
+                    isbn: bookDiv.querySelector('.book-isbn').value
+                };
+                books.push(book);
+            });
+
+
+            if (books.length === 0) {
+                alert('Aggiungi almeno un libro alla donazione.');
+                return;
+            }
+            
+            const formData = {
+                nome,
+                cognome,
+                email,
+                tessera,
+                telefono
+            };
+            
+            generateExcel(formData, books);
+        });
     </script>
 </body>
 </html>
