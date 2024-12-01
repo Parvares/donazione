@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Donazione alla Biblioteca Elsa Morante</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx-style/dist/xlsx.full.min.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -13,14 +13,12 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-
         body {
             background-color: #f5f5f5;
             color: #333;
             line-height: 1.6;
             padding: 20px;
         }
-
 
         .container {
             max-width: 800px;
@@ -31,14 +29,12 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-
         h1 {
             color: #2c3e50;
             text-align: center;
             margin-bottom: 30px;
             font-size: 2.2em;
         }
-
 
         h3 {
             color: #34495e;
@@ -47,11 +43,9 @@
             border-bottom: 2px solid #eee;
         }
 
-
         .form-group {
             margin-bottom: 20px;
         }
-
 
         label {
             display: block;
@@ -59,7 +53,6 @@
             color: #2c3e50;
             font-weight: 500;
         }
-
 
         input[type="text"],
         input[type="tel"],
@@ -72,14 +65,12 @@
             transition: border-color 0.3s ease;
         }
 
-
         input[type="text"]:focus,
         input[type="tel"]:focus,
         input[type="email"]:focus {
             border-color: #3498db;
             outline: none;
         }
-
 
         .book-entry {
             background-color: #f8f9fa;
@@ -91,12 +82,10 @@
             transition: transform 0.2s ease;
         }
 
-
         .book-entry:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-
 
         .book-counter {
             position: absolute;
@@ -114,12 +103,10 @@
             font-weight: bold;
         }
 
-
         .button-group {
             text-align: center;
             margin: 20px 0;
         }
-
 
         button {
             padding: 12px 24px;
@@ -131,7 +118,6 @@
             transition: all 0.3s ease;
         }
 
-
         .add-book {
             background-color: #2ecc71;
             color: white;
@@ -139,12 +125,10 @@
             width: 100%;
         }
 
-
         .add-book:hover {
             background-color: #27ae60;
             transform: translateY(-2px);
         }
-
 
         .remove-book {
             background-color: #e74c3c;
@@ -156,11 +140,9 @@
             right: 10px;
         }
 
-
         .remove-book:hover {
             background-color: #c0392b;
         }
-
 
         button[type="submit"] {
             background-color: #3498db;
@@ -171,11 +153,9 @@
             display: block;
         }
 
-
         button[type="submit"]:hover {
             background-color: #2980b9;
         }
-
 
         .consent-box {
             background-color: #f8f9fa;
@@ -184,19 +164,16 @@
             margin: 20px 0;
         }
 
-
         .consent-box label {
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-
         input[type="checkbox"] {
             width: 18px;
             height: 18px;
         }
-
 
         .info-box {
             background-color: #e1f5fe;
@@ -206,23 +183,19 @@
             border-radius: 0 5px 5px 0;
         }
 
-
         a {
             color: #3498db;
             text-decoration: none;
         }
 
-
         a:hover {
             text-decoration: underline;
         }
-
 
         @media (max-width: 600px) {
             .container {
                 padding: 15px;
             }
-
 
             button {
                 width: 100%;
@@ -238,7 +211,6 @@
         <div class="info-box">
             Compila il modulo per donare i tuoi libri alla biblioteca. Tutti i campi contrassegnati con * sono obbligatori.
         </div>
-
 
         <form id="donationForm">
             <h3>Dati Personali</h3>
@@ -257,7 +229,6 @@
                 <input type="text" id="tessera" name="tessera">
             </div>
 
-
             <div class="form-group">
                 <label for="telefono">Telefono:</label>
                 <input type="tel" id="telefono" name="telefono">
@@ -267,7 +238,6 @@
                 <label for="email">Email: *</label>
                 <input type="email" id="email" name="email" required>
             </div>
-
 
             <h3>Libri da donare</h3>
             <div id="bookList"></div>
@@ -283,10 +253,8 @@
         </form>
     </div>
 
-
     <script>
         let bookCount = 0;
-
 
         function createBookEntry() {
             const bookDiv = document.createElement('div');
@@ -318,169 +286,59 @@
                 <button type="button" class="add-book" onclick="createBookEntry()">+ Aggiungi Libro</button>
             `;
             document.getElementById('bookList').appendChild(bookDiv);
-            updateBookCounters();
+            updateBookCount();
         }
-
 
         function removeBook(button) {
-            button.parentElement.remove();
-            bookCount--;
-            updateBookCounters();
+            button.closest('.book-entry').remove();
+            updateBookCount();
         }
 
-
-        function updateBookCounters() {
-            const bookEntries = document.querySelectorAll('.book-entry');
-            bookEntries.forEach((entry, index) => {
-                entry.querySelector('.book-counter').textContent = index + 1;
+        function updateBookCount() {
+            const counters = document.querySelectorAll('.book-counter');
+            counters.forEach((counter, index) => {
+                counter.textContent = index + 1;
             });
+            bookCount = counters.length;
         }
 
-
-function generateExcel(formData, books) {
-    const wb = XLSX.utils.book_new();
-
-    // Creazione del foglio
-    const sheet = XLSX.utils.aoa_to_sheet([]);
-
-    // Dati iniziali (con stile)
-    const documentData = [
-        ['Donazione alla Biblioteca Elsa Morante'],
-        [],
-        ['Dati del Donatore'],
-        ['Nome', formData.nome],
-        ['Cognome', formData.cognome],
-        ['Numero Tessera', formData.tessera || 'Non specificato'],
-        ['Telefono', formData.telefono || 'Non specificato'],
-        ['Email', formData.email],
-        [],
-        ['Dichiarazione'],
-        [
-            'Io sottoscritto dichiaro di donare alla Biblioteca le risorse documentarie allegate e autorizzo la biblioteca a destinarli all\'uso che riterrà più opportuno.',
-        ],
-        [],
-        ['Data Donazione', new Date().toLocaleDateString('it-IT')],
-        [],
-        ['Elenco Libri Donati'],
-        ['Titolo', 'Autore', 'Editore', 'Anno', 'ISBN'],
-    ];
-
-    // Aggiunta dati
-    books.forEach(book => {
-        documentData.push([
-            book.title || 'Non specificato',
-            book.author || 'Non specificato',
-            book.publisher || 'Non specificato',
-            book.year || 'Non specificato',
-            book.isbn || 'Non specificato',
-        ]);
-    });
-
-    // Scrittura dati nel foglio
-    documentData.forEach((row, rowIndex) => {
-        row.forEach((cellValue, colIndex) => {
-            const cellAddress = XLSX.utils.encode_cell({ r: rowIndex, c: colIndex });
-
-            sheet[cellAddress] = {
-                v: cellValue,
-                t: 's',
-                s: {
-                    font: {
-                        bold: [0, 2, 3, 4, 5, 6, 13].includes(rowIndex), // Rendi in grassetto le righe specificate
-                    },
-                },
-            };
-        });
-    });
-
-    // Aggiunta dimensioni delle colonne
-    sheet['!cols'] = [
-        { wch: 40 }, // Colonna 1
-        { wch: 30 }, // Colonna 2
-        { wch: 30 },
-        { wch: 30 },
-        { wch: 15 },
-        { wch: 20 },
-    ];
-
-    // Fine del foglio
-    XLSX.utils.book_append_sheet(wb, sheet, "Donazione Libri");
-
-    // Creazione del file e download
-    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
-    const blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `donazione_${formData.cognome}_${formData.nome}.xlsx`;
-    a.click();
-    window.URL.revokeObjectURL(url);
-
-    function s2ab(s) {
-        const buf = new ArrayBuffer(s.length);
-        const view = new Uint8Array(buf);
-        for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
-        return buf;
-    }
-}
-
-
-
-
-        // Create the first book entry when the page loads
-        document.addEventListener('DOMContentLoaded', createBookEntry);
-
-
-        document.getElementById('donationForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            const nome = document.getElementById('nome').value.trim();
-            const cognome = document.getElementById('cognome').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const tessera = document.getElementById('tessera').value.trim();
-            const telefono = document.getElementById('telefono').value.trim();
-            const acceptCheckbox = document.getElementById('accept');
-            
-            if (!nome || !cognome || !email) {
-                alert('Per favore compila tutti i campi obbligatori.');
-                return;
-            }
-            
-            if (!acceptCheckbox.checked) {
-                alert('Devi accettare i termini e le condizioni per procedere.');
-                return;
-            }
-
+        document.getElementById('donationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
 
             const books = [];
-            document.querySelectorAll('.book-entry').forEach(bookDiv => {
-                const book = {
-                    title: bookDiv.querySelector('.book-title').value,
-                    author: bookDiv.querySelector('.book-author').value,
-                    publisher: bookDiv.querySelector('.book-publisher').value,
-                    year: bookDiv.querySelector('.book-year').value,
-                    isbn: bookDiv.querySelector('.book-isbn').value
-                };
-                books.push(book);
+            const bookEntries = document.querySelectorAll('.book-entry');
+            bookEntries.forEach(entry => {
+                const title = entry.querySelector('.book-title').value;
+                const author = entry.querySelector('.book-author').value;
+                const publisher = entry.querySelector('.book-publisher').value;
+                const year = entry.querySelector('.book-year').value;
+                const isbn = entry.querySelector('.book-isbn').value;
+                books.push([title, author, publisher, year, isbn]);
             });
 
+            const ws = XLSX.utils.aoa_to_sheet([
+                ['Nome', 'Cognome', 'Tessera', 'Telefono', 'Email'],
+                [document.getElementById('nome').value, document.getElementById('cognome').value, document.getElementById('tessera').value, document.getElementById('telefono').value, document.getElementById('email').value],
+                [],
+                ['Titolo', 'Autore', 'Editore', 'Anno', 'ISBN'],
+                ...books
+            ]);
 
-            if (books.length === 0) {
-                alert('Aggiungi almeno un libro alla donazione.');
-                return;
-            }
-            
-            const formData = {
-                nome,
-                cognome,
-                email,
-                tessera,
-                telefono
-            };
-            
-            generateExcel(formData, books);
+            // Applicare grassetto alla prima riga (intestazione) e ai dati dell'utente
+            ['A1', 'B1', 'C1', 'D1', 'E1'].forEach(cell => {
+                ws[cell].s = { font: { bold: true } };
+            });
+            ['A2', 'B2', 'C2', 'D2', 'E2'].forEach(cell => {
+                ws[cell].s = { font: { bold: true } };
+            });
+
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Donazione");
+            XLSX.writeFile(wb, 'donazione_biblioteca.xlsx');
         });
+
+        // Aggiungi il primo libro al caricamento della pagina
+        createBookEntry();
     </script>
 </body>
 </html>
-
