@@ -267,29 +267,27 @@
                     <input type="text" class="book-title" required>
                 </div>
                 <div class="form-group">
-                    <label>Autore:</label>
-                    <input type="text" class="book-author">
+                    <label>Autore: *</label>
+                    <input type="text" class="book-author" required>
                 </div>
                 <div class="form-group">
-                    <label>Editore:</label>
-                    <input type="text" class="book-publisher">
+                    <label>Editore: *</label>
+                    <input type="text" class="book-publisher" required>
                 </div>
                 <div class="form-group">
-                    <label>Anno:</label>
-                    <input type="text" class="book-year">
+                    <label>Anno: *</label>
+                    <input type="text" class="book-year" required>
                 </div>
                 <div class="form-group">
                     <label>ISBN:</label>
                     <input type="text" class="book-isbn">
                 </div>
-                <button type="button" class="remove-book" onclick="removeBook(this)">Rimuovi</button>
-                <button type="button" class="add-book" onclick="createBookEntry()">+ Aggiungi Libro</button>
+                <button type="button" class="remove-book" onclick="removeBookEntry(this)">Rimuovi</button>
             `;
             document.getElementById('bookList').appendChild(bookDiv);
-            updateBookCounters();
         }
 
-        function removeBook(button) {
+        function removeBookEntry(button) {
             button.parentElement.remove();
             bookCount--;
             updateBookCounters();
@@ -302,7 +300,7 @@
             });
         }
 
-        document.querySelector('form').addEventListener('submit', function(e) {
+        document.getElementById('donationForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const formData = {
@@ -330,20 +328,14 @@
         function generateExcel(formData, books) {
             const documentText = `DONAZIONE ALLA BIBLIOTECA ELSA MORANTE
 
-
 Io sottoscritto ${formData.nome} ${formData.cognome}
 Tessera n. ${formData.tessera || '_______________'} 
 Tel. ${formData.telefono || '_______________'} 
 e-mail ${formData.email}
 
-
-dono alla Biblioteca le risorse documentarie allegate e autorizzo la biblioteca a destinarli all'uso che riterrà più opportuno (acquisizione al patrimonio, scambio, dono, bookcrossing o scarto, nel caso in cui, a giudizio insindacabile della biblioteca, i materiali risultino inutilizzabili) senza alcun vincolo per la biblioteca stessa nei miei confronti
-
-
-Data: ${new Date().toLocaleDateString('it-IT')}`;
+dono alla Biblioteca le risorse documentarie allegate...`;
 
             const wb = XLSX.utils.book_new();
-            
             const ws_data = [
                 [''],
                 ['Donazione alla Biblioteca Elsa Morante'],
@@ -378,6 +370,7 @@ Data: ${new Date().toLocaleDateString('it-IT')}`;
             ws['D8'].s = { font: { bold: true } }; // "Anno"
             ws['E8'].s = { font: { bold: true } }; // "ISBN"
 
+            // Impostazione delle larghezze delle colonne
             ws['!cols'] = [
                 { wch: 30 },
                 { wch: 20 },
