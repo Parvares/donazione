@@ -338,114 +338,94 @@
 
 
 function generateExcel(formData, books) {
-    // Create the document text with better formatting
-    const documentText = [
-        ['DONAZIONE ALLA BIBLIOTECA ELSA MORANTE'],
-        [''],
-        ['DATI DEL DONATORE'],
-        [''],
-        [`Nome e Cognome: ${formData.nome} ${formData.cognome}`],
-        [`Tessera n.: ${formData.tessera || '_______________'}`],
-        [`Telefono: ${formData.telefono || '_______________'}`],
-        [`Email: ${formData.email}`],
-        [''],
-        ['DICHIARAZIONE'],
-        [''],
-        ['Io sottoscritto/a dichiaro di donare alla Biblioteca le risorse documentarie allegate'],
-        ['e autorizzo la biblioteca a destinarle all\'uso che riterrà più opportuno, inclusi:'],
-        ['- acquisizione al patrimonio'],
-        ['- scambio'],
-        ['- dono'],
-        ['- bookcrossing'],
-        ['- scarto, nel caso in cui i materiali risultino inutilizzabili'],
-        [''],
-        ['Dichiaro inoltre di non porre alcun vincolo per la biblioteca nei miei confronti.'],
-        [''],
-        [`Data: ${new Date().toLocaleDateString('it-IT')}`],
-        [''],
-        ['ELENCO DEI LIBRI DONATI'],
-        ['']
-    ];
+  // Testo del documento di donazione con formattazione migliorata
+  const documentText = `DONAZIONE ALLA BIBLIOTECA ELSA MORANTE
 
-    const wb = XLSX.utils.book_new();
-    
-    // Create the worksheet from the formatted text
-    const ws_data = [...documentText];
-    
-    // Add headers for the book list
-    ws_data.push(['N.', 'Titolo', 'Autore', 'Editore', 'Anno', 'ISBN']);
-    
-    // Add books with progressive numbering
-    books.forEach((book, index) => {
-        ws_data.push([
-            index + 1,
-            book.title || '',
-            book.author || '',
-            book.publisher || '',
-            book.year || '',
-            book.isbn || ''
-        ]);
+Io sottoscritto ${formData.nome} ${formData.cognome}
+
+Tessera n.     : ${formData.tessera || '_______________'}
+Tel.           : ${formData.telefono || '_______________'}
+e-mail         : ${formData.email}
+
+Dono alla Biblioteca le risorse documentarie allegate e autorizzo la biblioteca a destinarli all'uso che riterrà più opportuno (acquisizione al patrimonio, scambio, dono, bookcrossing o scarto, nel caso in cui, a giudizio insindacabile della biblioteca, i materiali risultino inutilizzabili) senza alcun vincolo per la biblioteca stessa nei miei confronti.
+
+Data: ${new Date().toLocaleDateString('it-IT')}`;
+
+  const wb = XLSX.utils.book_new();
+  
+  // Miglioramento della struttura dei dati
+  const ws_data = [
+    [{ v: 'DONAZIONE ALLA BIBLIOTECA ELSA MORANTE', s: { font: { bold: true, sz: 16 } } }],
+    [''],
+    ...documentText.split('\n').map(line => [line]),
+    [''],
+    [{ v: 'Elenco dei libri donati:', s: { font: { bold: true } } }],
+    [''],
+    [
+      { v: 'Titolo', s: { fill: { fgColor: { rgb: "CCCCCC" } }, font: { bold: true }, border: { bottom: { style: "thin" } } } },
+      { v: 'Autore', s: { fill: { fgColor: { rgb: "CCCCCC" } }, font: { bold: true }, border: { bottom: { style: "thin" } } } },
+      { v: 'Editore', s: { fill: { fgColor: { rgb: "CCCCCC" } }, font: { bold: true }, border: { bottom: { style: "thin" } } } },
+      { v: 'Anno', s: { fill: { fgColor: { rgb: "CCCCCC" } }, font: { bold: true }, border: { bottom: { style: "thin" } } } },
+      { v: 'ISBN', s: { fill: { fgColor: { rgb: "CCCCCC" } }, font: { bold: true }, border: { bottom: { style: "thin" } } } }
+    ]
+  ];
+
+  // Aggiunta libri con stile
+  books.forEach(book => {
+    ws_data.push([
+      book.title, 
+      book.author, 
+      book.publisher, 
+      book.year, 
+      book.isbn
+    ]);
+  });
+
+  const ws = XLSX.utils.aoa_to_sheet(ws_data);
+
+  // Impostazione larghezze colonne con maggiore precisione
+  ws['!cols'] = [
+    { wch: 50 },  // Titolo
+    { wch: 35 },  // Autore
+    { wch: 35 },  // Editore
+    { wch: 10 },  // Anno
+    { wch: 20 }   // ISBN
+  ];
+
+  // Aggiungi bordi e formattazione alle righe dei dati
+  const numRows = ws_data.length;
+  for (let i = 9; i < numRows; i++) {
+    ['A', 'B', 'C', 'D', 'E'].forEach(col => {
+      const cellRef = `${col}${i}`;
+      if (ws[cellRef]) {
+        ws[cellRef].s = {
+          border: {
+            bottom: { style: "thin", color: { rgb: "CCCCCC" } }
+          }
+        };
+      }
     });
+  }
 
-    const ws = XLSX.utils.aoa_to_sheet(ws_data);
+  XLSX.utils.book_append_sheet(wb, ws, "Donazione");
 
-    // Style configurations
-    const titleStyle = { font: { bold: true, size: 14 }, alignment: { horizontal: 'center' } };
-    const headerStyle = { font: { bold: true }, fill: { fgColor: { rgb: "CCE5FF" } } };
-    const sectionHeaderStyle = { font: { bold: true }, fill: { fgColor: { rgb: "E6E6E6" } } };
-    
-    // Apply styles
-    ws['!merges'] = [
-        { s: { r: 0, c: 0 }, e: { r: 0, c: 5 } }, // Merge first row for title
-        { s: { r: 2, c: 0 }, e: { r: 2, c: 5 } }, // Merge "DATI DEL DONATORE"
-        { s: { r: 9, c: 0 }, e: { r: 9, c: 5 } }, // Merge "DICHIARAZIONE"
-        { s: { r: 23, c: 0 }, e: { r: 23, c: 5 } }  // Merge "ELENCO DEI LIBRI DONATI"
-    ];
+  // Download del file
+  const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+  
+  function s2ab(s) {
+    const buf = new ArrayBuffer(s.length);
+    const view = new Uint8Array(buf);
+    for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+    return buf;
+  }
 
-    // Set column widths
-    ws['!cols'] = [
-        { wch: 5 },  // N.
-        { wch: 40 }, // Titolo
-        { wch: 30 }, // Autore
-        { wch: 25 }, // Editore
-        { wch: 10 }, // Anno
-        { wch: 15 }  // ISBN
-    ];
-
-    // Apply custom formatting to cells
-    for (let i = 0; i < ws_data.length; i++) {
-        const row = ws_data[i][0];
-        if (row === 'DONAZIONE ALLA BIBLIOTECA ELSA MORANTE') {
-            ws[`A${i + 1}`].s = titleStyle;
-        } else if (row === 'DATI DEL DONATORE' || row === 'DICHIARAZIONE' || row === 'ELENCO DEI LIBRI DONATI') {
-            ws[`A${i + 1}`].s = sectionHeaderStyle;
-        }
-    }
-
-    // Apply header style to book list headers
-    const headerRow = ws_data.length - books.length - 1;
-    ['A', 'B', 'C', 'D', 'E', 'F'].forEach(col => {
-        ws[`${col}${headerRow}`].s = headerStyle;
-    });
-
-    XLSX.utils.book_append_sheet(wb, ws, "Donazione");
-
-    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
-
-    function s2ab(s) {
-        const buf = new ArrayBuffer(s.length);
-        const view = new Uint8Array(buf);
-        for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
-        return buf;
-    }
-
-    const blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `donazione_${formData.cognome}_${formData.nome}.xlsx`;
-    a.click();
-    window.URL.revokeObjectURL(url);
+  const blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `donazione_${formData.cognome}_${formData.nome}.xlsx`;
+  a.click();
+  window.URL.revokeObjectURL(url);
 }
 
 
