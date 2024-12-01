@@ -1,52 +1,16 @@
-let bookCount = 0;
-
-function createBookEntry() {
-    const bookDiv = document.createElement('div');
-    bookDiv.className = 'book-entry';
-    bookCount++;
-    bookDiv.innerHTML = `
-        <div class="book-counter">${bookCount}</div>
-        <div class="form-group">
-            <label>Titolo: *</label>
-            <input type="text" class="book-title" required>
-        </div>
-        <div class="form-group">
-            <label>Autore:</label>
-            <input type="text" class="book-author">
-        </div>
-        <div class="form-group">
-            <label>Editore:</label>
-            <input type="text" class="book-publisher">
-        </div>
-        <div class="form-group">
-            <label>Anno:</label>
-            <input type="text" class="book-year">
-        </div>
-        <div class="form-group">
-            <label>ISBN:</label>
-            <input type="text" class="book-isbn">
-        </div>
-        <button type="button" class="remove-book" onclick="removeBook(this)">Rimuovi</button>
-        <button type="button" class="add-book" onclick="createBookEntry()">+ Aggiungi Libro</button>
-    `;
-    document.getElementById('bookList').appendChild(bookDiv);
-    updateBookCounters();
-}
-
-function removeBook(button) {
-    button.parentElement.remove();
-    bookCount--;
-    updateBookCounters();
-}
-
-function updateBookCounters() {
-    const bookEntries = document.querySelectorAll('.book-entry');
-    bookEntries.forEach((entry, index) => {
-        entry.querySelector('.book-counter').textContent = index + 1;
-    });
-}
-
 function generateExcel(formData, books) {
+    const documentText = `DONAZIONE ALLA BIBLIOTECA ELSA MORANTE
+
+Io sottoscritto ${formData.nome} ${formData.cognome}
+Tessera n. ${formData.tessera || '_______________'} 
+Tel. ${formData.telefono || '_______________'} 
+e-mail ${formData.email}
+
+dono alla Biblioteca le risorse documentarie allegate e autorizzo la biblioteca a destinarli all'uso che riterrà più opportuno (acquisizione al patrimonio, scambio, dono, bookcrossing o scarto, nel caso in cui, a giudizio insindacabile della biblioteca, i materiali risultino inutilizzabili) senza alcun vincolo per la biblioteca stessa nei miei confronti
+
+Data: ${new Date().toLocaleDateString('it-IT')}
+`;
+
     const wb = XLSX.utils.book_new();
     
     // Donation Details Sheet
@@ -64,6 +28,13 @@ function generateExcel(formData, books) {
     ];
 
     const detailsWs = XLSX.utils.aoa_to_sheet(detailsData);
+
+    // Styling for details sheet
+    detailsWs['A1'].s = { 
+        font: { bold: true, sz: 14 },
+        alignment: { horizontal: 'center' }
+    };
+    detailsWs['!cols'] = [{ wch: 20 }, { wch: 30 }];
 
     // Books Sheet
     const booksData = [
@@ -84,60 +55,41 @@ function generateExcel(formData, books) {
 
     const booksWs = XLSX.utils.aoa_to_sheet(booksData);
 
+    // Styling for books sheet
+    booksWs['A1'].s = { 
+        font: { bold: true, sz: 14 },
+        alignment: { horizontal: 'center' }
+    };
+    booksWs['A3'].s = { 
+        font: { bold: true },
+        fill: { fgColor: { rgb: 'E0E0E0' } }
+    };
+    booksWs['!cols'] = [
+        { wch: 40 },  // Title
+        { wch: 30 },  // Author
+        { wch: 30 },  // Publisher
+        { wch: 10 },  // Year
+        { wch: 20 }   // ISBN
+    ];
+
     // Add sheets to workbook
     XLSX.utils.book_append_sheet(wb, detailsWs, "Dettagli Donazione");
     XLSX.utils.book_append_sheet(wb, booksWs, "Libri Donati");
 
-    XLSX.writeFile(wb, `donazione_${formData.cognome}_${formData.nome}.xlsx`);
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+
+    function s2ab(s) {
+        const buf = new ArrayBuffer(s.length);
+        const view = new Uint8Array(buf);
+        for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+        return buf;
+    }
+
+    const blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `donazione_${formData.cognome}_${formData.nome}.xlsx`;
+    a.click();
+    window.URL.revokeObjectURL(url);
 }
-
-// Create the first book entry when the page loads
-document.addEventListener('DOMContentLoaded', createBookEntry);
-
-document.getElementById('donationForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    
-    const nome = document.getElementById('nome').value.trim();
-    const cognome = document.getElementById('cognome').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const tessera = document.getElementById('tessera').value.trim();
-    const telefono = document.getElementById('telefono').value.trim();
-    const acceptCheckbox = document.getElementById('accept');
-    
-    if (!nome || !cognome || !email) {
-        alert('Per favore compila tutti i campi obbligatori.');
-        return;
-    }
-    
-    if (!acceptCheckbox.checked) {
-        alert('Devi accettare i termini e le condizioni per procedere.');
-        return;
-    }
-
-    const books = [];
-    document.querySelectorAll('.book-entry').forEach(bookDiv => {
-        const book = {
-            title: bookDiv.querySelector('.book-title').value,
-            author: bookDiv.querySelector('.book-author').value,
-            publisher: bookDiv.querySelector('.book-publisher').value,
-            year: bookDiv.querySelector('.book-year').value,
-            isbn: bookDiv.querySelector('.book-isbn').value
-        };
-        books.push(book);
-    });
-
-    if (books.length === 0) {
-        alert('Aggiungi almeno un libro alla donazione.');
-        return;
-    }
-    
-    const formData = {
-        nome,
-        cognome,
-        email,
-        tessera,
-        telefono
-    };
-    
-    generateExcel(formData, books);
-});
