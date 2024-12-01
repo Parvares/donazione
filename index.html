@@ -340,7 +340,7 @@
 function generateExcel(formData, books) {
     const wb = XLSX.utils.book_new();
     
-    // Preparazione dei dati per il documento
+    // Dati del documento
     const documentData = [
         [{ v: 'Donazione alla Biblioteca Elsa Morante', s: { font: { bold: true } } }],
         [],
@@ -366,7 +366,7 @@ function generateExcel(formData, books) {
         ]
     ];
 
-    // Aggiunta dei libri alla lista
+    // Aggiungi i libri alla lista
     books.forEach(book => {
         documentData.push([ 
             book.title || 'Non specificato', 
@@ -382,15 +382,14 @@ function generateExcel(formData, books) {
 
     // Impostazione larghezza colonne
     sheet['!cols'] = [
-        { wch: 40 },  // Prima colonna
-        { wch: 30 },  // Seconda colonna (per i libri, larghezza per più colonne)
-        { wch: 30 },
-        { wch: 30 },
-        { wch: 15 },
-        { wch: 20 }
+        { wch: 40 },  // Colonna per Titolo
+        { wch: 30 },  // Colonna per Autore
+        { wch: 30 },  // Colonna per Editore
+        { wch: 30 },  // Colonna per Anno
+        { wch: 15 },  // Colonna per ISBN
     ];
 
-    // Aggiunta del foglio al workbook
+    // Aggiungi il foglio al workbook
     XLSX.utils.book_append_sheet(wb, sheet, "Donazione Libri");
 
     // Generazione e download del file
