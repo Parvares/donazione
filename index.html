@@ -1,88 +1,90 @@
 function generateExcel(formData, books) {
-    const documentText = `DONAZIONE ALLA BIBLIOTECA ELSA MORANTE
+  // Testo del documento di donazione con formattazione migliorata
+  const documentText = `DONAZIONE ALLA BIBLIOTECA ELSA MORANTE
+
 Io sottoscritto ${formData.nome} ${formData.cognome}
-Tessera n. ${formData.tessera || '_______________'}
-Tel. ${formData.telefono || '_______________'}
-e-mail ${formData.email}
-dono alla Biblioteca le risorse documentarie allegate e autorizzo la biblioteca a destinarli all'uso che riterrà più opportuno (acquisizione al patrimonio, scambio, dono, bookcrossing o scarto, nel caso in cui, a giudizio insindacabile della biblioteca, i materiali risultino inutilizzabili) senza alcun vincolo per la biblioteca stessa nei miei confronti
+
+Tessera n.     : ${formData.tessera || '_______________'}
+Tel.           : ${formData.telefono || '_______________'}
+e-mail         : ${formData.email}
+
+Dono alla Biblioteca le risorse documentarie allegate e autorizzo la biblioteca a destinarli all'uso che riterrà più opportuno (acquisizione al patrimonio, scambio, dono, bookcrossing o scarto, nel caso in cui, a giudizio insindacabile della biblioteca, i materiali risultino inutilizzabili) senza alcun vincolo per la biblioteca stessa nei miei confronti.
+
 Data: ${new Date().toLocaleDateString('it-IT')}`;
 
-    const wb = XLSX.utils.book_new();
+  const wb = XLSX.utils.book_new();
+  
+  // Miglioramento della struttura dei dati
+  const ws_data = [
+    [{ v: 'DONAZIONE ALLA BIBLIOTECA ELSA MORANTE', s: { font: { bold: true, sz: 16 } } }],
+    [''],
+    ...documentText.split('\n').map(line => [line]),
+    [''],
+    [{ v: 'Elenco dei libri donati:', s: { font: { bold: true } } }],
+    [''],
+    [
+      { v: 'Titolo', s: { fill: { fgColor: { rgb: "CCCCCC" } }, font: { bold: true }, border: { bottom: { style: "thin" } } } },
+      { v: 'Autore', s: { fill: { fgColor: { rgb: "CCCCCC" } }, font: { bold: true }, border: { bottom: { style: "thin" } } } },
+      { v: 'Editore', s: { fill: { fgColor: { rgb: "CCCCCC" } }, font: { bold: true }, border: { bottom: { style: "thin" } } } },
+      { v: 'Anno', s: { fill: { fgColor: { rgb: "CCCCCC" } }, font: { bold: true }, border: { bottom: { style: "thin" } } } },
+      { v: 'ISBN', s: { fill: { fgColor: { rgb: "CCCCCC" } }, font: { bold: true }, border: { bottom: { style: "thin" } } } }
+    ]
+  ];
 
-    const ws_data = [
-        ['DONAZIONE ALLA BIBLIOTECA ELSA MORANTE'],
-        [documentText.split('\n')[0]],
-        [''],
-        ...documentText.split('\n').slice(1).map(line => [line]),
-        [''],
-        ['Elenco dei libri donati:'],
-        [''],
-        ['Titolo', 'Autore', 'Editore', 'Anno', 'ISBN']
-    ];
+  // Aggiunta libri con stile
+  books.forEach(book => {
+    ws_data.push([
+      book.title, 
+      book.author, 
+      book.publisher, 
+      book.year, 
+      book.isbn
+    ]);
+  });
 
-    books.forEach(book => {
-        ws_data.push([book.title, book.author, book.publisher, book.year, book.isbn]);
+  const ws = XLSX.utils.aoa_to_sheet(ws_data);
+
+  // Impostazione larghezze colonne con maggiore precisione
+  ws['!cols'] = [
+    { wch: 50 },  // Titolo
+    { wch: 35 },  // Autore
+    { wch: 35 },  // Editore
+    { wch: 10 },  // Anno
+    { wch: 20 }   // ISBN
+  ];
+
+  // Aggiungi bordi e formattazione alle righe dei dati
+  const numRows = ws_data.length;
+  for (let i = 9; i < numRows; i++) {
+    ['A', 'B', 'C', 'D', 'E'].forEach(col => {
+      const cellRef = `${col}${i}`;
+      if (ws[cellRef]) {
+        ws[cellRef].s = {
+          border: {
+            bottom: { style: "thin", color: { rgb: "CCCCCC" } }
+          }
+        };
+      }
     });
+  }
 
-    const ws = XLSX.utils.aoa_to_sheet(ws_data);
+  XLSX.utils.book_append_sheet(wb, ws, "Donazione");
 
-    // Set column widths
-    ws['!cols'] = [
-        { wch: 40 }, // Title
-        { wch: 30 }, // Author
-        { wch: 30 }, // Publisher
-        { wch: 10 }, // Year
-        { wch: 15 }  // ISBN
-    ];
+  // Download del file
+  const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+  
+  function s2ab(s) {
+    const buf = new ArrayBuffer(s.length);
+    const view = new Uint8Array(buf);
+    for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+    return buf;
+  }
 
-    // Apply styles to all cells
-    const range = XLSX.utils.decode_range(ws['!ref']);
-    for (let R = range.s.r; R <= range.e.r; ++R) {
-        for (let C = range.s.c; C <= range.e.c; ++C) {
-            const cell_address = XLSX.utils.encode_cell({ r: R, c: C });
-            if (!ws[cell_address]) continue;
-
-            // General cell styles
-            ws[cell_address].s = {
-                font: { name: "Arial", sz: 11 },
-                alignment: { horizontal: "center", vertical: "center" },
-                border: {
-                    top: { style: "thin", color: { rgb: "000000" } },
-                    bottom: { style: "thin", color: { rgb: "000000" } },
-                    left: { style: "thin", color: { rgb: "000000" } },
-                    right: { style: "thin", color: { rgb: "000000" } }
-                }
-            };
-
-            // Highlight headers
-            if (R === 7) {
-                ws[cell_address].s.font.bold = true;
-                ws[cell_address].s.fill = { fgColor: { rgb: "D9E1F2" } };
-            }
-
-            // Alternate row colors
-            if (R > 7 && R % 2 === 0) {
-                ws[cell_address].s.fill = { fgColor: { rgb: "F2F2F2" } };
-            }
-        }
-    }
-
-    XLSX.utils.book_append_sheet(wb, ws, "Donazione");
-
-    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
-
-    function s2ab(s) {
-        const buf = new ArrayBuffer(s.length);
-        const view = new Uint8Array(buf);
-        for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
-        return buf;
-    }
-
-    const blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `donazione_${formData.cognome}_${formData.nome}.xlsx`;
-    a.click();
-    window.URL.revokeObjectURL(url);
+  const blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `donazione_${formData.cognome}_${formData.nome}.xlsx`;
+  a.click();
+  window.URL.revokeObjectURL(url);
 }
