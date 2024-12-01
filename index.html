@@ -19,7 +19,7 @@ function generateExcel(formData, books) {
 
     const ws = XLSX.utils.aoa_to_sheet(ws_data);
     
-    // Set column widths
+    // Set column widths and styles
     ws['!cols'] = [
         { wch: 40 }, // Title
         { wch: 30 }, // Author
@@ -28,30 +28,50 @@ function generateExcel(formData, books) {
         { wch: 15 }  // ISBN
     ];
 
-    // Apply styles to header row
+    // Apply styles to header row and title
     const headerRow = ws['A1'];
     if (headerRow) {
         headerRow.s = {
             fill: { fgColor: { rgb: "FFFF00" } },
-            font: { bold: true }
+            font: { bold: true },
+            alignment: { horizontal: "center" },
+            wrap: true
         };
+        XLSX.utils.sheet_merge(ws, 'A1:E1');
     }
+
+    ws['A2'].s = {
+        wrap: true,
+        alignment: { horizontal: "left" }
+    };
 
     // Apply styles to other header cells
     ['A8', 'B8', 'C8', 'D8', 'E8'].forEach(cell => {
         if (ws[cell]) {
             ws[cell].s = {
                 fill: { fgColor: { rgb: "CCCCCC" } },
-                font: { bold: true }
-            };
-            ws[cell].s.border = {
-                top: { style: "thin", color: { rgb: "000000" } },
-                bottom: { style: "thin", color: { rgb: "000000" } },
-                left: { style: "thin", color: { rgb: "000000" } },
-                right: { style: "thin", color: { rgb: "000000" } }
+                font: { bold: true },
+                border: {
+                    top: { style: "thin", color: { rgb: "000000" } },
+                    bottom: { style: "thin", color: { rgb: "000000" } },
+                    left: { style: "thin", color: { rgb: "000000" } },
+                    right: { style: "thin", color: { rgb: "000000" } }
+                }
             };
         }
     });
+
+    // Add borders to specific rows
+    ws['A2:E2'].s.border = { // Border for donation text row
+        top: { style: "thin", color: { rgb: "000000" } },
+        bottom: { style: "thin", color: { rgb: "000000" } },
+        left: { style: "thin", color: { rgb: "000000" } },
+        right: { style: "thin", color: { rgb: "000000" } }
+    };
+
+    ws['A8:E8'].s.border = { // Border for book list headers
+        // Same border properties as above
+    };
 
     XLSX.utils.book_append_sheet(wb, ws, "Donazione");
     
