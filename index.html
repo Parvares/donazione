@@ -100,7 +100,7 @@
             <label for="tessera">Numero Tessera:</label>
             <input type="text" id="tessera" name="tessera">
         </div>
-
+        
         <div class="consent-box">
             <label>
                 <input type="checkbox" id="accept" name="accept" required>
@@ -130,7 +130,6 @@
             const nome = document.getElementById('nome').value.trim();
             const cognome = document.getElementById('cognome').value.trim();
             const email = document.getElementById('email').value.trim();
-            const tessera = document.getElementById('tessera').value.trim();
             const acceptCheckbox = document.getElementById('accept');
             
             if (!nome || !cognome || !email) {
@@ -142,53 +141,32 @@
                 alert('Devi accettare il disciplinare per procedere.');
                 return;
             }
-
+            
             const formData = {
                 nome,
                 cognome,
                 email,
-                tessera,
+                tessera: document.getElementById('tessera').value.trim(),
                 accept: acceptCheckbox.checked,
             };
 
-            // Crea un testo discorsivo con i dati dell'utente
-            const textData = [
-                [`Io sottoscritto ${formData.nome} ${formData.cognome}`, 
-                 `Tessera n. ${formData.tessera} Email: ${formData.email}`, 
-                 'dono alla Biblioteca Elsa Morante le seguenti risorse documentarie:']
-            ];
-
-            // Aggiungiamo le colonne dei libri
-            const bookHeaders = ['Titolo', 'Autore', 'Editore', 'Anno', 'ISBN'];
-            // Qui potrai inserire manualmente i dati dei libri, per esempio (modifica questa parte)
-            const bookRows = [
-                ['Il nome della rosa', 'Umberto Eco', 'Bompiani', '1980', '9788830102304'],
-                ['1984', 'George Orwell', 'Mondadori', '1949', '9788804546762'],
-                ['Sapiens', 'Yuval Noah Harari', 'Bompiani', '2014', '9788806226677']
-                // Aggiungi fino a 10 libri
-            ];
-
-            // Aggiungiamo i dati dei libri al testo
-            textData.push(bookHeaders);
-            textData.push(...bookRows);
-
-            // Crea il foglio Excel
+            // Crea un foglio Excel con i dati
             const wb = XLSX.utils.book_new();
-            const ws = XLSX.utils.aoa_to_sheet(textData);
+            const ws = XLSX.utils.json_to_sheet([formData]);
             XLSX.utils.book_append_sheet(wb, ws, "Dati Donazione");
 
-            // Genera il file Excel e link per il download
+            // Genera un file Excel e fornisci il link di download
             const file = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
             const blob = new Blob([s2ab(file)], { type: "application/octet-stream" });
-            const downloadLink = document.getElementById('downloadLink');
+            const downloadLink = document.createElement('a');
             downloadLink.href = URL.createObjectURL(blob);
             downloadLink.download = 'dati_donazione.xlsx';
-            downloadLink.classList.remove('hidden');
+            downloadLink.click();
             
             document.getElementById('responseMessage').classList.remove('hidden');
+            document.getElementById('downloadLink').classList.remove('hidden');
         });
 
-        // Funzione di supporto per convertire stringa a ArrayBuffer
         function s2ab(s) {
             const buf = new ArrayBuffer(s.length);
             const view = new Uint8Array(buf);
@@ -197,6 +175,12 @@
             }
             return buf;
         }
+
+        // Gestione della visualizzazione del disciplinare
+        document.getElementById('showDisciplinare').addEventListener('click', function() {
+            alert('Qui verrà mostrato il contenuto del disciplinare');
+            // Puoi anche aggiungere il contenuto effettivo del disciplinare qui
+        });
     </script>
 </body>
 </html>
