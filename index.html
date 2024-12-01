@@ -257,6 +257,39 @@
     <script>
         let bookCount = 0;
 
+        function updateNumericInputs() {
+            // Telefono input
+            const telefonoInput = document.getElementById('telefono');
+            telefonoInput.setAttribute('type', 'tel');
+            telefonoInput.setAttribute('pattern', '[0-9]*');
+            telefonoInput.addEventListener('input', function(e) {
+                // Remove any non-numeric characters
+                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+            });
+
+            // Add similar validation to book entry fields
+            const bookEntries = document.querySelectorAll('.book-entry');
+            bookEntries.forEach(bookEntry => {
+                // Anno input
+                const annoInput = bookEntry.querySelector('.book-year');
+                annoInput.setAttribute('type', 'tel');
+                annoInput.setAttribute('pattern', '[0-9]*');
+                annoInput.addEventListener('input', function(e) {
+                    // Remove any non-numeric characters
+                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                });
+
+                // ISBN input
+                const isbnInput = bookEntry.querySelector('.book-isbn');
+                isbnInput.setAttribute('type', 'tel');
+                isbnInput.setAttribute('pattern', '[0-9]*');
+                isbnInput.addEventListener('input', function(e) {
+                    // Remove any non-numeric characters
+                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                });
+            });
+        }
+
         function createBookEntry() {
             const bookDiv = document.createElement('div');
             bookDiv.className = 'book-entry';
@@ -277,17 +310,20 @@
                 </div>
                 <div class="form-group">
                     <label>Anno:</label>
-                    <input type="text" class="book-year">
+                    <input type="tel" class="book-year" pattern="[0-9]*">
                 </div>
                 <div class="form-group">
                     <label>ISBN:</label>
-                    <input type="text" class="book-isbn">
+                    <input type="tel" class="book-isbn" pattern="[0-9]*">
                 </div>
                 <button type="button" class="remove-book" onclick="removeBook(this)">Rimuovi</button>
                 <button type="button" class="add-book" onclick="createBookEntry()">+ Aggiungi Libro</button>
             `;
             document.getElementById('bookList').appendChild(bookDiv);
             updateBookCounters();
+            
+            // Apply numeric input validation to the new entry
+            updateNumericInputs();
         }
 
         function removeBook(button) {
@@ -303,218 +339,85 @@
             });
         }
 
-      async function generateExcel(formData, books) {
-    const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('Donazione');
+        async function generateExcel(formData, books) {
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('Donazione');
 
-    // Stili personalizzati
-    const titleStyle = {
-        font: { size: 16, bold: true, color: { argb: '002060' } },
-        alignment: { horizontal: 'center' }
-    };
-    
-    const headerStyle = {
-        font: { bold: true, color: { argb: 'FFFFFF' }, size: 14 },
-        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: '2F5496' } },
-        alignment: { horizontal: 'center', vertical: 'middle' },
-        border: {
-            top: { style: 'thin' },
-            left: { style: 'thin' },
-            bottom: { style: 'thin' },
-            right: { style: 'thin' }
-        }
-    };
-
-    const dataStyle = {
-        font: { size: 14 },
-        alignment: { vertical: 'middle' },
-        border: {
-            top: { style: 'thin' },
-            left: { style: 'thin' },
-            bottom: { style: 'thin' },
-            right: { style: 'thin' }
-        }
-    };
-
-    // Intestazione documento
-    worksheet.mergeCells('A2:G2');
-    const titleCell = worksheet.getCell('A2');
-    titleCell.value = 'DONAZIONE ALLA BIBLIOTECA ELSA MORANTE';
-    titleCell.style = titleStyle;
-
-    // Dati donatore
-    worksheet.mergeCells('A4:B4');
-    worksheet.mergeCells('C4:G4');
-    worksheet.getCell('A4').value = 'DATI DONATORE';
-    worksheet.getCell('A4').style = { ...headerStyle, alignment: { horizontal: 'left', vertical: 'middle' } };
-    worksheet.getCell('C4').style = headerStyle;
-
-    // Nome e Cognome, Tessera, Telefono, Email con formattazione separata
-    worksheet.mergeCells('A5:B5');
-    worksheet.mergeCells('C5:G5');
-    worksheet.getCell('A5').value = 'Nome e Cognome:';
-    worksheet.getCell('C5').value = `${formData.nome} ${formData.cognome}`;
-    
-    worksheet.mergeCells('A6:B6');
-    worksheet.mergeCells('C6:G6');
-    worksheet.getCell('A6').value = 'Tessera:';
-    worksheet.getCell('C6').value = formData.tessera || '---';
-    
-    worksheet.mergeCells('A7:B7');
-    worksheet.mergeCells('C7:G7');
-    worksheet.getCell('A7').value = 'Telefono:';
-    worksheet.getCell('C7').value = formData.telefono || '---';
-    
-    worksheet.mergeCells('A8:B8');
-    worksheet.mergeCells('C8:G8');
-    worksheet.getCell('A8').value = 'Email:';
-    worksheet.getCell('C8').value = formData.email;
-
-    // Applica stili ai dati del donatore
-    for (let row = 5; row <= 8; row++) {
-        worksheet.getCell(`A${row}`).style = { ...dataStyle, font: { bold: true } }; // Etichetta in grassetto
-        worksheet.getCell(`C${row}`).style = dataStyle; // Dati formattati
-    }
-
-    // Aggiungi la stringa "DICHIARAZIONE"
-    worksheet.mergeCells('A10:G10');
-    const declarationCell = worksheet.getCell('A10');
-    declarationCell.value = 'DICHIARAZIONE';
-    declarationCell.style = { ...headerStyle, font: { size: 14, bold: true }, fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'f39c12' } } };
-
-    // Testo dichiarazione
-    worksheet.mergeCells('A11:G14');
-    worksheet.getCell('A11').value = 'Con la presente dono alla Biblioteca le risorse documentarie elencate di seguito e autorizzo la biblioteca a destinarli all\'uso che riterrà più opportuno (acquisizione al patrimonio, scambio, dono, bookcrossing o scarto, nel caso in cui, a giudizio insindacabile della biblioteca, i materiali risultino inutilizzabili) senza alcun vincolo per la biblioteca stessa nei miei confronti.';
-    worksheet.getCell('A11').style = { ...dataStyle, alignment: { wrapText: true, vertical: 'middle' } };
-
-    // Intestazione tabella libri
-    const headers = ['N.', 'Titolo', 'Autore', 'Editore', 'Anno', 'ISBN'];
-    worksheet.getRow(16).values = headers;
-    worksheet.getRow(16).eachCell(cell => {
-        cell.style = headerStyle;
-    });
-
-    // Dati libri
-    books.forEach((book, index) => {
-        const row = worksheet.getRow(index + 17);
-        row.values = [index + 1, book.title, book.author, book.publisher, book.year, book.isbn];
-        row.eachCell(cell => {
-            cell.style = dataStyle;
-        });
-        row.height = 25;
-    });
-
-    // Imposta larghezza colonne aggiornate
-    worksheet.columns = [
-        { width: 4 },    // N.
-        { width: 50 },   // Titolo (ampiamente allargata)
-        { width: 30 },   // Autore
-        { width: 30 },   // Editore
-        { width: 12 },   // Anno
-        { width: 20 },   // ISBN (ampiamente allargata)
-    ];
-
-    // Genera il file
-    const buffer = await workbook.xlsx.writeBuffer();
-    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `donazione_${formData.cognome}_${formData.nome}_${new Date().toLocaleDateString('it-IT').replace(/\//g, '-')}.xlsx`;
-    a.click();
-    window.URL.revokeObjectURL(url);
-}
-
-        
-
-        // Event Listener per il form
-        document.getElementById('donationForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-            
-            const nome = document.getElementById('nome').value.trim();
-            const cognome = document.getElementById('cognome').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const tessera = document.getElementById('tessera').value.trim();
-            const telefono = document.getElementById('telefono').value.trim();
-            const acceptCheckbox = document.getElementById('accept');
-            
-            if (!nome || !cognome || !email) {
-             alert('Per favore compila tutti i campi obbligatori.');
-                return;
-            }
-            
-            if (!acceptCheckbox.checked) {
-                alert('Devi accettare i termini e le condizioni per procedere.');
-                return;
-            }
-
-            const books = [];
-            const bookEntries = document.querySelectorAll('.book-entry');
-            
-            for (const bookDiv of bookEntries) {
-                const title = bookDiv.querySelector('.book-title').value.trim();
-                
-                if (!title) {
-                    alert('Per favore inserisci almeno il titolo per ogni libro.');
-                    return;
-                }
-                
-                const book = {
-                    title: title,
-                    author: bookDiv.querySelector('.book-author').value.trim(),
-                    publisher: bookDiv.querySelector('.book-publisher').value.trim(),
-                    year: bookDiv.querySelector('.book-year').value.trim(),
-                    isbn: bookDiv.querySelector('.book-isbn').value.trim()
-                };
-                books.push(book);
-            }
-
-            if (books.length === 0) {
-                alert('Aggiungi almeno un libro alla donazione.');
-                return;
-            }
-            
-            const formData = {
-                nome,
-                cognome,
-                email,
-                tessera,
-                telefono
+            // Stili personalizzati
+            const titleStyle = {
+                font: { size: 16, bold: true, color: { argb: '002060' } },
+                alignment: { horizontal: 'center' }
             };
             
-            try {
-                // Mostra indicatore di caricamento
-                const submitButton = event.target.querySelector('button[type="submit"]');
-                const originalText = submitButton.textContent;
-                submitButton.disabled = true;
-                submitButton.textContent = 'Generazione documento in corso...';
-                
-                await generateExcel(formData, books);
-                
-                // Ripristina il bottone
-                submitButton.disabled = false;
-                submitButton.textContent = originalText;
-                
-               // Reset form
-event.target.reset();
-const bookList = document.getElementById('bookList');
-bookList.innerHTML = '';
-bookCount = 0;
-createBookEntry();
+            const headerStyle = {
+                font: { bold: true, color: { argb: 'FFFFFF' }, size: 14 },
+                fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: '2F5496' } },
+                alignment: { horizontal: 'center', vertical: 'middle' },
+                border: {
+                    top: { style: 'thin' },
+                    left: { style: 'thin' },
+                    bottom: { style: 'thin' },
+                    right: { style: 'thin' }
+                }
+            };
 
-            } catch (error) {
-                console.error('Errore durante la generazione del file Excel:', error);
-                alert('Si è verificato un errore durante la generazione del documento. Riprova più tardi.');
-                
-                // Ripristina il bottone in caso di errore
-                const submitButton = event.target.querySelector('button[type="submit"]');
-                submitButton.disabled = false;
-                submitButton.textContent = originalText;
+            const dataStyle = {
+                font: { size: 14 },
+                alignment: { vertical: 'middle' },
+                border: {
+                    top: { style: 'thin' },
+                    left: { style: 'thin' },
+                    bottom: { style: 'thin' },
+                    right: { style: 'thin' }
+                }
+            };
+
+            // Intestazione documento
+            worksheet.mergeCells('A2:G2');
+            const titleCell = worksheet.getCell('A2');
+            titleCell.value = 'DONAZIONE ALLA BIBLIOTECA ELSA MORANTE';
+            titleCell.style = titleStyle;
+
+            // Dati donatore
+            worksheet.mergeCells('A4:B4');
+            worksheet.mergeCells('C4:G4');
+            worksheet.getCell('A4').value = 'DATI DONATORE';
+            worksheet.getCell('A4').style = { ...headerStyle, alignment: { horizontal: 'left', vertical: 'middle' } };
+            worksheet.getCell('C4').style = headerStyle;
+
+            // Nome e Cognome, Tessera, Telefono, Email con formattazione separata
+            worksheet.mergeCells('A5:B5');
+            worksheet.mergeCells('C5:G5');
+            worksheet.getCell('A5').value = 'Nome e Cognome:';
+            worksheet.getCell('C5').value = `${formData.nome} ${formData.cognome}`;
+            
+            worksheet.mergeCells('A6:B6');
+            worksheet.mergeCells('C6:G6');
+            worksheet.getCell('A6').value = 'Tessera:';
+            worksheet.getCell('C6').value = formData.tessera || '---';
+            
+            worksheet.mergeCells('A7:B7');
+            worksheet.mergeCells('C7:G7');
+            worksheet.getCell('A7').value = 'Telefono:';
+            worksheet.getCell('C7').value = formData.telefono || '---';
+            
+            worksheet.mergeCells('A8:B8');
+            worksheet.mergeCells('C8:G8');
+            worksheet.getCell('A8').value = 'Email:';
+            worksheet.getCell('C8').value = formData.email;
+
+            // Applica stili ai dati del donatore
+            for (let row = 5; row <= 8; row++) {
+                worksheet.getCell(`A${row}`).style = { ...dataStyle, font: { bold: true } }; // Etichetta in grassetto
+                worksheet.getCell(`C${row}`).style = dataStyle; // Dati formattati
             }
-        });
 
-        // Crea il primo libro quando la pagina si carica
-        document.addEventListener('DOMContentLoaded', createBookEntry);
-    </script>
-</body>
-</html>
+            // Aggiungi la stringa "DICHIARAZIONE"
+            worksheet.mergeCells('A10:G10');
+            const declarationCell = worksheet.getCell('A10');
+            declarationCell.value = 'DICHIARAZIONE';
+            declarationCell.style = { ...headerStyle, font: { size: 14, bold: true }, fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'f39c12' } } };
+
+            // Testo dichiarazione
+            worksheet.mergeCells('A11:G14');
+            worksheet.getCell('A11').value = 'Con la presente dono alla Biblioteca le risorse documentarie elencate di seguito e autorizzo la biblioteca a destinarli all\'uso che riterrà più opportuno (acquisizione al patrimonio, scambio, dono, bookcrossing o scarto
