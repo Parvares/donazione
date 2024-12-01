@@ -1,51 +1,186 @@
-document.getElementById('donationForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    
-    const nome = document.getElementById('nome').value.trim();
-    const cognome = document.getElementById('cognome').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const acceptCheckbox = document.getElementById('accept');
-    
-    if (!nome || !cognome || !email) {
-        alert('Per favore compila tutti i campi obbligatori.');
-        return;
-    }
-    
-    if (!acceptCheckbox.checked) {
-        alert('Devi accettare il disciplinare per procedere.');
-        return;
-    }
-    
-    const formData = {
-        nome,
-        cognome,
-        email,
-        tessera: document.getElementById('tessera').value.trim(),
-        accept: acceptCheckbox.checked,
-    };
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donazione alla Biblioteca Elsa Morante</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
 
-    // Crea un foglio Excel con i dati
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet([formData]);
-    XLSX.utils.book_append_sheet(wb, ws, "Dati Donazione");
+        .form-group {
+            margin-bottom: 15px;
+        }
 
-    // Genera un file Excel e fornisci il link di download
-    const file = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
-    const blob = new Blob([s2ab(file)], { type: "application/octet-stream" });
-    const downloadLink = document.createElement('a');
-    downloadLink.href = URL.createObjectURL(blob);
-    downloadLink.download = 'dati_donazione.xlsx';
-    downloadLink.click();
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .consent-box {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .success-message {
+            color: #4CAF50;
+            margin: 15px 0;
+        }
+
+        .download-link {
+            display: inline-block;
+            background-color: #008CBA;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .download-link:hover {
+            background-color: #007399;
+        }
+    </style>
+</head>
+<body>
+    <h1>Donazione alla Biblioteca Elsa Morante</h1>
+    <p>Compila i tuoi dati per procedere con la donazione e scaricare il file.</p>
     
-    document.getElementById('responseMessage').classList.remove('hidden');
-    document.getElementById('downloadLink').classList.remove('hidden');
-});
+    <form id="donationForm">
+        <div class="form-group">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="cognome">Cognome:</label>
+            <input type="text" id="cognome" name="cognome" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="tessera">Numero Tessera:</label>
+            <input type="text" id="tessera" name="tessera">
+        </div>
+        
+        <div class="consent-box">
+            <label>
+                <input type="checkbox" id="accept" name="accept" required>
+                Ho letto e accetto il disciplinare
+            </label>
+            <button type="button" id="showDisciplinare">Leggi il disciplinare</button>
+        </div>
+        
+        <button type="submit">Accetta e Scarica il File</button>
+    </form>
+    
+    <p id="responseMessage" class="success-message hidden">
+        Grazie per aver accettato. Clicca il pulsante qui sotto per scaricare il file.
+    </p>
+    
+    <a id="downloadLink" href="#" class="download-link hidden" download="dati_donazione.xlsx">
+        Scarica il file
+    </a>
 
-function s2ab(s) {
-    const buf = new ArrayBuffer(s.length);
-    const view = new Uint8Array(buf);
-    for (let i = 0; i < s.length; i++) {
-        view[i] = s.charCodeAt(i) & 0xFF;
-    }
-    return buf;
-}
+    <!-- Includere SheetJS dal CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+
+    <script>
+        document.getElementById('donationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const nome = document.getElementById('nome').value.trim();
+            const cognome = document.getElementById('cognome').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const acceptCheckbox = document.getElementById('accept');
+            
+            if (!nome || !cognome || !email) {
+                alert('Per favore compila tutti i campi obbligatori.');
+                return;
+            }
+            
+            if (!acceptCheckbox.checked) {
+                alert('Devi accettare il disciplinare per procedere.');
+                return;
+            }
+            
+            const formData = {
+                nome,
+                cognome,
+                email,
+                tessera: document.getElementById('tessera').value.trim(),
+                accept: acceptCheckbox.checked,
+            };
+
+            // Crea un foglio Excel con i dati
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.json_to_sheet([formData]);
+            XLSX.utils.book_append_sheet(wb, ws, "Dati Donazione");
+
+            // Genera un file Excel e fornisci il link di download
+            const file = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+            const blob = new Blob([s2ab(file)], { type: "application/octet-stream" });
+            const downloadLink = document.createElement('a');
+            downloadLink.href = URL.createObjectURL(blob);
+            downloadLink.download = 'dati_donazione.xlsx';
+            downloadLink.click();
+            
+            document.getElementById('responseMessage').classList.remove('hidden');
+            document.getElementById('downloadLink').classList.remove('hidden');
+        });
+
+        function s2ab(s) {
+            const buf = new ArrayBuffer(s.length);
+            const view = new Uint8Array(buf);
+            for (let i = 0; i < s.length; i++) {
+                view[i] = s.charCodeAt(i) & 0xFF;
+            }
+            return buf;
+        }
+
+        // Gestione della visualizzazione del disciplinare
+        document.getElementById('showDisciplinare').addEventListener('click', function() {
+            alert('Qui verrà mostrato il contenuto del disciplinare');
+            // Puoi anche aggiungere il contenuto effettivo del disciplinare qui
+        });
+    </script>
+</body>
+</html>
