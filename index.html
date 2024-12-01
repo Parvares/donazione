@@ -100,7 +100,38 @@
             <label for="tessera">Numero Tessera:</label>
             <input type="text" id="tessera" name="tessera">
         </div>
-        
+
+        <!-- Sezione per inserire i dati dei libri -->
+        <div id="booksSection">
+            <h3>Libri da Donare (Max 10)</h3>
+            <div class="form-group">
+                <label for="titolo">Titolo:</label>
+                <input type="text" id="titolo" name="titolo">
+            </div>
+
+            <div class="form-group">
+                <label for="autore">Autore:</label>
+                <input type="text" id="autore" name="autore">
+            </div>
+
+            <div class="form-group">
+                <label for="editore">Editore:</label>
+                <input type="text" id="editore" name="editore">
+            </div>
+
+            <div class="form-group">
+                <label for="anno">Anno:</label>
+                <input type="text" id="anno" name="anno">
+            </div>
+
+            <div class="form-group">
+                <label for="isbn">ISBN:</label>
+                <input type="text" id="isbn" name="isbn">
+            </div>
+
+            <button type="button" id="addBook">Aggiungi altro libro</button>
+        </div>
+
         <div class="consent-box">
             <label>
                 <input type="checkbox" id="accept" name="accept" required>
@@ -124,6 +155,35 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
 
     <script>
+        let bookCount = 1; // Per tracciare il numero di libri aggiunti
+
+        // Funzione per aggiungere un nuovo libro
+        document.getElementById('addBook').addEventListener('click', function() {
+            if (bookCount < 10) {
+                bookCount++;
+
+                const bookSection = document.createElement('div');
+                bookSection.classList.add('form-group');
+
+                bookSection.innerHTML = `
+                    <h4>Libro ${bookCount}</h4>
+                    <label for="titolo${bookCount}">Titolo:</label>
+                    <input type="text" id="titolo${bookCount}" name="titolo">
+                    <label for="autore${bookCount}">Autore:</label>
+                    <input type="text" id="autore${bookCount}" name="autore">
+                    <label for="editore${bookCount}">Editore:</label>
+                    <input type="text" id="editore${bookCount}" name="editore">
+                    <label for="anno${bookCount}">Anno:</label>
+                    <input type="text" id="anno${bookCount}" name="anno">
+                    <label for="isbn${bookCount}">ISBN:</label>
+                    <input type="text" id="isbn${bookCount}" name="isbn">
+                `;
+                document.getElementById('booksSection').appendChild(bookSection);
+            } else {
+                alert('Puoi aggiungere un massimo di 10 libri.');
+            }
+        });
+
         document.getElementById('donationForm').addEventListener('submit', function(event) {
             event.preventDefault();
             
@@ -141,7 +201,7 @@
                 alert('Devi accettare il disciplinare per procedere.');
                 return;
             }
-            
+
             const formData = {
                 nome,
                 cognome,
@@ -150,37 +210,21 @@
                 accept: acceptCheckbox.checked,
             };
 
-            // Crea un foglio Excel con i dati
-            const wb = XLSX.utils.book_new();
-            const ws = XLSX.utils.json_to_sheet([formData]);
-            XLSX.utils.book_append_sheet(wb, ws, "Dati Donazione");
+            const books = [];
+            for (let i = 1; i <= bookCount; i++) {
+                const titolo = document.getElementById(`titolo${i}`)?.value.trim() || '';
+                const autore = document.getElementById(`autore${i}`)?.value.trim() || '';
+                const editore = document.getElementById(`editore${i}`)?.value.trim() || '';
+                const anno = document.getElementById(`anno${i}`)?.value.trim() || '';
+                const isbn = document.getElementById(`isbn${i}`)?.value.trim() || '';
 
-            // Genera un file Excel e fornisci il link di download
-            const file = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
-            const blob = new Blob([s2ab(file)], { type: "application/octet-stream" });
-            const downloadLink = document.createElement('a');
-            downloadLink.href = URL.createObjectURL(blob);
-            downloadLink.download = 'dati_donazione.xlsx';
-            downloadLink.click();
-            
-            document.getElementById('responseMessage').classList.remove('hidden');
-            document.getElementById('downloadLink').classList.remove('hidden');
-        });
-
-        function s2ab(s) {
-            const buf = new ArrayBuffer(s.length);
-            const view = new Uint8Array(buf);
-            for (let i = 0; i < s.length; i++) {
-                view[i] = s.charCodeAt(i) & 0xFF;
+                books.push({ titolo, autore, editore, anno, isbn });
             }
-            return buf;
-        }
 
-        // Gestione della visualizzazione del disciplinare
-        document.getElementById('showDisciplinare').addEventListener('click', function() {
-            alert('Qui verrà mostrato il contenuto del disciplinare');
-            // Puoi anche aggiungere il contenuto effettivo del disciplinare qui
-        });
-    </script>
-</body>
-</html>
+            // Crea un testo discorsivo con i dati
+            const textData = [
+                [`Io sottoscritto ${formData.nome} ${formData.cognome}`, `Tessera n. ${formData.tessera} Tel. ${formData.email}`, 'dono alla Biblioteca Elsa Morante le seguenti risorse documentarie:']
+            ];
+
+            books.forEach(book => {
+                textData
