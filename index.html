@@ -494,17 +494,13 @@
                 submitButton.disabled = false;
                 submitButton.textContent = originalText;
                 
-                // Messaggio di successo
-                alert('Documento generato con successo! Controlla i download.');
-                
-                // Optional: reset form
-                if (confirm('Vuoi inserire una nuova donazione?')) {
-                    event.target.reset();
-                    const bookList = document.getElementById('bookList');
-                    bookList.innerHTML = '';
-                    bookCount = 0;
-                    createBookEntry();
-                }
+               // Reset form
+event.target.reset();
+const bookList = document.getElementById('bookList');
+bookList.innerHTML = '';
+bookCount = 0;
+createBookEntry();
+
             } catch (error) {
                 console.error('Errore durante la generazione del file Excel:', error);
                 alert('Si è verificato un errore durante la generazione del documento. Riprova più tardi.');
