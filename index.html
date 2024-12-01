@@ -303,106 +303,113 @@
             });
         }
 
-        async function generateExcel(formData, books) {
-            const workbook = new ExcelJS.Workbook();
-            const worksheet = workbook.addWorksheet('Donazione');
 
-            // Stili personalizzati
-            const titleStyle = {
-                font: { size: 16, bold: true, color: { argb: '002060' } },
-                alignment: { horizontal: 'center' }
-            };
-            
-            const headerStyle = {
-                font: { bold: true, color: { argb: 'FFFFFF' } },
-                fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: '2F5496' } },
-                alignment: { horizontal: 'center', vertical: 'middle' },
-                border: {
-                    top: { style: 'thin' },
-                    left: { style: 'thin' },
-                    bottom: { style: 'thin' },
-                    right: { style: 'thin' }
-                }
-            };
+async function generateExcel(formData, books) {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Donazione');
 
-            const dataStyle = {
-                alignment: { vertical: 'middle' },
-                border: {
-                    top: { style: 'thin' },
-                    left: { style: 'thin' },
-                    bottom: { style: 'thin' },
-                    right: { style: 'thin' }
-                }
-            };
-
-            // Intestazione documento
-            worksheet.mergeCells('A2:E2');
-            const titleCell = worksheet.getCell('A2');
-            titleCell.value = 'DONAZIONE ALLA BIBLIOTECA ELSA MORANTE';
-            titleCell.style = titleStyle;
-
-            // Informazioni donatore
-            worksheet.mergeCells('A4:E4');
-            worksheet.getCell('A4').value = `Io sottoscritto/a ${formData.nome} ${formData.cognome}`;
-            
-            worksheet.mergeCells('A5:E5');
-            worksheet.getCell('A5').value = `Tessera n. ${formData.tessera || '_______________'}`;
-            
-            worksheet.mergeCells('A6:E6');
-            worksheet.getCell('A6').value = `Tel. ${formData.telefono || '_______________'}`;
-            
-            worksheet.mergeCells('A7:E7');
-            worksheet.getCell('A7').value = `Email: ${formData.email}`;
-
-            // Testo autorizzazione
-            worksheet.mergeCells('A9:E11');
-            worksheet.getCell('A9').value = 'Con la presente dono alla Biblioteca le risorse documentarie elencate di seguito e autorizzo la biblioteca a destinarli all\'uso che riterrà più opportuno (acquisizione al patrimonio, scambio, dono, bookcrossing o scarto, nel caso in cui, a giudizio insindacabile della biblioteca, i materiali risultino inutilizzabili) senza alcun vincolo per la biblioteca stessa nei miei confronti.';
-            worksheet.getCell('A9').alignment = { wrapText: true };
-
-            // Intestazione tabella libri
-            const headers = ['Titolo', 'Autore', 'Editore', 'Anno', 'ISBN'];
-            worksheet.getRow(13).values = headers;
-            worksheet.getRow(13).eachCell(cell => {
-                cell.style = headerStyle;
-            });
-
-            // Dati libri
-            books.forEach((book, index) => {
-                const row = worksheet.getRow(index + 14);
-                row.values = [book.title, book.author, book.publisher, book.year, book.isbn];
-                row.eachCell(cell => {
-                    cell.style = dataStyle;
-                });
-                row.height = 25;
-            });
-
-            // Data e firma
-            const lastRow = 14 + books.length + 2;
-            worksheet.mergeCells(`A${lastRow}:E${lastRow}`);
-            worksheet.getCell(`A${lastRow}`).value = `Data: ${new Date().toLocaleDateString('it-IT')}`;
-            
-            worksheet.mergeCells(`A${lastRow + 2}:E${lastRow + 2}`);
-            worksheet.getCell(`A${lastRow + 2}`).value = 'Firma del donatore: _________________________________';
-
-            // Imposta larghezza colonne
-            worksheet.columns = [
-                { width: 30 }, // Titolo
-                { width: 25 }, // Autore
-                { width: 20 }, // Editore
-                { width: 10 }, // Anno
-                { width: 15 }  // ISBN
-            ];
-
-            // Genera il file
-            const buffer = await workbook.xlsx.writeBuffer();
-            const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `donazione_${formData.cognome}_${formData.nome}_${new Date().toLocaleDateString('it-IT').replace(/\//g, '-')}.xlsx`;
-            a.click();
-            window.URL.revokeObjectURL(url);
+    // Stili personalizzati
+    const titleStyle = {
+        font: { size: 16, bold: true, color: { argb: '002060' } },
+        alignment: { horizontal: 'center' }
+    };
+    
+    const headerStyle = {
+        font: { bold: true, color: { argb: 'FFFFFF' }, size: 14 },
+        fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: '2F5496' } },
+        alignment: { horizontal: 'center', vertical: 'middle' },
+        border: {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
         }
+    };
+
+    const dataStyle = {
+        font: { size: 14 },
+        alignment: { vertical: 'middle' },
+        border: {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
+        }
+    };
+
+    // Intestazione documento
+    worksheet.mergeCells('A2:G2');
+    const titleCell = worksheet.getCell('A2');
+    titleCell.value = 'DONAZIONE ALLA BIBLIOTECA ELSA MORANTE';
+    titleCell.style = titleStyle;
+
+    // Dati donatore in una colonna separata
+    worksheet.getCell('F4').value = 'DATI DONATORE';
+    worksheet.getCell('F4').style = headerStyle;
+    worksheet.getCell('G4').style = headerStyle;
+    
+    worksheet.getCell('F5').value = 'Nome:';
+    worksheet.getCell('G5').value = formData.nome;
+    worksheet.getCell('F6').value = 'Cognome:';
+    worksheet.getCell('G6').value = formData.cognome;
+    worksheet.getCell('F7').value = 'Tessera:';
+    worksheet.getCell('G7').value = formData.tessera || '---';
+    worksheet.getCell('F8').value = 'Telefono:';
+    worksheet.getCell('G8').value = formData.telefono || '---';
+    worksheet.getCell('F9').value = 'Email:';
+    worksheet.getCell('G9').value = formData.email;
+
+    // Applica stili ai dati del donatore
+    for (let row = 5; row <= 9; row++) {
+        worksheet.getCell(`F${row}`).style = dataStyle;
+        worksheet.getCell(`G${row}`).style = dataStyle;
+    }
+
+    // Testo autorizzazione
+    worksheet.mergeCells('A4:E7');
+    worksheet.getCell('A4').value = 'Con la presente dono alla Biblioteca le risorse documentarie elencate di seguito e autorizzo la biblioteca a destinarli all\'uso che riterrà più opportuno (acquisizione al patrimonio, scambio, dono, bookcrossing o scarto, nel caso in cui, a giudizio insindacabile della biblioteca, i materiali risultino inutilizzabili) senza alcun vincolo per la biblioteca stessa nei miei confronti.';
+    worksheet.getCell('A4').style = { ...dataStyle, alignment: { wrapText: true, vertical: 'middle' } };
+
+    // Intestazione tabella libri
+    const headers = ['Titolo', 'Autore', 'Editore', 'Anno', 'ISBN'];
+    const headerRow = 9;
+    worksheet.getRow(headerRow).values = ['', ...headers];  // Aggiunge una colonna vuota all'inizio
+    worksheet.getRow(headerRow).eachCell(cell => {
+        cell.style = headerStyle;
+    });
+
+    // Dati libri
+    books.forEach((book, index) => {
+        const row = worksheet.getRow(index + headerRow + 1);
+        row.values = [index + 1, book.title, book.author, book.publisher, book.year, book.isbn];
+        row.eachCell(cell => {
+            cell.style = dataStyle;
+        });
+        row.height = 25;
+    });
+
+    // Imposta larghezza colonne
+    worksheet.columns = [
+        { width: 5 },  // Numero progressivo
+        { width: 30 }, // Titolo
+        { width: 25 }, // Autore
+        { width: 20 }, // Editore
+        { width: 10 }, // Anno
+        { width: 15 }, // Colonna dati donatore
+        { width: 25 }  // Valori dati donatore
+    ];
+
+    // Genera il file
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `donazione_${formData.cognome}_${formData.nome}_${new Date().toLocaleDateString('it-IT').replace(/\//g, '-')}.xlsx`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+}
+        
 
         // Event Listener per il form
         document.getElementById('donationForm').addEventListener('submit', async function(event) {
