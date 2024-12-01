@@ -221,21 +221,25 @@
                 books.push({ titolo, autore, editore, anno, isbn });
             }
 
-            // Crea un testo discorsivo con i dati
+            // Crea un testo discorsivo con i dati dell'utente
             const textData = [
                 [`Io sottoscritto ${formData.nome} ${formData.cognome}`, `Tessera n. ${formData.tessera} Tel. ${formData.email}`, 'dono alla Biblioteca Elsa Morante le seguenti risorse documentarie:']
             ];
 
-            books.forEach(book => {
-                textData.push([`Titolo: ${book.titolo}`, `Autore: ${book.autore}`, `Editore: ${book.editore}`, `Anno: ${book.anno}`, `ISBN: ${book.isbn}`]);
-            });
+            // Creiamo la tabella dei libri
+            const bookHeaders = ['Titolo', 'Autore', 'Editore', 'Anno', 'ISBN'];
+            const bookRows = books.map(book => [book.titolo, book.autore, book.editore, book.anno, book.isbn]);
 
-            // Crea un foglio Excel con i dati
+            // Aggiungiamo le righe dei libri alla tabella
+            textData.push(bookHeaders);
+            textData.push(...bookRows);
+
+            // Crea il foglio Excel
             const wb = XLSX.utils.book_new();
             const ws = XLSX.utils.aoa_to_sheet(textData);
             XLSX.utils.book_append_sheet(wb, ws, "Dati Donazione");
 
-            // Genera un file Excel e fornisci il link di download
+            // Genera il file Excel e link per il download
             const file = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
             const blob = new Blob([s2ab(file)], { type: "application/octet-stream" });
             const downloadLink = document.getElementById('downloadLink');
