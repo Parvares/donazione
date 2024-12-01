@@ -1,227 +1,51 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Donazione alla Biblioteca Elsa Morante</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        input[type="text"],
-        input[type="email"] {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        .consent-box {
-            background-color: #f9f9f9;
-            padding: 15px;
-            border-radius: 4px;
-            margin: 20px 0;
-        }
-
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .success-message {
-            color: #4CAF50;
-            margin: 15px 0;
-        }
-
-        .download-link {
-            display: inline-block;
-            background-color: #008CBA;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 4px;
-            margin-top: 10px;
-        }
-
-        .download-link:hover {
-            background-color: #007399;
-        }
-
-        /* Stile per la finestra modale */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0, 0, 0);
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 600px;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-    <h1>Donazione alla Biblioteca Elsa Morante</h1>
-    <p>Compila i tuoi dati per procedere con la donazione e scaricare il file.</p>
+document.getElementById('donationForm').addEventListener('submit', function(event) {
+    event.preventDefault();
     
-    <form id="donationForm">
-        <div class="form-group">
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="cognome">Cognome:</label>
-            <input type="text" id="cognome" name="cognome" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="tessera">Numero Tessera:</label>
-            <input type="text" id="tessera" name="tessera">
-        </div>
-        
-        <div class="consent-box">
-            <label>
-                <input type="checkbox" id="accept" name="accept" required>
-                Ho letto e accetto il disciplinare
-            </label>
-            <button type="button" id="showDisciplinare">Leggi il disciplinare</button>
-        </div>
-        
-        <button type="submit">Accetta e Scarica il File</button>
-    </form>
+    const nome = document.getElementById('nome').value.trim();
+    const cognome = document.getElementById('cognome').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const acceptCheckbox = document.getElementById('accept');
     
-    <p id="responseMessage" class="success-message hidden">
-        Grazie per aver accettato. Clicca il pulsante qui sotto per scaricare il file.
-    </p>
+    if (!nome || !cognome || !email) {
+        alert('Per favore compila tutti i campi obbligatori.');
+        return;
+    }
     
-    <a id="downloadLink" href="donazione.xlsx" class="download-link hidden" download="donazione.xlsx">
-        Scarica il file
-    </a>
+    if (!acceptCheckbox.checked) {
+        alert('Devi accettare il disciplinare per procedere.');
+        return;
+    }
+    
+    const formData = {
+        nome,
+        cognome,
+        email,
+        tessera: document.getElementById('tessera').value.trim(),
+        accept: acceptCheckbox.checked,
+    };
 
-    <!-- Finestra Modale per visualizzare il disciplinare -->
-    <div id="disciplinareModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Disciplinare</h2>
-            <p>Qui puoi visualizzare il contenuto del disciplinare. Puoi sostituire questo testo con il tuo contenuto reale.</p>
-        </div>
-    </div>
+    // Crea un foglio Excel con i dati
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet([formData]);
+    XLSX.utils.book_append_sheet(wb, ws, "Dati Donazione");
 
-    <script>
-        document.getElementById('donationForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            // Validazione dei campi
-            const nome = document.getElementById('nome').value.trim();
-            const cognome = document.getElementById('cognome').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const acceptCheckbox = document.getElementById('accept');
-            
-            if (!nome || !cognome || !email) {
-                alert('Per favore compila tutti i campi obbligatori.');
-                return;
-            }
-            
-            if (!acceptCheckbox.checked) {
-                alert('Devi accettare il disciplinare per procedere.');
-                return;
-            }
-            
-            // Salvataggio dei dati (qui puoi aggiungere la logica per salvare i dati)
-            const formData = {
-                nome,
-                cognome,
-                email,
-                tessera: document.getElementById('tessera').value.trim()
-            };
-            
-            console.log('Dati del form:', formData);
-            
-            // Mostra il messaggio di successo e il link per il download
-            document.getElementById('responseMessage').classList.remove('hidden');
-            document.getElementById('downloadLink').classList.remove('hidden');
-        });
-        
-        // Finestra modale disciplinare
-        const modal = document.getElementById("disciplinareModal");
-        const btn = document.getElementById("showDisciplinare");
-        const span = document.getElementsByClassName("close")[0];
+    // Genera un file Excel e fornisci il link di download
+    const file = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+    const blob = new Blob([s2ab(file)], { type: "application/octet-stream" });
+    const downloadLink = document.createElement('a');
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = 'dati_donazione.xlsx';
+    downloadLink.click();
+    
+    document.getElementById('responseMessage').classList.remove('hidden');
+    document.getElementById('downloadLink').classList.remove('hidden');
+});
 
-        // Quando l'utente clicca sul pulsante, mostra la finestra modale
-        btn.onclick = function() {
-            modal.style.display = "block";
-        }
-
-        // Quando l'utente clicca sulla X, chiudi la finestra modale
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
-
-        // Quando l'utente clicca fuori dalla finestra modale, chiudi la finestra
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-    </script>
-</body>
-</html>
+function s2ab(s) {
+    const buf = new ArrayBuffer(s.length);
+    const view = new Uint8Array(buf);
+    for (let i = 0; i < s.length; i++) {
+        view[i] = s.charCodeAt(i) & 0xFF;
+    }
+    return buf;
+}
