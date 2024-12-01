@@ -12,17 +12,17 @@
             padding: 20px;
             line-height: 1.6;
         }
-        
+
         .form-group {
             margin-bottom: 15px;
         }
-        
+
         label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
         }
-        
+
         input[type="text"],
         input[type="email"] {
             width: 100%;
@@ -31,14 +31,14 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
-        
+
         .consent-box {
             background-color: #f9f9f9;
             padding: 15px;
             border-radius: 4px;
             margin: 20px 0;
         }
-        
+
         button {
             background-color: #4CAF50;
             color: white;
@@ -47,20 +47,20 @@
             border-radius: 4px;
             cursor: pointer;
         }
-        
+
         button:hover {
             background-color: #45a049;
         }
-        
+
         .hidden {
             display: none;
         }
-        
+
         .success-message {
             color: #4CAF50;
             margin: 15px 0;
         }
-        
+
         .download-link {
             display: inline-block;
             background-color: #008CBA;
@@ -70,9 +70,46 @@
             border-radius: 4px;
             margin-top: 10px;
         }
-        
+
         .download-link:hover {
             background-color: #007399;
+        }
+
+        /* Stile per la finestra modale */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -120,6 +157,15 @@
         Scarica il file
     </a>
 
+    <!-- Finestra Modale per visualizzare il disciplinare -->
+    <div id="disciplinareModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Disciplinare</h2>
+            <p>Qui puoi visualizzare il contenuto del disciplinare. Puoi sostituire questo testo con il tuo contenuto reale.</p>
+        </div>
+    </div>
+
     <script>
         document.getElementById('donationForm').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -155,11 +201,27 @@
             document.getElementById('downloadLink').classList.remove('hidden');
         });
         
-        document.getElementById('showDisciplinare').addEventListener('click', function() {
-            // Qui puoi aggiungere la logica per mostrare il disciplinare
-            // Per esempio, aprire una finestra modale o reindirizzare a una nuova pagina
-            alert('Qui verrà mostrato il contenuto del disciplinare');
-        });
+        // Finestra modale disciplinare
+        const modal = document.getElementById("disciplinareModal");
+        const btn = document.getElementById("showDisciplinare");
+        const span = document.getElementsByClassName("close")[0];
+
+        // Quando l'utente clicca sul pulsante, mostra la finestra modale
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        // Quando l'utente clicca sulla X, chiudi la finestra modale
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // Quando l'utente clicca fuori dalla finestra modale, chiudi la finestra
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
     </script>
 </body>
 </html>
