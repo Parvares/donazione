@@ -1,73 +1,58 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Donazione alla Biblioteca Elsa Morante</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #f5f5f5;
-            color: #333;
-            line-height: 1.6;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-    .header-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    margin-bottom: 30px;
-    text-align: center;
-}
-
-.header-container img {
-    height: 60px;
-    width: auto;
-    object-fit: contain;
-}
-
-.header-container h1 {
-    margin: 0;
-    color: #2c3e50;
-    font-size: 2.2em;
-    line-height: 1.2;
-}
-
-/* Media query per dispositivi mobili */
-@media screen and (max-width: 600px) {
-    .header-container {
-        flex-direction: column;
-        gap: 15px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donazione alla Biblioteca Elsa Morante</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-
-    .header-container img {
-        height: 50px; /* Leggermente più piccolo su mobile */
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
     }
-
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .header-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .logo-svg {
+      height: 60px;
+      width: auto;
+    }
     .header-container h1 {
-        font-size: 1.8em; /* Testo più piccolo su mobile */
-        text-align: center;
-        width: 100%;
+      margin: 0;
+      color: #2c3e50;
+      font-size: 2.2em;
+      line-height: 1.2;
     }
-}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header-container">
+      <!-- SVG con solo la parte rossa del logo -->
+      <svg class="logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1091 272">
+        <path fill="#E9474C" d="M1 118c23-1 43-9 58-27 11-12 19-27 19-44V3h215v43a116 116 0 0 1-51 91c14 9 25 20 33 34 9 14 16 29 17 46v52H79v-35a79 79 0 0 0-77-79l-1-37"/>
+      </svg>
+      <h1>Donazione alla Biblioteca Elsa Morante</h1>
 
 
         h3 {
