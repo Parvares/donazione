@@ -12,34 +12,38 @@
         }
 
 
-        header {
+       header {
     background-color: #970a2c;
     color: #fff;
-    padding: 16px 0; /* Rende il padding verticale uniforme */
+    padding: 16px; /* Margine interno uniforme */
     display: flex;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box; /* Evita l'espansione involontaria */
 }
 
 header .container {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Spazio tra logo e titolo */
-    max-width: 1200px; /* Limita la larghezza dell'intestazione */
-    width: 90%; /* Assicura che sia responsive */
+    justify-content: center;
+    max-width: 800px; /* Larghezza massima per evitare espansione */
+    width: 100%; /* Adatta l'intestazione al dispositivo */
+    box-sizing: border-box; /* Include padding nel calcolo della larghezza */
+    text-align: center; /* Centra i contenuti */
 }
 
 header img {
-    height: 50px; /* Dimensione del logo ridotta e proporzionata */
-    margin-right: 12px; /* Spaziatura più bilanciata con il titolo */
+    height: 50px; /* Logo di dimensioni proporzionate */
+    margin-right: 12px; /* Distanza tra logo e titolo */
 }
 
 header h1 {
-    font-size: 1.5rem; /* Testo meno invadente */
+    font-size: 1.25rem; /* Riduce la dimensione del titolo */
     font-weight: bold;
     margin: 0; /* Elimina margini aggiuntivi */
-    text-align: left; /* Allinea il testo a sinistra rispetto al logo */
+    line-height: 1.5; /* Migliora la leggibilità */
 }
+
 
         
         
