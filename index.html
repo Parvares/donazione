@@ -65,57 +65,55 @@
     <script>
         let bookCount = 0;
 
-        function createBookEntry() {
-        const bookDiv = document.createElement('div');
-        bookDiv.className = 'relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
-        bookCount++;
+ function createBookEntry() {
+            const bookDiv = document.createElement('div');
+            bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
+            bookCount++;
 
-        bookDiv.innerHTML = `
-            <!-- Contatore spostato a sinistra -->
-            <div class="absolute -top-2 -left-2 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">${bookCount}</div>
-            
-            <div class="mb-5">
-                <label class="block mb-1 text-slate-700 font-medium">Titolo: *</label>
-                <input type="text" class="book-title w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" required>
-            </div>
-            <div class="mb-5">
-                <label class="block mb-1 text-slate-700 font-medium">Autore:</label>
-                <input type="text" class="book-author w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-            </div>
-            <div class="mb-5">
-                <label class="block mb-1 text-slate-700 font-medium">Editore:</label>
-                <input type="text" class="book-publisher w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-            </div>
-            <div class="mb-5">
-                <label class="block mb-1 text-slate-700 font-medium">Anno:</label>
-                <input type="tel" class="book-year w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" pattern="[0-9]*">
-            </div>
-            <div class="mb-5">
-                <label class="block mb-1 text-slate-700 font-medium">ISBN:</label>
-                <input type="tel" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" pattern="[0-9]*" maxlength="13">
-            </div>
-            
-            <!-- Rimuoviamo il pulsante "Rimuovi" originale e lo sostituiamo con una X -->
-            <button type="button" class="absolute top-2 right-2 px-3 py-2 text-white bg-transparent border-none text-2xl font-bold hover:bg-red-600" onclick="removeBook(this)">✖</button>
-            
-            <button type="button" class="w-full px-4 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition-colors mt-2" onclick="createBookEntry()">+ Aggiungi Libro</button>
-        `;
-        document.getElementById('bookList').appendChild(bookDiv);
-        updateBookCounters();
-    }
+            bookDiv.innerHTML = `
+                <div class="absolute -top-2 -left-2 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">${bookCount}</div>
+                
+                <div class="mb-5">
+                    <label class="block mb-1 text-slate-700 font-medium">Titolo: *</label>
+                    <input type="text" class="book-title w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" required>
+                </div>
+                <div class="mb-5">
+                    <label class="block mb-1 text-slate-700 font-medium">Autore:</label>
+                    <input type="text" class="book-author w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                </div>
+                <div class="mb-5">
+                    <label class="block mb-1 text-slate-700 font-medium">Editore:</label>
+                    <input type="text" class="book-publisher w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                </div>
+                <div class="mb-5">
+                    <label class="block mb-1 text-slate-700 font-medium">Anno:</label>
+                    <input type="tel" class="book-year w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" pattern="[0-9]*">
+                </div>
+                <div class="mb-5">
+                    <label class="block mb-1 text-slate-700 font-medium">ISBN:</label>
+                    <input type="tel" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" pattern="[0-9]*" maxlength="13">
+                </div>
+                
+                <button type="button" class="absolute top-2 right-2 px-3 py-2 text-white bg-transparent border-none text-2xl font-bold hover:bg-red-600" onclick="removeBook(this)">✖</button>
+                
+                <button type="button" class="w-full px-4 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition-colors mt-2" onclick="createBookEntry()">+ Aggiungi Libro</button>
+            `;
+            document.getElementById('bookList').appendChild(bookDiv);
+            updateBookCounters();
+        }
 
-    function removeBook(button) {
-        button.parentElement.remove();
-        bookCount--;
-        updateBookCounters();
-    }
+        function removeBook(button) {
+            button.parentElement.remove();
+            bookCount--;
+            updateBookCounters();
+        }
 
-    function updateBookCounters() {
-        const bookEntries = document.querySelectorAll('.book-entry');
-        bookEntries.forEach((entry, index) => {
-            entry.querySelector('.book-counter').textContent = index + 1;
-        });
-    }
+        function updateBookCounters() {
+            const bookEntries = document.querySelectorAll('.book-entry');
+            bookEntries.forEach((entry, index) => {
+                entry.querySelector('.book-counter').textContent = index + 1;
+            });
+        }
 
 
         document.addEventListener('DOMContentLoaded', () => {
