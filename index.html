@@ -418,14 +418,15 @@ bookCount = 0;
 createBookEntry();
 
             } catch (error) {
-                console.error('Errore durante la generazione del file Excel:', error);
-                alert('Si è verificato un errore durante la generazione del documento. Riprova più tardi.');
-                
-                // Ripristina il bottone in caso di errore
-                const submitButton = event.target.querySelector('button[type="submit"]');
-                submitButton.disabled = false;
-                submitButton.textContent = originalText;
-            }
+    console.error('Errore durante la generazione del file Excel:', error); // Log dell'errore
+    alert('Si è verificato un errore durante la generazione del documento. Riprova più tardi.');
+    
+    // Ripristina il bottone in caso di errore
+    const submitButton = event.target.querySelector('button[type="submit"]');
+    submitButton.disabled = false;
+    submitButton.textContent = originalText;
+}
+
         });
 
         // Crea il primo libro quando la pagina si carica
