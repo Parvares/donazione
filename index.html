@@ -3,73 +3,459 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Termini e Condizioni - Donazione di Libri</title>
+    <title>Donazione alla Biblioteca Elsa Morante</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .custom-header {
-            background-color: #970a2c;
-        }
-    </style>
 </head>
-<body class="bg-gray-100 text-gray-800 font-sans">
-    <header class="custom-header text-white py-4">
-        <div class="container mx-auto text-center flex items-center justify-center gap-4">
-            <img src="./logobianco.png" alt="Logo Biblioteche di Roma" style="height: 32px;">
-            <h1 class="text-2xl font-bold">Termini e Condizioni per la Donazione di Libri</h1>
-        </div>
-    </header>
+<body class="bg-gray-100 text-gray-800 leading-relaxed p-5">
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
+      
+        
+        <div class="flex flex-col items-center justify-center mb-10 text-center space-y-4 px-4">
+    <img 
+        src="https://raw.githubusercontent.com/bibliotecamorante/donazione/main/logo.png" 
+        alt="Logo Biblioteca" 
+        class="h-16 w-auto object-contain mb-3 md:h-16 sm:h-12" />
+    
+    <h1 class="text-3xl md:text-4xl text-slate-700 font-bold leading-tight text-center sm:text-xl md:text-3xl">
+        Donazione alla Biblioteca Elsa Morante
+    </h1>
+</div>
 
-    <main class="container mx-auto my-8 p-6 bg-white rounded-lg shadow-lg">
-        <section>
-            <h2 class="text-xl font-semibold mb-4">Termini e Condizioni</h2>
-            <p class="mb-4">
-                L'acquisizione della donazione è subordinata:
-            </p>
-            <ul class="list-disc ml-8 mb-4">
-                <li>ai criteri che informano la gestione delle raccolte e lo sviluppo omogeneo e coerente delle collezioni;</li>
-                <li>alla effettiva sostenibilità del trattamento catalografico;</li>
-                <li>alla effettiva disponibilità di spazio.</li>
-            </ul>
-            <p class="font-semibold mb-2">Non saranno incluse nelle collezioni della biblioteca:</p>
-            <ul class="list-disc ml-8 mb-4">
-                <li>risorse in cattivo stato di conservazione, libri sottolineati, ingialliti, impolverati;</li>
-                <li>tendenzialmente, opere già presenti in biblioteca o in altre biblioteche del Sistema "Biblioteche di Roma";</li>
-                <li>opere obsolete o superate nei contenuti, opere giuridiche e scientifiche di contenuto non più attuale;</li>
-                <li>opere enciclopediche;</li>
-                <li>dizionari editi da più di quattro anni;</li>
-                <li>testi di carattere propagandistico o dottrinale, per qualsivoglia pensiero o credo, religioso o laico;</li>
-                <li>libri d'uso strettamente scolastico;</li>
-                <li>riviste e periodici;</li>
-                <li>guide turistiche edite da più di 4 anni;</li>
-                <li>saggi in lingua originale (si accetta solo narrativa);</li>
-                <li>documenti autoprodotti, autopubblicati, stampati in proprio o a proprie spese;</li>
-                <li>risorse di informatica pubblicate prima degli ultimi 2 anni;</li>
-                <li>risorse multimediali che non rispettino la vigente normativa sul copyright e risorse multimediali su supporti in disuso (audiocassette, videocassette, etc.);</li>
-                <li>fumetti da edicola (es. Topolino, Dylan Dog, Tex Willer, ecc.);</li>
-                <li>collane di narrativa economica acquistabili in edicola (Urania, Gialli Mondadori, Harmony ecc.);</li>
-                <li>tesi di laurea;</li>
-                <li>riviste.</li>
-            </ul>
-            <p class="mb-4">
-                Per favorire la valutazione delle opere è richiesto l'invio preventivo di un elenco del materiale in formato testuale, con autore, titolo, editore, anno, ed eventualmente, codice ISBN, da indirizzare a
-                <a href="mailto:l.daniello@bibliotechediroma.it" class="text-blue-500 underline">l.daniello@bibliotechediroma.it</a>.
-            </p>
-            <p class="mb-4">
-                Le risorse accettate in dono e inserite a catalogo entrano a tutti gli effetti a far parte del patrimonio documentale della biblioteca. Come tale non può essere reclamato dal donatore. I doni non possono comunque mai essere condizionati dal donatore.
-            </p>
-            <p class="mb-4">
-                Nei limiti di poche unità il materiale bibliografico che dovesse risultare inidoneo alla raccolta potrà essere posto in distribuzione gratuita mediante Book Crossing predisposto al front office.
-            </p>
-            <p class="mb-4">
-                La catalogazione delle singole risorse ricevute in dono non è immediata, ma segue tempi stabiliti di volta in volta dalla biblioteca secondo le seguenti priorità: nuove acquisizioni, acquisti centralizzati, acquisti di routine, donazioni.
-            </p>
-        </section>
-    </main>
-
-    <footer class="bg-gray-800 text-white py-4">
-        <div class="container mx-auto text-center">
-            <p>&copy; 2024 Biblioteche di Roma. Tutti i diritti riservati.</p>
+        
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r">
+            Compila il modulo per donare i tuoi libri alla biblioteca. I campi contrassegnati con * sono obbligatori
         </div>
-    </footer>
+
+        <form id="donationForm">
+            <h3 class="text-xl text-slate-700 mt-6 mb-4 pb-2 border-b-2 border-gray-200">Dati Personali</h3>
+            
+            <div class="mb-5">
+                <label for="nome" class="block mb-1 text-slate-700 font-medium">Nome: *</label>
+                <input type="text" id="nome" name="nome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+            </div>
+            
+            <div class="mb-5">
+                <label for="cognome" class="block mb-1 text-slate-700 font-medium">Cognome: *</label>
+                <input type="text" id="cognome" name="cognome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+            </div>
+            
+            <div class="mb-5">
+                <label for="tessera" class="block mb-1 text-slate-700 font-medium">Numero Tessera:</label>
+                <input type="text" id="tessera" name="tessera" class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+            </div>
+
+            <div class="mb-5">
+                <label for="telefono" class="block mb-1 text-slate-700 font-medium">Telefono:</label>
+                <input type="tel" id="telefono" name="telefono" pattern="[0-9]*" class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+            </div>
+            
+            <div class="mb-5">
+                <label for="email" class="block mb-1 text-slate-700 font-medium">Email: *</label>
+                <input type="email" id="email" name="email" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+            </div>
+
+            <h3 class="text-xl text-slate-700 mt-6 mb-4 pb-2 border-b-2 border-gray-200">Libri da donare</h3>
+            <div id="bookList"></div>
+            
+            <div class="bg-gray-50 p-4 rounded mb-5">
+                <label class="flex items-start gap-3">
+                    <input type="checkbox" id="accept" name="accept" required class="w-5 h-5 mt-1">
+                    <span>Ho letto e accetto <a href="termini.html" target="_blank" class="text-blue-500 hover:underline">termini e condizioni</a></span>
+                </label>
+            </div>
+            
+            <button type="submit" class="w-full max-w-sm mx-auto block px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors font-medium text-base">
+                Accetta e Genera il Documento
+            </button>
+        </form>
+    </div>
+
+    <script>
+        let bookCount = 0;
+
+ function createBookEntry() {
+    const bookDiv = document.createElement('div');
+    bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
+    bookCount++;
+
+    bookDiv.innerHTML = `
+        ${bookCount > 1 ? `
+            <button type="button" class="absolute top-2 right-2 px-3 py-2 text-white bg-transparent border-none text-2xl font-bold hover:bg-red-600"
+            style="position: absolute; top: 2px; right: 2px; z-index: 10; color: #ff0000;" onclick="removeBook(this)">✖</button>
+        ` : ''}
+        
+        <div class="mb-5">
+            <label class="block mb-1 text-slate-700 font-medium">Titolo: *</label>
+            <input type="text" class="book-title w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" required>
+        </div>
+        <div class="mb-5">
+            <label class="block mb-1 text-slate-700 font-medium">Autore:</label>
+            <input type="text" class="book-author w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+        </div>
+        <div class="mb-5">
+            <label class="block mb-1 text-slate-700 font-medium">Editore:</label>
+            <input type="text" class="book-publisher w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+        </div>
+        <div class="mb-5">
+            <label class="block mb-1 text-slate-700 font-medium">Anno:</label>
+            <input type="tel" class="book-year w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" pattern="[0-9]*">
+        </div>
+        <div class="mb-5">
+            <label class="block mb-1 text-slate-700 font-medium">ISBN:</label>
+            <input type="tel" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" pattern="[0-9]*" maxlength="13">
+        </div>
+        
+        <button type="button" class="w-full px-4 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition-colors mt-2" onclick="createBookEntry()">+ Aggiungi Libro</button>
+    `;
+    document.getElementById('bookList').appendChild(bookDiv);
+    updateBookCounters();
+}
+
+
+        function removeBook(button) {
+            button.parentElement.remove();
+            bookCount--;
+            updateBookCounters();
+        }
+
+        function updateBookCounters() {
+            const bookEntries = document.querySelectorAll('.book-entry');
+            bookEntries.forEach((entry, index) => {
+                entry.querySelector('.book-counter').textContent = index + 1;
+            });
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const telefonoInput = document.getElementById('telefono');
+            telefonoInput.addEventListener('input', function(e) {
+                const originalValue = e.target.value;
+                e.target.value = originalValue.replace(/[^0-9]/g, '');
+                
+                if (originalValue !== e.target.value) {
+                    showWarning(this, 'Inserire solo numeri nel campo Telefono');
+                }
+            });
+
+            const emailInput = document.getElementById('email');
+            emailInput.addEventListener('input', function(e) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const originalValue = e.target.value;
+
+                if (originalValue && !emailRegex.test(originalValue)) {
+                    showWarning(this, 'Inserire un indirizzo email valido');
+                }
+            });
+
+            document.getElementById('bookList').addEventListener('input', function(e) {
+                if (e.target.classList.contains('book-year') || e.target.classList.contains('book-isbn')) {
+                    const originalValue = e.target.value;
+                    const currentYear = new Date().getFullYear();
+                    
+                    if (e.target.classList.contains('book-year')) {
+                        let numericValue = originalValue.replace(/[^0-9]/g, '');
+                        
+                        if (numericValue.length > 0) {
+                            const year = parseInt(numericValue);
+                            if (numericValue.length === 4) {
+                                if (year < 1800 || year > currentYear) {
+                                    numericValue = numericValue.slice(0, -1);
+                                    showWarning(e.target, `L'anno deve essere compreso tra 1800 e ${currentYear}`);
+                                }
+                            } else if (numericValue.length > 4) {
+                                numericValue = numericValue.slice(0, 4);
+                            } else {
+                                if (numericValue.length === 1 && (numericValue < '1')) {
+                                    numericValue = '';
+                                    showWarning(e.target, `L'anno deve essere compreso tra 1800 e ${currentYear}`);
+                                } else if (numericValue.length === 2 && (numericValue < '18')) {
+                                    numericValue = numericValue.slice(0, -1);
+                                    showWarning(e.target, `L'anno deve essere compreso tra 1800 e ${currentYear}`);
+                                } else if (numericValue.length === 3 && parseInt(numericValue) < 180) {
+                                    numericValue = numericValue.slice(0, -1);
+                                    showWarning(e.target, `L'anno deve essere compreso tra 1800 e ${currentYear}`);
+                                }
+                            }
+                        }
+                        e.target.value = numericValue;
+                    }
+                    
+                    if (e.target.classList.contains('book-isbn')) {
+                        const numericValue = originalValue.replace(/[^0-9]/g, '');
+                        
+                        if (numericValue.length > 13) {
+                            e.target.value = numericValue.slice(0, 13);
+                            showWarning(e.target, 'L\'ISBN può contenere massimo 13 cifre');
+                        } else {
+                            if (originalValue !== numericValue) {
+                                e.target.value = numericValue;
+                                showWarning(e.target, 'Inserire solo numeri nel campo ISBN');
+                            }
+                        }
+                    }
+                }
+            });
+
+            function showWarning(element, message) {
+                const existingWarning = element.nextElementSibling;
+                if (existingWarning && existingWarning.classList.contains('input-warning')) {
+                    existingWarning.remove();
+                }
+
+                const warning = document.createElement('div');
+                warning.textContent = message;
+                warning.className = 'input-warning';
+                
+                element.parentNode.insertBefore(warning, element.nextSibling);
+
+                setTimeout(() => {
+                    if (warning.parentNode) {
+                        warning.remove();
+                    }
+                }, 3000);
+            }
+        });
+
+        async function generateExcel(formData, books) {
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('Donazione');
+
+            const titleStyle = {
+                font: { size: 16, bold: true, color: { argb: '002060' } },
+                alignment: { horizontal: 'center' }
+            };
+            
+            const headerStyle = {
+                font: { bold: true, color: { argb: 'FFFFFF' }, size: 14 },
+                fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: '2F5496' } },
+                alignment: { horizontal: 'center', vertical: 'middle' },
+                border: {
+                    top: { style: 'thin' },
+                    left: { style: 'thin' },
+                    bottom: { style: 'thin' },
+                    right: { style: 'thin' }
+                }
+            };
+
+            const dataStyle = {
+                font: { size: 14 },
+                alignment: { vertical: 'middle' },
+                border: {
+                    top: { style: 'thin' },
+                    left: { style: 'thin' },
+                    bottom: { style: 'thin' },
+                    right: { style: 'thin' }
+                }
+            };
+
+            // Intestazione documento
+            worksheet.mergeCells('A2:G2');
+            const titleCell = worksheet.getCell('A2');
+            titleCell.value = 'DONAZIONE ALLA BIBLIOTECA ELSA MORANTE';
+            titleCell.style = titleStyle;
+
+            // Dati donatore
+            worksheet.mergeCells('A4:B4');
+            worksheet.mergeCells('C4:G4');
+            worksheet.getCell('A4').value = 'DATI DONATORE';
+            worksheet.getCell('A4').style = { ...headerStyle, alignment: { horizontal: 'left', vertical: 'middle' } };
+            worksheet.getCell('C4').style = headerStyle;
+
+            // Nome e Cognome, Tessera, Telefono, Email con formattazione separata
+            worksheet.mergeCells('A5:B5');
+            worksheet.mergeCells('C5:G5');
+            worksheet.getCell('A5').value = 'Nome e Cognome:';
+            worksheet.getCell('C5').value = `${formData.nome} ${formData.cognome}`;
+            
+            
+            
+            worksheet.mergeCells('A6:B6');
+            worksheet.mergeCells('C6:G6');
+            worksheet.getCell('A6').value = 'Tessera:';
+            worksheet.getCell('C6').value = formData.tessera || '---';
+            
+            worksheet.mergeCells('A7:B7');
+            worksheet.mergeCells('C7:G7');
+            worksheet.getCell('A7').value = 'Telefono:';
+            worksheet.getCell('C7').value = formData.telefono || '---';
+            
+            worksheet.mergeCells('A8:B8');
+            worksheet.mergeCells('C8:G8');
+            worksheet.getCell('A8').value = 'Email:';
+            worksheet.getCell('C8').value = formData.email;
+
+            // Applica stili ai dati del donatore
+            for (let row = 5; row <= 8; row++) {
+                worksheet.getCell(`A${row}`).style = { ...dataStyle, font: { bold: true } }; // Etichetta in grassetto
+                worksheet.getCell(`C${row}`).style = dataStyle; // Dati formattati
+            }
+
+            // Aggiungi la stringa "DICHIARAZIONE"
+            worksheet.mergeCells('A10:G10');
+            const declarationCell = worksheet.getCell('A10');
+            declarationCell.value = 'DICHIARAZIONE';
+            declarationCell.style = { ...headerStyle, font: { size: 14, bold: true }, fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'f39c12' } } };
+
+            // Testo dichiarazione
+            worksheet.mergeCells('A11:G14');
+            worksheet.getCell('A11').value = 'Con la presente dono alla Biblioteca le risorse documentarie elencate di seguito e autorizzo la biblioteca a destinarli all\'uso che riterrà più opportuno (acquisizione al patrimonio, scambio, dono, bookcrossing o scarto, nel caso in cui, a giudizio insindacabile della biblioteca, i materiali risultino inutilizzabili) senza alcun vincolo per la biblioteca stessa nei miei confronti.';
+            worksheet.getCell('A11').style = { ...dataStyle, alignment: { wrapText: true, vertical: 'middle' } };
+
+             // Intestazione tabella libri
+    const headers = ['N.', 'Titolo', 'Autore', 'Editore', 'Anno', 'ISBN'];
+    worksheet.getRow(16).values = headers;
+    worksheet.getRow(16).eachCell(cell => {
+        cell.style = headerStyle;
+    });
+
+    // Dati libri
+    books.forEach((book, index) => {
+        const row = worksheet.getRow(index + 17);
+        row.values = [index + 1, book.title, book.author, book.publisher, book.year, book.isbn];
+        row.eachCell(cell => {
+            cell.style = dataStyle;
+        });
+        row.height = 25;
+    });
+
+    // Imposta larghezza colonne aggiornate
+    worksheet.columns = [
+        { width: 4 },    // N.
+        { width: 50 },   // Titolo (ampiamente allargata)
+        { width: 30 },   // Autore
+        { width: 30 },   // Editore
+        { width: 12 },   // Anno
+        { width: 20 },   // ISBN (ampiamente allargata)
+    ];
+
+    // Genera il file
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `donazione_${formData.cognome}_${formData.nome}_${new Date().toLocaleDateString('it-IT').replace(/\//g, '-')}.xlsx`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+}
+
+        
+
+        // Event Listener per il form
+document.getElementById('donationForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    
+    const nome = document.getElementById('nome').value.trim();
+    const cognome = document.getElementById('cognome').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const tessera = document.getElementById('tessera').value.trim();
+    const telefono = document.getElementById('telefono').value.trim();
+    const acceptCheckbox = document.getElementById('accept');
+    
+    if (!nome || !cognome || !email) {
+        alert('Per favore compila tutti i campi obbligatori.');
+        return;
+    }
+    
+    if (!acceptCheckbox.checked) {
+        alert('Devi accettare i termini e le condizioni per procedere.');
+        return;
+    }
+
+    const books = [];
+    const bookEntries = document.querySelectorAll('.book-entry');
+    
+    for (const bookDiv of bookEntries) {
+        const title = bookDiv.querySelector('.book-title').value.trim();
+        
+        if (!title) {
+            alert('Per favore inserisci almeno il titolo per ogni libro.');
+            return;
+        }
+        
+        const book = {
+            title: title,
+            author: bookDiv.querySelector('.book-author').value.trim(),
+            publisher: bookDiv.querySelector('.book-publisher').value.trim(),
+            year: bookDiv.querySelector('.book-year').value.trim(),
+            isbn: bookDiv.querySelector('.book-isbn').value.trim()
+        };
+        books.push(book);
+    }
+
+    if (books.length === 0) {
+        alert('Aggiungi almeno un libro alla donazione.');
+        return;
+    }
+    
+    const formData = {
+        nome,
+        cognome,
+        email,
+        tessera,
+        telefono
+    };
+    
+    // Mostra indicatore di caricamento
+    const submitButton = event.target.querySelector('button[type="submit"]');
+    const originalText = submitButton.textContent;
+    submitButton.disabled = true;
+    submitButton.textContent = 'Generazione documento in corso...';
+
+    // Genera il documento
+    await generateExcel(formData, books);
+    
+    // Ripristina il bottone
+    submitButton.disabled = false;
+    submitButton.textContent = originalText;
+
+    // Mostra il popup di invio email
+    showEmailPopup();
+    
+    // Reset form
+    event.target.reset();
+    const bookList = document.getElementById('bookList');
+    bookList.innerHTML = '';
+    bookCount = 0;
+    createBookEntry();
+});
+
+// Funzione per mostrare il popup
+function showEmailPopup() {
+    const popup = document.createElement('div');
+    popup.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50';
+    popup.innerHTML = `
+        <div class="bg-white p-6 rounded-lg shadow-lg w-96 text-center">
+            <h2 class="text-xl font-semibold mb-4">Documento generato con successo!</h2>
+            <p class="mb-4">Il documento è stato scaricato correttamente. Invialo a: l.daniello@bibliotechediroma.it</p>
+            <button id="sendEmailBtn" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Invia a email</button>
+            <button id="closePopupBtn" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 mt-3">Chiudi</button>
+        </div>
+    `;
+    document.body.appendChild(popup);
+    
+    // Gestione del pulsante "Invia a email"
+    document.getElementById('sendEmailBtn').addEventListener('click', function() {
+        window.location.href = `mailto:?subject=Donazione alla Biblioteca Elsa Morante&body=Allega il documento della tua donazione appena scaricato.`;
+        closePopup();
+    });
+    
+    // Gestione del pulsante "Chiudi"
+    document.getElementById('closePopupBtn').addEventListener('click', closePopup);
+}
+
+// Funzione per chiudere il popup
+function closePopup() {
+    const popup = document.querySelector('.fixed');
+    if (popup) {
+        popup.remove();
+    }
+}
+
+
+        // Crea il primo libro quando la pagina si carica
+        document.addEventListener('DOMContentLoaded', createBookEntry);
+    </script>
 </body>
 </html>
