@@ -94,7 +94,8 @@
                     <input type="tel" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" pattern="[0-9]*" maxlength="13">
                 </div>
                 
-                <button type="button" class="absolute top-2 right-2 px-3 py-2 text-white bg-transparent border-none text-2xl font-bold hover:bg-red-600" onclick="removeBook(this)">✖</button>
+                <button type="button" class="absolute top-2 right-2 px-3 py-2 text-white bg-transparent border-none text-2xl font-bold hover:bg-red-600"
+        style="position: absolute; top: 2px; right: 2px; z-index: 10;" onclick="removeBook(this)">✖</button>
                 
                 <button type="button" class="w-full px-4 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition-colors mt-2" onclick="createBookEntry()">+ Aggiungi Libro</button>
             `;
