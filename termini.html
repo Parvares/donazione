@@ -4,28 +4,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Termini e Condizioni - Donazione di Libri</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #f3f4f6;
+            color: #2d3748;
+            font-family: Arial, sans-serif;
+        }
+        header {
+            background-color: #970a2c;
+            color: #fff;
+            padding: 16px 0;
+            height: 6cm;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        header .container {
+            display: flex;
+            align-items: center;
+        }
+        header img {
+            height: 40px;
+            margin-right: 16px;
+        }
+        main {
+            max-width: 800px;
+            margin: 32px auto;
+            padding: 24px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            font-weight: bold;
+        }
+        h1 {
+            font-size: 1.5rem;
+        }
+        h2 {
+            font-size: 1.25rem;
+            margin-bottom: 16px;
+        }
+        p, ul {
+            margin-bottom: 16px;
+        }
+        ul {
+            list-style-type: disc;
+            padding-left: 40px;
+        }
+        a {
+            color: #970a2c;
+            text-decoration: underline;
+        }
+        footer {
+            background-color: #2d3748;
+            color: #fff;
+            text-align: center;
+            padding: 16px 0;
+        }
+        footer a {
+            color: #f3f4f6;
+            text-decoration: underline;
+        }
+    </style>
 </head>
-<body class="bg-gray-100 text-gray-800 font-sans">
-    <header class="bg-blue-600 text-white py-4">
-        <div class="container mx-auto text-center">
-            <h1 class="text-2xl font-bold">Termini e Condizioni per la Donazione di Libri</h1>
+<body>
+    <header>
+        <div class="container">
+            <img src="logobianco.png" alt="Logo Biblioteche di Roma">
+            <h1>Termini e Condizioni per la Donazione di Libri</h1>
         </div>
     </header>
 
-    <main class="container mx-auto my-8 p-6 bg-white rounded-lg shadow-lg">
+    <main>
         <section>
-            <h2 class="text-xl font-semibold mb-4">Termini e Condizioni</h2>
-            <p class="mb-4">
+            <h2>Termini e Condizioni</h2>
+            <p>
                 L’acquisizione della donazione è subordinata:
             </p>
-            <ul class="list-disc ml-8 mb-4">
+            <ul>
                 <li>ai criteri che informano la gestione delle raccolte e lo sviluppo omogeneo e coerente delle collezioni;</li>
                 <li>alla effettiva sostenibilità del trattamento catalografico;</li>
                 <li>alla effettiva disponibilità di spazio.</li>
             </ul>
-            <p class="font-semibold mb-2">Non saranno incluse nelle collezioni della biblioteca:</p>
-            <ul class="list-disc ml-8 mb-4">
+            <p><strong>Non saranno incluse nelle collezioni della biblioteca:</strong></p>
+            <ul>
                 <li>risorse in cattivo stato di conservazione, libri sottolineati, ingialliti, impolverati;</li>
                 <li>tendenzialmente, opere già presenti in biblioteca o in altre biblioteche del Sistema "Biblioteche di Roma";</li>
                 <li>opere obsolete o superate nei contenuti, opere giuridiche e scientifiche di contenuto non più attuale;</li>
@@ -44,26 +107,25 @@
                 <li>tesi di laurea;</li>
                 <li>riviste.</li>
             </ul>
-            <p class="mb-4">
+            <p>
                 Per favorire la valutazione delle opere è richiesto l’invio preventivo di un elenco del materiale in formato testuale, con autore, titolo, editore, anno, ed eventualmente, codice ISBN, da indirizzare a
-                <a href="mailto:l.daniello@bibliotechediroma.it" class="text-blue-500 underline">l.daniello@bibliotechediroma.it</a>.
+                <a href="mailto:l.daniello@bibliotechediroma.it">l.daniello@bibliotechediroma.it</a>.
             </p>
-            <p class="mb-4">
+            <p>
                 Le risorse accettate in dono e inserite a catalogo entrano a tutti gli effetti a far parte del patrimonio documentale della biblioteca. Come tale non può essere reclamato dal donatore. I doni non possono comunque mai essere condizionati dal donatore.
             </p>
-            <p class="mb-4">
+            <p>
                 Nei limiti di poche unità il materiale bibliografico che dovesse risultare inidoneo alla raccolta potrà essere posto in distribuzione gratuita mediante Book Crossing predisposto al front office.
             </p>
-            <p class="mb-4">
+            <p>
                 La catalogazione delle singole risorse ricevute in dono non è immediata, ma segue tempi stabiliti di volta in volta dalla biblioteca secondo le seguenti priorità: nuove acquisizioni, acquisti centralizzati, acquisti di routine, donazioni.
             </p>
         </section>
     </main>
 
-    <footer class="bg-gray-800 text-white py-4">
-        <div class="container mx-auto text-center">
-            <p>&copy; 2024 Biblioteche di Roma. Tutti i diritti riservati.</p>
-        </div>
+    <footer>
+        <p>&copy; 2024 Biblioteche di Roma. Tutti i diritti riservati.</p>
+        <p>Visita la <a href="https://www.bibliotechediroma.it/opac/.do" target="_blank">home page di Biblioteche di Roma</a>.</p>
     </footer>
 </body>
 </html>
