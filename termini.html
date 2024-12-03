@@ -10,26 +10,39 @@
             color: #2d3748;
             font-family: Arial, sans-serif;
         }
+
+
         header {
-            background-color: #970a2c;
-            color: #fff;
-            padding: 16px 0;
-            height: 4cm;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        header .container {
-            display: flex;
-            align-items: center;
-        }
-        header img {
-            height: 60px; /* Aumentate le dimensioni del logo */
-            margin-right: 16px;
-        }
-        header h1 {
-            font-size: 2rem; /* Aumentata la dimensione del testo */
-            font-weight: bold;
+    background-color: #970a2c;
+    color: #fff;
+    padding: 16px 0; /* Rende il padding verticale uniforme */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Spazio tra logo e titolo */
+    max-width: 1200px; /* Limita la larghezza dell'intestazione */
+    width: 90%; /* Assicura che sia responsive */
+}
+
+header img {
+    height: 50px; /* Dimensione del logo ridotta e proporzionata */
+    margin-right: 12px; /* Spaziatura più bilanciata con il titolo */
+}
+
+header h1 {
+    font-size: 1.5rem; /* Testo meno invadente */
+    font-weight: bold;
+    margin: 0; /* Elimina margini aggiuntivi */
+    text-align: left; /* Allinea il testo a sinistra rispetto al logo */
+}
+
+        
+        
         }
         main {
             max-width: 800px;
