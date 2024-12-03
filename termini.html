@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Termini e Condizioni - Donazione di Libri</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <style>
         :root {
             --primary: #970a2c;
@@ -23,36 +24,64 @@
             word-spacing: 0px;
         }
         
-       header {
-        background-color: var(--primary);
-        color: #fff;
-        padding: 2rem 0;
-        min-height: 4cm;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    
-    header .container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 4rem; /* Increased gap between logo and title */
-    }
-    
-    header img {
-        height: 70px; /* Slightly reduced logo size */
-    }
-    
-    header h1 {
-        font-size: 2.5rem; /* Increased title size */
-        font-weight: 600;
-        margin: 0;
-        max-width: 800px;
-        line-height: 1.2;
-    }
+        header {
+            background-color: var(--primary);
+            color: #fff;
+            padding: 2rem 0;
+            min-height: 4cm;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
         
-        /* Rest of the CSS remains the same as previous version */
+        .social-icons {
+            position: absolute;
+            top: 1rem;
+            right: 2rem;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            transform: scale(1.2);
+            border-bottom: none;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        header .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4rem;
+            text-align: center;
+            flex-wrap: wrap;
+        }
+        
+        header img {
+            height: 70px;
+            filter: brightness(0) invert(1);
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin: 0;
+            max-width: 800px;
+            line-height: 1.2;
+        }
+        
         main {
             max-width: 800px;
             margin: 2rem auto;
@@ -130,6 +159,14 @@
                 height: 60px;
             }
             
+            .social-icons {
+                position: relative;
+                justify-content: center;
+                padding: 1rem 0;
+                right: 0;
+                top: 0;
+            }
+            
             main {
                 margin: 1rem;
                 padding: 1.5rem;
@@ -138,8 +175,21 @@
     </style>
 </head>
 <body>
-    <!-- Rest of the HTML remains the same as previous version -->
     <header>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="https://www.instagram.com/bibliotecaelsamorante/" target="_blank" aria-label="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://x.com/bibliomorante" target="_blank" aria-label="X">
+                <i class="fab fa-x-twitter"></i>
+            </a>
+            <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank" aria-label="YouTube">
+                <i class="fab fa-youtube"></i>
+            </a>
+        </div>
         <div class="container">
             <img src="logobianco.png" alt="Logo Biblioteche di Roma">
             <h1>Donazione Libri - Biblioteca Morante</h1>
