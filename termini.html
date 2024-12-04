@@ -12,11 +12,9 @@
     
 <style>
     :root {
-        --primary: #970a2c; /* Colore principale */
-        --secondary: #f0c5d4; /* Colore secondario per evidenziare */
-        --text: #180207;
-        --bg: #f3f4f6;
-        --highlight: #e88374; /* Colore evidenziato per il testo */
+        --primary: #970a2c; /* Colore per i titoli */
+        --text: #180207; /* Colore per il corpo del testo */
+        --bg: #f3f4f6; /* Colore di sfondo */
     }
 
     body {
@@ -25,14 +23,15 @@
         font-family: 'Space Grotesk', sans-serif;
         margin: 0;
         font-size: 20px;
-        line-height: 1.8; /* Aumentato l'interlinea */
+        line-height: 30px;
         letter-spacing: normal;
         word-spacing: 0px;
+        background-color: rgba(0, 0, 0, 0); /* Sfondo trasparente */
     }
 
     header {
         background-color: var(--primary);
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Ombra per dare profondità */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
     .header-content {
@@ -60,12 +59,12 @@
     }
 
     .social-icons a {
-        font-size: 1.5rem; /* Maggiore dimensione per le icone social */
+        font-size: 1.5rem;
         transition: transform 0.2s ease-in-out;
     }
 
     .social-icons a:hover {
-        transform: scale(1.2); /* Effetto hover più vivace */
+        transform: scale(1.2); /* Effetto hover sulle icone social */
     }
 
     main {
@@ -75,13 +74,12 @@
         background-color: #fff;
         border-radius: 12px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        font-size: 1.1rem;
     }
 
     .intro {
-        font-size: 2.5rem; /* Maggiore dimensione per l'introduzione */
+        font-size: 2.5rem;
         font-weight: bold;
-        color: var(--highlight); /* Colore evidenziato */
+        color: var(--primary);
         text-align: left;
         margin-bottom: 2rem;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Ombra al testo */
@@ -89,13 +87,15 @@
 
     h2 {
         color: var(--primary);
-        font-size: 2rem;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 24px; /* Dimensione titolo come richiesto */
         margin: 3.5rem 0 2rem;
         padding-bottom: 0.75rem;
-        border-bottom: 3px solid var(--highlight); /* Linea colorata sotto il titolo */
+        border-bottom: 3px solid var(--primary); /* Linea sotto il titolo */
         text-transform: uppercase;
-        letter-spacing: 0.05em;
-        font-weight: bold;
+        letter-spacing: normal;
+        word-spacing: 0px;
+        line-height: 30px;
     }
 
     ul {
@@ -124,7 +124,7 @@
         margin: 2rem 0;
         border-radius: 8px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        border-left: 4px solid var(--highlight); /* Bordo laterale colorato */
+        border-left: 4px solid var(--primary);
     }
 
     .donation-info ol {
@@ -146,8 +146,8 @@
     }
 
     .donation-info a:hover {
-        border-bottom-color: var(--highlight); /* Linea sotto il link al passaggio del mouse */
-        color: var(--highlight);
+        border-bottom-color: var(--primary);
+        color: var(--primary);
     }
 
     footer {
@@ -187,6 +187,7 @@
         }
     }
 </style>
+
 
 
 
