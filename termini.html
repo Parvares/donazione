@@ -74,24 +74,6 @@
             filter: brightness(0) invert(1);
         }
         
-        header h1 {
-            font-size: 2.5rem;
-            font-weight: 600;
-            margin: 0;
-            max-width: 800px;
-            line-height: 1.2;
-        }
-
-      .highlight {
-    color: #fff; /* Colore del testo bianco */
-    background-color: var(--primary); /* Sfondo rosso */
-    padding: 0.2em 0.4em; /* Spazio intorno al testo */
-    border-radius: 4px; /* Angoli arrotondati */
-    font-weight: bold; /* Testo in grassetto */
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4); /* Ombra per leggibilità */
-}
-
-        
         main {
             max-width: 800px;
             margin: 2rem auto;
@@ -99,6 +81,14 @@
             background-color: #fff;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .intro {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            color: var(--primary);
         }
         
         h2 {
@@ -160,7 +150,6 @@
             border-bottom-color: #fff;
         }
 
-        /* Stili aggiornati per la email */
         .contact-info {
             background: #f8f9fa;
             border-left: 4px solid var(--primary);
@@ -190,38 +179,23 @@
             transform: translateY(-2px);
         }
 
-        /* Media query aggiornata per mobile */
         @media (max-width: 768px) {
-            header {
-                padding-top: 4rem;
-                position: relative;
-            }
-
-            header .container {
-                flex-direction: column;
-                gap: 1.5rem;
-                padding: 1rem;
-            }
-
             header h1 {
-                font-size: 1.5rem;
-                padding: 0 1rem;
+                font-size: 1.75rem;
             }
-
+            
             header img {
-                height: 50px;
+                height: 60px;
             }
-
+            
             .social-icons {
-                position: absolute;
+                position: relative;
+                justify-content: center;
+                padding: 1rem 0;
+                right: 0;
                 top: 0;
-                left: 0;
-                width: 100%;
-                background: rgba(0, 0, 0, 0.1);
-                margin: 0;
-                padding: 0.75rem 0;
             }
-
+            
             main {
                 margin: 1rem;
                 padding: 1.5rem;
@@ -247,15 +221,15 @@
         </div>
         <div class="container">
             <img src="logobianco.png" alt="Logo Biblioteche di Roma">
-            
-            <h1>Donazione Libri alla Biblioteca Morante<br><span class="highlight">Termini e Condizioni</span></h1>
-
-
         </div>
     </header>
 
     <main>
+        <p class="intro">Donazione Libri alla Biblioteca Morante – Termini e Condizioni</p>
+        
         <section>
+
+   
             <h2>Criteri di Accettazione</h2>
             <p>L'acquisizione della donazione è subordinata ai seguenti criteri:</p>
             <ul>
