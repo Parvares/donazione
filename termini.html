@@ -33,6 +33,7 @@
             justify-content: center;
             align-items: center;
             position: relative;
+            flex-wrap: wrap;
         }
         
         .social-icons {
@@ -58,22 +59,25 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem;
-        }
-        
-        header .container {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 4rem;
             text-align: center;
-            flex-wrap: wrap;
         }
         
         header img {
             height: 70px;
             filter: brightness(0) invert(1);
         }
-        
+
+        .header-logo {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+        }
+
         main {
             max-width: 800px;
             margin: 2rem auto;
@@ -200,11 +204,20 @@
                 margin: 1rem;
                 padding: 1.5rem;
             }
+
+            .header-logo {
+                flex-direction: column;
+                gap: 1rem;
+            }
         }
     </style>
 </head>
 <body>
     <header>
+        <div class="header-logo">
+            <img src="logobianco.png" alt="Logo Biblioteche di Roma">
+            <img src="logomorante.png" alt="Logo Biblioteca Morante">
+        </div>
         <div class="social-icons">
             <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook">
                 <i class="fab fa-facebook"></i>
@@ -219,14 +232,13 @@
                 <i class="fab fa-youtube"></i>
             </a>
         </div>
-        <div class="container">
-            <img src="logobianco.png" alt="Logo Biblioteche di Roma">
-        </div>
     </header>
 
     <main>
         <p class="intro">Donazione Libri alla Biblioteca Morante – Termini e Condizioni</p>
         
+        
+
         <section>
 
    
