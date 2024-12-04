@@ -6,54 +6,88 @@
     <title>Termini e Condizioni - Donazione di Libri</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
             --primary: #970a2c;
-            --text: #2d3748;
+            --text: #180207;
             --bg: #f3f4f6;
         }
-
+        
         body {
             background-color: var(--bg);
             color: var(--text);
             font-family: 'Space Grotesk', sans-serif;
             margin: 0;
             font-size: 20px;
-            line-height: 1.7;
+            line-height: 30px;
             letter-spacing: normal;
             word-spacing: 0px;
-            font-weight: 400;
         }
-
+        
         header {
             background-color: var(--primary);
-        }
-
-        .header-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 2rem 1rem;
-            gap: 1.5rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .logo-container {
+            color: #fff;
+            padding: 2rem 0;
+            min-height: 4cm;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 4rem;
+            position: relative;
+            flex-direction: column;
+            text-align: center;
         }
 
         .social-icons {
+            position: absolute;
+            top: 1rem;
             display: flex;
-            gap: 1.5rem;
-            margin-bottom: 1rem;
-            opacity: 0.9;
+            gap: 1rem;
+            justify-content: center;
+            width: 100%;
         }
-
+        
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            transform: scale(1.2);
+            border-bottom: none;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex-wrap: wrap;
+            gap: 1rem; /* Added to ensure proper spacing */
+        }
+        
+        header img {
+            height: 70px;
+            filter: brightness(0) invert(1);
+        }
+        
+        header .logo-morante {
+            height: 180px;
+            filter: brightness(0) invert(1);
+        }
+        
+        header h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin: 0;
+            max-width: 800px;
+            line-height: 1.2;
+        }
+        
         main {
             max-width: 800px;
             margin: 2rem auto;
@@ -62,45 +96,30 @@
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-
-        .intro {
-            font-size: 2.5rem;
-            line-height: 1.2;
-            font-weight: 700;
+        
+        main h1 {
             color: var(--primary);
-            text-align: left;
-            margin-bottom: 3rem;
         }
-
+        
         h2 {
             color: var(--primary);
-            font-size: 1.8rem;
-            font-weight: 700;
-            line-height: 1.3;
-            margin: 3.5rem 0 2rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 3px solid var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        p {
+            font-size: 1.5rem;
             margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
         }
-
+        
         ul {
             list-style-type: none;
             padding-left: 0;
         }
-
+        
         ul li {
             padding: 0.5rem 0;
             position: relative;
             padding-left: 1.5rem;
-            margin: 0.75rem 0;
-            line-height: 1.6;
         }
-
+        
         ul li::before {
             content: "•";
             color: var(--primary);
@@ -108,40 +127,22 @@
             position: absolute;
             left: 0;
         }
-
-        .donation-info {
-            background-color: #fafafa;
-            padding: 1.5rem;
-            margin: 2rem 0;
-            border-radius: 8px;
-            border-left: 4px solid var(--primary);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        
+        p {
+            margin-bottom: 1.5rem;
         }
-
-        .donation-info p {
-            font-weight: 500;
-        }
-
-        .donation-info ol {
-            padding-left: 1.5rem;
-            margin: 0;
-        }
-
-        .donation-info ol li {
-            margin: 1.25rem 0;
-        }
-
-        .donation-info a {
+        
+        a {
             color: var(--primary);
             text-decoration: none;
             border-bottom: 1px solid transparent;
             transition: border-color 0.3s;
         }
-
-        .donation-info a:hover {
+        
+        a:hover {
             border-bottom-color: var(--primary);
         }
-
+        
         footer {
             background-color: var(--primary);
             color: #fff;
@@ -149,77 +150,85 @@
             padding: 1rem 0;
             margin-top: 3rem;
         }
-
+        
         footer a {
             color: #fff;
-            text-decoration: none;
+            border-bottom: 1px solid transparent;
         }
-
+        
         footer a:hover {
-            text-decoration: underline;
+            border-bottom-color: #fff;
         }
 
-        @media (min-width: 768px) {
-            .header-content {
-                flex-direction: row;
-                justify-content: space-between;
-                padding: 2rem 4rem;
+        /* Media query per schermi più piccoli */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.75rem;
             }
-
+            
+            header img {
+                height: 60px;
+            }
+            
+            header .logo-morante {
+                height: 180px;
+            }
+            
+            .container {
+                justify-content: center; /* Ensure center alignment */
+                gap: 1rem; /* Maintain spacing */
+            }
+            
             .social-icons {
-                margin-bottom: 0;
+                top: auto;
+                bottom: 1rem;
+                display: flex;
+                justify-content: center;
+                width: 100%;
             }
 
-            .logo-container {
-                gap: 6rem;
-            }
-
-            .logo-container img:first-child {
-                height: 80px;
-            }
-
-            .logo-container img:last-child {
-                height: 160px;
+            main {
+                margin: 1rem;
+                padding: 1.5rem;
             }
         }
     </style>
 </head>
-<body class="bg-gray-100 font-space text-gray-900">
-    <header class="text-white">
-        <div class="header-content">
-            <div class="social-icons">
-                <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" class="text-xl hover:scale-110 transition-transform">
-                    <i class="fab fa-facebook"></i>
-                </a>
-                <a href="https://www.instagram.com/bibliotecaelsamorante/" target="_blank" class="text-xl hover:scale-110 transition-transform">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a href="https://x.com/bibliomorante" target="_blank" class="text-xl hover:scale-110 transition-transform">
-                    <i class="fab fa-x-twitter"></i>
-                </a>
-                <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank" class="text-xl hover:scale-110 transition-transform">
-                    <i class="fab fa-youtube"></i>
-                </a>
-            </div>
-            <div class="logo-container">
-                <img src="logobianco.png" alt="Logo Biblioteche di Roma" class="h-16 brightness-0 invert">
-                <img src="logomorante.png" alt="Logo Biblioteca Morante" class="h-32 brightness-0 invert">
-            </div>
+<body>
+    <header>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="https://www.instagram.com/bibliotecaelsamorante/" target="_blank" aria-label="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://x.com/bibliomorante" target="_blank" aria-label="X">
+                <i class="fab fa-x-twitter"></i>
+            </a>
+            <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank" aria-label="YouTube">
+                <i class="fab fa-youtube"></i>
+            </a>
+        </div>
+        <div class="container">
+            <img src="logobianco.png" alt="Logo Biblioteche di Roma">
+            <img class="logo-morante" src="https://github.com/bibliotecamorante/donazione/raw/main/logomorante.png" alt="Logo Biblioteca Morante">
         </div>
     </header>
 
     <main>
-        <p class="intro">Donazione Libri alla Biblioteca Morante</p>
-        
+        <h1>Donazione di libri</h1>
         <section>
             <h2>Criteri di Accettazione</h2>
-            <p>L'acquisizione della donazione è subordinata ai seguenti criteri:</p>
+            <p>
+                L'acquisizione della donazione è subordinata ai seguenti criteri:
+            </p>
             <ul>
                 <li>Gestione coerente e omogenea delle collezioni</li>
                 <li>Sostenibilità del trattamento catalografico</li>
                 <li>Disponibilità effettiva di spazio</li>
             </ul>
-
+            
             <h2>Materiale Non Accettato</h2>
             <ul>
                 <li>Libri in cattivo stato, sottolineati o danneggiati</li>
@@ -241,17 +250,22 @@
             </ul>
 
             <h2>Procedura di Donazione</h2>
-            <div class="donation-info">
-                <p>Per valutare i titoli, ti preghiamo di seguire questi passaggi:</p>
-                <ol>
-                    <li>Compila l'<a href="https://bibliotecamorante.github.io/donazione/" target="_blank">apposito modulo</a>.</li>
-                    <li>Scarica il documento autogenerato.</li>
-                    <li>Invia il documento via email all'indirizzo: <a href="mailto:l.daniello@bibliotechediroma.it">l.daniello@bibliotechediroma.it</a>.</li>
-                </ol>
-            </div>
-
-            <p>Le opere accettate entreranno a far parte del patrimonio della biblioteca e non potranno essere reclamate. La catalogazione seguirà i tempi stabiliti dalla biblioteca secondo le priorità interne.</p>
-            <p>Il materiale non idoneo per la biblioteca potrà essere destinato ad altri utilizzi che la biblioteca riterrà opportuni (donazione, scambi o bookcrossing), senza alcun vincolo per quest'ultima.</p>
+            <p>
+                Per valutare i titoli, ti preghiamo di seguire questi passaggi:
+            </p>
+            <ol>
+                <li>Compila l'apposito <a href="https://bibliotecamorante.github.io/donazione/" target="_blank">modulo</a>.</li>
+                <li>Scarica il documento autogenerato.</li>
+                <li>Invia il documento via email all'indirizzo: <a href="mailto:l.daniello@bibliotechediroma.it">l.daniello@bibliotechediroma.it</a>.</li>
+            </ol>
+            
+            <p>
+                Le opere accettate entreranno a far parte del patrimonio della biblioteca e non potranno essere reclamate. La catalogazione seguirà i tempi stabiliti dalla biblioteca secondo le priorità interne.
+            </p>
+            
+            <p>
+               Il materiale non idoneo per la biblioteca potrà essere destinato ad altri utilizzi che la biblioteca riterrà opportuni (donazione, scambi o bookcrossing), senza alcun vincolo per quest'ultima.
+            </p>
         </section>
     </main>
 
