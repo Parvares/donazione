@@ -160,7 +160,7 @@
         }
 
         .contact-info p {
-            margin: 0;
+            margin: 0 0 0.5rem 0;
         }
 
         .contact-info a {
@@ -176,10 +176,17 @@
 
         .contact-info a:hover {
             background-color: #7a0824;
+            border-bottom-color: transparent;
             transform: translateY(-2px);
         }
 
+        /* Media query aggiornata per mobile */
         @media (max-width: 768px) {
+            header {
+                padding-top: 4rem;
+                position: relative;
+            }
+
             header .container {
                 flex-direction: column;
                 gap: 1.5rem;
@@ -190,14 +197,17 @@
                 font-size: 1.5rem;
                 padding: 0 1rem;
             }
-            
+
             header img {
                 height: 50px;
             }
-            
+
             .social-icons {
+                position: absolute;
+                top: 0;
+                left: 0;
                 width: 100%;
-                background: rgba(0,0,0,0.1);
+                background: rgba(0, 0, 0, 0.1);
                 margin: 0;
                 padding: 0.75rem 0;
             }
@@ -212,13 +222,21 @@
 <body>
     <header>
         <div class="social-icons">
-            <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="#" aria-label="X"><i class="fab fa-x-twitter"></i></a>
-            <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="https://www.instagram.com/bibliotecaelsamorante/" target="_blank" aria-label="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://x.com/bibliomorante" target="_blank" aria-label="X">
+                <i class="fab fa-x-twitter"></i>
+            </a>
+            <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank" aria-label="YouTube">
+                <i class="fab fa-youtube"></i>
+            </a>
         </div>
         <div class="container">
-            <img src="logobianco.png" alt="Logo">
+            <img src="logobianco.png" alt="Logo Biblioteche di Roma">
             <h1>Donazione Libri alla Biblioteca Morante<br>Termini e Condizioni</h1>
         </div>
     </header>
@@ -232,23 +250,42 @@
                 <li>Sostenibilità del trattamento catalografico</li>
                 <li>Disponibilità effettiva di spazio</li>
             </ul>
-            
+
+            <h2>Materiale Non Accettato</h2>
+            <ul>
+                <li>Libri in cattivo stato, sottolineati o danneggiati</li>
+                <li>Opere già presenti nel Sistema "Biblioteche di Roma"</li>
+                <li>Materiale obsoleto o superato nei contenuti</li>
+                <li>Enciclopedie e opere giuridiche non aggiornate</li>
+                <li>Dizionari con più di quattro anni</li>
+                <li>Testi propagandistici o dottrinali</li>
+                <li>Libri scolastici</li>
+                <li>Riviste e periodici</li>
+                <li>Guide turistiche datate</li>
+                <li>Saggi in lingua originale</li>
+                <li>Documenti autoprodotti</li>
+                <li>Manuali di informatica non recenti</li>
+                <li>Supporti multimediali obsoleti</li>
+                <li>Fumetti da edicola</li>
+                <li>Collane economiche da edicola</li>
+                <li>Tesi di laurea</li>
+            </ul>
+
+            <h2>Procedura di Donazione</h2>
             <div class="contact-info">
-                <p>Per valutare le opere, vi preghiamo di inviare un elenco del materiale con:</p>
-                <ul>
-                    <li>Autore</li>
-                    <li>Titolo</li>
-                    <li>Editore</li>
-                    <li>Anno</li>
-                    <li>ISBN (se disponibile)</li>
-                </ul>
-                <a href="mailto:l.daniello@bibliotechediroma.it"><i class="fas fa-envelope"></i> l.daniello@bibliotechediroma.it</a>
+                <p>Per valutare le opere, vi preghiamo di inviare un elenco del materiale con autore, titolo, editore, anno ed eventuale ISBN a:</p>
+                <a href="mailto:l.daniello@bibliotechediroma.it">
+                    <i class="fas fa-envelope"></i> l.daniello@bibliotechediroma.it
+                </a>
             </div>
+
+            <p>Le opere accettate entreranno a far parte del patrimonio della biblioteca e non potranno essere reclamate. La catalogazione seguirà i tempi stabiliti dalla biblioteca secondo le priorità interne.</p>
+            <p>Il materiale non idoneo potrà essere distribuito gratuitamente attraverso il Book Crossing presso il front office.</p>
         </section>
     </main>
 
     <footer>
-        <p>Scopri di più su <a href="#">Biblioteche di Roma</a></p>
+        <p>Scopri di più su <a href="https://www.bibliotechediroma.it/opac/.do" target="_blank">Biblioteche di Roma</a></p>
     </footer>
 </body>
 </html>
