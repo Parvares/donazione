@@ -14,15 +14,30 @@
             --bg: #f3f4f6;
         }
 
-        /* Existing styles remain the same until header section */
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            margin: 0;
+            font-size: 20px;
+            line-height: 30px;
+            letter-spacing: normal;
+            word-spacing: 0px;
+        }
 
-        /* Updated header styles */
+        header {
+            background-color: var(--primary);
+        }
+
+        /* Header styles */
         .header-content {
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 2rem 1rem;
             gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .logo-container {
@@ -36,17 +51,98 @@
             display: flex;
             gap: 1.5rem;
             margin-bottom: 1rem;
+            opacity: 0.9;
         }
 
-        /* Updated heading styles */
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .intro {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
         h2 {
             color: var(--primary);
             font-size: 1.8rem;
-            margin: 3rem 0 2rem;
+            margin: 3.5rem 0 2rem;
             padding-bottom: 0.75rem;
             border-bottom: 3px solid var(--primary);
             text-transform: uppercase;
             letter-spacing: 0.05em;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            padding: 0.5rem 0;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        ul li::before {
+            content: "•";
+            color: var(--primary);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .donation-info {
+            background-color: #fff;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .donation-info ol {
+            padding-left: 1.5rem;
+            margin: 0;
+        }
+
+        .donation-info ol li {
+            margin-bottom: 1rem;
+        }
+
+        .donation-info a {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s;
+        }
+
+        .donation-info a:hover {
+            border-bottom-color: var(--primary);
+        }
+
+        footer {
+            background-color: var(--primary);
+            color: #fff;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 3rem;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
         }
 
         @media (min-width: 768px) {
@@ -72,8 +168,6 @@
                 height: 160px;
             }
         }
-
-        /* Preserve all other existing styles */
     </style>
 </head>
 <body class="bg-gray-100 font-space text-gray-900">
@@ -99,11 +193,6 @@
             </div>
         </div>
     </header>
-
-
-
-
-
 
     <main>
         <p class="intro">Donazione Libri alla Biblioteca Morante</p>
@@ -148,7 +237,7 @@
             </div>
 
             <p>Le opere accettate entreranno a far parte del patrimonio della biblioteca e non potranno essere reclamate. La catalogazione seguirà i tempi stabiliti dalla biblioteca secondo le priorità interne.</p>
-         <p>Il materiale non idoneo per la biblioteca potrà essere destinato ad altri utilizzi che la biblioteca riterrà opportuni (donazione, scambi o bookcrossing), senza alcun vincolo per quest'ultima.</p>
+            <p>Il materiale non idoneo per la biblioteca potrà essere destinato ad altri utilizzi che la biblioteca riterrà opportuni (donazione, scambi o bookcrossing), senza alcun vincolo per quest'ultima.</p>
         </section>
     </main>
 
