@@ -73,15 +73,15 @@
 
         
         .header-logo {
-    display: flex;
-    gap: 10rem; /* Aumentata la distanza tra i loghi */
-    justify-content: center;
-    align-items: center;
-}
+            display: flex;
+            gap: 10rem; /* Aumentata la distanza tra i loghi */
+            justify-content: center;
+            align-items: center;
+        }
 
-.header-logo img:nth-child(2) { /* Seleziona solo il logo "logomorante" */
-    height: 200px; /* Ingrandito il logo "logomorante" */
-}
+        .header-logo img:nth-child(2) { /* Seleziona solo il logo "logomorante" */
+            height: 200px; /* Ingrandito il logo "logomorante" */
+        }
 
         main {
             max-width: 800px;
@@ -188,6 +188,40 @@
             transform: translateY(-2px);
         }
 
+        .donation-info {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 1.2rem;
+            color: var(--text);
+        }
+
+        .donation-info p {
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .donation-info ol {
+            padding-left: 1.5rem;
+        }
+
+        .donation-info ol li {
+            margin: 1rem 0;
+            font-size: 1rem;
+        }
+
+        .donation-info a {
+            color: var(--primary);
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .donation-info a:hover {
+            text-decoration: underline;
+        }
+
         @media (max-width: 768px) {
             header h1 {
                 font-size: 1.75rem;
@@ -271,15 +305,14 @@
                 <li>Tesi di laurea</li>
             </ul>
 
-
             <h2>Procedura di Donazione</h2>
-            <div class="contact-info">
-                
-                <p>Per valutare i titoli, vi preghiamo di compilare l'<a href="https://bibliotecamorante.github.io/donazione/" target="_blank">apposito modulo</a>, scaricare il documento autogenerato e inviarlo all'indirizzo:</p>
-
-                <a href="mailto:l.daniello@bibliotechediroma.it">
-                    <i class="fas fa-envelope"></i> l.daniello@bibliotechediroma.it
-                </a>
+            <div class="donation-info">
+                <p>Per valutare i titoli, vi preghiamo di seguire questi passaggi:</p>
+                <ol>
+                    <li>Compilate l'<a href="https://bibliotecamorante.github.io/donazione/" target="_blank">apposito modulo</a>.</li>
+                    <li>Scaricate il documento autogenerato.</li>
+                    <li>Inviate il documento via email all'indirizzo: <a href="mailto:l.daniello@bibliotechediroma.it">l.daniello@bibliotechediroma.it</a>.</li>
+                </ol>
             </div>
 
             <p>Le opere accettate entreranno a far parte del patrimonio della biblioteca e non potranno essere reclamate. La catalogazione seguirà i tempi stabiliti dalla biblioteca secondo le priorità interne.</p>
