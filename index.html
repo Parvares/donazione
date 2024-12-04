@@ -83,7 +83,10 @@ function createBookEntry() {
 
     bookDiv.innerHTML = `
         <div class="flex justify-between items-center mb-4">
-            <span class="book-counter text-lg font-semibold text-gray-700">Libro #${bookCount}</span>
+            <div class="flex items-center gap-3">
+                <span class="book-counter flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white font-semibold">${bookCount}</span>
+                <span class="text-lg font-semibold text-gray-700">Libro</span>
+            </div>
             ${bookCount > 1 ? `
                 <button type="button" class="px-3 py-2 text-red-600 hover:text-red-700 font-bold text-2xl" onclick="removeBook(this)">✖</button>
             ` : ''}
