@@ -119,10 +119,14 @@ function createBookEntry() {
 
 
         function removeBook(button) {
-            button.parentElement.remove();
-            bookCount--;
-            updateBookCounters();
-        }
+    // Trova il div padre .book-entry più vicino
+    const bookEntry = button.closest('.book-entry');
+    if (bookEntry) {
+        bookEntry.remove();
+        bookCount--;
+        updateBookCounters();
+    }
+}
 
         function updateBookCounters() {
             const bookEntries = document.querySelectorAll('.book-entry');
