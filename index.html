@@ -133,26 +133,49 @@
             });
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            createBookEntry();
-
-            const telefonoInput = document.getElementById('telefono');
-            telefonoInput.addEventListener('input', function(e) {
-                e.target.value = e.target.value.replace(/[^0-9]/g, '');
-            });
-
-            const emailInput = document.getElementById('email');
-            emailInput.addEventListener('input', function(e) {
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(e.target.value)) {
-                    alert('Inserire un indirizzo email valido.');
-                }
-            });
-        });
-
 
         
-        document.getElementById('donationForm').addEventListener('submit', async function(event) {
+
+document.addEventListener('DOMContentLoaded', () => {
+    createBookEntry();
+
+    const telefonoInput = document.getElementById('telefono');
+    telefonoInput.addEventListener('input', function(e) {
+        e.target.value = e.target.value.replace(/[^0-9]/g, '');  // Ensure only numbers
+    });
+
+    const annoInput = document.querySelectorAll('.book-year');
+    annoInput.forEach(input => {
+        input.addEventListener('input', function(e) {
+            let value = e.target.value;
+            // Allow only numbers and ensure the year is between 1950 and the current year
+            value = value.replace(/[^0-9]/g, '');
+            const currentYear = new Date().getFullYear();
+            if (value && (parseInt(value) < 1950 || parseInt(value) > currentYear)) {
+                e.target.setCustomValidity('L\'anno deve essere tra il 1950 e l\'anno corrente');
+            } else {
+                e.target.setCustomValidity('');
+            }
+            e.target.value = value;
+        });
+    });
+
+    const emailInput = document.getElementById('email');
+    const emailErrorMessage = document.createElement('p');
+    emailErrorMessage.classList.add('text-red-600', 'text-sm');
+    emailInput.parentNode.appendChild(emailErrorMessage);
+
+    emailInput.addEventListener('input', function(e) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(e.target.value)) {
+            emailErrorMessage.textContent = 'Inserire un indirizzo email valido.';
+        } else {
+            emailErrorMessage.textContent = '';
+        }
+    });
+});
+
+document.getElementById('donationForm').addEventListener('submit', async function(event) {
     event.preventDefault();
     
     const nome = document.getElementById('nome').value.trim();
@@ -191,20 +214,13 @@
         return;
     }
 
-
-            
-  
-         const formattedBooks = books.map((book, index) => 
-    `<em>Libro ${index + 1}:</em><br>` +  // Titolo del libro in corsivo
-    `<strong>Titolo/Autore:</strong> ${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}<br>` +
-    `<strong>Editore:</strong> ${book.publisher}<br>` +
-    `<strong>Anno:</strong> ${book.year}<br>` +
-    `<strong>ISBN:</strong> ${book.isbn}<br><br>`  // Aggiunta di uno spazio extra tra i libri
-).join('');
-
-
-            
-            
+    const formattedBooks = books.map((book, index) => 
+        `<em>Libro ${index + 1}:</em><br>` +
+        `<strong>Titolo/Autore:</strong> ${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}<br>` +
+        `<strong>Editore:</strong> ${book.publisher}<br>` +
+        `<strong>Anno:</strong> ${book.year}<br>` +
+        `<strong>ISBN:</strong> ${book.isbn}<br><br>`
+    ).join('');
 
     const submitButton = event.target.querySelector('button[type="submit"]');
     submitButton.disabled = true;
@@ -238,6 +254,7 @@
         submitButton.textContent = 'Invia Donazione';
     }
 });
+
 
 
 
