@@ -194,13 +194,13 @@
 
             
             
-          // Updated formatting for books in email
+// Updated formatting for books in email
 const formattedBooks = books.map((book, index) => 
     `Libro ${index + 1}:\n` +
-    ` - **Titolo/Autore**: ${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}\n` +
-    ` - **Editore**: ${book.publisher}\n` +
-    ` - **Anno**: ${book.year}\n` +
-    ` - **ISBN**: ${book.isbn}\n`
+    ` - Titolo/Autore: ${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}\n` +
+    ` - Editore: ${book.publisher}\n` +
+    ` - Anno: ${book.year}\n` +
+    ` - ISBN: ${book.isbn}\n`
 ).join('\n');
 
 
