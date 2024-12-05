@@ -82,12 +82,12 @@
             bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
             bookCount++;
 
-            bookDiv.innerHTML = 
+            bookDiv.innerHTML = `
                 <div class="flex justify-between items-center mb-4">
                     <span class="book-counter flex items-center justify-center w-6 h-6 rounded-full text-white font-semibold text-sm" style="background-color: rgb(34, 197, 94)">${bookCount}</span>
-                    ${bookCount > 1 ? 
+                    ${bookCount > 1 ? `
                         <button type="button" class="px-3 py-2 text-red-600 hover:text-red-700 font-bold text-2xl" onclick="removeBook(this)">✖</button>
-                     : ''}
+                    ` : ''}
                 </div>
                 
                 <div class="mb-5">
@@ -112,7 +112,7 @@
                 </div>
                 
                 <button type="button" class="w-full px-4 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition-colors mt-2" onclick="createBookEntry()">+ Aggiungi Libro</button>
-            ;
+            `;
             document.getElementById('bookList').appendChild(bookDiv);
             updateBookCounters();
         }
@@ -195,11 +195,11 @@
             
   
          const formattedBooks = books.map((book, index) => 
-    <em>Libro ${index + 1}:</em><br> +  // Titolo del libro in corsivo
-    <strong>Titolo/Autore:</strong> ${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}<br> +
-    <strong>Editore:</strong> ${book.publisher}<br> +
-    <strong>Anno:</strong> ${book.year}<br> +
-    <strong>ISBN:</strong> ${book.isbn}<br><br>  // Aggiunta di uno spazio extra tra i libri
+    `<em>Libro ${index + 1}:</em><br>` +  // Titolo del libro in corsivo
+    `<strong>Titolo/Autore:</strong> ${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}<br>` +
+    `<strong>Editore:</strong> ${book.publisher}<br>` +
+    `<strong>Anno:</strong> ${book.year}<br>` +
+    `<strong>ISBN:</strong> ${book.isbn}<br><br>`  // Aggiunta di uno spazio extra tra i libri
 ).join('');
 
 
@@ -216,7 +216,7 @@
             'template_s1jmd7r', 
             {
                 to_email: 'bibliotecamorante@gmail.com',
-                from_name: ${nome} ${cognome},
+                from_name: `${nome} ${cognome}`,
                 from_email: email,
                 tessera: tessera || 'Non specificata',
                 telefono: telefono || 'Non specificato',
@@ -232,7 +232,7 @@
         createBookEntry();
     } catch (error) {
         console.error('Errore dettagliato durante l\'invio:', error);
-        alert(Si è verificato un errore durante l'invio: ${error.text || error.message});
+        alert(`Si è verificato un errore durante l'invio: ${error.text || error.message}`);
     } finally {
         submitButton.disabled = false;
         submitButton.textContent = 'Invia Donazione';
