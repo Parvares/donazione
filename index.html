@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 text-gray-800 leading-relaxed p-5">
+    <!-- Previous HTML remains unchanged until the script section -->
     <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
         <div class="flex flex-col items-center justify-center mb-10 text-center space-y-4 px-4">
             <img 
@@ -188,44 +189,31 @@
                 return;
             }
 
-
-            
-       const formattedBooks = `Dati Donatore:
-- Nome: ${nome}
-- Cognome: ${cognome}
-- Email: ${email}
-- Tessera: ${tessera || 'Non specificata'}
-- Telefono: ${telefono || 'Non specificato'}
-
-Libri Donati:
-┌────────────────┬────────────────┬────────────────┬────────┬─────────────┐
-│ Titolo         │ Autore         │ Editore        │ Anno   │ ISBN        │
-├────────────────┼────────────────┼────────────────┼────────┼─────────────┤
-${books.map(book => 
-`│ ${book.title.padEnd(14)}│ ${book.author.padEnd(14)}│ ${book.publisher.padEnd(14)}│ ${book.year.padEnd(8)}│ ${book.isbn.padEnd(11)}│`
-).join('\n')}
-└────────────────┴────────────────┴────────────────┴────────┴─────────────┘`;
-
-
-            
+            // Updated formatting for books in email
+            const formattedBooks = books.map((book, index) => 
+                `Libro ${index + 1}:\n` +
+                `- Titolo: ${book.title}${book.author !== 'Non specificato' ? ' di ' + book.author : ''}\n` +
+                `- Editore: ${book.publisher}\n` +
+                `- Anno: ${book.year}\n` +
+                `- ISBN: ${book.isbn}\n`
+            ).join('\n');
 
             const submitButton = event.target.querySelector('button[type="submit"]');
             submitButton.disabled = true;
             submitButton.textContent = 'Invio in corso...';
 
             try {
-                
                 await emailjs.send(
-    'service_yepi8uu',
-    'template_s1jmd7r', 
-    {
-        to_email: 'bibliotecamorante@gmail.com',
-        from_name: `${nome} ${cognome}`,
-        from_email: email,
-        tessera: tessera || 'Non specificata',
-        telefono: telefono || 'Non specificato',
-        books: formattedBooks
-    }
+                    'service_yepi8uu',
+                    'template_s1jmd7r', 
+                    {
+                        to_email: 'bibliotecamorante@gmail.com',
+                        from_name: `${nome} ${cognome}`,
+                        from_email: email,
+                        tessera: tessera || 'Non specificata',
+                        telefono: telefono || 'Non specificato',
+                        books: formattedBooks
+                    }
                 );
 
                 alert('La tua donazione è stata inviata con successo!');
