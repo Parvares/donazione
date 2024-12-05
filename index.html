@@ -194,13 +194,13 @@
 
             
   
-            const formattedBooks = books.map((book, index) => 
-    `Libro ${index + 1}:\n` +
-    `<strong>Titolo/Autore:</strong> ${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}\n` +
-    `<strong>Editore:</strong> ${book.publisher}\n` +
-    `<strong>Anno:</strong> ${book.year}\n` +
-    `<strong>ISBN:</strong> ${book.isbn}\n`
-).join('\n');
+          const formattedBooks = books.map((book, index) => 
+    `Libro ${index + 1}:<br>` +
+    `<strong>Titolo/Autore:</strong> ${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}<br>` +
+    `<strong>Editore:</strong> ${book.publisher}<br>` +
+    `<strong>Anno:</strong> ${book.year}<br>` +
+    `<strong>ISBN:</strong> ${book.isbn}<br>`
+).join('<br>');
 
             
             
