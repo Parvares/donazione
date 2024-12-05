@@ -132,6 +132,19 @@
             });
         }
 
+        function formatBooks(books) {
+            return books.map((book, index) => `
+                <div style="margin-bottom: 20px; padding: 10px; background-color: #f8f9fa; border-radius: 5px;">
+                    <h3 style="color: #1a73e8; margin: 0 0 10px 0;">Libro ${index + 1}</h3>
+                    <p style="margin: 5px 0;"><strong>Titolo:</strong> ${book.title}</p>
+                    <p style="margin: 5px 0;"><strong>Autore:</strong> ${book.author}</p>
+                    <p style="margin: 5px 0;"><strong>Editore:</strong> ${book.publisher}</p>
+                    <p style="margin: 5px 0;"><strong>Anno:</strong> ${book.year}</p>
+                    <p style="margin: 5px 0;"><strong>ISBN:</strong> ${book.isbn}</p>
+                </div>
+            `).join('');
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             createBookEntry();
 
@@ -261,12 +274,17 @@
                     'service_yepi8uu',
                     'template_s1jmd7r', 
                     {
+                        to
+await emailjs.send(
+                    'service_yepi8uu',
+                    'template_s1jmd7r', 
+                    {
                         to_email: 'bibliotecamorante@gmail.com',
                         from_name: `${nome} ${cognome}`,
                         from_email: email,
                         tessera: tessera || 'Non specificata',
                         telefono: telefono || 'Non specificato',
-                        books: JSON.stringify(books, null, 2)
+                        books: formatBooks(books)  // Usa la funzione di formattazione HTML
                     }
                 );
 
