@@ -6,6 +6,14 @@
     <title>Donazione alla Biblioteca Elsa Morante</title>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .selectable-field {
+            user-select: all;
+            -webkit-user-select: all;
+            -moz-user-select: all;
+            -ms-user-select: all;
+        }
+    </style>
 </head>
 <body class="bg-gray-100 text-gray-800 leading-relaxed p-5">
     <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
@@ -69,7 +77,7 @@
     </div>
 
     <script>
-        // Initialize EmailJS with your public key
+        // Initialize EmailJS
         (function() {
             emailjs.init("z6OeY42qSulJ-8EcS");
         })();
@@ -91,11 +99,17 @@
                 
                 <div class="mb-5">
                     <label class="block mb-1 text-slate-700 font-medium">Titolo: *</label>
-                    <input type="text" class="book-title w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" required>
+                    <div class="flex items-center">
+                        <input type="text" class="book-title w-full px-3 py-2 border-2 border-gray-300 rounded-l focus:border-blue-500 focus:outline-none text-base selectable-field" required>
+                        <button type="button" class="px-3 py-2 bg-gray-200 border-2 border-l-0 border-gray-300 rounded-r hover:bg-gray-300" onclick="copyToClipboard(this.previousElementSibling)">📋</button>
+                    </div>
                 </div>
                 <div class="mb-5">
                     <label class="block mb-1 text-slate-700 font-medium">Autore:</label>
-                    <input type="text" class="book-author w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                    <div class="flex items-center">
+                        <input type="text" class="book-author w-full px-3 py-2 border-2 border-gray-300 rounded-l focus:border-blue-500 focus:outline-none text-base selectable-field">
+                        <button type="button" class="px-3 py-2 bg-gray-200 border-2 border-l-0 border-gray-300 rounded-r hover:bg-gray-300" onclick="copyToClipboard(this.previousElementSibling)">📋</button>
+                    </div>
                 </div>
                 <div class="mb-5">
                     <label class="block mb-1 text-slate-700 font-medium">Editore:</label>
@@ -114,6 +128,18 @@
             `;
             document.getElementById('bookList').appendChild(bookDiv);
             updateBookCounters();
+        }
+
+        function copyToClipboard(element) {
+            element.select();
+            document.execCommand('copy');
+            
+            // Feedback visivo
+            const originalBg = element.style.backgroundColor;
+            element.style.backgroundColor = '#e2f0ff';
+            setTimeout(() => {
+                element.style.backgroundColor = originalBg;
+            }, 200);
         }
 
         function removeBook(button) {
@@ -188,14 +214,16 @@
                 return;
             }
 
-            // Crea una stringa ben formattata per i libri
+            // Formattazione migliorata per l'email
             const formattedBooks = books.map((book, index) => 
-                `Libro ${index + 1}:\n` +
-                `- Titolo: ${book.title}\n` +
-                `- Autore: ${book.author}\n` +
-                `- Editore: ${book.publisher}\n` +
-                `- Anno: ${book.year}\n` +
-                `- ISBN: ${book.isbn}\n`
+                `📚 LIBRO ${index + 1}\n` +
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
+                `📖 Titolo:   ${book.title}\n` +
+                `✍️ Autore:   ${book.author}\n` +
+                `🏢 Editore:  ${book.publisher}\n` +
+                `📅 Anno:     ${book.year}\n` +
+                `🔢 ISBN:     ${book.isbn}\n` +
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`
             ).join('\n');
 
             const submitButton = event.target.querySelector('button[type="submit"]');
