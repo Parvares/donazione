@@ -190,13 +190,18 @@
             }
 
             // Updated formatting for books in email
+
+            
             const formattedBooks = books.map((book, index) => 
-                `Libro ${index + 1}:\n` +
-                `- Titolo: ${book.title}${book.author !== 'Non specificato' ? ' di ' + book.author : ''}\n` +
-                `- Editore: ${book.publisher}\n` +
-                `- Anno: ${book.year}\n` +
-                `- ISBN: ${book.isbn}\n`
-            ).join('\n');
+    `Libro ${index + 1}:\n` +
+    `- **Titolo/Autore**: ${book.title}${book.author !== 'Non specificato' ? ' / ' + book.author : ''}\n` +
+    `- **Editore**: ${book.publisher}\n` +
+    `- **Anno**: ${book.year}\n` +
+    `- **ISBN**: ${book.isbn}\n`
+).join('\n');
+
+
+            
 
             const submitButton = event.target.querySelector('button[type="submit"]');
             submitButton.disabled = true;
