@@ -193,16 +193,16 @@
 
 
             
-   const formattedBooks = books.map((book, index) => 
+  
+            const formattedBooks = books.map((book, index) => 
     `Libro ${index + 1}:\n` +
-    `- Titolo/Autore: ${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}\n` +
-    `- Editore: ${book.publisher}\n` +
-    `- Anno: ${book.year}\n` +
-    `- ISBN: ${book.isbn}\n`
+    `<strong>Titolo/Autore:</strong> ${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}\n` +
+    `<strong>Editore:</strong> ${book.publisher}\n` +
+    `<strong>Anno:</strong> ${book.year}\n` +
+    `<strong>ISBN:</strong> ${book.isbn}\n`
 ).join('\n');
 
-
-
+            
             
 
     const submitButton = event.target.querySelector('button[type="submit"]');
