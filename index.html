@@ -150,92 +150,91 @@
             });
         });
 
+
+        
         document.getElementById('donationForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-            
-            const nome = document.getElementById('nome').value.trim();
-            const cognome = document.getElementById('cognome').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const tessera = document.getElementById('tessera').value.trim();
-            const telefono = document.getElementById('telefono').value.trim();
-            const acceptCheckbox = document.getElementById('accept');
-            
-            if (!nome || !cognome || !email || !acceptCheckbox.checked) {
-                alert('Per favore compila tutti i campi obbligatori e accetta i termini.');
-                return;
-            }
+    event.preventDefault();
+    
+    const nome = document.getElementById('nome').value.trim();
+    const cognome = document.getElementById('cognome').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const tessera = document.getElementById('tessera').value.trim();
+    const telefono = document.getElementById('telefono').value.trim();
+    const acceptCheckbox = document.getElementById('accept');
+    
+    if (!nome || !cognome || !email || !acceptCheckbox.checked) {
+        alert('Per favore compila tutti i campi obbligatori e accetta i termini.');
+        return;
+    }
 
-            const books = [];
-            const bookEntries = document.querySelectorAll('.book-entry');
-            
-            for (const bookDiv of bookEntries) {
-                const title = bookDiv.querySelector('.book-title').value.trim();
-                if (!title) {
-                    alert('Per favore inserisci almeno il titolo per ogni libro.');
-                    return;
-                }
-                
-                books.push({
-                    title: title,
-                    author: bookDiv.querySelector('.book-author').value.trim() || 'Non specificato',
-                    publisher: bookDiv.querySelector('.book-publisher').value.trim() || 'Non specificato',
-                    year: bookDiv.querySelector('.book-year').value.trim() || 'Non specificato',
-                    isbn: bookDiv.querySelector('.book-isbn').value.trim() || 'Non specificato'
-                });
-            }
-
-            if (books.length === 0) {
-                alert('Aggiungi almeno un libro alla donazione.');
-                return;
-            }
-
-            // Updated formatting for books in email
-
-
-            
-            
-// Updated formatting for books in email
-const formattedBooks = books.map((book, index) => 
-    `Libro ${index + 1}:\n` +
-    `- **Titolo/Autore**: ${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}\n` +
-    `- **Editore**: ${book.publisher}\n` +
-    `- **Anno**: ${book.year}\n` +
-    `- **ISBN**: ${book.isbn}\n`
-).join('\n');
-
-           
-
-            const submitButton = event.target.querySelector('button[type="submit"]');
-            submitButton.disabled = true;
-            submitButton.textContent = 'Invio in corso...';
-
-            try {
-                await emailjs.send(
-                    'service_yepi8uu',
-                    'template_s1jmd7r', 
-                    {
-                        to_email: 'bibliotecamorante@gmail.com',
-                        from_name: `${nome} ${cognome}`,
-                        from_email: email,
-                        tessera: tessera || 'Non specificata',
-                        telefono: telefono || 'Non specificato',
-                        books: formattedBooks
-                    }
-                );
-
-                alert('La tua donazione è stata inviata con successo!');
-                event.target.reset();
-                document.getElementById('bookList').innerHTML = '';
-                bookCount = 0;
-                createBookEntry();
-            } catch (error) {
-                alert('Si è verificato un errore durante l\'invio. Per favore riprova.');
-                console.error('EmailJS error:', error);
-            } finally {
-                submitButton.disabled = false;
-                submitButton.textContent = 'Invia Donazione';
-            }
+    const books = [];
+    const bookEntries = document.querySelectorAll('.book-entry');
+    
+    for (const bookDiv of bookEntries) {
+        const title = bookDiv.querySelector('.book-title').value.trim();
+        if (!title) {
+            alert('Per favore inserisci almeno il titolo per ogni libro.');
+            return;
+        }
+        
+        books.push({
+            title: title,
+            author: bookDiv.querySelector('.book-author').value.trim() || 'Non specificato',
+            publisher: bookDiv.querySelector('.book-publisher').value.trim() || 'Non specificato',
+            year: bookDiv.querySelector('.book-year').value.trim() || 'Non specificato',
+            isbn: bookDiv.querySelector('.book-isbn').value.trim() || 'Non specificato'
         });
+    }
+
+    if (books.length === 0) {
+        alert('Aggiungi almeno un libro alla donazione.');
+        return;
+    }
+
+    const formattedBooks = books.map((book, index) => 
+        `Libro ${index + 1}:\n` +
+        `- **Titolo/Autore**: ${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}\n` +
+        `- **Editore**: ${book.publisher}\n` +
+        `- **Anno**: ${book.year}\n` +
+        `- **ISBN**: ${book.isbn}\n`
+    ).join('\n');
+
+    const submitButton = event.target.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    submitButton.textContent = 'Invio in corso...';
+
+    try {
+        const response = await emailjs.send(
+            'service_yepi8uu',
+            'template_s1jmd7r', 
+            {
+                to_email: 'bibliotecamorante@gmail.com',
+                from_name: `${nome} ${cognome}`,
+                from_email: email,
+                tessera: tessera || 'Non specificata',
+                telefono: telefono || 'Non specificato',
+                books: formattedBooks
+            }
+        );
+
+        console.log('Email inviata con successo:', response);
+        alert('La tua donazione è stata inviata con successo!');
+        event.target.reset();
+        document.getElementById('bookList').innerHTML = '';
+        bookCount = 0;
+        createBookEntry();
+    } catch (error) {
+        console.error('Errore dettagliato durante l\'invio:', error);
+        alert(`Si è verificato un errore durante l'invio: ${error.text || error.message}`);
+    } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Invia Donazione';
+    }
+});
+
+
+
+        
     </script>
 </body>
 </html>
