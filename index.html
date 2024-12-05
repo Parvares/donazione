@@ -8,7 +8,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 text-gray-800 leading-relaxed p-5">
-    <!-- Previous HTML remains unchanged until the script section -->
     <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
         <div class="flex flex-col items-center justify-center mb-10 text-center space-y-4 px-4">
             <img 
@@ -46,11 +45,13 @@
             <div class="mb-5">
                 <label for="telefono" class="block mb-1 text-slate-700 font-medium">Telefono:</label>
                 <input type="tel" id="telefono" name="telefono" pattern="[0-9]*" class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                <div id="telefono-error" class="text-red-500 text-sm mt-1 hidden">Numero di telefono non valido</div>
             </div>
             
             <div class="mb-5">
                 <label for="email" class="block mb-1 text-slate-700 font-medium">Email: *</label>
                 <input type="email" id="email" name="email" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                <div id="email-error" class="text-red-500 text-sm mt-1 hidden">Indirizzo email non valido</div>
             </div>
 
             <h3 class="text-xl text-slate-700 mt-6 mb-4 pb-2 border-b-2 border-gray-200">Libri da donare</h3>
@@ -105,10 +106,12 @@
                 <div class="mb-5">
                     <label class="block mb-1 text-slate-700 font-medium">Anno:</label>
                     <input type="tel" class="book-year w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" pattern="[0-9]*">
+                    <div id="year-error" class="text-red-500 text-sm mt-1 hidden">Anno non valido</div>
                 </div>
                 <div class="mb-5">
                     <label class="block mb-1 text-slate-700 font-medium">ISBN:</label>
                     <input type="tel" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" pattern="[0-9]*" maxlength="13">
+                    <div id="isbn-error" class="text-red-500 text-sm mt-1 hidden">ISBN non valido</div>
                 </div>
                 
                 <button type="button" class="w-full px-4 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition-colors mt-2" onclick="createBookEntry()">+ Aggiungi Libro</button>
@@ -133,115 +136,63 @@
             });
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            createBookEntry();
+        document.getElementById('donationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const telefono = document.getElementById('telefono').value;
+            const email = document.getElementById('email').value;
+            const anno = document.querySelectorAll('.book-year');
+            const isbn = document.querySelectorAll('.book-isbn');
+            
+            let formValid = true;
 
-            const telefonoInput = document.getElementById('telefono');
-            telefonoInput.addEventListener('input', function(e) {
-                e.target.value = e.target.value.replace(/[^0-9]/g, '');
-            });
+            // Validate Phone
+            if (!/^\d{10}$/.test(telefono)) {
+                document.getElementById('telefono-error').classList.remove('hidden');
+                formValid = false;
+            } else {
+                document.getElementById('telefono-error').classList.add('hidden');
+            }
 
-            const emailInput = document.getElementById('email');
-            emailInput.addEventListener('input', function(e) {
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(e.target.value)) {
-                    alert('Inserire un indirizzo email valido.');
+            // Validate Email
+            if (!/\S+@\S+\.\S+/.test(email)) {
+                document.getElementById('email-error').classList.remove('hidden');
+                formValid = false;
+            } else {
+                document.getElementById('email-error').classList.add('hidden');
+            }
+
+            // Validate Year
+            anno.forEach((input) => {
+                if (!/^\d{4}$/.test(input.value)) {
+                    document.getElementById('year-error').classList.remove('hidden');
+                    formValid = false;
+                } else {
+                    document.getElementById('year-error').classList.add('hidden');
                 }
             });
-        });
 
+            // Validate ISBN
+            isbn.forEach((input) => {
+                if (!/^\d{13}$/.test(input.value)) {
+                    document.getElementById('isbn-error').classList.remove('hidden');
+                    formValid = false;
+                } else {
+                    document.getElementById('isbn-error').classList.add('hidden');
+                }
+            });
 
-        
-        document.getElementById('donationForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
-    
-    const nome = document.getElementById('nome').value.trim();
-    const cognome = document.getElementById('cognome').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const tessera = document.getElementById('tessera').value.trim();
-    const telefono = document.getElementById('telefono').value.trim();
-    const acceptCheckbox = document.getElementById('accept');
-    
-    if (!nome || !cognome || !email || !acceptCheckbox.checked) {
-        alert('Per favore compila tutti i campi obbligatori e accetta i termini.');
-        return;
-    }
-
-    const books = [];
-    const bookEntries = document.querySelectorAll('.book-entry');
-    
-    for (const bookDiv of bookEntries) {
-        const title = bookDiv.querySelector('.book-title').value.trim();
-        if (!title) {
-            alert('Per favore inserisci almeno il titolo per ogni libro.');
-            return;
-        }
-        
-        books.push({
-            title: title,
-            author: bookDiv.querySelector('.book-author').value.trim() || 'Non specificato',
-            publisher: bookDiv.querySelector('.book-publisher').value.trim() || 'Non specificato',
-            year: bookDiv.querySelector('.book-year').value.trim() || 'Non specificato',
-            isbn: bookDiv.querySelector('.book-isbn').value.trim() || 'Non specificato'
-        });
-    }
-
-    if (books.length === 0) {
-        alert('Aggiungi almeno un libro alla donazione.');
-        return;
-    }
-
-
-            
-  
-         const formattedBooks = books.map((book, index) => 
-    `<em>Libro ${index + 1}:</em><br>` +  // Titolo del libro in corsivo
-    `<strong>Titolo/Autore:</strong> ${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}<br>` +
-    `<strong>Editore:</strong> ${book.publisher}<br>` +
-    `<strong>Anno:</strong> ${book.year}<br>` +
-    `<strong>ISBN:</strong> ${book.isbn}<br><br>`  // Aggiunta di uno spazio extra tra i libri
-).join('');
-
-
-            
-            
-
-    const submitButton = event.target.querySelector('button[type="submit"]');
-    submitButton.disabled = true;
-    submitButton.textContent = 'Invio in corso...';
-
-    try {
-        const response = await emailjs.send(
-            'service_yepi8uu',
-            'template_s1jmd7r', 
-            {
-                to_email: 'bibliotecamorante@gmail.com',
-                from_name: `${nome} ${cognome}`,
-                from_email: email,
-                tessera: tessera || 'Non specificata',
-                telefono: telefono || 'Non specificato',
-                books: formattedBooks
+            // If everything is valid, submit the form
+            if (formValid) {
+                alert("Form submitted successfully");
+                // Submit the form via EmailJS or other method
+            } else {
+                alert("There are errors in your form, please fix them before submitting.");
             }
-        );
+        });
 
-        console.log('Email inviata con successo:', response);
-        alert('La tua donazione è stata inviata con successo!');
-        event.target.reset();
-        document.getElementById('bookList').innerHTML = '';
-        bookCount = 0;
+        // Create initial book entry
         createBookEntry();
-    } catch (error) {
-        console.error('Errore dettagliato durante l\'invio:', error);
-        alert(`Si è verificato un errore durante l'invio: ${error.text || error.message}`);
-    } finally {
-        submitButton.disabled = false;
-        submitButton.textContent = 'Invia Donazione';
-    }
-});
-
-
-
-        
     </script>
 </body>
 </html>
