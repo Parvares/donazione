@@ -13,13 +13,17 @@
            --bg: #f3f4f6;
        }
        
+       * {
+           box-sizing: border-box;
+       }
+       
        body {
            background-color: var(--bg);
            color: var(--text);
            font-family: 'Space Grotesk', sans-serif;
            margin: 0;
-           font-size: 20px;
-           line-height: 30px;
+           font-size: 16px;
+           line-height: 1.6;
            letter-spacing: normal;
            word-spacing: 0px;
        }
@@ -27,29 +31,29 @@
        header {
            background-color: var(--primary);
            color: #fff;
-           padding: 2rem 0;
-           min-height: 4cm;
+           padding: 2rem 1rem;
            display: flex;
-           justify-content: center;
+           flex-direction: column;
            align-items: center;
            position: relative;
-           flex-direction: column;
-           text-align: center;
        }
 
        .social-icons {
            position: absolute;
            top: 1rem;
            display: flex;
-           gap: 1rem;
            justify-content: center;
            width: 100%;
+           gap: 1rem;
        }
        
        .social-icons a {
            color: white;
            font-size: 1.5rem;
            transition: transform 0.3s ease;
+           display: flex;
+           align-items: center;
+           justify-content: center;
        }
        
        .social-icons a:hover {
@@ -58,42 +62,36 @@
        }
        
        .container {
-           max-width: 1200px;
-           margin: 0 auto;
-           padding: 0 2rem;
            display: flex;
            justify-content: center;
            align-items: center;
-           text-align: center;
+           gap: 1rem;
            flex-wrap: wrap;
-           gap: 1rem; 
+           max-width: 100%;
+           width: 100%;
+           padding: 0 1rem;
        }
        
- header img {
-   height: 70px;
-}
+       header img {
+           max-height: 70px;
+           width: auto;
+           object-fit: contain;
+       }
 
-header .logo-morante {
-   height: 180px;
-   filter: none;
-}
-       
-       header h1 {
-           color: var(--primary);
-           font-size: 2.5rem;
-           font-weight: 600;
-           margin: 0;
-           max-width: 800px;
-           line-height: 1.2;
+       header .logo-morante {
+           max-height: 180px;
+           width: auto;
+           object-fit: contain;
        }
        
        main {
            max-width: 800px;
            margin: 2rem auto;
-           padding: 2rem;
+           padding: 1rem;
            background-color: #fff;
            border-radius: 12px;
            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+           width: calc(100% - 2rem);
        }
        
        main h1 {
@@ -159,35 +157,42 @@ header .logo-morante {
            border-bottom-color: #fff;
        }
 
+       ol {
+           padding-left: 1.5rem;
+       }
+
        @media (max-width: 768px) {
-           header h1 {
-               font-size: 1.75rem;
+           body {
+               font-size: 16px;
            }
-           
-           header img {
-               height: 60px;
+
+           header {
+               padding: 1rem;
            }
-           
-           header .logo-morante {
-               height: 180px;
-           }
-           
-           .container {
-               justify-content: center; 
-               gap: 1rem; 
-           }
-           
+
            .social-icons {
+               position: relative;
                top: auto;
-               bottom: 1rem;
-               display: flex;
-               justify-content: center;
-               width: 100%;
+               bottom: auto;
+               margin-bottom: 1rem;
+           }
+
+           .container {
+               flex-direction: column;
+               align-items: center;
+           }
+
+           header img {
+               max-height: 60px;
+           }
+
+           header .logo-morante {
+               max-height: 150px;
            }
 
            main {
                margin: 1rem;
-               padding: 1.5rem;
+               padding: 1rem;
            }
        }
    </style>
@@ -252,22 +257,19 @@ header .logo-morante {
                Per valutare i titoli, ti preghiamo di seguire questi passaggi:
            </p>
           
-          
          <ol>
-    <li>
-        Compila l'apposito 
-        <a href="https://bibliotecamorante.github.io/donazione/" 
-           style="color: var(--primary); font-weight: bold;">modulo</a>.
-    </li>
-    <li>
-        Clicca sul pulsante 
-        <span style="color: var(--primary); font-weight: bold;">Invia Donazione</span> 
-        per trasmettere automaticamente la tua richiesta alla biblioteca.
-    </li>
-</ol>
-
+            <li>
+                Compila l'apposito 
+                <a href="https://bibliotecamorante.github.io/donazione/" 
+                   style="color: var(--primary); font-weight: bold;">modulo</a>.
+            </li>
+            <li>
+                Clicca sul pulsante 
+                <span style="color: var(--primary); font-weight: bold;">Invia Donazione</span> 
+                per trasmettere automaticamente la tua richiesta alla biblioteca.
+            </li>
+         </ol>
           
-           
            <p>
                Le opere accettate entreranno a far parte del patrimonio della biblioteca e non potranno essere reclamate. La catalogazione seguirà i tempi stabiliti dalla biblioteca secondo le priorità interne.
            </p>
