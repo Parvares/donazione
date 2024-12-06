@@ -172,24 +172,43 @@
            border-bottom-color: #fff;
        }
 
-       @media (max-width: 768px) {
-   body {
-       font-size: 20px; /* Mantenere la dimensione originale */
-       line-height: 1.5;
-       font-family: 'Space Grotesk', sans-serif; /* Assicurare Space Grotesk */
-   }
-           
-           header {
-               padding: 1rem 0;
-           }
-           
-           header img {
-               height: 60px;
-           }
-           
-           header .logo-morante {
-               height: 180px;
-           }
+       
+
+
+@media (max-width: 768px) {
+    header {
+        padding: 4rem 1rem 1rem; /* Added top padding for social icons */
+    }
+    
+    .social-icons {
+        top: 1rem; /* Keep icons at top */
+        bottom: auto; /* Remove bottom positioning */
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .container {
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        padding: 0 1rem;
+        flex-direction: row; /* Force horizontal alignment */
+    }
+    
+    header img {
+        height: 40px; /* Smaller size for first logo */
+    }
+    
+    header .logo-morante {
+        height: 40px; /* Match height of first logo */
+    }
+}
+
+
+
+
+      
            
            .container {
                justify-content: center; 
