@@ -9,32 +9,32 @@
     <style>
         /* Stili personalizzati per migliorare la formattazione */
         body {
-            line-height: 1.7; /* Increased line height for better readability */
-            color: #3a3a3a; /* Softer text color */
+            line-height: 1.7;
+            color: #3a3a3a;
         }
         h1, h3 {
-            font-family: 'Inter', sans-serif; /* Modern, clean font */
-            color: #2c3e50; /* Slightly softer heading color */
+            font-family: 'Inter', sans-serif;
+            color: #2c3e50;
         }
         input {
-            border-radius: 0.75rem; /* More rounded input corners */
-            transition: all 0.3s ease; /* Smoother transitions */
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
         }
         input:focus {
-            box-shadow: 0 0 10px rgba(59, 130, 246, 0.2); /* Subtle focus shadow */
-            border-color: #3b82f6; /* Consistent focus color */
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+            border-color: #3b82f6;
         }
         .error-message {
-            color: #dc2626; /* Softer error red */
+            color: #dc2626;
             display: flex;
             align-items: center;
         }
         .error-message::before {
-            content: '⚠️'; /* Warning icon */
+            content: '⚠️';
             margin-right: 0.5rem;
         }
         .book-entry {
-            transition: transform 0.3s, box-shadow 0.3s; /* Smooth hover effects */
+            transition: transform 0.3s, box-shadow 0.3s;
         }
         .book-entry:hover {
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -44,22 +44,24 @@
 <body class="bg-gray-100 text-gray-800 leading-relaxed p-5">
     <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
       
-      <!-- Header container with vertical layout and improved typography -->
+      <!-- Header container with side-by-side logos on mobile -->
       <div class="flex flex-col items-center justify-center mb-8 text-center space-y-4 px-2">
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-8">
+        <div class="flex flex-row items-center justify-center gap-4 sm:gap-8 w-full">
             <img 
                 src="https://raw.githubusercontent.com/bibliotecamorante/donazione/main/logo.png" 
                 alt="Logo Biblioteca" 
-                class="h-24 w-auto object-contain sm:h-16 md:h-20" />
+                class="h-20 w-auto object-contain" />
             <img 
                 src="https://raw.githubusercontent.com/bibliotecamorante/donazione/main/morantenero.png" 
                 alt="Logo Morante" 
-                class="h-56 w-auto object-contain sm:h-40 md:h-48" />
+                class="h-36 w-auto object-contain" />
         </div>
         <h1 class="text-3xl sm:text-3xl md:text-4xl text-slate-700 font-bold leading-tight text-center tracking-tight">
             Donazione alla Biblioteca Elsa Morante
         </h1>
     </div>
+
+
         
 
         <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r">
