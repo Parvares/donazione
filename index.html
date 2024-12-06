@@ -9,43 +9,40 @@
 </head>
 <body class="bg-gray-100 text-gray-800 leading-relaxed p-5">
     <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
-
         
-      <!-- Header container with vertical layout -->
+        <!-- Improved header section with enhanced typography -->
+        <div class="bg-blue-50 border-l-6 border-blue-600 p-5 mb-6 rounded-r-lg">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-blue-800 mb-3 leading-tight">
+                Donazione alla Biblioteca Elsa Morante
+            </h1>
+            <p class="text-base sm:text-lg text-slate-700 leading-relaxed">
+                Compila il modulo per donare i tuoi libri alla biblioteca. 
+                <span class="font-bold text-red-600">* I campi contrassegnati con asterisco sono obbligatori</span>
+            </p>
+        </div>
 
-        
-
-
-<!-- Header container with improved logo positioning -->
-<div class="flex flex-col items-center justify-center mb-2 text-center space-y-1 px-2 mt-0">
-    <div class="flex flex-row items-center justify-center gap-0.5 sm:gap-1">
-        <img 
-            src="https://raw.githubusercontent.com/bibliotecamorante/donazione/main/logo.png" 
-            alt="Logo Biblioteca" 
-            class="h-8 w-auto object-contain sm:h-12 md:h-14 ml-2" />
-        <img 
-            src="https://raw.githubusercontent.com/bibliotecamorante/donazione/main/morantenero.png" 
-            alt="Logo Morante" 
-            class="h-20 w-auto object-contain sm:h-32 md:h-36" />
-    </div>
-    <h1 class="text-xl sm:text-2xl md:text-3xl text-slate-700 font-bold leading-tight text-center">
-        Donazione alla Biblioteca Elsa Morante
-    </h1>
-</div>
-
-
-
-
-
-        
-        
-
-        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r">
-            Compila il modulo per donare i tuoi libri alla biblioteca. I campi contrassegnati con * sono obbligatori
+        <!-- Header container with improved logo positioning -->
+        <div class="flex flex-col items-center justify-center mb-2 text-center space-y-1 px-2 mt-0">
+            <div class="flex flex-row items-center justify-center gap-0.5 sm:gap-1">
+                <img 
+                    src="https://raw.githubusercontent.com/bibliotecamorante/donazione/main/logo.png" 
+                    alt="Logo Biblioteca" 
+                    class="h-8 w-auto object-contain sm:h-12 md:h-14 ml-2" />
+                <img 
+                    src="https://raw.githubusercontent.com/bibliotecamorante/donazione/main/morantenero.png" 
+                    alt="Logo Morante" 
+                    class="h-20 w-auto object-contain sm:h-32 md:h-36" />
+            </div>
         </div>
 
         <form id="donationForm" novalidate>
-            <h3 class="text-xl text-slate-700 mt-6 mb-4 pb-2 border-b-2 border-gray-200">Dati Personali</h3>
+            <!-- Improved section headers with icons and styling -->
+            <h3 class="text-2xl text-blue-800 mt-8 mb-4 pb-3 border-b-4 border-blue-300 font-semibold">
+                <svg class="inline-block w-6 h-6 mr-2 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                </svg>
+                Dati Personali
+            </h3>
             
             <div class="mb-5">
                 <label for="nome" class="block mb-1 text-slate-700 font-medium">Nome: *</label>
@@ -76,7 +73,12 @@
                 <p class="hidden error-message text-sm text-red-500 mt-1">Inserire un indirizzo email valido</p>
             </div>
 
-            <h3 class="text-xl text-slate-700 mt-6 mb-4 pb-2 border-b-2 border-gray-200">Libri da donare</h3>
+<h3 class="text-2xl text-blue-800 mt-8 mb-4 pb-3 border-b-4 border-blue-300 font-semibold">
+                <svg class="inline-block w-6 h-6 mr-2 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M21 5c-1.11-0.35-2.33-0.5-3.5-0.5-1.95 0-4.05 0.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 0.25 0.25 0.5 0.5 0.5 0.1 0 0.15-0.05 0.25-0.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05 0.4 5.5 1.5 1.35-0.85 3.8-1.5 5.5-1.5 1.65 0 3.35 0.3 4.75 1.05 0.1 0.05 0.25 0.05 0.25-0.05V6c-0.6-0.45-1.25-0.75-2-0.95zM21 18.5c-1.1-0.35-2.3-0.5-3.5-0.5-1.7 0-4.15 0.65-5.5 1.5V8c1.35-0.85 3.8-1.5 5.5-1.5 1.2 0 2.4 0.15 3.5 0.5v11.5z"/>
+                </svg>
+                Libri da donare
+            </h3>
             <div id="bookList"></div>
             
             <div class="bg-gray-50 p-4 rounded mb-5">
