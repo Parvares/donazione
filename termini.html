@@ -177,15 +177,20 @@
 
 @media (max-width: 768px) {
     header {
-        padding: 4rem 1rem 1rem; /* Added top padding for social icons */
+        padding-top: 3.5rem; /* Aumentato per dare più spazio alle social icons */
+        position: relative;
     }
     
     .social-icons {
-        top: 1rem; /* Keep icons at top */
-        bottom: auto; /* Remove bottom positioning */
+        position: absolute;
+        top: 0.5rem; /* Ridotto per avvicinare al bordo superiore */
+        left: 0;
         display: flex;
         justify-content: center;
         width: 100%;
+        background-color: var(--primary); /* Assicura che lo sfondo sia coerente */
+        padding: 0.5rem 0;
+        z-index: 10; /* Assicura che le icone stiano sopra */
     }
     
     .container {
@@ -193,15 +198,16 @@
         align-items: center;
         gap: 1rem;
         padding: 0 1rem;
-        flex-direction: row; /* Force horizontal alignment */
+        flex-direction: row;
+        margin-top: 0.5rem; /* Spazio aggiuntivo sotto le social icons */
     }
     
     header img {
-        height: 40px; /* Smaller size for first logo */
+        height: 40px; /* Logo Biblioteche di Roma */
     }
     
     header .logo-morante {
-        height: 40px; /* Match height of first logo */
+        height: 60px; /* Logo Morante più grande */
     }
 }
 
