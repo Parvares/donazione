@@ -34,8 +34,9 @@
            letter-spacing: normal;
            word-spacing: 0px;
        }
-       
-      header {
+
+/* Desktop header */
+header {
     background-color: var(--primary);
     color: #fff;
     padding: 2rem 0;
@@ -55,17 +56,6 @@
     gap: 1rem;
     justify-content: center;
     width: 100%;
-}
-
-.social-icons a {
-    color: white;
-    font-size: 1.5rem;
-    transition: transform 0.3s ease;
-}
-
-.social-icons a:hover {
-    transform: scale(1.2);
-    border-bottom: none;
 }
 
 .container {
@@ -91,6 +81,49 @@ header .logo-morante {
     max-width: 100%;
 }
 
+/* Mobile styles */
+@media (max-width: 768px) {
+    main {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+
+    header {
+        display: flex;
+        flex-direction: column;
+        padding: 4rem 1rem 1rem; /* Aumentato padding top per le social icons */
+    }
+    
+    .social-icons {
+        position: fixed; /* Cambiato da absolute a fixed */
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: var(--primary);
+        padding: 0.5rem 0;
+        z-index: 1000; /* Aumentato z-index per assicurarsi che stia sopra */
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .container {
+        margin-top: 1rem;
+        padding: 0 1rem;
+        flex-direction: row;
+        align-items: center;
+    }
+    
+    header img {
+        height: 40px;
+    }
+    
+    header .logo-morante {
+        height: 80px; /* Aumentato da 60px a 80px */
+    }
+}
+      
+
+
+      
 /* Mobile styles */
 @media (max-width: 768px) {
     header {
@@ -137,14 +170,18 @@ header .logo-morante {
            line-height: 1.2;
        }
        
-       main {
-           max-width: 800px;
-           margin: 2rem auto;
-           padding: 2rem;
-           background-color: #fff;
-           border-radius: 12px;
-           box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-       }
+      Updated Complete Layout CSS
+
+/* Main content styles */
+main {
+    width: 100%;
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
        
        main h1 {
            color: var(--primary);
