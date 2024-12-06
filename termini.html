@@ -311,30 +311,10 @@
 
 // Seleziona il link del modulo
 document.querySelector('a[href="https://bibliotecamorante.github.io/donazione/"]').addEventListener('click', function(event) {
-    // Previene il comportamento predefinito del link
     event.preventDefault();
-    
-    // Crea un nuovo link temporaneo
-    const newLink = document.createElement('a');
-    newLink.href = this.href;
-    
-    // Imposta gli attributi per l'apertura in background
-    newLink.rel = 'noopener noreferrer';
-    newLink.target = '_blank';
-    
-    // Simula il click con il parametro specifico per l'apertura in background
-    const clickEvent = new MouseEvent('click', {
-        ctrlKey: true,  // Simula il tasto CTRL premuto
-        metaKey: true,  // Per compatibilità con Mac
-        bubbles: true,
-        cancelable: true,
-        view: window
-    });
-    
-    // Esegue il click simulato
-    newLink.dispatchEvent(clickEvent);
+    window.open(this.href, '_blank', 'noopener,noreferrer,location=yes,status=yes');
+    window.focus();
 });
-
    
 </script>
 
