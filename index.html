@@ -4,226 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Donazione alla Biblioteca Elsa Morante</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <style>
-        :root {
-            --primary: #970a2c;
-            --text: #180207;
-            --bg: #f3f4f6;
-        }
-        
-        * {
-            max-width: 100%;
-            box-sizing: border-box;
-        }
-        
-        html, body {
-            width: 100%;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-            font-family: 'Space Grotesk', sans-serif;
-        }
-        
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-size: 20px;
-            line-height: 30px;
-        }
-        
-        header {
-            background-color: var(--primary);
-            color: #fff;
-            padding: 2rem 0;
-            min-height: 4cm;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            flex-direction: column;
-            text-align: center;
-        }
-        
-        .social-icons {
-            position: absolute;
-            top: 1rem;
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            width: 100%;
-        }
-        
-        .social-icons a {
-            color: white;
-            font-size: 1.5rem;
-            transition: transform 0.3s ease;
-        }
-        
-        .social-icons a:hover {
-            transform: scale(1.2);
-            border-bottom: none;
-        }
-        
-        header .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1.5rem;
-        }
-        
-        header img {
-            height: 70px;
-            max-width: 100%;
-        }
-        
-        header .logo-morante {
-            height: 180px;
-            filter: none;
-            max-width: 100%;
-        }
-        
-        main {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        input, button {
-            font-family: 'Space Grotesk', sans-serif;
-        }
-        
-        .book-entry {
-            background-color: #f9f9f9;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .book-counter {
-            background-color: var(--primary);
-            color: white;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            font-weight: bold;
-        }
-        
-        @media (max-width: 768px) {
-            body {
-                font-size: 16px;
-                line-height: 1.5;
-            }
-            
-            header {
-                min-height: auto;
-                padding: 1rem 0;
-            }
-            
-            header .container {
-                gap: 1rem;
-            }
-            
-            header img {
-                height: 50px;
-            }
-            
-            header .logo-morante {
-                height: 120px;
-            }
-            
-            main {
-                margin: 1rem;
-                padding: 1.5rem;
-            }
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <header>
-        <div class="social-icons">
-            <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook">
-                <i class="fab fa-facebook"></i>
-            </a>
-            <a href="https://www.instagram.com/bibliotecaelsamorante/" target="_blank" aria-label="Instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="https://x.com/bibliomorante" target="_blank" aria-label="X">
-                <i class="fab fa-x-twitter"></i>
-            </a>
-            <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank" aria-label="YouTube">
-                <i class="fab fa-youtube"></i>
-            </a>
-        </div>
-        <div class="container">
-            <img src="https://raw.githubusercontent.com/bibliotecamorante/donazione/main/logobianco.png" alt="Logo Biblioteche di Roma">
-            <img class="logo-morante" src="https://raw.githubusercontent.com/bibliotecamorante/donazione/main/logomorante.png" alt="Logo Biblioteca Morante">
-        </div>
-    </header>
+<body class="bg-gray-100 text-gray-800 leading-relaxed p-5">
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
 
-    <main>
-        <h1 style="color: var(--primary); text-align: center; border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem;">Donazione di Libri</h1>
         
-        <div style="background-color: #f0f4f8; border-left: 4px solid var(--primary); padding: 1rem; margin-bottom: 1.5rem; color: var(--text);">
-            Compila il modulo per donare i tuoi libri alla biblioteca. I campi contrassegnati con * sono obbligatori.
+      <!-- Header container with vertical layout -->
+<div class="flex flex-col items-center justify-center mb-6 text-center space-y-3 px-2">
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-8">
+        <img 
+            src="https://raw.githubusercontent.com/bibliotecamorante/donazione/main/logo.png" 
+            alt="Logo Biblioteca" 
+            class="h-24 w-auto object-contain sm:h-16 md:h-20" />
+        <img 
+            src="https://raw.githubusercontent.com/bibliotecamorante/donazione/main/morantenero.png" 
+            alt="Logo Morante" 
+            class="h-56 w-auto object-contain sm:h-40 md:h-48" />
+    </div>
+    <h1 class="text-3xl sm:text-3xl md:text-4xl text-slate-700 font-bold leading-tight text-center">
+        Donazione alla Biblioteca Elsa Morante
+    </h1>
+</div>
+        
+
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r">
+            Compila il modulo per donare i tuoi libri alla biblioteca. I campi contrassegnati con * sono obbligatori
         </div>
 
         <form id="donationForm" novalidate>
-            <h2 style="color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem;">Dati Personali</h2>
+            <h3 class="text-xl text-slate-700 mt-6 mb-4 pb-2 border-b-2 border-gray-200">Dati Personali</h3>
             
             <div class="mb-5">
-                <label for="nome" class="block mb-2" style="color: var(--primary); font-weight: bold;">Nome: *</label>
-                <input type="text" id="nome" name="nome" required style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
-                <p class="error-message" style="color: var(--primary); display: none; margin-top: 0.5rem;"></p>
+                <label for="nome" class="block mb-1 text-slate-700 font-medium">Nome: *</label>
+                <input type="text" id="nome" name="nome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                <p class="hidden error-message text-sm text-red-500 mt-1">Il nome è obbligatorio</p>
             </div>
             
             <div class="mb-5">
-                <label for="cognome" class="block mb-2" style="color: var(--primary); font-weight: bold;">Cognome: *</label>
-                <input type="text" id="cognome" name="cognome" required style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
-                <p class="error-message" style="color: var(--primary); display: none; margin-top: 0.5rem;"></p>
+                <label for="cognome" class="block mb-1 text-slate-700 font-medium">Cognome: *</label>
+                <input type="text" id="cognome" name="cognome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                <p class="hidden error-message text-sm text-red-500 mt-1">Il cognome è obbligatorio</p>
             </div>
             
             <div class="mb-5">
-                <label for="email" class="block mb-2" style="color: var(--primary); font-weight: bold;">Email: *</label>
-                <input type="email" id="email" name="email" required style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
-                <p class="error-message" style="color: var(--primary); display: none; margin-top: 0.5rem;"></p>
+                <label for="tessera" class="block mb-1 text-slate-700 font-medium">Numero Tessera:</label>
+                <input type="text" id="tessera" name="tessera" class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
             </div>
 
             <div class="mb-5">
-                <label for="telefono" class="block mb-2" style="color: var(--primary); font-weight: bold;">Telefono:</label>
-                <input type="tel" id="telefono" name="telefono" style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
-                <p class="error-message" style="color: var(--primary); display: none; margin-top: 0.5rem;"></p>
+                <label for="telefono" class="block mb-1 text-slate-700 font-medium">Telefono:</label>
+                <input type="tel" id="telefono" name="telefono" class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                <p class="hidden error-message text-sm text-red-500 mt-1">Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)</p>
+            </div>
+            
+            <div class="mb-5">
+                <label for="email" class="block mb-1 text-slate-700 font-medium">Email: *</label>
+                <input type="email" id="email" name="email" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                <p class="hidden error-message text-sm text-red-500 mt-1">Inserire un indirizzo email valido</p>
             </div>
 
-            <h2 style="color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem;">Libri da Donare</h2>
+            <h3 class="text-xl text-slate-700 mt-6 mb-4 pb-2 border-b-2 border-gray-200">Libri da donare</h3>
             <div id="bookList"></div>
             
-            <div style="background-color: #f0f4f8; padding: 1rem; margin: 1rem 0; border-radius: 4px;">
-                <label style="display: flex; align-items: center; gap: 0.5rem;">
-                    <input type="checkbox" id="accept" required style="width: 1.2rem; height: 1.2rem;">
-                    <span>Ho letto e accetto <a href="termini.html" target="_blank" style="color: var(--primary); text-decoration: underline;">termini e condizioni</a></span>
+            <div class="bg-gray-50 p-4 rounded mb-5">
+                <label class="flex items-start gap-3">
+                    <input type="checkbox" id="accept" name="accept" required class="w-5 h-5 mt-1">
+                    <span>Ho letto e accetto <a href="#" onclick="window.open('termini.html', '_blank'); return false;" class="text-blue-500 hover:underline">termini e condizioni</a></span>
                 </label>
-                <p class="error-message" style="color: var(--primary); display: none; margin-top: 0.5rem;"></p>
+                <p class="hidden error-message text-sm text-red-500 mt-1">Devi accettare i termini e condizioni</p>
             </div>
             
-            <button type="submit" style="width: 100%; padding: 1rem; background-color: var(--primary); color: white; border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.3s;">
+            <button type="submit" class="w-full max-w-sm mx-auto block px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors font-medium text-base">
                 Invia Donazione
             </button>
         </form>
-    </main>
-
-    <footer style="background-color: var(--primary); color: white; text-align: center; padding: 1rem;">
-        <p>Biblioteca Elsa Morante - Parte del Sistema Biblioteche di Roma</p>
-    </footer>
+    </div>
 
     <script>
         // Initialize EmailJS
@@ -234,19 +91,21 @@
         let bookCount = 0;
 
         function showError(input, message) {
-            const errorElement = input.nextElementSibling;
+            const errorElement = input.parentElement.querySelector('.error-message');
             if (errorElement) {
                 errorElement.textContent = message;
-                errorElement.style.display = 'block';
-                input.style.borderColor = 'var(--primary)';
+                errorElement.classList.remove('hidden');
+                input.classList.add('border-red-500');
+                input.classList.remove('border-gray-300', 'focus:border-blue-500');
             }
         }
 
         function hideError(input) {
-            const errorElement = input.nextElementSibling;
+            const errorElement = input.parentElement.querySelector('.error-message');
             if (errorElement) {
-                errorElement.style.display = 'none';
-                input.style.borderColor = '#ccc';
+                errorElement.classList.add('hidden');
+                input.classList.remove('border-red-500');
+                input.classList.add('border-gray-300', 'focus:border-blue-500');
             }
         }
 
@@ -255,7 +114,7 @@
             let isValid = true;
 
             if (input.hasAttribute('required') && !value) {
-                showError(input, `Il campo è obbligatorio`);
+                showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
                 isValid = false;
             } else {
                 switch (input.id) {
@@ -265,6 +124,7 @@
                             isValid = false;
                         }
                         break;
+                        
                     case 'email':
                         if (!value) {
                             showError(input, 'L\'email è obbligatoria');
@@ -314,28 +174,214 @@
 
         function createBookEntry() {
             const bookDiv = document.createElement('div');
-            bookDiv.className = 'book-entry';
-            bookDiv.style.position = 'relative';
-            bookDiv.style.backgroundColor = '#f9f9f9';
-            bookDiv.style.border = '1px solid #e0e0e0';
-            bookDiv.style.borderRadius = '8px';
-            bookDiv.style.padding = '1rem';
-            bookDiv.style.marginBottom = '1rem';
+            bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
             bookCount++;
 
             bookDiv.innerHTML = `
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <div class="book-counter" style="background-color: var(--primary); color: white; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold;">${bookCount}</div>
+                <div class="flex justify-between items-center mb-4">
+                    <span class="book-counter flex items-center justify-center w-6 h-6 rounded-full text-white font-semibold text-sm" style="background-color: rgb(34, 197, 94)">${bookCount}</span>
                     ${bookCount > 1 ? `
-                        <button type="button" onclick="removeBook(this)" style="background: none; border: none; color: var(--primary); font-size: 1.5rem; cursor: pointer;">✖</button>
+                        <button type="button" class="px-3 py-2 text-red-600 hover:text-red-700 font-bold text-2xl" onclick="removeBook(this)">✖</button>
                     ` : ''}
                 </div>
                 
                 <div class="mb-5">
-                    <label style="color: var(--primary); font-weight: bold; margin-bottom: 0.5rem; display: block;">Titolo: *</label>
-                    <input type="text" class="book-title" required style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
-                    <p class="error-message" style="color: var(--primary); display: none; margin-top: 0.5rem;"></p>
+                    <label class="block mb-1 text-slate-700 font-medium">Titolo: *</label>
+                    <input type="text" class="book-title w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" required>
+                    <p class="hidden error-message text-sm text-red-500 mt-1">Il titolo è obbligatorio</p>
                 </div>
                 <div class="mb-5">
-                    <label style="color: var(--primary); font-weight: bold; margin-bottom: 0.5rem; display: block;">Autore:</label>
-                    <input type="text" class="book-author" style="width: 100%; padding: 0.5rem; border
+                    <label class="block mb-1 text-slate-700 font-medium">Autore:</label>
+                    <input type="text" class="book-author w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                </div>
+                <div class="mb-5">
+                    <label class="block mb-1 text-slate-700 font-medium">Editore:</label>
+                    <input type="text" class="book-publisher w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                </div>
+                <div class="mb-5">
+                    <label class="block mb-1 text-slate-700 font-medium">Anno:</label>
+                    <input type="number" class="book-year w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                    <p class="hidden error-message text-sm text-red-500 mt-1">Anno non valido</p>
+                </div>
+                <div class="mb-5">
+                    <label class="block mb-1 text-slate-700 font-medium">ISBN:</label>
+                    <input type="text" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" maxlength="13">
+                    <p class="hidden error-message text-sm text-red-500 mt-1">ISBN non valido</p>
+                </div>
+                
+                <button type="button" class="w-full px-4 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition-colors mt-2" onclick="createBookEntry()">+ Aggiungi Libro</button>
+            `;
+
+            const inputs = bookDiv.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
+                        validateBookField(input);
+                    }
+                });
+                input.addEventListener('blur', () => {
+                    if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
+                        validateBookField(input);
+                    }
+                });
+            });
+
+            document.getElementById('bookList').appendChild(bookDiv);
+            updateBookCounters();
+        }
+
+        function removeBook(button) {
+            const bookEntry = button.closest('.book-entry');
+            if (bookEntry) {
+                bookEntry.remove();
+                bookCount--;
+                updateBookCounters();
+            }
+        }
+
+        function updateBookCounters() {
+            const bookEntries = document.querySelectorAll('.book-entry');
+            bookEntries.forEach((entry, index) => {
+                entry.querySelector('.book-counter').textContent = index + 1;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            createBookEntry();
+
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                if (input.id) {
+                    input.addEventListener('input', () => validateField(input));
+                    input.addEventListener('blur', () => validateField(input));
+                }
+            });
+        });
+
+        document.getElementById('donationForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            let isValid = true;
+            const inputs = event.target.querySelectorAll('input');
+            
+            // Validate all form fields
+            inputs.forEach(input => {
+                if (input.id) {
+                    if (!validateField(input)) {
+                        isValid = false;
+                    }
+                }
+            });
+
+            // Validate book fields
+            const bookEntries = document.querySelectorAll('.book-entry');
+            bookEntries.forEach(entry => {
+                const bookInputs = entry.querySelectorAll('input');
+                bookInputs.forEach(input => {
+                    if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
+                        if (!validateBookField(input)) {
+                            isValid = false;
+                        }
+                    }
+                });
+            });
+
+            // Validate checkbox
+            const acceptCheckbox = document.getElementById('accept');
+            if (!acceptCheckbox.checked) {
+                showError(acceptCheckbox, 'Devi accettare i termini e condizioni');
+                isValid = false;
+            } else {
+                hideError(acceptCheckbox);
+            }
+
+            if (!isValid) {
+                return;
+            }
+
+            const nome = document.getElementById('nome').value.trim();
+            const cognome = document.getElementById('cognome').value.trim();
+
+
+
+            
+            const email = document.getElementById('email').value.trim();
+            const tessera = document.getElementById('tessera').value.trim();
+            const telefono = document.getElementById('telefono').value.trim();
+
+            const books = [];
+            
+            for (const bookDiv of bookEntries) {
+                const title = bookDiv.querySelector('.book-title').value.trim();
+                if (!title) {
+                    showError(bookDiv.querySelector('.book-title'), 'Il titolo è obbligatorio');
+                    return;
+                }
+                
+                books.push({
+                    title: title,
+                    author: bookDiv.querySelector('.book-author').value.trim() || 'Non specificato',
+                    publisher: bookDiv.querySelector('.book-publisher').value.trim() || 'Non specificato',
+                    year: bookDiv.querySelector('.book-year').value.trim() || 'Non specificato',
+                    isbn: bookDiv.querySelector('.book-isbn').value.trim() || 'Non specificato'
+                });
+            }
+
+            if (books.length === 0) {
+                alert('Aggiungi almeno un libro alla donazione.');
+                return;
+            }
+
+            const formattedBooks = books.map((book, index) => 
+                `<em>Libro ${index + 1}:</em><br>` +
+                `<strong>Titolo/Autore:</strong> ${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}<br>` +
+                `<strong>Editore:</strong> ${book.publisher}<br>` +
+                `<strong>Anno:</strong> ${book.year}<br>` +
+                `<strong>ISBN:</strong> ${book.isbn}<br><br>`
+            ).join('');
+
+            const submitButton = event.target.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Invio in corso...';
+
+            try {
+                const response = await emailjs.send(
+                    'service_yepi8uu',
+                    'template_s1jmd7r', 
+                    {
+                        to_email: 'bibliotecamorante@gmail.com',
+                        from_name: `${nome} ${cognome}`,
+                        from_email: email,
+                        tessera: tessera || 'Non specificata',
+                        telefono: telefono || 'Non specificato',
+                        books: formattedBooks
+                    }
+                );
+
+                console.log('Email inviata con successo:', response);
+                alert('La tua donazione è stata inviata con successo!');
+                event.target.reset();
+                document.getElementById('bookList').innerHTML = '';
+                bookCount = 0;
+                createBookEntry();
+
+                // Reset all error messages and styles
+                const errorMessages = document.querySelectorAll('.error-message');
+                errorMessages.forEach(msg => msg.classList.add('hidden'));
+                const inputFields = document.querySelectorAll('input');
+                inputFields.forEach(input => {
+                    input.classList.remove('border-red-500');
+                    input.classList.add('border-gray-300', 'focus:border-blue-500');
+                });
+
+            } catch (error) {
+                console.error('Errore dettagliato durante l\'invio:', error);
+                alert(`Si è verificato un errore durante l'invio: ${error.text || error.message}`);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Invia Donazione';
+            }
+        });
+    </script>
+</body>
+</html>
