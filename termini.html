@@ -163,46 +163,59 @@
            border-bottom-color: #fff;
        }
 
-       @media (max-width: 768px) {
-           body {
-               font-size: 20px;
-               line-height: 1.5;
-               font-family: 'Space Grotesk', sans-serif;
-           }
-           
-           header {
-               min-height: auto;
-               padding: 3.5rem 1rem 1rem;
-           }
-           
-           .social-icons {
-               position: absolute;
-               top: 0;
-               left: 0;
-               background-color: var(--primary);
-               padding: 0.5rem 0;
-               z-index: 10;
-           }
-           
-           .container {
-               padding: 0 1rem;
-               flex-direction: row;
-               justify-content: center;
-           }
-           
-           header img {
-               height: 40px;
-           }
-           
-           header .logo-morante {
-               height: 100px;
-           }
-           
-           main {
-               margin: 1rem;
-               padding: 1.5rem;
-           }
-       }
+      
+
+      
+@media (max-width: 768px) {
+    body {
+        font-size: 20px;
+        line-height: 1.5;
+    }
+    
+    header {
+        min-height: auto;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .social-icons {
+        position: relative;
+        top: 0;
+        padding: 0.5rem 0;
+        margin: 0;
+        width: 100%;
+        background-color: var(--primary);
+    }
+    
+    .container {
+        padding: 0.5rem;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+    }
+    
+    header img {
+        height: 35px; /* Logo Biblioteche di Roma più piccolo */
+    }
+    
+    header .logo-morante {
+        height: 35px; /* Logo Morante della stessa dimensione per affiancamento */
+    }
+    
+    main {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+}
+       
+
+
+
+
+      
    </style>
 </head>
 <body>
