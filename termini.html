@@ -34,154 +34,71 @@
            letter-spacing: normal;
            word-spacing: 0px;
        }
-
-/* Desktop header */
-header {
-    background-color: var(--primary);
-    color: #fff;
-    padding: 2rem 0;
-    min-height: 4cm;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    flex-direction: column;
-    text-align: center;
-}
-
-.social-icons {
-    position: absolute;
-    top: 1rem;
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    width: 100%;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-header img {
-    height: 70px;
-    max-width: 100%;
-}
-
-header .logo-morante {
-    height: 180px;
-    filter: none;
-    max-width: 100%;
-}
-
-/* Mobile styles */
-@media (max-width: 768px) {
-    main {
-        margin: 1rem;
-        padding: 1.5rem;
-    }
-
-    header {
-        display: flex;
-        flex-direction: column;
-        padding: 4rem 1rem 1rem; /* Aumentato padding top per le social icons */
-    }
-    
-    .social-icons {
-        position: fixed; /* Cambiato da absolute a fixed */
-        top: 0;
-        left: 0;
-        width: 100%;
-        background-color: var(--primary);
-        padding: 0.5rem 0;
-        z-index: 1000; /* Aumentato z-index per assicurarsi che stia sopra */
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    
-    .container {
-        margin-top: 1rem;
-        padding: 0 1rem;
-        flex-direction: row;
-        align-items: center;
-    }
-    
-    header img {
-        height: 40px;
-    }
-    
-    header .logo-morante {
-        height: 80px; /* Aumentato da 60px a 80px */
-    }
-}
-      
-
-
-      
-/* Mobile styles */
-@media (max-width: 768px) {
-    header {
-        padding-top: 3.5rem;
-        position: relative;
-    }
-    
-    .social-icons {
-        position: absolute;
-        top: 0.5rem;
-        left: 0;
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        background-color: var(--primary);
-        padding: 0.5rem 0;
-        z-index: 10;
-    }
-    
-    .container {
-        justify-content: center;
-        align-items: center;
-        gap: 1rem;
-        padding: 0 1rem;
-        flex-direction: row;
-        margin-top: 0.5rem;
-    }
-    
-    header img {
-        height: 40px;
-    }
-    
-    header .logo-morante {
-        height: 60px;
-    }
-}
        
-       header h1 {
-           color: var(--primary);
-           font-size: 2.5rem;
-           font-weight: 600;
-           margin: 0;
-           max-width: 800px;
-           line-height: 1.2;
+       header {
+           background-color: var(--primary);
+           color: #fff;
+           padding: 2rem 0;
+           min-height: 4cm;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           position: relative;
+           flex-direction: column;
+           text-align: center;
+       }
+
+       .social-icons {
+           position: absolute;
+           top: 1rem;
+           display: flex;
+           gap: 1rem;
+           justify-content: center;
+           width: 100%;
        }
        
-      Updated Complete Layout CSS
+       .social-icons a {
+           color: white;
+           font-size: 1.5rem;
+           transition: transform 0.3s ease;
+       }
+       
+       .social-icons a:hover {
+           transform: scale(1.2);
+           border-bottom: none;
+       }
+       
+       .container {
+           max-width: 1200px;
+           margin: 0 auto;
+           padding: 0 2rem;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           text-align: center;
+           flex-wrap: wrap;
+           gap: 1rem;
+       }
+       
+       header img {
+           height: 70px;
+           max-width: 100%;
+       }
 
-/* Main content styles */
-main {
-    width: 100%;
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
+       header .logo-morante {
+           height: 180px;
+           filter: none;
+           max-width: 100%;
+       }
+       
+       main {
+           max-width: 800px;
+           margin: 2rem auto;
+           padding: 2rem;
+           background-color: #fff;
+           border-radius: 12px;
+           box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+       }
        
        main h1 {
            color: var(--primary);
@@ -246,64 +163,41 @@ main {
            border-bottom-color: #fff;
        }
 
-       
-
-
-@media (max-width: 768px) {
-    header {
-        padding-top: 3.5rem; /* Aumentato per dare più spazio alle social icons */
-        position: relative;
-    }
-    
-    .social-icons {
-        position: absolute;
-        top: 0.5rem; /* Ridotto per avvicinare al bordo superiore */
-        left: 0;
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        background-color: var(--primary); /* Assicura che lo sfondo sia coerente */
-        padding: 0.5rem 0;
-        z-index: 10; /* Assicura che le icone stiano sopra */
-    }
-    
-    .container {
-        justify-content: center;
-        align-items: center;
-        gap: 1rem;
-        padding: 0 1rem;
-        flex-direction: row;
-        margin-top: 0.5rem; /* Spazio aggiuntivo sotto le social icons */
-    }
-    
-    header img {
-        height: 40px; /* Logo Biblioteche di Roma */
-    }
-    
-    header .logo-morante {
-        height: 60px; /* Logo Morante più grande */
-    }
-}
-
-
-
-
-      
+       @media (max-width: 768px) {
+           body {
+               font-size: 20px;
+               line-height: 1.5;
+               font-family: 'Space Grotesk', sans-serif;
+           }
            
-           .container {
-               justify-content: center; 
-               gap: 1rem; 
-               padding: 0 1rem;
+           header {
+               min-height: auto;
+               padding: 3.5rem 1rem 1rem;
            }
            
            .social-icons {
-               top: auto;
-               bottom: 1rem;
-               display: flex;
-               justify-content: center;
-               width: 100%;
+               position: absolute;
+               top: 0;
+               left: 0;
+               background-color: var(--primary);
+               padding: 0.5rem 0;
+               z-index: 10;
            }
-
+           
+           .container {
+               padding: 0 1rem;
+               flex-direction: row;
+               justify-content: center;
+           }
+           
+           header img {
+               height: 40px;
+           }
+           
+           header .logo-morante {
+               height: 100px;
+           }
+           
            main {
                margin: 1rem;
                padding: 1.5rem;
@@ -312,8 +206,6 @@ main {
    </style>
 </head>
 <body>
-
-   
    <header>
        <div class="social-icons">
            <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook">
@@ -373,23 +265,19 @@ main {
                Per valutare i titoli, ti preghiamo di seguire questi passaggi:
            </p>
           
-         <ol>
-            
-            
-            <li>
-    Compila l'apposito 
-    <a href="https://bibliotecamorante.github.io/donazione/" 
-       target="_blank"
-       style="color: var(--primary); font-weight: bold;">modulo</a>.
-</li>
-
-            
-            <li>
-                Clicca sul pulsante 
-                <span style="color: var(--primary); font-weight: bold;">Invia Donazione</span> 
-                per trasmettere automaticamente la tua richiesta alla biblioteca.
-            </li>
-         </ol>
+           <ol>
+               <li>
+                   Compila l'apposito 
+                   <a href="https://bibliotecamorante.github.io/donazione/" 
+                      target="_blank"
+                      style="color: var(--primary); font-weight: bold;">modulo</a>.
+               </li>
+               <li>
+                   Clicca sul pulsante 
+                   <span style="color: var(--primary); font-weight: bold;">Invia Donazione</span> 
+                   per trasmettere automaticamente la tua richiesta alla biblioteca.
+               </li>
+           </ol>
           
            <p>
                Le opere accettate entreranno a far parte del patrimonio della biblioteca e non potranno essere reclamate. La catalogazione seguirà i tempi stabiliti dalla biblioteca secondo le priorità interne.
@@ -405,19 +293,12 @@ main {
        <p>Scopri di più su <a href="https://www.bibliotechediroma.it/opac/.do" target="_blank">Biblioteche di Roma</a></p>
    </footer>
 
-   
-<script>
-
-// Seleziona il link del modulo
-document.querySelector('a[href="https://bibliotecamorante.github.io/donazione/"]').addEventListener('click', function(event) {
-    event.preventDefault();
-    window.open(this.href, '_blank', 'noopener,noreferrer,location=yes,status=yes');
-    window.focus();
-});
-   
-</script>
-
-
-   
+   <script>
+       document.querySelector('a[href="https://bibliotecamorante.github.io/donazione/"]').addEventListener('click', function(event) {
+           event.preventDefault();
+           window.open(this.href, '_blank', 'noopener,noreferrer,location=yes,status=yes');
+           window.focus();
+       });
+   </script>
 </body>
 </html>
