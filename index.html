@@ -10,13 +10,6 @@
         body {
             line-height: 1.7;
             color: #3a3a3a;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            width: 100%;
-            max-width: 100%;
-            padding: 1rem;
         }
         .logo-container {
             display: flex;
@@ -26,9 +19,8 @@
             width: 100%;
         }
         .logo-container img {
-            max-height: 60px;
-            max-width: 50%;
             object-fit: contain;
+            max-height: 80px;
         }
         @media (max-width: 640px) {
             .logo-container img {
@@ -37,25 +29,26 @@
         }
     </style>
 </head>
-<body class="bg-gray-100">
-    <div class="container mx-auto bg-white p-4 sm:p-8 rounded-lg shadow-md">
-        <!-- Header container with tightly controlled logo layout -->
-        <div class="text-center mb-6">
-            <div class="logo-container mb-4">
-                <img 
-                    src="https://raw.githubusercontent.com/bibliotecamorante/donazione/main/logo.png" 
-                    alt="Logo Biblioteca" 
-                    class="inline-block" />
-                <img 
-                    src="https://raw.githubusercontent.com/bibliotecamorante/donazione/main/morantenero.png" 
-                    alt="Logo Morante" 
-                    class="inline-block" />
-            </div>
-            
-            <h1 class="text-2xl sm:text-3xl md:text-4xl text-slate-700 font-bold leading-tight px-2">
-                Donazione alla Biblioteca Elsa Morante
-            </h1>
+<body class="bg-gray-100 text-gray-800 leading-relaxed p-5">
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
+      
+      <!-- Header container with responsive logo layout -->
+      <div class="flex flex-col items-center justify-center mb-8 text-center space-y-4 px-2">
+        <div class="logo-container">
+            <img 
+                src="https://raw.githubusercontent.com/bibliotecamorante/donazione/main/logo.png" 
+                alt="Logo Biblioteca" 
+                class="h-16 sm:h-20 md:h-24" />
+            <img 
+                src="https://raw.githubusercontent.com/bibliotecamorante/donazione/main/morantenero.png" 
+                alt="Logo Morante" 
+                class="h-24 sm:h-32 md:h-40" />
         </div>
+        <h1 class="text-2xl sm:text-3xl md:text-4xl text-slate-700 font-bold leading-tight text-center tracking-tight px-2">
+            Donazione alla Biblioteca Elsa Morante
+        </h1>
+      </div>
+
 
 
         
