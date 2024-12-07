@@ -38,21 +38,16 @@
           
         
               
-<div class="logo-container" style="gap: 15rem;">
+<div class="logo-container">
     <img 
         src="https://raw.githubusercontent.com/bibliotecamorante/donazione/main/logo.png" 
         alt="Logo Biblioteca" 
-        style="width: 200px; height: auto;" />
+        style="height: 272px; width: auto;" />
     <img 
         src="https://raw.githubusercontent.com/bibliotecamorante/donazione/main/morantenero.png" 
         alt="Logo Morante" 
-        style="width: 1200px; height: auto;" />
+        style="height: 272px; width: auto;" />
 </div>
-
-
-
-
-
 
 
 
@@ -154,7 +149,7 @@
             let isValid = true;
 
             if (input.hasAttribute('required') && !value) {
-                showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
+                showError(input, Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio);
                 isValid = false;
             } else {
                 switch (input.id) {
@@ -195,7 +190,7 @@
                 const currentYear = new Date().getFullYear();
                 const year = parseInt(value);
                 if (value && (!Number.isInteger(year) || year < 1400 || year > currentYear)) {
-                    showError(input, `L'anno deve essere un numero compreso tra 1400 e ${currentYear}`);
+                    showError(input, L'anno deve essere un numero compreso tra 1400 e ${currentYear});
                     isValid = false;
                 }
             } else if (input.classList.contains('book-isbn')) {
@@ -217,12 +212,12 @@
             bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
             bookCount++;
 
-            bookDiv.innerHTML = `
+            bookDiv.innerHTML = 
                 <div class="flex justify-between items-center mb-4">
                     <span class="book-counter flex items-center justify-center w-6 h-6 rounded-full text-white font-semibold text-sm" style="background-color: rgb(34, 197, 94)">${bookCount}</span>
-                    ${bookCount > 1 ? `
+                    ${bookCount > 1 ? 
                         <button type="button" class="px-3 py-2 text-red-600 hover:text-red-700 font-bold text-2xl" onclick="removeBook(this)">✖</button>
-                    ` : ''}
+                     : ''}
                 </div>
                 
                 <div class="mb-5">
@@ -250,7 +245,7 @@
                 </div>
                 
                 <button type="button" class="w-full px-4 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition-colors mt-2" onclick="createBookEntry()">+ Aggiungi Libro</button>
-            `;
+            ;
 
             const inputs = bookDiv.querySelectorAll('input');
             inputs.forEach(input => {
@@ -373,11 +368,11 @@
             }
 
             const formattedBooks = books.map((book, index) => 
-                `<em>Libro ${index + 1}:</em><br>` +
-                `<strong>Titolo/Autore:</strong> ${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}<br>` +
-                `<strong>Editore:</strong> ${book.publisher}<br>` +
-                `<strong>Anno:</strong> ${book.year}<br>` +
-                `<strong>ISBN:</strong> ${book.isbn}<br><br>`
+                <em>Libro ${index + 1}:</em><br> +
+                <strong>Titolo/Autore:</strong> ${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}<br> +
+                <strong>Editore:</strong> ${book.publisher}<br> +
+                <strong>Anno:</strong> ${book.year}<br> +
+                <strong>ISBN:</strong> ${book.isbn}<br><br>
             ).join('');
 
             const submitButton = event.target.querySelector('button[type="submit"]');
@@ -390,7 +385,7 @@
                     'template_s1jmd7r', 
                     {
                         to_email: 'bibliotecamorante@gmail.com',
-                        from_name: `${nome} ${cognome}`,
+                        from_name: ${nome} ${cognome},
                         from_email: email,
                         tessera: tessera || 'Non specificata',
                         telefono: telefono || 'Non specificato',
@@ -416,7 +411,7 @@
 
             } catch (error) {
                 console.error('Errore dettagliato durante l\'invio:', error);
-                alert(`Si è verificato un errore durante l'invio: ${error.text || error.message}`);
+                alert(Si è verificato un errore durante l'invio: ${error.text || error.message});
             } finally {
                 submitButton.disabled = false;
                 submitButton.textContent = 'Invia Donazione';
