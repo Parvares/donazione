@@ -329,13 +329,31 @@
                 return;
             }
 
-            const formattedBooks = books.map((book, index) => 
-                `<em>Libro ${index + 1}:</em><br>` +
-                `<strong>Titolo/Autore:</strong> ${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}<br>` +
-                `<strong>Editore:</strong> ${book.publisher}<br>` +
-                `<strong>Anno:</strong> ${book.year}<br>` +
-                `<strong>ISBN:</strong> ${book.isbn}<br><br>`
+            
+
+           const formattedBooks = books.map((book, index) => 
+                `<br><strong>Libro ${index + 1}:</strong><br>` +
+                `<table style="width:100%; border-collapse: collapse; margin-bottom: 10px;">
+                    <tr>
+                        <td style="width:30%; padding:5px; border:1px solid #ddd;"><strong>Tit/Aut:</strong></td>
+                        <td style="padding:5px; border:1px solid #ddd;">${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:30%; padding:5px; border:1px solid #ddd;"><strong>Editore:</strong></td>
+                        <td style="padding:5px; border:1px solid #ddd;">${book.publisher}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:30%; padding:5px; border:1px solid #ddd;"><strong>Anno:</strong></td>
+                        <td style="padding:5px; border:1px solid #ddd;">${book.year}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:30%; padding:5px; border:1px solid #ddd;"><strong>ISBN:</strong></td>
+                        <td style="padding:5px; border:1px solid #ddd;">${book.isbn}</td>
+                    </tr>
+                </table>`
             ).join('');
+
+            
 
             const submitButton = event.target.querySelector('button[type="submit"]');
             submitButton.disabled = true;
