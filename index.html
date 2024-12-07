@@ -20,12 +20,15 @@
         }
         .logo-container img {
             object-fit: contain;
-            max-height: 80px;
+            max-height: 100px; /* Ridotto la dimensione del logo */
         }
         @media (max-width: 640px) {
             .logo-container img {
-                max-height: 50px;
+                max-height: 50px; /* Logo più piccolo per schermi piccoli */
             }
+        }
+        .header-container {
+            margin-top: 20px; /* Aumentato lo spazio tra il logo e l'intestazione */
         }
     </style>
 </head>
@@ -33,26 +36,17 @@
     <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
       
       <!-- Header container with responsive logo layout -->
-      <div class="flex flex-col items-center justify-center mb-8 text-center space-y-4 px-2">
-     
-          
-        
-              
-<div class="logo-container">
-    <img 
-        src="https://raw.githubusercontent.com/Parvares/Donazione/main/loghi.png" 
-        alt="Logo Biblioteca" 
-        style="height: 150px; width: auto;" />
-    </div>
+      <div class="flex flex-col items-center justify-center mb-8 text-center space-y-4 px-2 header-container">
+          <div class="logo-container">
+              <img 
+                  src="https://raw.githubusercontent.com/Parvares/Donazione/main/loghi.png" 
+                  alt="Logo Biblioteca" 
+                  style="height: 100px; width: auto;" />
+          </div>
 
-
-
-
-
-         
-        <h1 class="text-2xl sm:text-3xl md:text-4xl text-slate-700 font-bold leading-tight text-center tracking-tight px-2">
-            Donazione alla Biblioteca Elsa Morante
-        </h1>
+          <h1 class="text-2xl sm:text-3xl md:text-4xl text-slate-700 font-bold leading-tight text-center tracking-tight px-2">
+              Donazione alla Biblioteca Elsa Morante
+          </h1>
       </div>
 
 
