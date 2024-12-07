@@ -141,12 +141,7 @@
             return isValid;
         }
 
-
-        
-
-
-        
-    function validateBookField(input) {
+        function validateBookField(input) {
             const value = input.value.trim();
             let isValid = true;
 
@@ -155,17 +150,10 @@
                 isValid = false;
             } else if (input.classList.contains('book-year')) {
                 const currentYear = new Date().getFullYear();
-                
-                // Check for non-numeric input
-                if (value && !/^\d+$/.test(value)) {
-                    showError(input, 'L\'anno deve contenere solo numeri');
+                const year = parseInt(value);
+                if (value && (!Number.isInteger(year) || year < 1400 || year > currentYear)) {
+                    showError(input, `L'anno deve essere un numero compreso tra 1400 e ${currentYear}`);
                     isValid = false;
-                } else {
-                    const year = parseInt(value);
-                    if (value && (!Number.isInteger(year) || year < 1400 || year > currentYear)) {
-                        showError(input, `L'anno deve essere un numero compreso tra 1400 e ${currentYear}`);
-                        isValid = false;
-                    }
                 }
             } else if (input.classList.contains('book-isbn')) {
                 if (value && !/^(?:\d{10}|\d{13})$/.test(value)) {
@@ -187,39 +175,58 @@
             bookCount++;
 
             bookDiv.innerHTML = `
-                <!-- Previous book entry HTML -->
+                <div class="flex justify-between items-center mb-4">
+                    <span class="book-counter flex items-center justify-center w-6 h-6 rounded-full text-white font-semibold text-sm" style="background-color: rgb(34, 197, 94)">${bookCount}</span>
+                    ${bookCount > 1 ? `
+                        <button type="button" class="px-3 py-2 text-red-600 hover:text-red-700 font-bold text-2xl" onclick="removeBook(this)">✖</button>
+                    ` : ''}
+                </div>
+                
+                <div class="mb-5">
+                    <label class="block mb-1 text-slate-700 font-medium">Titolo: *</label>
+                    <input type="text" class="book-title w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" required>
+                    <p class="hidden error-message text-sm text-red-500 mt-1">Il titolo è obbligatorio</p>
+                </div>
+                <div class="mb-5">
+                    <label class="block mb-1 text-slate-700 font-medium">Autore:</label>
+                    <input type="text" class="book-author w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                </div>
+                <div class="mb-5">
+                    <label class="block mb-1 text-slate-700 font-medium">Editore:</label>
+                    <input type="text" class="book-publisher w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                </div>
                 <div class="mb-5">
                     <label class="block mb-1 text-slate-700 font-medium">Anno:</label>
-                    <input type="text" class="book-year w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" maxlength="4">
+                    <input type="number" class="book-year w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
                     <p class="hidden error-message text-sm text-red-500 mt-1">Anno non valido</p>
                 </div>
-                <!-- Rest of the book entry HTML -->
+                <div class="mb-5">
+                    <label class="block mb-1 text-slate-700 font-medium">ISBN:</label>
+                    <input type="text" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" maxlength="13">
+                    <p class="hidden error-message text-sm text-red-500 mt-1">ISBN non valido</p>
+                </div>
+                
+                <button type="button" class="w-full px-4 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition-colors mt-2" onclick="createBookEntry()">+ Aggiungi Libro</button>
             `;
 
             const inputs = bookDiv.querySelectorAll('input');
             inputs.forEach(input => {
-                if (input.classList.contains('book-year')) {
-                    input.addEventListener('input', () => {
-                        // Restrict to only digits
-                        input.value = input.value.replace(/[^\d]/g, '');
+                input.addEventListener('input', () => {
+                    if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
                         validateBookField(input);
-                    });
-                    input.addEventListener('blur', () => {
+                    }
+                });
+                input.addEventListener('blur', () => {
+                    if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
                         validateBookField(input);
-                    });
-                }
-                // Other input event listeners remain the same
+                    }
+                });
             });
 
             document.getElementById('bookList').appendChild(bookDiv);
             updateBookCounters();
         }
 
-
-
-
-
-        
         function removeBook(button) {
             const bookEntry = button.closest('.book-entry');
             if (bookEntry) {
@@ -326,7 +333,7 @@
 
            
              const formattedBooks = books.map((book, index) => 
-                `<br><strong>Libro ${index + 1}:</strong><br>` +
+                `<br><em>Libro ${index + 1}:</em><br>` +
                 `<table style="width:100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed;">
                     <colgroup>
                         <col style="width: 100px;">
