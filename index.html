@@ -331,23 +331,28 @@
 
             
 
-           const formattedBooks = books.map((book, index) => 
+           
+             const formattedBooks = books.map((book, index) => 
                 `<br><strong>Libro ${index + 1}:</strong><br>` +
-                `<table style="width:100%; border-collapse: collapse; margin-bottom: 10px;">
+                `<table style="width:100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed;">
+                    <colgroup>
+                        <col style="width: 100px;">
+                        <col style="width: auto;">
+                    </colgroup>
                     <tr>
-                        <td style="width:30%; padding:5px; border:1px solid #ddd;"><strong>Tit/Aut:</strong></td>
+                        <td style="padding:5px; border:1px solid #ddd;"><strong>Tit/Aut:</strong></td>
                         <td style="padding:5px; border:1px solid #ddd;">${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}</td>
                     </tr>
                     <tr>
-                        <td style="width:30%; padding:5px; border:1px solid #ddd;"><strong>Editore:</strong></td>
+                        <td style="padding:5px; border:1px solid #ddd;"><strong>Editore:</strong></td>
                         <td style="padding:5px; border:1px solid #ddd;">${book.publisher}</td>
                     </tr>
                     <tr>
-                        <td style="width:30%; padding:5px; border:1px solid #ddd;"><strong>Anno:</strong></td>
+                        <td style="padding:5px; border:1px solid #ddd;"><strong>Anno:</strong></td>
                         <td style="padding:5px; border:1px solid #ddd;">${book.year}</td>
                     </tr>
                     <tr>
-                        <td style="width:30%; padding:5px; border:1px solid #ddd;"><strong>ISBN:</strong></td>
+                        <td style="padding:5px; border:1px solid #ddd;"><strong>ISBN:</strong></td>
                         <td style="padding:5px; border:1px solid #ddd;">${book.isbn}</td>
                     </tr>
                 </table>`
