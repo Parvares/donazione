@@ -341,22 +341,31 @@
             submitButton.disabled = true;
             submitButton.textContent = 'Invio in corso...';
 
-            try {
-                const response = await emailjs.send(
-                    'service_yepi8uu',
-                    'template_s1jmd7r', 
-                    {
-                        to_email: 'bibliotecamorante@gmail.com',
-                        from_name: `${nome} ${cognome}`,
-                        from_email: email,
-                        tessera: tessera || 'Non specificata',
-                        telefono: telefono || 'Non specificato',
-                        books: formattedBooks
-                    }
-                );
+            
 
-                console.log('Email inviata con successo:', response);
-                alert('La tua donazione è stata inviata con successo!');
+// Inside the form submit event listener, modify the emailjs.send configuration
+try {
+    const response = await emailjs.send(
+        'service_yepi8uu',
+        'template_s1jmd7r', 
+        {
+            to_email: 'bibliotecamorante@gmail.com',
+            from_name: `${nome} ${cognome}`,
+            from_email: email,            // This will use the email from the form
+            reply_to: email,              // Add reply_to parameter to ensure replies go to the donor
+            tessera: tessera || 'Non specificata',
+            telefono: telefono || 'Non specificato',
+            books: formattedBooks
+        },
+        'z6OeY42qSulJ-8EcS'              // Your public key
+    );
+
+    console.log('Email inviata con successo:', response);
+    alert('La tua donazione è stata inviata con successo!');
+    // Rest of the success handling code...
+
+
+            
                 event.target.reset();
                 document.getElementById('bookList').innerHTML = '';
                 bookCount = 0;
