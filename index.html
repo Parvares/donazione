@@ -141,42 +141,33 @@
             return isValid;
         }
 
-
-
         function validateBookField(input) {
-    const value = input.value.trim();
-    let isValid = true;
+            const value = input.value.trim();
+            let isValid = true;
 
-    if (input.hasAttribute('required') && !value) {
-        showError(input, 'Questo campo è obbligatorio');
-        isValid = false;
-    } else if (input.classList.contains('book-year')) {
-        const currentYear = new Date().getFullYear();
-        const year = parseInt(value);
+            if (input.hasAttribute('required') && !value) {
+                showError(input, 'Questo campo è obbligatorio');
+                isValid = false;
+            } else if (input.classList.contains('book-year')) {
+                const currentYear = new Date().getFullYear();
+                const year = parseInt(value);
+                if (value && (!Number.isInteger(year) || year < 1400 || year > currentYear)) {
+                    showError(input, `L'anno deve essere un numero compreso tra 1400 e ${currentYear}`);
+                    isValid = false;
+                }
+            } else if (input.classList.contains('book-isbn')) {
+                if (value && !/^(?:\d{10}|\d{13})$/.test(value)) {
+                    showError(input, 'ISBN deve essere di 10 o 13 cifre');
+                    isValid = false;
+                }
+            }
 
-        if (!value || isNaN(year)) {
-            showError(input, 'Inserire un anno valido (numerico)');
-            isValid = false;
-        } else if (value.length > 4 || year < 1400 || year > currentYear) {
-            showError(input, `L'anno deve essere numerico e compreso tra 1400 e ${currentYear}`);
-            isValid = false;
+            if (isValid) {
+                hideError(input);
+            }
+
+            return isValid;
         }
-    } else if (input.classList.contains('book-isbn')) {
-        if (value && !/^(?:\d{10}|\d{13})$/.test(value)) {
-            showError(input, 'ISBN deve essere di 10 o 13 cifre');
-            isValid = false;
-        }
-    }
-
-    if (isValid) {
-        hideError(input);
-    }
-
-    return isValid;
-}
-
-
-        
 
         function createBookEntry() {
             const bookDiv = document.createElement('div');
@@ -338,11 +329,12 @@
                 return;
             }
 
-            
-
            
-             const formattedBooks = books.map((book, index) => 
-                `<br><em>Libro ${index + 1}:</em><br>` +
+            
+            
+<!-- Inside the submit event listener, update the formattedBooks definition: -->
+            const formattedBooks = books.map((book, index) => 
+                `<br><strong>Libro ${index + 1}:</strong><br>` +
                 `<table style="width:100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed;">
                     <colgroup>
                         <col style="width: 100px;">
@@ -367,6 +359,10 @@
                 </table>`
             ).join('');
 
+
+
+
+
             
 
             const submitButton = event.target.querySelector('button[type="submit"]');
@@ -375,7 +371,7 @@
 
             
 
-// Inside the form submit event listener, modify the error handling
+// Inside the form submit event listener, modify the emailjs.send configuration
 try {
     const response = await emailjs.send(
         'service_yepi8uu',
@@ -383,112 +379,43 @@ try {
         {
             to_email: 'bibliotecamorante@gmail.com',
             from_name: `${nome} ${cognome}`,
-            from_email: email,            
-            reply_to: email,              
+            from_email: email,            // This will use the email from the form
+            reply_to: email,              // Add reply_to parameter to ensure replies go to the donor
             tessera: tessera || 'Non specificata',
             telefono: telefono || 'Non specificato',
             books: formattedBooks
         },
-        'z6OeY42qSulJ-8EcS'
+        'z6OeY42qSulJ-8EcS'              // Your public key
     );
 
     console.log('Email inviata con successo:', response);
-    showPopup('Successo', 'La tua donazione è stata inviata con successo!', 'success');
-    
-    // Reset form and other existing success handling code...
-    event.target.reset();
-    document.getElementById('bookList').innerHTML = '';
-    bookCount = 0;
-    createBookEntry();
+    alert('La tua donazione è stata inviata con successo!');
+    // Rest of the success handling code...
 
-    // Reset all error messages and styles
-    const errorMessages = document.querySelectorAll('.error-message');
-    errorMessages.forEach(msg => msg.classList.add('hidden'));
-    const inputFields = document.querySelectorAll('input');
-    inputFields.forEach(input => {
-        input.classList.remove('border-red-500');
-        input.classList.add('border-gray-300', 'focus:border-blue-500');
-    });
 
-} catch (error) {
-    console.error('Errore dettagliato durante l\'invio:', error);
-    
-    let errorMessage = 'Si è verificato un errore durante l\'invio.';
-    
-    // Detailed error messages based on specific error types
-    if (error.status === 400) {
-        errorMessage = 'Errore di validazione: Controlla i dati inseriti.';
-    } else if (error.status === 429) {
-        errorMessage = 'Troppi tentativi. Riprova tra qualche minuto.';
-    } else if (error.status === 500) {
-        errorMessage = 'Errore interno del server. Riprova più tardi.';
-    } else if (error.name === 'NetworkError') {
-        errorMessage = 'Errore di connessione. Verifica il tuo internet.';
-    } else if (error.text) {
-        errorMessage = `Errore: ${error.text}`;
-    }
-    
-    // Call popup with error details
-    showPopup('Errore', errorMessage, 'error');
-} finally {
-    submitButton.disabled = false;
-    submitButton.textContent = 'Invia Donazione';
-}
-
-// New function to show popup
-function showPopup(title, message, type = 'info') {
-    // Remove any existing popup
-    const existingPopup = document.getElementById('custom-popup');
-    if (existingPopup) {
-        existingPopup.remove();
-    }
-
-    // Create popup container
-    const popup = document.createElement('div');
-    popup.id = 'custom-popup';
-    popup.className = `fixed z-50 inset-0 overflow-y-auto ${type === 'error' ? 'bg-red-50' : 'bg-green-50'}`;
-    
-    popup.innerHTML = `
-        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center">
-            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                <div class="absolute inset-0 opacity-75 ${type === 'error' ? 'bg-red-100' : 'bg-green-100'}"></div>
-            </div>
             
-            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                        <div class="${type === 'error' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'} mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full sm:mx-0 sm:h-10 sm:w-10">
-                            ${type === 'error' ? '✖' : '✔'}
-                        </div>
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                                ${title}
-                            </h3>
-                            <div class="mt-2">
-                                <p class="text-sm text-gray-500">
-                                    ${message}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button id="closePopupBtn" type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 ${type === 'error' ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-green-600 hover:bg-green-700 text-white'} text-base font-medium focus:outline-none sm:ml-3 sm:w-auto sm:text-sm">
-                        Chiudi
-                    </button>
-                </div>
-            </div>
-        </div>
-    `;
+                event.target.reset();
+                document.getElementById('bookList').innerHTML = '';
+                bookCount = 0;
+                createBookEntry();
 
-    // Add popup to body
-    document.body.appendChild(popup);
+                // Reset all error messages and styles
+                const errorMessages = document.querySelectorAll('.error-message');
+                errorMessages.forEach(msg => msg.classList.add('hidden'));
+                const inputFields = document.querySelectorAll('input');
+                inputFields.forEach(input => {
+                    input.classList.remove('border-red-500');
+                    input.classList.add('border-gray-300', 'focus:border-blue-500');
+                });
 
-    // Add close event listener
-    document.getElementById('closePopupBtn').addEventListener('click', () => {
-        popup.remove();
-    });
-}
+            } catch (error) {
+                console.error('Errore dettagliato durante l\'invio:', error);
+                alert(`Si è verificato un errore durante l'invio: ${error.text || error.message}`);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Invia Donazione';
+            }
+        });
     </script>
 </body>
 </html>
