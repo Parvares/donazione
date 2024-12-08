@@ -341,9 +341,8 @@ document.getElementById('donationForm').addEventListener('submit', async functio
         showGlobalErrorPopup('Per favore, compila correttamente tutti i campi obbligatori.');
         return;
     }
-        
-
-  
+    
+    // If validation is successful, proceed with email sending logic
     const nome = document.getElementById('nome').value.trim();
     const cognome = document.getElementById('cognome').value.trim();
     const email = document.getElementById('email').value.trim();
