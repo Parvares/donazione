@@ -89,22 +89,19 @@
 
 
         
- function showGlobalErrorPopup(message) {
+function showGlobalErrorPopup(message) {
     // Remove any existing error popups first
     const existingPopups = document.querySelectorAll('.error-popup');
     existingPopups.forEach(popup => document.body.removeChild(popup));
 
-
-     
     // Create a popup div
-const popup = document.createElement('div');
-popup.className = 'error-popup fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50 shadow-lg';
-popup.innerHTML = `
-    <strong class="font-bold">Errore!</strong>
-    <span class="block sm:inline">${message}</span>
-    <span class="absolute top-0 bottom-0 right-0 px-4 py-3 close-btn" style="cursor: pointer; padding-top: 5px;">&times;</span>
-`;
-
+    const popup = document.createElement('div');
+    popup.className = 'error-popup fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50 shadow-lg';
+    popup.innerHTML = `
+        <strong class="font-bold">Errore!</strong>
+        <span class="block sm:inline">${message}</span>
+        <span class="absolute top-2 right-2 px-4 py-3 close-btn" style="cursor: pointer;">&times;</span>
+    `;
 
     // Add close functionality
     const closeBtn = popup.querySelector('.close-btn');
@@ -121,6 +118,7 @@ popup.innerHTML = `
 
     document.body.appendChild(popup);
 }
+
 
 
 
