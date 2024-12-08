@@ -301,6 +301,10 @@
     let isValid = true;
     const inputs = event.target.querySelectorAll('input');
     
+    // Reset global error message
+    const existingPopups = document.querySelectorAll('.error-popup');
+    existingPopups.forEach(popup => document.body.removeChild(popup));
+    
     // Validate all form fields
     inputs.forEach(input => {
         if (input.id) {
@@ -332,16 +336,11 @@
         hideError(acceptCheckbox);
     }
 
-    // Global error popup for overall form validation
+    // Show global error popup for overall form validation
     if (!isValid) {
         showGlobalErrorPopup('Per favore, compila correttamente tutti i campi obbligatori.');
         return;
     }
-
-
-        
-
-            
 
     const nome = document.getElementById('nome').value.trim();
     const cognome = document.getElementById('cognome').value.trim();
@@ -395,18 +394,13 @@
                 <td style="padding:5px; border:1px solid #ddd;"><strong>ISBN:</strong></td>
                 <td style="padding:5px; border:1px solid #ddd;">${book.isbn}</td>
             </tr>
-        </table>`
-    ).join('');
+        </table>`).join('');
 
     const submitButton = event.target.querySelector('button[type="submit"]');
     submitButton.disabled = true;
     submitButton.textContent = 'Invio in corso...';
 
-
-
-      
-
-try {
+    try {
         const response = await emailjs.send(
             'service_yepi8uu',
             'template_s1jmd7r', 
