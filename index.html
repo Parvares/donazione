@@ -436,10 +436,6 @@
         });
 
     } catch (error) {
-        console.error('Errore dettagliato durante l\'invio:', error);
-        showGlobalErrorPopup(`Si è verificato un errore durante l'invio: ${error.text || error.message}`);
-
-catch (error) {
     console.error('Errore dettagliato durante l\'invio:', error);
     const errorMessage = error.text || error.message || 'Errore sconosciuto durante l\'invio';
     showGlobalErrorPopup(`Si è verificato un errore durante l'invio: ${errorMessage}`);
