@@ -1,4 +1,4 @@
-function validateBookField(input) {<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
@@ -248,42 +248,33 @@ function showSuccessPopup(message) {
             return isValid;
         }
 
+        function validateBookField(input) {
+            const value = input.value.trim();
+            let isValid = true;
 
-        
+            if (input.hasAttribute('required') && !value) {
+                showError(input, 'Questo campo è obbligatorio');
+                isValid = false;
+            } else if (input.classList.contains('book-year')) {
+                const currentYear = new Date().getFullYear();
+                const year = parseInt(value);
+                if (value && (!Number.isInteger(year) || year < 1400 || year > currentYear)) {
+                    showError(input, `L'anno deve essere un numero compreso tra 1400 e ${currentYear}`);
+                    isValid = false;
+                }
+            } else if (input.classList.contains('book-isbn')) {
+                if (value && !/^(?:\d{10}|\d{13})$/.test(value)) {
+                    showError(input, 'ISBN deve essere di 10 o 13 cifre');
+                    isValid = false;
+                }
+            }
 
-  function validateBookField(input) {
-    const value = input.value.trim();
-    let isValid = true;
+            if (isValid) {
+                hideError(input);
+            }
 
-    if (input.hasAttribute('required') && !value) {
-        showError(input, 'Questo campo è obbligatorio');
-        isValid = false;
-    } else if (input.classList.contains('book-year')) {
-        const currentYear = new Date().getFullYear();
-        const year = parseInt(value);
-        
-        // Check for exact 4 digits
-        if (value && (!/^\d{4}$/.test(value) || !Number.isInteger(year) || year < 1400 || year > currentYear)) {
-            showError(input, `L'anno deve essere un numero di 4 cifre compreso tra 1400 e ${currentYear}`);
-            isValid = false;
+            return isValid;
         }
-    } else if (input.classList.contains('book-isbn')) {
-        if (value && !/^(?:\d{10}|\d{13})$/.test(value)) {
-            showError(input, 'ISBN deve essere di 10 o 13 cifre');
-            isValid = false;
-        }
-    }
-
-    if (isValid) {
-        hideError(input);
-    }
-
-    return isValid;
-}
-
-
-
-        
 
         function createBookEntry() {
             const bookDiv = document.createElement('div');
