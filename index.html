@@ -87,33 +87,37 @@
         })();
 
 
+
         
-  function showGlobalErrorPopup(message) {
-        // Create a popup div
-        const popup = document.createElement('div');
-        popup.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50 shadow-lg';
-        popup.innerHTML = `
-            <strong class="font-bold">Errore!</strong>
-            <span class="block sm:inline">${message}</span>
-            <span class="absolute top-0 bottom-0 right-0 px-4 py-3 close-btn" style="cursor: pointer;">&times;</span>
-        `;
+ function showGlobalErrorPopup(message) {
+    // Remove any existing error popups first
+    const existingPopups = document.querySelectorAll('.error-popup');
+    existingPopups.forEach(popup => document.body.removeChild(popup));
 
-        // Add close functionality
-        const closeBtn = popup.querySelector('.close-btn');
-        closeBtn.addEventListener('click', () => {
+    // Create a popup div
+    const popup = document.createElement('div');
+    popup.className = 'error-popup fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50 shadow-lg';
+    popup.innerHTML = `
+        <strong class="font-bold">Errore!</strong>
+        <span class="block sm:inline">${message}</span>
+        <span class="absolute top-0 bottom-0 right-0 px-4 py-3 close-btn" style="cursor: pointer;">&times;</span>
+    `;
+
+    // Add close functionality
+    const closeBtn = popup.querySelector('.close-btn');
+    closeBtn.addEventListener('click', () => {
+        document.body.removeChild(popup);
+    });
+
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+        if (document.body.contains(popup)) {
             document.body.removeChild(popup);
-        });
+        }
+    }, 5000);
 
-        // Auto-remove after 5 seconds
-        setTimeout(() => {
-            if (document.body.contains(popup)) {
-                document.body.removeChild(popup);
-            }
-        }, 5000);
-
-        document.body.appendChild(popup);
-    }
-
+    document.body.appendChild(popup);
+}
 
 
 
