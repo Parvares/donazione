@@ -89,6 +89,7 @@
 
 
         
+// Prima aggiungi questa funzione accanto alle altre funzioni di utility (dopo showGlobalErrorPopup)
 function showGlobalErrorPopup(message) {
     // Remove any existing error popups first
     const existingPopups = document.querySelectorAll('.error-popup');
@@ -113,7 +114,29 @@ function showGlobalErrorPopup(message) {
 }
 
 
+// Aggiungi questa nuova funzione subito dopo showGlobalErrorPopup
+function showSuccessPopup(message) {
+    // Rimuovi eventuali popup esistenti
+    const existingPopups = document.querySelectorAll('.success-popup');
+    existingPopups.forEach(popup => document.body.removeChild(popup));
 
+    // Crea il div del popup
+    const popup = document.createElement('div');
+    popup.className = 'success-popup fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded z-50 shadow-lg';
+    popup.innerHTML = `
+        <strong class="font-bold">Successo!</strong>
+        <span class="block sm:inline">${message}</span>
+    `;
+
+    // Rimuovi automaticamente dopo 5 secondi
+    setTimeout(() => {
+        if (document.body.contains(popup)) {
+            document.body.removeChild(popup);
+        }
+    }, 5000);
+
+    document.body.appendChild(popup);
+}
 
 
         
@@ -331,14 +354,10 @@ document.getElementById('donationForm').addEventListener('submit', async functio
         hideError(acceptCheckbox);
     }
 
-    // Show global error popup for overall form validation
     if (!isValid) {
         showGlobalErrorPopup('Per favore, compila correttamente tutti i campi obbligatori.');
         return;
     }
-        
-
-       
 
     const nome = document.getElementById('nome').value.trim();
     const cognome = document.getElementById('cognome').value.trim();
@@ -415,7 +434,8 @@ document.getElementById('donationForm').addEventListener('submit', async functio
         );
 
         console.log('Email inviata con successo:', response);
-        alert('La tua donazione è stata inviata con successo!');
+        // Qui sostituiamo l'alert con il nuovo popup personalizzato
+        showSuccessPopup('La tua donazione è stata inviata con successo!');
         
         event.target.reset();
         document.getElementById('bookList').innerHTML = '';
@@ -440,7 +460,6 @@ document.getElementById('donationForm').addEventListener('submit', async functio
         submitButton.textContent = 'Invia Donazione';
     }
 });
-
 
 
         
