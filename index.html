@@ -114,6 +114,57 @@ function showGlobalErrorPopup(message) {
 }
 
 
+        
+
+function showSuccessPopup(message) {
+    // Rimuovi eventuali popup esistenti
+    const existingPopups = document.querySelectorAll('.success-popup');
+    existingPopups.forEach(popup => document.body.removeChild(popup));
+
+    // Crea il div del popup
+    const popup = document.createElement('div');
+    popup.className = 'success-popup fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded z-50 shadow-lg';
+    popup.innerHTML = `
+        <strong class="font-bold">Successo!</strong>
+        <span class="block sm:inline">${message}</span>
+    `;
+
+    // Rimuovi automaticamente dopo 5 secondi
+    setTimeout(() => {
+        if (document.body.contains(popup)) {
+            document.body.removeChild(popup);
+        }
+    }, 5000);
+
+    document.body.appendChild(popup);
+}
+
+function showLoadingOverlay() {
+    const overlay = document.createElement('div');
+    overlay.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    overlay.id = 'loadingOverlay';
+    
+    const spinner = document.createElement('div');
+    spinner.className = 'bg-white p-5 rounded-lg flex flex-col items-center';
+    spinner.innerHTML = `
+        <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500 mb-3"></div>
+        <div class="text-white font-medium">Invio donazione in corso...</div>
+    `;
+    
+    overlay.appendChild(spinner);
+    document.body.appendChild(overlay);
+}
+
+function removeLoadingOverlay() {
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) {
+        overlay.remove();
+    }
+}
+
+
+        
+
 // Aggiungi questa nuova funzione subito dopo showGlobalErrorPopup
 function showSuccessPopup(message) {
     // Rimuovi eventuali popup esistenti
@@ -313,7 +364,8 @@ function showSuccessPopup(message) {
 
 
 
-document.getElementById('donationForm').addEventListener('submit', async function(event) {
+
+        document.getElementById('donationForm').addEventListener('submit', async function(event) {
     event.preventDefault();
     
     let isValid = true;
@@ -413,9 +465,7 @@ document.getElementById('donationForm').addEventListener('submit', async functio
             </tr>
         </table>`).join('');
 
-    const submitButton = event.target.querySelector('button[type="submit"]');
-    submitButton.disabled = true;
-    submitButton.textContent = 'Invio in corso...';
+    showLoadingOverlay(); // Mostra subito il loading overlay
 
     try {
         const response = await emailjs.send(
@@ -433,16 +483,17 @@ document.getElementById('donationForm').addEventListener('submit', async functio
             'z6OeY42qSulJ-8EcS'
         );
 
-        console.log('Email inviata con successo:', response);
-        // Qui sostituiamo l'alert con il nuovo popup personalizzato
+        // Rimuovi il loading overlay prima di mostrare il popup di successo
+        removeLoadingOverlay();
         showSuccessPopup('La tua donazione è stata inviata con successo!');
         
+        // Reset del form
         event.target.reset();
         document.getElementById('bookList').innerHTML = '';
         bookCount = 0;
         createBookEntry();
 
-        // Reset all error messages and styles
+        // Reset degli errori
         const errorMessages = document.querySelectorAll('.error-message');
         errorMessages.forEach(msg => msg.classList.add('hidden'));
         const inputFields = document.querySelectorAll('input');
@@ -452,10 +503,12 @@ document.getElementById('donationForm').addEventListener('submit', async functio
         });
 
     } catch (error) {
+        removeLoadingOverlay();
         console.error('Errore dettagliato durante l\'invio:', error);
         const errorMessage = error.text || error.message || 'Errore sconosciuto durante l\'invio';
         showGlobalErrorPopup(`Si è verificato un errore durante l'invio: ${errorMessage}`);
     } finally {
+        const submitButton = event.target.querySelector('button[type="submit"]');
         submitButton.disabled = false;
         submitButton.textContent = 'Invia Donazione';
     }
