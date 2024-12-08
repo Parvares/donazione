@@ -402,7 +402,11 @@
     submitButton.disabled = true;
     submitButton.textContent = 'Invio in corso...';
 
-    try {
+
+
+      
+
+try {
         const response = await emailjs.send(
             'service_yepi8uu',
             'template_s1jmd7r', 
@@ -436,19 +440,18 @@
         });
 
     } catch (error) {
-    console.error('Errore dettagliato durante l\'invio:', error);
-    const errorMessage = error.text || error.message || 'Errore sconosciuto durante l\'invio';
-    showGlobalErrorPopup(`Si è verificato un errore durante l'invio: ${errorMessage}`);
-    
-    // Optional: Log more details about the error
-    if (error.status) {
-        console.error('Status:', error.status);
-    }
-}   finally {
+        console.error('Errore dettagliato durante l\'invio:', error);
+        const errorMessage = error.text || error.message || 'Errore sconosciuto durante l\'invio';
+        showGlobalErrorPopup(`Si è verificato un errore durante l'invio: ${errorMessage}`);
+    } finally {
         submitButton.disabled = false;
         submitButton.textContent = 'Invia Donazione';
     }
 });
+
+
+
+        
     </script>
 </body>
 </html>
