@@ -263,8 +263,8 @@ function showSuccessPopup(message) {
         const year = parseInt(value);
         
         // Aggiungi un controllo sulla lunghezza delle cifre
-        if (value && (value.length > 4 || !Number.isInteger(year) || year < 1400 || year > currentYear)) {
-            showError(input, `L'anno deve essere un numero di 4 cifre compreso tra 1400 e ${currentYear}`);
+        if (value && (value.length > 4 || !Number.isInteger(year) || year < 1900 || year > currentYear)) {
+            showError(input, `L'anno deve essere un numero di 4 cifre compreso tra 1900 e ${currentYear}`);
             input.value = value.slice(0, 4); // Tronca a 4 cifre
             isValid = false;
         }
