@@ -251,7 +251,7 @@ function showSuccessPopup(message) {
 
         
 
-        function validateBookField(input) {
+       function validateBookField(input) {
     const value = input.value.trim();
     let isValid = true;
 
@@ -260,13 +260,22 @@ function showSuccessPopup(message) {
         isValid = false;
     } else if (input.classList.contains('book-year')) {
         const currentYear = new Date().getFullYear();
-        const year = parseInt(value);
         
-        // Aggiungi un controllo sulla lunghezza delle cifre
-        if (value && (value.length > 4 || !Number.isInteger(year) || year < 1900 || year > currentYear)) {
-            showError(input, `L'anno deve essere un numero di 4 cifre compreso tra 1900 e ${currentYear}`);
-            input.value = value.slice(0, 4); // Tronca a 4 cifre
-            isValid = false;
+        // Allow partial input without showing error
+        if (value) {
+            // Check if input is currently being typed (less than 4 digits)
+            if (value.length < 4) {
+                return true; // Don't validate while typing
+            }
+
+            const year = parseInt(value);
+            
+            // Validate fully entered year
+            if (!Number.isInteger(year) || year < 1900 || year > currentYear) {
+                showError(input, `L'anno deve essere un numero di 4 cifre compreso tra 1900 e ${currentYear}`);
+                input.value = value.slice(0, 4); // Tronca a 4 cifre
+                isValid = false;
+            }
         }
     } else if (input.classList.contains('book-isbn')) {
         if (value && !/^(?:\d{10}|\d{13})$/.test(value)) {
