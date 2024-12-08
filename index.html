@@ -295,7 +295,7 @@
 
 
 
-   document.getElementById('donationForm').addEventListener('submit', async function(event) {
+document.getElementById('donationForm').addEventListener('submit', async function(event) {
     event.preventDefault();
     
     let isValid = true;
@@ -341,7 +341,9 @@
         showGlobalErrorPopup('Per favore, compila correttamente tutti i campi obbligatori.');
         return;
     }
+        
 
+  
     const nome = document.getElementById('nome').value.trim();
     const cognome = document.getElementById('cognome').value.trim();
     const email = document.getElementById('email').value.trim();
