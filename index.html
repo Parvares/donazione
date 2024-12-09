@@ -1,241 +1,553 @@
-import { useState } from 'react';
-import { AlertCircle, Check, X, Loader2 } from 'lucide-react';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modulo donazione</title>
 
-const BookEntry = ({ book, index, onChange, onRemove, onAdd, isLast }) => (
-  <div className="relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:-translate-y-1 transition-transform">
-    <div className="flex justify-between items-center mb-4">
-      <span className="flex items-center justify-center w-6 h-6 rounded-full bg-green-500 text-white font-semibold text-sm">
-        {index + 1}
-      </span>
-      {index > 0 && (
-        <button 
-          type="button"
-          onClick={onRemove}
-          className="px-3 py-2 text-red-600 hover:text-red-700 font-bold text-2xl"
-        >
-          <X />
-        </button>
-      )}
-    </div>
 
-    <div className="space-y-4">
-      <div>
-        <label className="block mb-1 text-slate-700 font-medium">Titolo: *</label>
-        <input
-          type="text"
-          value={book.title}
-          onChange={(e) => onChange(index, 'title', e.target.value)}
-          required
-          className="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none"
-        />
-      </div>
+<!-- Link to favicon -->
+        <link rel="icon" href="favicon.png" type="image/png">
 
-      <div>
-        <label className="block mb-1 text-slate-700 font-medium">Autore:</label>
-        <input
-          type="text"
-          value={book.author}
-          onChange={(e) => onChange(index, 'author', e.target.value)}
-          className="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none"
-        />
-      </div>
-
-      <div>
-        <label className="block mb-1 text-slate-700 font-medium">Editore:</label>
-        <input
-          type="text"
-          value={book.publisher}
-          onChange={(e) => onChange(index, 'publisher', e.target.value)}
-          className="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none"
-        />
-      </div>
-
-      <div>
-        <label className="block mb-1 text-slate-700 font-medium">Anno:</label>
-        <input
-          type="number"
-          value={book.year}
-          onChange={(e) => onChange(index, 'year', e.target.value)}
-          min="1900"
-          max={new Date().getFullYear()}
-          className="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none"
-        />
-      </div>
-
-      <div>
-        <label className="block mb-1 text-slate-700 font-medium">ISBN:</label>
-        <input
-          type="text"
-          value={book.isbn}
-          onChange={(e) => onChange(index, 'isbn', e.target.value)}
-          pattern="\d{10}|\d{13}"
-          className="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none"
-        />
-      </div>
-
-      {isLast && (
-        <button
-          type="button"
-          onClick={onAdd}
-          className="w-full px-4 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition-colors mt-2"
-        >
-          + Aggiungi Libro
-        </button>
-      )}
-    </div>
-  </div>
-);
-
-const DonationForm = () => {
-  const [formData, setFormData] = useState({
-    nome: '',
-    cognome: '',
-    tessera: '',
-    telefono: '',
-    email: '',
-    acceptTerms: false
-  });
-
-  const [books, setBooks] = useState([{
-    title: '',
-    author: '',
-    publisher: '',
-    year: '',
-    isbn: ''
-  }]);
-
-  const [status, setStatus] = useState({
-    loading: false,
-    error: null,
-    success: false
-  });
-
-  const validateForm = () => {
-    if (!formData.nome || !formData.cognome || !formData.email) {
-      setStatus({ error: 'Compilare tutti i campi obbligatori' });
-      return false;
-    }
-
-    if (!formData.acceptTerms) {
-      setStatus({ error: 'Accettare i termini e condizioni' });
-      return false;
-    }
-
-    if (!books.some(book => book.title)) {
-      setStatus({ error: 'Aggiungere almeno un libro' });
-      return false;
-    }
-
-    return true;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
     
-    if (!validateForm()) return;
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 leading-relaxed p-5">
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
+        <div class="flex flex-col items-center justify-center mb-10 text-center space-y-4 px-4">
 
-    setStatus({ loading: true });
+
+            <img 
+    src="loghi.png" 
+    alt="Logo Biblioteca" 
+    class="h-16 w-auto object-contain mb-3 md:h-16 sm:h-12" />
+
+
+
+
+            
+            <h1 class="text-3xl md:text-4xl text-slate-700 font-bold leading-tight text-center sm:text-xl md:text-3xl">
+                Donazione di libri
+            </h1>
+        </div>
+
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r">
+            Compila il modulo per donare i tuoi libri alla biblioteca. I campi contrassegnati con * sono obbligatori
+        </div>
+        
+
+        <form id="donationForm" novalidate>
+            <h3 class="text-xl text-slate-700 mt-6 mb-4 pb-2 border-b-2 border-gray-200">Dati Personali</h3>
+            
+            <div class="mb-5">
+                <label for="nome" class="block mb-1 text-slate-700 font-medium">Nome: *</label>
+                <input type="text" id="nome" name="nome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                <p class="hidden error-message text-sm text-red-500 mt-1">Il nome è obbligatorio</p>
+            </div>
+            
+            <div class="mb-5">
+                <label for="cognome" class="block mb-1 text-slate-700 font-medium">Cognome: *</label>
+                <input type="text" id="cognome" name="cognome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                <p class="hidden error-message text-sm text-red-500 mt-1">Il cognome è obbligatorio</p>
+            </div>
+            
+            <div class="mb-5">
+                <label for="tessera" class="block mb-1 text-slate-700 font-medium">Numero Tessera:</label>
+                <input type="text" id="tessera" name="tessera" class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+            </div>
+
+            <div class="mb-5">
+                <label for="telefono" class="block mb-1 text-slate-700 font-medium">Telefono:</label>
+                <input type="tel" id="telefono" name="telefono" class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                <p class="hidden error-message text-sm text-red-500 mt-1">Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)</p>
+            </div>
+            
+            <div class="mb-5">
+                <label for="email" class="block mb-1 text-slate-700 font-medium">Email: *</label>
+                <input type="email" id="email" name="email" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                <p class="hidden error-message text-sm text-red-500 mt-1">Inserire un indirizzo email valido</p>
+            </div>
+
+            <h3 class="text-xl text-slate-700 mt-6 mb-4 pb-2 border-b-2 border-gray-200">Libri da donare</h3>
+            <div id="bookList"></div>
+            
+            <div class="bg-gray-50 p-4 rounded mb-5">
+                <label class="flex items-start gap-3">
+                    <input type="checkbox" id="accept" name="accept" required class="w-5 h-5 mt-1">
+                    <span>Ho letto e accetto <a href="termini.html" target="_blank" class="text-blue-500 hover:underline">termini e condizioni</a></span>
+                </label>
+                <p class="hidden error-message text-sm text-red-500 mt-1">Devi accettare i termini e condizioni</p>
+            </div>
+            
+            <button type="submit" class="w-full max-w-sm mx-auto block px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors font-medium text-base">
+                Invia Donazione
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Initialize EmailJS
+        (function() {
+            emailjs.init("z6OeY42qSulJ-8EcS");
+        })();
+
+
+
+        
+// Prima aggiungi questa funzione accanto alle altre funzioni di utility (dopo showGlobalErrorPopup)
+function showGlobalErrorPopup(message) {
+    // Remove any existing error popups first
+    const existingPopups = document.querySelectorAll('.error-popup');
+    existingPopups.forEach(popup => document.body.removeChild(popup));
+
+    // Create a popup div
+    const popup = document.createElement('div');
+    popup.className = 'error-popup fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50 shadow-lg';
+    popup.innerHTML = `
+        <strong class="font-bold">Errore!</strong>
+        <span class="block sm:inline">${message}</span>
+    `;
+
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+        if (document.body.contains(popup)) {
+            document.body.removeChild(popup);
+        }
+    }, 5000);
+
+    document.body.appendChild(popup);
+}
+
+
+        
+
+function showSuccessPopup(message) {
+    // Rimuovi eventuali popup esistenti
+    const existingPopups = document.querySelectorAll('.success-popup');
+    existingPopups.forEach(popup => document.body.removeChild(popup));
+
+    // Crea il div del popup
+    const popup = document.createElement('div');
+    popup.className = 'success-popup fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded z-50 shadow-lg';
+    popup.innerHTML = `
+        <strong class="font-bold">Successo!</strong>
+        <span class="block sm:inline">${message}</span>
+    `;
+
+    // Rimuovi automaticamente dopo 5 secondi
+    setTimeout(() => {
+        if (document.body.contains(popup)) {
+            document.body.removeChild(popup);
+        }
+    }, 5000);
+
+    document.body.appendChild(popup);
+}
+
+function showLoadingOverlay() {
+    const overlay = document.createElement('div');
+    overlay.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    overlay.id = 'loadingOverlay';
+    
+    const spinner = document.createElement('div');
+    spinner.className = 'bg-white p-5 rounded-lg flex flex-col items-center';
+    spinner.innerHTML = `
+        <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500 mb-3"></div>
+        <div class="text-white font-medium">Invio donazione in corso...</div>
+    `;
+    
+    overlay.appendChild(spinner);
+    document.body.appendChild(overlay);
+}
+
+function removeLoadingOverlay() {
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) {
+        overlay.remove();
+    }
+}
+
+
+        
+
+// Aggiungi questa nuova funzione subito dopo showGlobalErrorPopup
+function showSuccessPopup(message) {
+    // Rimuovi eventuali popup esistenti
+    const existingPopups = document.querySelectorAll('.success-popup');
+    existingPopups.forEach(popup => document.body.removeChild(popup));
+
+    // Crea il div del popup
+    const popup = document.createElement('div');
+    popup.className = 'success-popup fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded z-50 shadow-lg';
+    popup.innerHTML = `
+        <strong class="font-bold">Successo!</strong>
+        <span class="block sm:inline">${message}</span>
+    `;
+
+    // Rimuovi automaticamente dopo 5 secondi
+    setTimeout(() => {
+        if (document.body.contains(popup)) {
+            document.body.removeChild(popup);
+        }
+    }, 5000);
+
+    document.body.appendChild(popup);
+}
+
+
+        
+
+        let bookCount = 0;
+
+        function showError(input, message) {
+            const errorElement = input.parentElement.querySelector('.error-message');
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.classList.remove('hidden');
+                input.classList.add('border-red-500');
+                input.classList.remove('border-gray-300', 'focus:border-blue-500');
+            }
+        }
+
+        function hideError(input) {
+            const errorElement = input.parentElement.querySelector('.error-message');
+            if (errorElement) {
+                errorElement.classList.add('hidden');
+                input.classList.remove('border-red-500');
+                input.classList.add('border-gray-300', 'focus:border-blue-500');
+            }
+        }
+
+        function validateField(input) {
+            const value = input.value.trim();
+            let isValid = true;
+
+            if (input.hasAttribute('required') && !value) {
+                showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
+                isValid = false;
+            } else {
+                switch (input.id) {
+                    case 'telefono':
+                        if (value && !/^[0-9]{6,15}$/.test(value)) {
+                            showError(input, 'Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)');
+                            isValid = false;
+                        }
+                        break;
+                        
+                    case 'email':
+                        if (!value) {
+                            showError(input, 'L\'email è obbligatoria');
+                            isValid = false;
+                        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+                            showError(input, 'Inserire un indirizzo email valido');
+                            isValid = false;
+                        }
+                        break;
+                }
+            }
+
+            if (isValid) {
+                hideError(input);
+            }
+
+            return isValid;
+        }
+
+
+        
+
+       function validateBookField(input) {
+    const value = input.value.trim();
+    let isValid = true;
+
+    if (input.hasAttribute('required') && !value) {
+        showError(input, 'Questo campo è obbligatorio');
+        isValid = false;
+    } else if (input.classList.contains('book-year')) {
+        const currentYear = new Date().getFullYear();
+        
+        // Allow partial input without showing error
+        if (value) {
+            // Check if input is currently being typed (less than 4 digits)
+            if (value.length < 4) {
+                return true; // Don't validate while typing
+            }
+
+            const year = parseInt(value);
+            
+            // Validate fully entered year
+            if (!Number.isInteger(year) || year < 1900 || year > currentYear) {
+                showError(input, `L'anno deve essere un numero di 4 cifre compreso tra 1900 e ${currentYear}`);
+                input.value = value.slice(0, 4); // Tronca a 4 cifre
+                isValid = false;
+            }
+        }
+    } else if (input.classList.contains('book-isbn')) {
+        if (value && !/^(?:\d{10}|\d{13})$/.test(value)) {
+            showError(input, 'ISBN deve essere di 10 o 13 cifre');
+            isValid = false;
+        }
+    }
+
+    if (isValid) {
+        hideError(input);
+    }
+
+    return isValid;
+}
+        
+
+
+
+        
+        function createBookEntry() {
+            const bookDiv = document.createElement('div');
+            bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
+            bookCount++;
+
+            bookDiv.innerHTML = `
+                <div class="flex justify-between items-center mb-4">
+                    <span class="book-counter flex items-center justify-center w-6 h-6 rounded-full text-white font-semibold text-sm" style="background-color: rgb(34, 197, 94)">${bookCount}</span>
+                    ${bookCount > 1 ? `
+                        <button type="button" class="px-3 py-2 text-red-600 hover:text-red-700 font-bold text-2xl" onclick="removeBook(this)">✖</button>
+                    ` : ''}
+                </div>
+                
+                <div class="mb-5">
+                    <label class="block mb-1 text-slate-700 font-medium">Titolo: *</label>
+                    <input type="text" class="book-title w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" required>
+                    <p class="hidden error-message text-sm text-red-500 mt-1">Il titolo è obbligatorio</p>
+                </div>
+                <div class="mb-5">
+                    <label class="block mb-1 text-slate-700 font-medium">Autore:</label>
+                    <input type="text" class="book-author w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                </div>
+                <div class="mb-5">
+                    <label class="block mb-1 text-slate-700 font-medium">Editore:</label>
+                    <input type="text" class="book-publisher w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                </div>
+               
+
+
+<div class="mb-5">
+    <label class="block mb-1 text-slate-700 font-medium">Anno:</label>
+    <input type="number" min="1400" max="2024" class="book-year w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+
+    <p class="hidden error-message text-sm text-red-500 mt-1">Anno non valido</p>
+</div>
+<div class="mb-5">
+    <label class="block mb-1 text-slate-700 font-medium">ISBN:</label>
+    <input type="tel" inputmode="numeric" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" maxlength="13">
+    <p class="hidden error-message text-sm text-red-500 mt-1">ISBN non valido</p>
+</div>
+
+
+                
+                
+                <button type="button" class="w-full px-4 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition-colors mt-2" onclick="createBookEntry()">+ Aggiungi Libro</button>
+            `;
+
+            const inputs = bookDiv.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
+                        validateBookField(input);
+                    }
+                });
+                input.addEventListener('blur', () => {
+                    if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
+                        validateBookField(input);
+                    }
+                });
+            });
+
+            document.getElementById('bookList').appendChild(bookDiv);
+            updateBookCounters();
+        }
+
+        function removeBook(button) {
+            const bookEntry = button.closest('.book-entry');
+            if (bookEntry) {
+                bookEntry.remove();
+                bookCount--;
+                updateBookCounters();
+            }
+        }
+
+        function updateBookCounters() {
+            const bookEntries = document.querySelectorAll('.book-entry');
+            bookEntries.forEach((entry, index) => {
+                entry.querySelector('.book-counter').textContent = index + 1;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            createBookEntry();
+
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                if (input.id) {
+                    input.addEventListener('input', () => validateField(input));
+                    input.addEventListener('blur', () => validateField(input));
+                }
+            });
+        });
+
+
+
+
+        document.getElementById('donationForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    
+    let isValid = true;
+    const inputs = event.target.querySelectorAll('input');
+    
+    // Reset global error message
+    const existingPopups = document.querySelectorAll('.error-popup');
+    existingPopups.forEach(popup => document.body.removeChild(popup));
+    
+    // Validate all form fields
+    inputs.forEach(input => {
+        if (input.id) {
+            if (!validateField(input)) {
+                isValid = false;
+            }
+        }
+    });
+
+    // Validate book fields
+    const bookEntries = document.querySelectorAll('.book-entry');
+    bookEntries.forEach(entry => {
+        const bookInputs = entry.querySelectorAll('input');
+        bookInputs.forEach(input => {
+            if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
+                if (!validateBookField(input)) {
+                    isValid = false;
+                }
+            }
+        });
+    });
+
+    // Validate checkbox
+    const acceptCheckbox = document.getElementById('accept');
+    if (!acceptCheckbox.checked) {
+        showError(acceptCheckbox, 'Devi accettare i termini e condizioni');
+        isValid = false;
+    } else {
+        hideError(acceptCheckbox);
+    }
+
+    if (!isValid) {
+        showGlobalErrorPopup('Per favore, compila correttamente tutti i campi obbligatori.');
+        return;
+    }
+
+    const nome = document.getElementById('nome').value.trim();
+    const cognome = document.getElementById('cognome').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const tessera = document.getElementById('tessera').value.trim();
+    const telefono = document.getElementById('telefono').value.trim();
+
+    const books = [];
+    
+    for (const bookDiv of bookEntries) {
+        const title = bookDiv.querySelector('.book-title').value.trim();
+        if (!title) {
+            showError(bookDiv.querySelector('.book-title'), 'Il titolo è obbligatorio');
+            return;
+        }
+        
+        books.push({
+            title: title,
+            author: bookDiv.querySelector('.book-author').value.trim() || 'Non specificato',
+            publisher: bookDiv.querySelector('.book-publisher').value.trim() || 'Non specificato',
+            year: bookDiv.querySelector('.book-year').value.trim() || 'Non specificato',
+            isbn: bookDiv.querySelector('.book-isbn').value.trim() || 'Non specificato'
+        });
+    }
+
+    if (books.length === 0) {
+        showGlobalErrorPopup('Aggiungi almeno un libro alla donazione.');
+        return;
+    }
+
+    const formattedBooks = books.map((book, index) => 
+        `<br><em>Libro ${index + 1}:</em><br>` +
+        `<table style="width:100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed;">
+            <colgroup>
+                <col style="width: 100px;">
+                <col style="width: auto;">
+            </colgroup>
+            <tr>
+                <td style="padding:5px; border:1px solid #ddd;"><strong>Titolo:</strong></td>
+                <td style="padding:5px; border:1px solid #ddd;">${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}</td>
+            </tr>
+            <tr>
+                <td style="padding:5px; border:1px solid #ddd;"><strong>Editore:</strong></td>
+                <td style="padding:5px; border:1px solid #ddd;">${book.publisher}</td>
+            </tr>
+            <tr>
+                <td style="padding:5px; border:1px solid #ddd;"><strong>Anno:</strong></td>
+                <td style="padding:5px; border:1px solid #ddd;">${book.year}</td>
+            </tr>
+            <tr>
+                <td style="padding:5px; border:1px solid #ddd;"><strong>ISBN:</strong></td>
+                <td style="padding:5px; border:1px solid #ddd;">${book.isbn}</td>
+            </tr>
+        </table>`).join('');
+
+    showLoadingOverlay(); // Mostra subito il loading overlay
 
     try {
-      // EmailJS configuration would go here
-      setStatus({ success: true });
-      // Reset form
-      setFormData({
-        nome: '',
-        cognome: '',
-        tessera: '',
-        telefono: '',
-        email: '',
-        acceptTerms: false
-      });
-      setBooks([{ title: '', author: '', publisher: '', year: '', isbn: '' }]);
-    } catch (error) {
-      setStatus({ error: error.message });
-    }
-  };
+        const response = await emailjs.send(
+            'service_yepi8uu',
+            'template_s1jmd7r', 
+            {
+                to_email: 'bibliotecamorante@gmail.com',
+                from_name: `${nome} ${cognome}`,
+                from_email: email,
+                reply_to: email,
+                tessera: tessera || 'Non specificata',
+                telefono: telefono || 'Non specificato',
+                books: formattedBooks
+            },
+            'z6OeY42qSulJ-8EcS'
+        );
 
-  return (
-    <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
-      <div className="flex flex-col items-center justify-center mb-10 text-center space-y-4">
-        <img src="/api/placeholder/200/80" alt="Logo Biblioteca" className="h-16 w-auto object-contain" />
-        <h1 className="text-3xl text-slate-700 font-bold">Donazione di libri</h1>
-      </div>
-
-      <Alert className="mb-6">
-        <AlertCircle className="h-4 w-4" />
-        <AlertTitle>Importante</AlertTitle>
-        <AlertDescription>
-          Compila il modulo per donare i tuoi libri alla biblioteca. I campi contrassegnati con * sono obbligatori
-        </AlertDescription>
-      </Alert>
-
-      <form onSubmit={handleSubmit} noValidate>
-        {/* Personal Information Section */}
-        <h3 className="text-xl text-slate-700 mt-6 mb-4 pb-2 border-b-2 border-gray-200">
-          Dati Personali
-        </h3>
+        // Rimuovi il loading overlay prima di mostrare il popup di successo
+        removeLoadingOverlay();
+        showSuccessPopup('La tua donazione è stata inviata con successo!');
         
-        {/* Form fields */}
-        <div className="space-y-4">
-          {/* Books Section */}
-          <h3 className="text-xl text-slate-700 mt-6 mb-4 pb-2 border-b-2 border-gray-200">
-            Libri da donare
-          </h3>
-          
-          {books.map((book, index) => (
-            <BookEntry
-              key={index}
-              book={book}
-              index={index}
-              onChange={(index, field, value) => {
-                const newBooks = [...books];
-                newBooks[index][field] = value;
-                setBooks(newBooks);
-              }}
-              onRemove={() => {
-                setBooks(books.filter((_, i) => i !== index));
-              }}
-              onAdd={() => {
-                setBooks([...books, { title: '', author: '', publisher: '', year: '', isbn: '' }]);
-              }}
-              isLast={index === books.length - 1}
-            />
-          ))}
+        // Reset del form
+        event.target.reset();
+        document.getElementById('bookList').innerHTML = '';
+        bookCount = 0;
+        createBookEntry();
 
-          {/* Status Messages */}
-          {status.error && (
-            <Alert variant="destructive">
-              <AlertCircle className="h-4 w-4" />
-              <AlertDescription>{status.error}</AlertDescription>
-            </Alert>
-          )}
-          
-          {status.success && (
-            <Alert className="bg-green-50 text-green-800 border-green-500">
-              <Check className="h-4 w-4" />
-              <AlertDescription>Donazione inviata con successo!</AlertDescription>
-            </Alert>
-          )}
+        // Reset degli errori
+        const errorMessages = document.querySelectorAll('.error-message');
+        errorMessages.forEach(msg => msg.classList.add('hidden'));
+        const inputFields = document.querySelectorAll('input');
+        inputFields.forEach(input => {
+            input.classList.remove('border-red-500');
+            input.classList.add('border-gray-300', 'focus:border-blue-500');
+        });
 
-          <button
-            type="submit"
-            disabled={status.loading}
-            className="w-full max-w-sm mx-auto block px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors font-medium disabled:opacity-50"
-          >
-            {status.loading ? (
-              <span className="flex items-center justify-center">
-                <Loader2 className="animate-spin mr-2" />
-                Invio in corso...
-              </span>
-            ) : (
-              'Invia Donazione'
-            )}
-          </button>
-        </div>
-      </form>
-    </div>
-  );
-};
+    } catch (error) {
+        removeLoadingOverlay();
+        console.error('Errore dettagliato durante l\'invio:', error);
+        const errorMessage = error.text || error.message || 'Errore sconosciuto durante l\'invio';
+        showGlobalErrorPopup(`Si è verificato un errore durante l'invio: ${errorMessage}`);
+    } finally {
+        const submitButton = event.target.querySelector('button[type="submit"]');
+        submitButton.disabled = false;
+        submitButton.textContent = 'Invia Donazione';
+    }
+});
 
-export default DonationForm;
+
+        
+    </script>
+</body>
+</html>
