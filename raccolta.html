@@ -26,7 +26,7 @@
 
         .top-banner {
             background-color: white;
-            padding:  0.8rem 2rem; 
+            padding: 0.8rem 2rem; 
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -140,30 +140,45 @@
             text-decoration: underline;
         }
 
-        /* Stili per la stampa */
+        .print-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+        }
+
+        .print-button:hover {
+            opacity: 0.9;
+        }
+
         @media print {
             @page {
-                margin: 2cm;
+                margin: 1cm;
+                size: A4;
             }
 
             body {
                 background: white;
-                font-size: 12pt;
+                font-size: 11pt;
                 color: black;
+                margin: 0;
+                padding: 0;
             }
 
-            .top-banner, .nav-icons, .social-icons {
-                display: none;
+            .top-banner, .nav-icons, .social-icons, .print-button, footer {
+                display: none !important;
             }
 
             header {
-                background: none !important;
-                padding: 0;
-                margin-bottom: 2cm;
-            }
-
-            .container-header img {
-                filter: brightness(0);
+                display: none !important;
             }
 
             .content-wrapper {
@@ -171,30 +186,33 @@
                 padding: 0;
             }
 
+            .content-section {
+                margin-top: 0;
+            }
+
             .content-section > div {
                 break-inside: avoid;
                 page-break-inside: avoid;
                 border: none;
                 box-shadow: none;
-                padding: 0;
-                margin-bottom: 1.5cm;
+                padding: 0.5cm 0;
+                margin-bottom: 0.5cm;
             }
 
-            h1, h2 {
+            h1 {
+                font-size: 16pt;
                 color: black !important;
-                page-break-after: avoid;
+                margin-bottom: 1cm;
             }
 
-            footer {
-                background: none !important;
-                color: black;
-                margin-top: 2cm;
-                border-top: 1pt solid black;
-                padding-top: 1em;
+            h2 {
+                font-size: 13pt;
+                color: black !important;
+                margin-bottom: 0.3cm;
             }
 
-            footer a {
-                color: black;
+            p {
+                margin-bottom: 0.2cm;
             }
 
             a {
@@ -204,11 +222,10 @@
 
             a[href]::after {
                 content: " (" attr(href) ")";
-                font-size: 0.8em;
+                font-size: 8pt;
                 font-style: italic;
             }
 
-            /* Nasconde gli URL interni e social */
             a[href^="https://www.bibliotechediroma.it"]::after,
             a[href^="https://www.facebook.com"]::after,
             a[href^="https://www.instagram.com"]::after,
@@ -312,5 +329,10 @@
     <footer>
         <p>Scopri di più su <a href="https://www.bibliotechediroma.it/opac/.do" target="_blank">Biblioteche di Roma</a></p>
     </footer>
+
+    <button onclick="window.print()" class="print-button">
+        <i class="fas fa-print"></i>
+        Stampa
+    </button>
 </body>
 </html>
