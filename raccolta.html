@@ -80,10 +80,24 @@
     .nav-icons a:hover {
         transform: scale(1.1);
     }
-    .nav-icons a:first-child {
-        font-weight: bold;
-        font-size: 2rem;
-    }
+   
+
+.nav-icons a:first-child {
+    font-weight: bold;
+    font-size: 2rem;
+    position: relative;
+}
+
+.nav-icons a:first-child::after {
+    content: '';
+    position: absolute;
+    right: -0.5rem;
+    top: 25%;
+    height: 50%;
+    width: 1px;
+    background-color: rgba(128, 128, 128, 0.3); /* Grigio molto chiaro e semi-trasparente */
+}
+    
     .content-section {
         margin-top: 40px; /* Add margin to lower the content section */
     }
