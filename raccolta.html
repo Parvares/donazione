@@ -11,115 +11,115 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 
-<style>
-    :root {
-        --primary: #970a2c;
-    }
-    body {
-        font-family: "Space Grotesk", sans-serif;
-        font-size: 20px;
-        background-color: #f3f4f6;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-    }
-    header {
-        background-color: var(--primary);
-        color: #fff;
-        padding: 2rem 0;
-        position: relative;
-    }
-    footer {
-        background-color: var(--primary);
-        color: #fff;
-        text-align: center;
-        padding: 1.5rem 0;
-    }
-    footer a {
-        color: #fff;
-        text-decoration: underline;
-    }
-    .social-icons {
-        position: absolute;
-        top: 1rem;
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-        width: 100%;
-    }
-    .social-icons a {
-        color: white;
-        font-size: 1.5rem;
-        transition: transform 0.3s ease;
-    }
-    .social-icons a:hover {
-        transform: scale(1.2);
-    }
-    .container-header {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 2rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
+    <style>
+        :root {
+            --primary: #970a2c;
+        }
+        body {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 20px;
+            background-color: #f3f4f6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background-color: var(--primary);
+            color: #fff;
+            padding: 2rem 0;
+            position: relative;
+        }
+        footer {
+            background-color: var(--primary);
+            color: #fff;
+            text-align: center;
+            padding: 1.5rem 0;
+        }
+        footer a {
+            color: #fff;
+            text-decoration: underline;
+        }
+        .social-icons {
+            position: absolute;
+            top: 1rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            width: 100%;
+        }
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        .social-icons a:hover {
+            transform: scale(1.2);
+        }
+        .container-header {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
 
-    .content-wrapper {
-        max-width: 900px; /* Compromesso tra 700px e 1200px */
-        width: 100%;
-        margin: 2rem auto;
-        padding: 0 1rem;
-    }
+        .content-wrapper {
+            max-width: 900px; /* Compromesso tra 700px e 1200px */
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
 
-    .content-section {
-        max-width: none;
-        width: 100%;
-    }
-    .main-title {
-        font-size: 2rem; /* Ridotto per adattarsi meglio */
-        line-height: 1.2;
-    }
+        .content-section {
+            max-width: none;
+            width: 100%;
+        }
+        .main-title {
+            font-size: 2rem; /* Ridotto per adattarsi meglio */
+            line-height: 1.2;
+        }
 
-    /* Nuovo CSS per i pulsanti navigazione */
-    .navigation-icons {
-        display: flex;
-        justify-content: flex-start; /* Allineamento a sinistra */
-        gap: 2rem; /* Spazio maggiore tra le icone */
-        align-items: center;
-        margin-top: 0.5rem;
-        margin-left: 10%; /* Spostato per centrare rispetto al titolo */
-    }
+        /* Nuovo CSS per i pulsanti navigazione */
+        .navigation-icons {
+            display: flex;
+            justify-content: flex-start; /* Allineamento a sinistra */
+            gap: 2rem; /* Spazio maggiore tra le icone */
+            align-items: center;
+            margin-top: 0.5rem;
+            margin-left: 10%; /* Spostato per centrare rispetto al titolo */
+        }
 
-    .icon-button {
-        color: #fff;
-        text-decoration: none;
-        font-size: 1.5rem;
-        transition: background-color 0.3s;
-    }
+        .icon-button {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: background-color 0.3s;
+        }
 
-    .back-button {
-        font-size: 2rem; /* Grandezza maggiore per la freccia */
-        color: red; /* Rosso */
-    }
+        .back-button {
+            font-size: 2rem; /* Grandezza maggiore per la freccia */
+            color: red; /* Rosso */
+            font-weight: bold; /* Grassetto per il simbolo "<" */
+        }
 
-    .home-button img {
-        width: 20px; /* Icona più piccola */
-        height: auto;
-    }
+        .home-button img {
+            width: 20px; /* Icona più piccola */
+            height: auto;
+        }
 
-    /* Effetti di hover per la freccia e l'icona */
-    .back-button:hover, .home-button:hover {
-        color: #7e0a1b; /* Scuro al passaggio del mouse */
-    }
+        /* Effetti di hover per la freccia e l'icona */
+        .back-button:hover, .home-button:hover {
+            color: #7e0a1b; /* Scuro al passaggio del mouse */
+        }
 
-    .home-button img:hover {
-        opacity: 0.8; /* Diminuisce l'opacità dell'icona home al passaggio del mouse */
-    }
-</style>
-
+        .home-button img:hover {
+            opacity: 0.8; /* Diminuisce l'opacità dell'icona home al passaggio del mouse */
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -146,7 +146,7 @@
     <!-- Navigazione sopra il titolo -->
     <div class="navigation-icons">
         <a href="https://www.bibliotechediroma.it/opac/news/donazioni/33158" title="Torna indietro" id="navback" class="icon-button back-button">
-            &gt; <!-- Freccia di ritorno come segno ">" -->
+            &lt; <!-- Freccia di ritorno come segno ">" ma in grassetto -->
         </a>
         <a href="https://www.bibliotechediroma.it/opac/.do" title="Vai alla pagina principale" id="navhome" class="icon-button home-button">
             <img src="https://raw.githubusercontent.com/user/repository/main/home.png" alt="Home"> <!-- Immagine da GitHub -->
