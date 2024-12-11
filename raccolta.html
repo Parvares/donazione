@@ -62,41 +62,48 @@
         padding: 0 1rem;
         position: relative;
     }
+
+
+
     .nav-icons {
-        position: absolute;
-        top: -40px;
-        left: 20px;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        padding-top: 20px;
-    }
-    .nav-icons a {
-        color: #970a2c;
-        font-size: 1.5rem;
-        text-decoration: none;
-        transition: transform 0.3s ease;
-    }
-    .nav-icons a:hover {
-        transform: scale(1.1);
-    }
-   
+    position: absolute;
+    top: -40px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 2rem; /* Aumentato lo spazio tra le icone */
+    padding-top: 20px;
+}
+
+.nav-icons a {
+    color: #970a2c;
+    font-size: 1.25rem; /* Rimpicciolito leggermente le icone */
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+
+.nav-icons a:hover {
+    transform: scale(1.1);
+}
 
 .nav-icons a:first-child {
     font-weight: bold;
-    font-size: 2rem;
-    position: relative;
+    font-size: 1.5rem; /* Rimpicciolito l'icona "indietro" */
 }
 
 .nav-icons a:first-child::after {
     content: '';
     position: absolute;
-    right: -0.5rem;
+    right: -1rem; /* Spostato più a destra */
     top: 25%;
     height: 50%;
     width: 1px;
-    background-color: rgba(128, 128, 128, 0.3); /* Grigio molto chiaro e semi-trasparente */
+    background-color: rgba(128, 128, 128, 0.3);
 }
+
+
+
+    
     
     .content-section {
         margin-top: 40px; /* Add margin to lower the content section */
