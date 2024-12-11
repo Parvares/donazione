@@ -69,6 +69,7 @@
         display: flex;
         align-items: center;
         gap: 1rem;
+        padding-top: 20px; /* Added padding to prevent overlap */
     }
     .nav-icons a {
         color: #970a2c;
@@ -78,6 +79,10 @@
     }
     .nav-icons a:hover {
         transform: scale(1.1);
+    }
+    .nav-icons a:first-child {
+        font-weight: bold; /* Make back symbol more prominent */
+        font-size: 2rem; /* Increase size of back symbol */
     }
     .content-section > div {
         margin-bottom: 1.5rem;
