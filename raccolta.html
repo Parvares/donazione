@@ -140,11 +140,31 @@
             text-decoration: underline;
         }
 
-        @media print {
-            @page {
-                margin: 1cm;
-                size: A4;
-            }
+
+
+
+
+
+     .print-button {
+    background: none;
+    border: none;
+    color: var(--primary);  /* Mantieni il colore di prima */
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.3s ease;
+}
+
+.print-button:hover {
+    transform: scale(1.2);
+}
+
+@media print {
+    .print-button {
+        color: var(--primary);  /* Assicurati che l'icona mantenga il colore originale anche in stampa */
+    }
+
+
 
             body {
                 background: white;
