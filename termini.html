@@ -27,7 +27,6 @@
            --primary: #970a2c;
            --text: #180207;
            --bg: #f3f4f6;
-           --white: #ffffff;
        }
        
        body {
@@ -40,58 +39,67 @@
            word-spacing: 0px;
        }
        
-       header {
-           background-color: var(--white);
-           color: var(--primary);
-           padding: 1rem 0;
+       .page-controls {
+           background-color: var(--bg);
+           padding: 0.5rem 1rem;
            display: flex;
-           justify-content: center;
+           justify-content: space-between;
            align-items: center;
-           position: relative;
-           flex-direction: column;
-           text-align: center;
-           border-bottom: 3px solid var(--primary);
        }
 
-       .header-controls {
-           position: absolute;
-           top: 1rem;
-           left: 1rem;
+       .page-controls-left {
            display: flex;
            align-items: center;
            gap: 1rem;
        }
 
-       .header-controls a {
+       .page-controls-right {
+           display: flex;
+           align-items: center;
+           gap: 1rem;
+       }
+
+       .page-controls a {
            color: var(--primary);
-           font-size: 1.5rem;
+           font-size: 1.2rem;
            text-decoration: none;
            transition: transform 0.3s ease;
        }
 
-       .header-controls a:hover {
-           transform: scale(1.2);
-           border-bottom: none;
+       .page-controls a:hover {
+           transform: scale(1.1);
        }
 
        .separator {
            height: 25px;
            width: 2px;
            background-color: var(--primary);
-           margin: 0 10px;
        }
        
+       header {
+           background-color: var(--primary);
+           color: #fff;
+           padding: 2rem 0;
+           min-height: 4cm;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           position: relative;
+           flex-direction: column;
+           text-align: center;
+       }
+
        .social-icons {
            position: absolute;
            top: 1rem;
-           right: 1rem;
            display: flex;
            gap: 1rem;
            justify-content: center;
+           width: 100%;
        }
        
        .social-icons a {
-           color: var(--primary);
+           color: white;
            font-size: 1.5rem;
            transition: transform 0.3s ease;
        }
@@ -116,12 +124,11 @@
        header img {
            height: 70px;
            max-width: 100%;
-           filter: brightness(0) saturate(100%) invert(13%) sepia(94%) saturate(4090%) hue-rotate(330deg) brightness(90%) contrast(109%);
        }
 
        header .logo-morante {
            height: 180px;
-           filter: brightness(0) saturate(100%) invert(13%) sepia(94%) saturate(4090%) hue-rotate(330deg) brightness(90%) contrast(109%);
+           filter: none;
            max-width: 100%;
        }
        
@@ -133,6 +140,10 @@
            border-radius: 12px;
            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
        }
+
+
+
+
        
        main h1 {
            color: var(--primary);
@@ -261,13 +272,9 @@
    </style>
 </head>
 <body>
-   <header>
-       <div class="header-controls">
-           <a href="#" onclick="window.history.back()"><i class="fas fa-arrow-left"></i></a>
-           <div class="separator"></div>
-           <a href="#"><i class="fas fa-home"></i></a>
-       </div>
 
+
+      <header>
        <div class="social-icons">
            <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook">
                <i class="fab fa-facebook"></i>
@@ -287,7 +294,9 @@
            <img class="logo-morante" src="logomorante.png" alt="Logo Biblioteca Morante">
        </div>
    </header>
+ 
 
+   
    <main>
        <h1>Donazione di libri</h1>
        <section>
