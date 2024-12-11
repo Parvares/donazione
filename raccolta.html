@@ -139,6 +139,84 @@
             color: #fff;
             text-decoration: underline;
         }
+
+        /* Stili per la stampa */
+        @media print {
+            @page {
+                margin: 2cm;
+            }
+
+            body {
+                background: white;
+                font-size: 12pt;
+                color: black;
+            }
+
+            .top-banner, .nav-icons, .social-icons {
+                display: none;
+            }
+
+            header {
+                background: none !important;
+                padding: 0;
+                margin-bottom: 2cm;
+            }
+
+            .container-header img {
+                filter: brightness(0);
+            }
+
+            .content-wrapper {
+                margin: 0;
+                padding: 0;
+            }
+
+            .content-section > div {
+                break-inside: avoid;
+                page-break-inside: avoid;
+                border: none;
+                box-shadow: none;
+                padding: 0;
+                margin-bottom: 1.5cm;
+            }
+
+            h1, h2 {
+                color: black !important;
+                page-break-after: avoid;
+            }
+
+            footer {
+                background: none !important;
+                color: black;
+                margin-top: 2cm;
+                border-top: 1pt solid black;
+                padding-top: 1em;
+            }
+
+            footer a {
+                color: black;
+            }
+
+            a {
+                text-decoration: none;
+                color: black;
+            }
+
+            a[href]::after {
+                content: " (" attr(href) ")";
+                font-size: 0.8em;
+                font-style: italic;
+            }
+
+            /* Nasconde gli URL interni e social */
+            a[href^="https://www.bibliotechediroma.it"]::after,
+            a[href^="https://www.facebook.com"]::after,
+            a[href^="https://www.instagram.com"]::after,
+            a[href^="https://x.com"]::after,
+            a[href^="https://www.youtube.com"]::after {
+                content: "";
+            }
+        }
     </style>
 </head>
 <body>
