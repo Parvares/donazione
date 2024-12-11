@@ -140,23 +140,18 @@
             text-decoration: underline;
         }
 
-        .print-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: var(--primary);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
+      .print-button {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 1.5rem;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            z-index: 1000;
+            padding: 0;
+            transition: transform 0.3s ease;
         }
 
         .print-button:hover {
-            opacity: 0.9;
+            transform: scale(1.2);
         }
 
         @media print {
@@ -237,9 +232,14 @@
     </style>
 </head>
 <body>
-    <div class="top-banner">
+
+    
+  <div class="top-banner">
         <img src="roma.png" alt="Logo Roma" class="roma-logo">
         <div class="social-icons">
+            <button onclick="window.print()" class="print-button" title="Stampa">
+                <i class="fas fa-print"></i>
+            </button>
             <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook">
                 <i class="fab fa-facebook"></i>
             </a>
@@ -254,6 +254,9 @@
             </a>
         </div>
     </div>
+
+
+    
 
     <header>
         <div class="container-header">
