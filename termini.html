@@ -39,43 +39,6 @@
            word-spacing: 0px;
        }
        
-       .page-controls {
-           background-color: var(--bg);
-           padding: 0.5rem 1rem;
-           display: flex;
-           justify-content: space-between;
-           align-items: center;
-       }
-
-       .page-controls-left {
-           display: flex;
-           align-items: center;
-           gap: 1rem;
-       }
-
-       .page-controls-right {
-           display: flex;
-           align-items: center;
-           gap: 1rem;
-       }
-
-       .page-controls a {
-           color: var(--primary);
-           font-size: 1.2rem;
-           text-decoration: none;
-           transition: transform 0.3s ease;
-       }
-
-       .page-controls a:hover {
-           transform: scale(1.1);
-       }
-
-       .separator {
-           height: 25px;
-           width: 2px;
-           background-color: var(--primary);
-       }
-       
        header {
            background-color: var(--primary);
            color: #fff;
@@ -140,10 +103,6 @@
            border-radius: 12px;
            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
        }
-
-
-
-
        
        main h1 {
            color: var(--primary);
@@ -215,32 +174,19 @@
            }
            
            header {
+               min-height: auto;
                padding: 1rem 0;
                display: flex;
                flex-direction: column;
            }
            
-           .header-controls {
-               position: relative;
-               top: 0;
-               left: 0;
-               width: 100%;
-               display: flex;
-               justify-content: center;
-               margin-bottom: 0.5rem;
-           }
-           
-           .header-controls a {
-               font-size: 1.2rem;
-           }
-           
            .social-icons {
                position: relative;
-               right: 0;
+               top: 0;
                padding: 0.5rem 0;
                margin: 0;
                width: 100%;
-               justify-content: center;
+               background-color: var(--primary);
            }
            
            .social-icons a {
@@ -272,9 +218,7 @@
    </style>
 </head>
 <body>
-
-
-      <header>
+   <header>
        <div class="social-icons">
            <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook">
                <i class="fab fa-facebook"></i>
@@ -294,9 +238,7 @@
            <img class="logo-morante" src="logomorante.png" alt="Logo Biblioteca Morante">
        </div>
    </header>
- 
 
-   
    <main>
        <h1>Donazione di libri</h1>
        <section>
