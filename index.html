@@ -35,7 +35,18 @@ button[type="submit"] {
 }
 
 .book-entry button[type="button"] {
-    background-color: #ff4347 !important;
+    background: none;
+    color: #ff4347;
+    border: none;
+    padding: 0;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.book-entry button[type="button"]:hover {
+    transform: scale(1.2);
+    color: #d9292e; /* leggermente più scuro per l'effetto hover */
 }
 
 
