@@ -22,6 +22,39 @@
         flex-direction: column;
         min-height: 100vh;
     }
+    header {
+        background-color: var(--primary);
+        color: #fff;
+        padding: 2rem 0;
+        position: relative;
+    }
+    .social-icons {
+        position: absolute;
+        top: 1rem;
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        width: 100%;
+    }
+    .social-icons a {
+        color: white;
+        font-size: 1.5rem;
+        transition: transform 0.3s ease;
+    }
+    .social-icons a:hover {
+        transform: scale(1.2);
+    }
+    .container-header {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
     .content-wrapper {
         max-width: 900px;
         width: 100%;
@@ -49,9 +82,40 @@
     .content-section > div {
         margin-bottom: 1.5rem;
     }
+    footer {
+        background-color: var(--primary);
+        color: #fff;
+        text-align: center;
+        padding: 1.5rem 0;
+    }
+    footer a {
+        color: #fff;
+        text-decoration: underline;
+    }
 </style>
 </head>
 <body>
+    <header>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="https://www.instagram.com/bibliotecaelsamorante/" target="_blank" aria-label="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://x.com/bibliomorante" target="_blank" aria-label="X">
+                <i class="fab fa-x-twitter"></i>
+            </a>
+            <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank" aria-label="YouTube">
+                <i class="fab fa-youtube"></i>
+            </a>
+        </div>
+        <div class="container-header">
+            <img src="logobianco.png" alt="Logo Biblioteche di Roma" style="height: 70px; max-width: 100%;">
+            <img src="logomorante.png" alt="Logo Biblioteca Morante" style="height: 180px; max-width: 100%;">
+        </div>
+    </header>
+
     <div class="content-wrapper">
         <div class="nav-icons">
             <a href="https://www.bibliotechediroma.it/opac/news/donazioni/33158" title="Indietro">&lt;</a>
@@ -73,9 +137,6 @@
                 </p>
                 <p><strong>Email:</strong> info@assistenza-territorio.it</p>
             </div>
-
-
-
 
             <div class="bg-white shadow-md rounded-lg p-6 mb-6">
                 <h2 class="text-2xl font-semibold mb-4" style="color: #970a2c;">Gruppo Facebook "La cultura non è spazzatura"</h2>
