@@ -10,121 +10,140 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 
-<style>
-    :root {
-        --primary: #970a2c;
-    }
-    body {
-        font-family: "Space Grotesk", sans-serif;
-        font-size: 20px;
-        background-color: #f3f4f6;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-    }
-    header {
-        background-color: var(--primary);
-        color: #fff;
-        padding: 2rem 0;
-        position: relative;
-    }
-    .social-icons {
-        position: absolute;
-        top: 1rem;
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-        width: 100%;
-    }
-    .social-icons a {
-        color: white;
-        font-size: 1.5rem;
-        transition: transform 0.3s ease;
-    }
-    .social-icons a:hover {
-        transform: scale(1.2);
-    }
-    .container-header {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 2rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
-    .content-wrapper {
-        max-width: 900px;
-        width: 100%;
-        margin: 2rem auto;
-        padding: 0 1rem;
-        position: relative;
-    }
+    <style>
+        :root {
+            --primary: #970a2c;
+        }
+        
+        body {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 20px;
+            background-color: #f3f4f6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
+        .top-banner {
+            background-color: white;
+            padding: 0.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
+        .roma-logo {
+            height: 40px;
+        }
 
-    .nav-icons {
-    position: absolute;
-    top: -40px;
-    left: 20px;
-    display: flex;
-    align-items: center;
-    gap: 2rem; /* Aumentato lo spazio tra le icone */
-    padding-top: 20px;
-}
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
 
-.nav-icons a {
-    color: #970a2c;
-    font-size: 1.25rem; /* Rimpicciolito leggermente le icone */
-    text-decoration: none;
-    transition: transform 0.3s ease;
-}
+        .social-icons a {
+            color: var(--primary);
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
 
-.nav-icons a:hover {
-    transform: scale(1.1);
-}
+        .social-icons a:hover {
+            transform: scale(1.2);
+        }
 
-.nav-icons a:first-child {
-    font-weight: bold;
-    font-size: 1.5rem; /* Rimpicciolito l'icona "indietro" */
-}
+        header {
+            background-color: var(--primary);
+            color: #fff;
+            padding: 2rem 0;
+        }
 
-.nav-icons a:first-child::after {
-    content: '';
-    position: absolute;
-    right: -1rem; /* Spostato più a destra */
-    top: 25%;
-    height: 50%;
-    width: 1px;
-    background-color: rgba(128, 128, 128, 0.3);
-}
+        .container-header {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
 
+        .content-wrapper {
+            max-width: 900px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            position: relative;
+        }
 
+        .nav-icons {
+            position: absolute;
+            top: -40px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            padding-top: 20px;
+        }
 
-    
-    
-    .content-section {
-        margin-top: 40px; /* Add margin to lower the content section */
-    }
-    .content-section > div {
-        margin-bottom: 1.5rem;
-    }
-    footer {
-        background-color: var(--primary);
-        color: #fff;
-        text-align: center;
-        padding: 1.5rem 0;
-    }
-    footer a {
-        color: #fff;
-        text-decoration: underline;
-    }
-</style>
+        .nav-icons a {
+            color: #970a2c;
+            font-size: 1.25rem;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        .nav-icons a:hover {
+            transform: scale(1.1);
+        }
+
+        .nav-icons a:first-child {
+            font-weight: bold;
+            font-size: 1.5rem;
+            position: relative;
+        }
+
+        .nav-icons a:first-child::after {
+            content: '';
+            position: absolute;
+            left: calc(100% + 1rem);
+            top: 50%;
+            transform: translateY(-50%);
+            height: 20px;
+            width: 1px;
+            background-color: rgba(128, 128, 128, 0.3);
+        }
+
+        .content-section {
+            margin-top: 40px;
+        }
+
+        .content-section > div {
+            margin-bottom: 1.5rem;
+        }
+
+        footer {
+            background-color: var(--primary);
+            color: #fff;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: auto;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <header>
+    <div class="top-banner">
+        <img src="roma.png" alt="Logo Roma" class="roma-logo">
         <div class="social-icons">
             <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook">
                 <i class="fab fa-facebook"></i>
@@ -139,6 +158,9 @@
                 <i class="fab fa-youtube"></i>
             </a>
         </div>
+    </div>
+
+    <header>
         <div class="container-header">
             <img src="logobianco.png" alt="Logo Biblioteche di Roma" style="height: 70px; max-width: 100%;">
             <img src="logomorante.png" alt="Logo Biblioteca Morante" style="height: 180px; max-width: 100%;">
