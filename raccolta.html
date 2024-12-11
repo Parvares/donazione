@@ -78,54 +78,47 @@
             position: relative;
         }
 
-
-        
-
         .nav-icons {
-    position: absolute;
-    top: -40px;
-    left: 20px;
-    display: flex;
-    align-items: center;
-    gap: 3rem;  /* Increased from 2rem */
-    padding-top: 20px;
-}
+            position: absolute;
+            top: -40px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            padding-top: 20px;
+        }
 
-.nav-icons a {
-    color: #970a2c;
-    font-size: 1.25rem;
-    text-decoration: none;
-    transition: transform 0.3s ease;
-    display: flex;
-    align-items: center;
-    height: 100%;
-}
+        .nav-icons a {
+            color: #970a2c;
+            font-size: 1.25rem;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
 
-.nav-icons a:hover {
-    transform: scale(1.1);
-}
+        .nav-icons a:hover {
+            transform: scale(1.1);
+        }
 
-.nav-icons a:first-child {
-    font-weight: bold;
-    font-size: 1.8rem;  /* Increased from 1.5rem */
-    position: relative;
-    letter-spacing: 0.5rem;  /* Added letter-spacing for wider angle brackets */
-}
+        .nav-icons a:first-child {
+            font-weight: bold;
+            font-size: 1.8rem;
+            position: relative;
+            letter-spacing: 0.5rem;
+        }
 
-.nav-icons a:first-child::after {
-    content: '';
-    position: absolute;
-    left: calc(100% + 1.5rem);  /* Increased from 1rem */
-    top: 50%;
-    transform: translateY(-50%);
-    height: 20px;
-    width: 1px;
-    background-color: rgba(128, 128, 128, 0.3);
-}
-
-
-
-        
+        .nav-icons a:first-child::after {
+            content: '';
+            position: absolute;
+            left: calc(100% + 1.5rem);
+            top: 50%;
+            transform: translateY(-50%);
+            height: 20px;
+            width: 1px;
+            background-color: rgba(128, 128, 128, 0.3);
+        }
 
         .content-section {
             margin-top: 40px;
@@ -140,26 +133,11 @@
             color: #fff;
             text-align: center;
             padding: 1.5rem 0;
-            margin-top: auto;
         }
 
         footer a {
             color: #fff;
             text-decoration: underline;
-        }
-
-      .print-button {
-            background: none;
-            border: none;
-            color: var(--primary);
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0;
-            transition: transform 0.3s ease;
-        }
-
-        .print-button:hover {
-            transform: scale(1.2);
         }
 
         @media print {
@@ -176,7 +154,7 @@
                 padding: 0;
             }
 
-            .top-banner, .nav-icons, .social-icons, .print-button, footer {
+            .top-banner, .nav-icons, .social-icons, footer {
                 display: none !important;
             }
 
@@ -241,8 +219,7 @@
 </head>
 <body>
 
-    
-  <div class="top-banner">
+    <div class="top-banner">
         <img src="roma.png" alt="Logo Roma" class="roma-logo">
         <div class="social-icons">
             <button onclick="window.print()" class="print-button" title="Stampa">
@@ -262,9 +239,6 @@
             </a>
         </div>
     </div>
-
-
-    
 
     <header>
         <div class="container-header">
@@ -341,9 +315,5 @@
         <p>Scopri di più su <a href="https://www.bibliotechediroma.it/opac/.do" target="_blank">Biblioteche di Roma</a></p>
     </footer>
 
-    <button onclick="window.print()" class="print-button">
-        <i class="fas fa-print"></i>
-        Stampa
-    </button>
 </body>
 </html>
