@@ -67,16 +67,13 @@
         gap: 1rem;
     }
 
-    
     .content-wrapper {
-    max-width: 900px; /* Compromesso tra 700px e 1200px */
-    width: 100%;
-    margin: 2rem auto;
-    padding: 0 1rem;
-}
+        max-width: 900px; /* Compromesso tra 700px e 1200px */
+        width: 100%;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
 
-
-    
     .content-section {
         max-width: none;
         width: 100%;
@@ -85,9 +82,42 @@
         font-size: 2rem; /* Ridotto per adattarsi meglio */
         line-height: 1.2;
     }
+
+    /* Nuovo CSS per i pulsanti navigazione */
+    .navigation-icons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .icon-button {
+        display: flex;
+        align-items: center;
+        color: #fff;
+        background-color: var(--primary);
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 1rem;
+        transition: background-color 0.3s;
+    }
+
+    .icon-button i {
+        margin-right: 0.5rem;
+    }
+
+    .icon-button:hover {
+        background-color: #7e0a1b;
+    }
+
+    .icon-button:focus {
+        outline: none;
+        background-color: #7e0a1b;
+    }
+
 </style>
 
-    
 </head>
 <body>
     <header>
@@ -111,6 +141,16 @@
         </div>
     </header>
 
+    <!-- Navigazione aggiunta sopra il titolo -->
+    <div class="navigation-icons">
+        <a href="https://www.bibliotechediroma.it/opac/news/donazioni/33158" title="Torna indietro" id="navback" class="icon-button">
+            <i class="fas fa-arrow-left"></i> Torna indietro
+        </a>
+        <a href="https://www.bibliotechediroma.it/opac/.do" title="Vai alla pagina principale" id="navhome" class="icon-button">
+            <i class="fas fa-home"></i> Vai alla pagina principale
+        </a>
+    </div>
+
     <div class="content-wrapper">
         <div class="container-fluid mx-auto px-4 content-section">
             <div class="bg-white shadow-md rounded-lg p-6 mb-6 text-center">
@@ -118,16 +158,15 @@
             </div>
             
             <div class="bg-white shadow-md rounded-lg p-6 mb-6" style="display: none;">
-    <!-- Questo blocco è reso invisibile con display: none; Rimuovere questo stile per renderlo visibile di nuovo -->
-    <h2 class="text-2xl font-semibold mb-4" style="color: #970a2c;">Comunità La Forchetta</h2>
-    <p class="mb-2"><strong>Descrizione:</strong> Raccolta libri di ogni genere con ritiro a domicilio</p>
-    <p class="mb-2"><strong>Ubicazione:</strong> Banchetto ad Ostia in via Cardinal Ginnasi davanti al bar Polo Nord</p>
-    <p class="mb-2">
-        <strong>Contatti:</strong> 
-        <a href="http://comunita-la-forchetta.blogspot.com/" class="text-blue-500 hover:underline" target="_blank">Sito Web</a>
-    </p>
-    <p><strong>Telefono:</strong> 3204993136 (Antonio)</p>
-</div>
+                <h2 class="text-2xl font-semibold mb-4" style="color: #970a2c;">Comunità La Forchetta</h2>
+                <p class="mb-2"><strong>Descrizione:</strong> Raccolta libri di ogni genere con ritiro a domicilio</p>
+                <p class="mb-2"><strong>Ubicazione:</strong> Banchetto ad Ostia in via Cardinal Ginnasi davanti al bar Polo Nord</p>
+                <p class="mb-2">
+                    <strong>Contatti:</strong> 
+                    <a href="http://comunita-la-forchetta.blogspot.com/" class="text-blue-500 hover:underline" target="_blank">Sito Web</a>
+                </p>
+                <p><strong>Telefono:</strong> 3204993136 (Antonio)</p>
+            </div>
 
             <div class="bg-white shadow-md rounded-lg p-6 mb-6">
                 <h2 class="text-2xl font-semibold mb-4" style="color: #970a2c;">Cooperativa Assistenza e Territorio</h2>
