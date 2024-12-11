@@ -11,14 +11,6 @@
    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
    <style>
-
-
-  @media print {
-           /* Hide unnecessary elements */
-           .top-banner, header, .nav-icons, footer {
-               display: none !important;
-           }
-      
        * {
            max-width: 100%;
            box-sizing: border-box;
@@ -116,27 +108,24 @@
            gap: 1rem;
        }
 
-.content-wrapper {
-    max-width: 900px;
-    width: 100%;
-    margin: 2rem auto;
-    padding: 0 1rem;
-    position: relative;
-    margin-top: 60px; /* Aggiungi questa linea per spostare il contenuto più in basso */
-}
-
-
+       .content-wrapper {
+           max-width: 900px;
+           width: 100%;
+           margin: 2rem auto;
+           padding: 0 1rem;
+           position: relative;
+           margin-top: 60px;
+       }
 
        .nav-icons {
-    position: absolute;
-    top: -60px; /* Sposta le icone più in alto */
-    left: 20px;
-    display: flex;
-    align-items: center;
-    gap: 3rem;
-    padding-top: 20px;
-}
-
+           position: absolute;
+           top: -60px;
+           left: 20px;
+           display: flex;
+           align-items: center;
+           gap: 3rem;
+           padding-top: 20px;
+       }
 
        .nav-icons a {
            color: #970a2c;
@@ -296,6 +285,19 @@
                padding: 1.5rem;
            }
        }
+
+       @media print {
+           .top-banner, header, .nav-icons, footer {
+               display: none;
+           }
+
+           main {
+               box-shadow: none;
+               border: none;
+               padding: 0;
+               margin: 0;
+           }
+       }
    </style>
 </head>
 <body>
@@ -338,7 +340,6 @@
         <main>
             <h1>Donazione di libri</h1>
             <section>
-                <!-- Rest of the content remains the same as in the previous version -->
                 <h2>Criteri di Accettazione</h2>
                 <p>
                     L'acquisizione della donazione è subordinata ai seguenti criteri:
@@ -406,9 +407,5 @@
             </section>
         </main>
     </div>
-
-    <footer>
-        <p>Scopri di più su <a href="https://www.bibliotechediroma.it/opac/.do" target="_blank">Biblioteche di Roma</a></p>
-    </footer>
 </body>
 </html>
