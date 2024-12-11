@@ -86,9 +86,10 @@
     /* Nuovo CSS per i pulsanti navigazione */
     .navigation-icons {
         display: flex;
-        justify-content: center;
+        justify-content: flex-start; /* Allineamento a sinistra */
         gap: 1rem;
-        margin-bottom: 1rem;
+        margin-top: 1rem; /* Aggiunto margine superiore per spostare un po' più in basso */
+        margin-left: 2rem; /* Allineamento a sinistra */
     }
 
     .icon-button {
@@ -96,19 +97,19 @@
         align-items: center;
         color: #fff;
         background-color: var(--primary);
-        padding: 0.5rem;
+        padding: 0.3rem;
         border-radius: 50%;
         text-decoration: none;
-        font-size: 1.5rem; /* Modificato per avere dimensioni più grandi */
+        font-size: 0.8rem; /* Ridotto per dimezzare le icone */
         transition: background-color 0.3s;
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
         justify-content: center;
         align-items: center;
     }
 
     .icon-button i {
-        font-size: 1.5rem; /* Modificato per avere le icone più grandi */
+        font-size: 1.2rem; /* Modificato per rendere le icone più piccole */
     }
 
     .icon-button:hover {
@@ -118,6 +119,31 @@
     .icon-button:focus {
         outline: none;
         background-color: #7e0a1b;
+    }
+
+    /* Aggiunta di una modifica per l'icona della casa */
+    .fa-home {
+        position: relative;
+    }
+
+    .fa-home:before {
+        content: "\f015"; /* Codice per l'icona di casa */
+        color: #fff;
+    }
+
+    .fa-home {
+        color: #fff;
+    }
+
+    .fa-home:after {
+        content: "\00a0"; /* Aggiungi uno spazio bianco sotto il tetto */
+        position: absolute;
+        top: 12px;
+        left: 3px;
+        width: 30px;
+        height: 5px;
+        background-color: #fff;
+        border-radius: 50%;
     }
 
 </style>
@@ -148,10 +174,10 @@
     <!-- Navigazione aggiunta sopra il titolo -->
     <div class="navigation-icons">
         <a href="https://www.bibliotechediroma.it/opac/news/donazioni/33158" title="Torna indietro" id="navback" class="icon-button">
-            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-chevron-right"></i> <!-- Cambiato da freccia sinistra a freccia destra -->
         </a>
         <a href="https://www.bibliotechediroma.it/opac/.do" title="Vai alla pagina principale" id="navhome" class="icon-button">
-            <i class="fas fa-home"></i>
+            <i class="fas fa-home"></i> <!-- Icona casa modificata con spazio bianco -->
         </a>
     </div>
 
