@@ -4,71 +4,183 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Centri di Raccolta Libri e Audiovisivi</title>
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.png" type="image/png">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+
+<style>
+    :root {
+        --primary: #970a2c;
+    }
+    body {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 20px;
+        background-color: #f3f4f6;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+    header {
+        background-color: var(--primary);
+        color: #fff;
+        padding: 2rem 0;
+        position: relative;
+    }
+    footer {
+        background-color: var(--primary);
+        color: #fff;
+        text-align: center;
+        padding: 1.5rem 0;
+    }
+    footer a {
+        color: #fff;
+        text-decoration: underline;
+    }
+    .social-icons {
+        position: absolute;
+        top: 1rem;
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        width: 100%;
+    }
+    .social-icons a {
+        color: white;
+        font-size: 1.5rem;
+        transition: transform 0.3s ease;
+    }
+    .social-icons a:hover {
+        transform: scale(1.2);
+    }
+    .container-header {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    
+    .content-wrapper {
+    max-width: 900px; /* Compromesso tra 700px e 1200px */
+    width: 100%;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+
+    
+    .content-section {
+        max-width: none;
+        width: 100%;
+    }
+    .main-title {
+        font-size: 2rem; /* Ridotto per adattarsi meglio */
+        line-height: 1.2;
+    }
+</style>
+
+    
 </head>
-<body class="bg-gray-100 py-10">
-    <div class="container mx-auto px-4 max-w-2xl">
-        <h1 class="text-3xl font-bold text-center mb-8 text-blue-800">Centri di Raccolta per Donazione Libri e Audiovisivi</h1>
-        
-        <div class="bg-white shadow-md rounded-lg p-6 mb-6">
-            <h2 class="text-2xl font-semibold mb-4 text-blue-600">Comunità La Forchetta</h2>
-            <p class="mb-2"><strong>Descrizione:</strong> Raccolta libri di ogni genere con ritiro a domicilio</p>
-            <p class="mb-2"><strong>Ubicazione:</strong> Banchetto ad Ostia in via Cardinal Ginnasi davanti al bar Polo Nord</p>
-            <p class="mb-2">
-                <strong>Contatti:</strong> 
-                <a href="http://comunita-la-forchetta.blogspot.com/" class="text-blue-500 hover:underline" target="_blank">Sito Web</a>
-            </p>
-            <p><strong>Telefono:</strong> 3204993136 (Antonio)</p>
+<body>
+    <header>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="https://www.instagram.com/bibliotecaelsamorante/" target="_blank" aria-label="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://x.com/bibliomorante" target="_blank" aria-label="X">
+                <i class="fab fa-x-twitter"></i>
+            </a>
+            <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank" aria-label="YouTube">
+                <i class="fab fa-youtube"></i>
+            </a>
         </div>
-
-        <div class="bg-white shadow-md rounded-lg p-6 mb-6">
-            <h2 class="text-2xl font-semibold mb-4 text-blue-600">Cooperativa Assistenza e Territorio</h2>
-            <p class="mb-2">
-                <strong>Contatti:</strong> 
-                <a href="https://www.assistenza-territorio.it/contatti/" class="text-blue-500 hover:underline" target="_blank">Sito Web</a>
-            </p>
-            <p><strong>Email:</strong> info@assistenza-territorio.it</p>
+        <div class="container-header">
+            <img src="logobianco.png" alt="Logo Biblioteche di Roma" style="height: 70px; max-width: 100%;">
+            <img src="logomorante.png" alt="Logo Biblioteca Morante" style="height: 180px; max-width: 100%;">
         </div>
+    </header>
 
-        <div class="bg-white shadow-md rounded-lg p-6 mb-6">
-            <h2 class="text-2xl font-semibold mb-4 text-blue-600">Gruppo Facebook "La cultura non è spazzatura"</h2>
-            <p class="mb-2">Scopo: Salvare libri dalla spazzatura</p>
-            <p>
-                <strong>Gruppo:</strong> 
-                <a href="https://www.facebook.com/groups/2486179871416075" class="text-blue-500 hover:underline" target="_blank">Pagina Facebook</a>
-            </p>
-        </div>
+    <div class="content-wrapper">
+        <div class="container-fluid mx-auto px-4 content-section">
+            <div class="bg-white shadow-md rounded-lg p-6 mb-6 text-center">
+                <h1 class="text-3xl font-bold main-title" style="color: #970a2c;">Centri di Raccolta per Donazione Libri e Audiovisivi</h1>
+            </div>
+            
+            <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+                <h2 class="text-2xl font-semibold mb-4" style="color: #970a2c;">Comunità La Forchetta</h2>
+                <p class="mb-2"><strong>Descrizione:</strong> Raccolta libri di ogni genere con ritiro a domicilio</p>
+                <p class="mb-2"><strong>Ubicazione:</strong> Banchetto ad Ostia in via Cardinal Ginnasi davanti al bar Polo Nord</p>
+                <p class="mb-2">
+                    <strong>Contatti:</strong> 
+                    <a href="http://comunita-la-forchetta.blogspot.com/" class="text-blue-500 hover:underline" target="_blank">Sito Web</a>
+                </p>
+                <p><strong>Telefono:</strong> 3204993136 (Antonio)</p>
+            </div>
 
-        <div class="bg-white shadow-md rounded-lg p-6 mb-6">
-            <h2 class="text-2xl font-semibold mb-4 text-blue-600">Centro di Raccolta Chiesa San Carlo da Sezze</h2>
-            <p class="mb-2"><strong>Ubicazione:</strong> Acilia, via Macchia Saponara</p>
-            <p>
-                <strong>Contatti:</strong> 
-                <a href="https://sancarlods.it/pages/index.php" class="text-blue-500 hover:underline" target="_blank">Sito Web</a>
-                <br>
-                <strong>Telefono:</strong> 06-52.12.470
-            </p>
-        </div>
+            <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+                <h2 class="text-2xl font-semibold mb-4" style="color: #970a2c;">Cooperativa Assistenza e Territorio</h2>
+                <p class="mb-2">
+                    <strong>Contatti:</strong> 
+                    <a href="https://www.assistenza-territorio.it/contatti/" class="text-blue-500 hover:underline" target="_blank">Sito Web</a>
+                </p>
+                <p><strong>Email:</strong> info@assistenza-territorio.it</p>
+            </div>
 
-        <div class="bg-white shadow-md rounded-lg p-6 mb-6">
-            <h2 class="text-2xl font-semibold mb-4 text-blue-600">Centro Sociale Polivalente e Biblioteca</h2>
-            <p class="mb-2"><strong>Ubicazione:</strong> Casal Palocco, Viale Gorgia di Leontini, 171</p>
-            <p>
-                <strong>Contatti:</strong> 
-                <a href="https://www.csp-palocco.it/chi-siamo/chi-siamo" class="text-blue-500 hover:underline" target="_blank">Sito Web</a>
-                <br>
-                <strong>Email:</strong> info@csp-palocco.it
-            </p>
-        </div>
+            <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+                <h2 class="text-2xl font-semibold mb-4" style="color: #970a2c;">Gruppo Facebook "La cultura non è spazzatura"</h2>
+                <p class="mb-2">Scopo: Salvare libri dalla spazzatura</p>
+                <p>
+                    <strong>Gruppo:</strong> 
+                    <a href="https://www.facebook.com/groups/2486179871416075" class="text-blue-500 hover:underline" target="_blank">Pagina Facebook</a>
+                </p>
+            </div>
 
-        <div class="bg-white shadow-md rounded-lg p-6">
-            <h2 class="text-2xl font-semibold mb-4 text-blue-600">Punti di Bookcrossing</h2>
-            <ul class="list-disc list-inside">
-                <li>Mercato di via dell'Appagliatore</li>
-                <li>Mercato di Fiamme Gialle</li>
-                <li>Via Oletta, angolo Viale della Vittoria</li>
-            </ul>
+            <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+                <h2 class="text-2xl font-semibold mb-4" style="color: #970a2c;">Centro di Raccolta Chiesa San Carlo da Sezze</h2>
+                <p class="mb-2"><strong>Ubicazione:</strong> Acilia, via Macchia Saponara</p>
+                <p>
+                    <strong>Contatti:</strong> 
+                    <a href="https://sancarlods.it/pages/index.php" class="text-blue-500 hover:underline" target="_blank">Sito Web</a>
+                    <br>
+                    <strong>Telefono:</strong> 06-52.12.470
+                </p>
+            </div>
+
+            <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+                <h2 class="text-2xl font-semibold mb-4" style="color: #970a2c;">Centro Sociale Polivalente e Biblioteca</h2>
+                <p class="mb-2"><strong>Ubicazione:</strong> Casal Palocco, Viale Gorgia di Leontini, 171</p>
+                <p>
+                    <strong>Contatti:</strong> 
+                    <a href="https://www.csp-palocco.it/chi-siamo/chi-siamo" class="text-blue-500 hover:underline" target="_blank">Sito Web</a>
+                    <br>
+                    <strong>Email:</strong> info@csp-palocco.it
+                </p>
+            </div>
+
+            <div class="bg-white shadow-md rounded-lg p-6">
+                <h2 class="text-2xl font-semibold mb-4" style="color: #970a2c;">Punti di Bookcrossing</h2>
+                <ul class="list-disc list-inside">
+                    <li>Mercato di via dell'Appagliatore</li>
+                    <li>Mercato di Fiamme Gialle</li>
+                    <li>Via Oletta, angolo Viale della Vittoria</li>
+                </ul>
+            </div>
         </div>
     </div>
+
+    <footer>
+        <p>Scopri di più su <a href="https://www.bibliotechediroma.it/opac/.do" target="_blank">Biblioteche di Roma</a></p>
+    </footer>
 </body>
 </html>
