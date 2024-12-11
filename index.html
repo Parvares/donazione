@@ -34,7 +34,8 @@ button[type="submit"] {
     background-color: #ff4347 !important;
 }
 
-.book-entry button[type="button"] {
+/* Stile per il pulsante "Aggiungi Libro" */
+.book-entry > button[type="button"].add-book-btn {
     width: 100%;
     padding: 0.75rem 1rem;
     background-color: #ff4347;
@@ -45,10 +46,25 @@ button[type="submit"] {
     margin-top: 0.5rem;
 }
 
-.book-entry button[type="button"]:hover {
+.book-entry > button[type="button"].add-book-btn:hover {
     background-color: #d9292e;
 }
 
+/* Stile per il pulsante di rimozione (x) */
+.book-entry > button[type="button"].remove-book-btn {
+    background: none;
+    border: none;
+    color: #ff4347;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.book-entry > button[type="button"].remove-book-btn:hover {
+    transform: scale(1.2);
+    color: #d9292e;
+}
 
         
         
@@ -513,7 +529,8 @@ function showSuccessPopup(message) {
                 <div class="flex justify-between items-center mb-4">
                     <span class="book-counter flex items-center justify-center w-6 h-6 rounded-full text-white font-semibold text-sm" style="background-color: rgb(34, 197, 94)">${bookCount}</span>
                     ${bookCount > 1 ? `
-                        <button type="button" class="px-3 py-2 text-red-600 hover:text-red-700 font-bold text-2xl" onclick="removeBook(this)">✖</button>
+                        <button type="button" class="remove-book-btn" onclick="removeBook(this)">✖</button>
+
                     ` : ''}
                 </div>
                 
@@ -548,7 +565,8 @@ function showSuccessPopup(message) {
 
                 
                 
-                <button type="button" class="w-full px-4 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition-colors mt-2" onclick="createBookEntry()">+ Aggiungi Libro</button>
+                <button type="button" class="add-book-btn" onclick="createBookEntry()">+ Aggiungi Libro</button>
+
             `;
 
             const inputs = bookDiv.querySelectorAll('input');
