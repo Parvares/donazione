@@ -99,17 +99,21 @@
     max-width: 900px;
     width: 100%;
     margin: 2rem auto;
-    padding-top: 60px;  /* Spazio per le icone di navigazione */
+    padding: 0 1rem;
     position: relative;
+    margin-top: 60px;
 }
 
 .nav-icons {
     position: absolute;
-    top: 0;
-    left: 20px;  /* Mantenuto a 20px dal bordo sinistro */
+    top: -60px;
+    left: 0; /* Allineato all'inizio del banner */
     display: flex;
     align-items: center;
-    gap: 3rem;  /* Spazio originale tra le icone */
+    gap: 3rem;
+    padding: 20px 2rem; /* Usa lo stesso padding del top-banner */
+    background-color: #f3f4f6; /* Colore di sfondo grigio chiaro */
+    width: 100%; /* Occupa tutta la larghezza */
 }
 
        .nav-icons a {
