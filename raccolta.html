@@ -70,23 +70,48 @@
             gap: 1rem;
         }
 
-        .content-wrapper {
-            max-width: 900px;
-            width: 100%;
-            margin: 2rem auto;
-            padding: 0 1rem;
-            position: relative;
-        }
 
-        .nav-icons {
-            position: absolute;
-            top: -40px;
-            left: 20px;
-            display: flex;
-            align-items: center;
-            gap: 3rem;
-            padding-top: 20px;
-        }
+
+        
+   .content-wrapper {
+    max-width: 900px;
+    width: 100%;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    position: relative;
+    margin-top: 60px;
+}
+
+.nav-icons {
+    position: absolute;
+    top: -60px;
+    left: -450px;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    padding-top: 20px;
+}
+
+@media (max-width: 1200px) {
+    .nav-icons {
+        left: -200px;
+    }
+}
+
+@media (max-width: 992px) {
+    .nav-icons {
+        left: -100px;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-icons {
+        position: relative;
+        left: 0;
+        top: 0;
+        justify-content: flex-start;
+    }
+}
 
         .nav-icons a {
             color: #970a2c;
@@ -268,12 +293,18 @@
     </header>
 
     <div class="content-wrapper">
+        
+        
         <div class="nav-icons">
-            <a href="https://www.bibliotechediroma.it/opac/news/donazioni/33158" title="Indietro">&lt;</a>
-            <a href="https://www.bibliotechediroma.it/opac/.do" title="Home">
-                <i class="fas fa-home"></i>
-            </a>
-        </div>
+    <a href="https://www.bibliotechediroma.it/opac/news/donazioni/33158" title="Indietro">
+        <img src="left.svg" alt="Indietro" style="height: 22px; width: 22px;">
+    </a>
+    <a href="https://www.bibliotechediroma.it/opac/.do" title="Home">
+        <img src="home.svg" alt="Home" style="height: 22px; width: 22px;">
+    </a>
+</div>
+
+        
 
         <div class="container-fluid mx-auto px-4 content-section">
             <div class="bg-white shadow-md rounded-lg p-6 mb-6 text-center">
