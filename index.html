@@ -140,22 +140,20 @@ button[type="submit"] {
 
 
 
+ .content-wrapper {
+            position: relative;
+            padding-top: 80px;  /* Increased from 60px to 80px to move content down */
+        }
 
-.content-wrapper {
-    position: relative;
-    padding-top: 60px;  /* Add padding to make space for the nav icons */
-}
-
-.nav-icons {
-    position: absolute;
-    top: 0;
-    left: 20px;
-    display: flex;
-    align-items: center;
-    gap: 3rem;
-}
-
-        
+        .nav-icons {
+            position: absolute;
+            top: 20px;  /* Increased from 0 to 20px to move icons down */
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            padding-top: 10px;  /* Added padding to move icons down further */
+        }
 
         .nav-icons a {
             color: #970a2c;
@@ -165,6 +163,7 @@ button[type="submit"] {
             display: flex;
             align-items: center;
             height: 100%;
+            padding: 5px;  /* Added padding for better touch target */
         }
 
         .nav-icons a:hover {
@@ -188,6 +187,10 @@ button[type="submit"] {
             width: 1px;
             background-color: rgba(128, 128, 128, 0.3);
         }
+
+
+
+        
         
         header img {
             height: 70px;
