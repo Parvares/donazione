@@ -7,9 +7,7 @@
 
    <title>Termini donazione</title>
 
-<!-- Favicon -->
    <link rel="icon" href="favicon.png" type="image/png">
-   
    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
    <style>
@@ -95,16 +93,30 @@
            gap: 1rem;
        }
 
-      
+       /* Nuovo stile per il titolo della biblioteca */
+       .library-name {
+           display: flex;
+           align-items: center;
+           gap: 0.5rem;
+           color: var(--text);
+           font-size: 1.2rem;
+           margin-bottom: 1rem;
+       }
 
-.content-wrapper {
-    max-width: 900px;
-    width: 100%;
-    margin: 2rem auto;
-    padding: 0 1rem;
-    position: relative;
-    margin-top: 60px;
-}
+       .library-name img {
+           height: 22px;
+           width: 22px;
+           vertical-align: middle;
+       }
+
+       .content-wrapper {
+           max-width: 900px;
+           width: 100%;
+           margin: 2rem auto;
+           padding: 0 1rem;
+           position: relative;
+           margin-top: 60px;
+       }
 
 .nav-icons {
     position: absolute;
@@ -357,6 +369,15 @@
       
 
         <main>
+
+    <div class="library-name">
+                <img src="location.svg" alt="Location">
+                <span>Biblioteca Elsa Morante</span>
+            </div>
+
+
+
+           
             <h1>Donazione di libri</h1>
             <section>
                 <h2>Criteri di Accettazione</h2>
