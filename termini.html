@@ -105,14 +105,15 @@
 }
 
 .nav-icons {
-    position: absolute;
-    top: -60px;
-    left: -20px; /* Sposta decisamente a sinistra */
+    position: fixed; /* Cambia da absolute a fixed */
+    top: 120px; /* Regola in base all'altezza del banner */
+    left: calc((100% - 900px) / 2 - 100px); /* Calcolo per spostare decisamente a sinistra */
     display: flex;
     align-items: center;
     gap: 3rem;
-    padding-top: 20px;
+    z-index: 10; /* Assicura che siano sopra gli altri elementi */
 }
+      
 
       
 
