@@ -95,7 +95,7 @@
 
       
 
-     .content-wrapper {
+.content-wrapper {
     max-width: 900px;
     width: 100%;
     margin: 2rem auto;
@@ -105,13 +105,34 @@
 }
 
 .nav-icons {
-    position: fixed; /* Cambia da absolute a fixed */
-    top: 120px; /* Regola in base all'altezza del banner */
-    left: calc((100% - 900px) / 2 - 100px); /* Calcolo per spostare decisamente a sinistra */
+    position: absolute;
+    top: -60px;
+    left: -300px; /* Sposta decisamente a sinistra */
     display: flex;
     align-items: center;
     gap: 3rem;
-    z-index: 10; /* Assicura che siano sopra gli altri elementi */
+    padding-top: 20px;
+}
+
+@media (max-width: 1200px) {
+    .nav-icons {
+        left: -200px; /* Regolazione per schermi più piccoli */
+    }
+}
+
+@media (max-width: 992px) {
+    .nav-icons {
+        left: -100px; /* Ulteriore regolazione */
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-icons {
+        position: relative;
+        left: 0;
+        top: 0;
+        justify-content: flex-start;
+    }
 }
       
 
