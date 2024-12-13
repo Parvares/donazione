@@ -102,15 +102,14 @@
            margin-top: 60px;
        }
 
-       .nav-icons {
-           position: absolute;
-           top: -60px;
-           left: 20px;
-           display: flex;
-           align-items: center;
-           gap: 3rem;
-           padding-top: 20px;
-       }
+      .nav-icons {
+    position: relative; /* Cambiato da absolute per maggiore flessibilità */
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; /* Regolato per una distanza più naturale */
+    padding-top: 20px;
+    justify-content: flex-start; /* Posizionamento a sinistra */
+}
 
        .nav-icons a {
            color: #970a2c;
@@ -133,16 +132,14 @@
            letter-spacing: 0.5rem;
        }
 
-       .nav-icons a:first-child::after {
-           content: '';
-           position: absolute;
-           left: calc(100% + 1.5rem);
-           top: 50%;
-           transform: translateY(-50%);
-           height: 20px;
-           width: 1px;
-           background-color: rgba(128, 128, 128, 0.3);
-       }
+      .nav-icons a:first-child::after {
+    content: '';
+    position: relative;
+    margin-left: 1.5rem; /* Margine modificato per separazione */
+    height: 20px;
+    width: 1px;
+    background-color: rgba(128, 128, 128, 0.3);
+}
        
        header img {
            height: 70px;
