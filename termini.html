@@ -93,24 +93,23 @@
            gap: 1rem;
        }
 
-       .content-wrapper {
-           max-width: 900px;
-           width: 100%;
-           margin: 2rem auto;
-           padding: 0 1rem;
-           position: relative;
-           margin-top: 60px;
-       }
+      
 
-      .nav-icons {
+       .content-wrapper {
+    max-width: 900px;
+    width: 100%;
+    margin: 2rem auto;
+    padding-top: 60px;  /* Spazio per le icone di navigazione */
+    position: relative;
+}
+
+.nav-icons {
     position: absolute;
-    top: -60px;
-    left: 0; /* Changed from left: 20px to left: 0 */
+    top: 0;
+    left: 20px;  /* Mantenuto a 20px dal bordo sinistro */
     display: flex;
     align-items: center;
-    gap: 1rem; /* Reduced from 3rem to 1rem to bring icons closer */
-    padding-top: 20px;
-    width: 100%; /* Added to ensure full width */
+    gap: 3rem;  /* Spazio originale tra le icone */
 }
 
        .nav-icons a {
@@ -134,28 +133,16 @@
            letter-spacing: 0.5rem;
        }
 
-      .nav-icons a:first-child::after {
-    content: '';
-    position: absolute;
-    left: calc(100% + 0.5rem); /* Reduced from 1.5rem */
-    top: 50%;
-    transform: translateY(-50%);
-    height: 20px;
-    width: 1px;
-    background-color: rgba(128, 128, 128, 0.3);
-}
-
-@media (max-width: 768px) {
-    .nav-icons {
-        position: relative;
-        top: 0;
-        left: 0;
-        padding: 0.5rem 0;
-        justify-content: flex-start; /* Changed from center to flex-start */
-    }
-}
-
-      
+       .nav-icons a:first-child::after {
+           content: '';
+           position: absolute;
+           left: calc(100% + 1.5rem);
+           top: 50%;
+           transform: translateY(-50%);
+           height: 20px;
+           width: 1px;
+           background-color: rgba(128, 128, 128, 0.3);
+       }
        
        header img {
            height: 70px;
