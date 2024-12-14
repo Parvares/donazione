@@ -708,10 +708,17 @@ function showSuccessPopup(message) {
                 
 
                 
+                <div class="input-icon-wrapper">
+                        <i class="fa-solid fa-barcode input-icon"></i>
+                        <input type="tel" inputmode="numeric" class="book-isbn input-with-icon w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" maxlength="13">
+                    </div>
+                    <p class="hidden error-message text-sm text-red-500 mt-1">ISBN non valido</p>
+                </div>
                 
                 <button type="button" class="add-book-btn" onclick="createBookEntry()">+ Aggiungi Libro</button>
-
             `;
+
+            
 
             const inputs = bookDiv.querySelectorAll('input');
             inputs.forEach(input => {
