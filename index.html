@@ -156,19 +156,56 @@ button[type="submit"] {
 
 
  .content-wrapper {
-            position: relative;
-            padding-top: 80px;  /* Increased from 60px to 80px to move content down */
-        }
+    max-width: 900px;
+    width: 100%;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    position: relative;
+    margin-top: 60px;
+}
 
-        .nav-icons {
-            position: absolute;
-            top: 20px;  /* Increased from 0 to 20px to move icons down */
-            left: 20px;
-            display: flex;
-            align-items: center;
-            gap: 3rem;
-            padding-top: 10px;  /* Added padding to move icons down further */
-        }
+.nav-icons {
+    position: absolute;
+    top: -60px;
+    left: 50%; /* Centrato rispetto al contenitore */
+    transform: translateX(calc(-50% - 400px)); /* Spostato a sinistra della larghezza desiderata */
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    padding-top: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1400px) {
+    .nav-icons {
+        transform: translateX(calc(-50% - 300px));
+    }
+}
+
+@media (max-width: 1200px) {
+    .nav-icons {
+        transform: translateX(calc(-50% - 200px));
+    }
+}
+
+@media (max-width: 992px) {
+    .nav-icons {
+        transform: translateX(calc(-50% - 100px));
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-icons {
+        position: relative;
+        left: 0;
+        top: 0;
+        transform: none;
+        justify-content: flex-start;
+    }
+}
+
+
+        
 
         .nav-icons a {
             color: #970a2c;
