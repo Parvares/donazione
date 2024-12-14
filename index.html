@@ -17,7 +17,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     
-  
     <style>
 
 
@@ -255,54 +254,6 @@ button[type="submit"] {
             filter: none;
             max-width: 100%;
         }
-
-
-
- /* Add these new styles for input icons */
-        .input-icon-wrapper { 
-            position: relative; 
-        } 
-        .input-icon { 
-            position: absolute; 
-            left: 12px; 
-            top: 50%; 
-            transform: translateY(-50%); 
-            color: #6B7280; 
-            z-index: 10;
-        } 
-        .input-with-icon { 
-            padding-left: 40px !important; 
-        }
-
-
-
-
-        .input-icon { 
-    position: absolute; 
-    left: 12px; 
-    top: 50%; 
-    transform: translateY(-50%); 
-    color: #9CA3AF;  /* Lighter gray */
-    z-index: 10;
-    font-weight: 300;  /* Thinner font weight */
-    opacity: 0.7;  /* Slightly transparent */
-}
-
-.input-icon-wrapper { 
-    position: relative; 
-} 
-
-.input-with-icon { 
-    padding-left: 40px !important; 
-}
-
-/* Optional: Add a subtle outline effect */
-.input-icon {
-    text-shadow: 0 0 1px rgba(156, 163, 175, 0.3);
-}
-
-
-        
     </style>
 </head>
 <body>
@@ -380,60 +331,35 @@ button[type="submit"] {
                 <!-- Rest of the form remains the same as in the original document -->
                 <h3 class="text-xl text-slate-700 mt-6 mb-4 pb-2 border-b-2 border-gray-200">Dati Personali</h3>
                 
-               
+                <div class="mb-5">
+                    <label for="nome" class="block mb-1 text-slate-700 font-medium">Nome: *</label>
+                    <input type="text" id="nome" name="nome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                    <p class="hidden error-message text-sm text-red-500 mt-1">Il nome è obbligatorio</p>
+                </div>
                 
+                <div class="mb-5">
+                    <label for="cognome" class="block mb-1 text-slate-700 font-medium">Cognome: *</label>
+                    <input type="text" id="cognome" name="cognome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                    <p class="hidden error-message text-sm text-red-500 mt-1">Il cognome è obbligatorio</p>
+                </div>
                 
-              <!-- Nome -->
-<div class="mb-5">
-    <label for="nome" class="block mb-1 text-slate-700 font-medium">Nome: *</label>
-    <div class="input-icon-wrapper">
-        <i class="fa-solid fa-user input-icon"></i>
-        <input type="text" id="nome" name="nome" required class="input-with-icon w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-    </div>
-    <p class="hidden error-message text-sm text-red-500 mt-1">Il nome è obbligatorio</p>
-</div>
+                <div class="mb-5">
+                    <label for="tessera" class="block mb-1 text-slate-700 font-medium">Numero Tessera:</label>
+                    <input type="text" id="tessera" name="tessera" class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                </div>
 
-<!-- Cognome -->
-<div class="mb-5">
-    <label for="cognome" class="block mb-1 text-slate-700 font-medium">Cognome: *</label>
-    <div class="input-icon-wrapper">
-        <i class="fa-solid fa-user input-icon"></i>
-        <input type="text" id="cognome" name="cognome" required class="input-with-icon w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-    </div>
-    <p class="hidden error-message text-sm text-red-500 mt-1">Il cognome è obbligatorio</p>
-</div>
-
-<!-- Tessera -->
-<div class="mb-5">
-    <label for="tessera" class="block mb-1 text-slate-700 font-medium">Numero Tessera:</label>
-    <div class="input-icon-wrapper">
-        <i class="fa-solid fa-id-card input-icon"></i>
-        <input type="text" id="tessera" name="tessera" class="input-with-icon w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-    </div>
-</div>
-
-<!-- Telefono -->
-<div class="mb-5">
-    <label for="telefono" class="block mb-1 text-slate-700 font-medium">Telefono:</label>
-    <div class="input-icon-wrapper">
-        <i class="fa-solid fa-mobile input-icon"></i>
-        <input type="tel" id="telefono" name="telefono" class="input-with-icon w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-    </div>
-    <p class="hidden error-message text-sm text-red-500 mt-1">Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)</p>
-</div>
-
-<!-- Email -->
-<div class="mb-5">
-    <label for="email" class="block mb-1 text-slate-700 font-medium">Email: *</label>
-    <div class="input-icon-wrapper">
-        <i class="fa-solid fa-envelope input-icon"></i>
-        <input type="email" id="email" name="email" required class="input-with-icon w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-    </div>
-    <p class="hidden error-message text-sm text-red-500 mt-1">Inserire un indirizzo email valido</p>
-</div>
-
-
+                <div class="mb-5">
+                    <label for="telefono" class="block mb-1 text-slate-700 font-medium">Telefono:</label>
+                    <input type="tel" id="telefono" name="telefono" class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                    <p class="hidden error-message text-sm text-red-500 mt-1">Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)</p>
+                </div>
                 
+                <div class="mb-5">
+                    <label for="email" class="block mb-1 text-slate-700 font-medium">Email: *</label>
+                    <input type="email" id="email" name="email" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                    <p class="hidden error-message text-sm text-red-500 mt-1">Inserire un indirizzo email valido</p>
+                </div>
+
                 <h3 class="text-xl text-slate-700 mt-6 mb-4 pb-2 border-b-2 border-gray-200">Libri da donare</h3>
                 <div id="bookList"></div>
                 
@@ -684,52 +610,31 @@ function showSuccessPopup(message) {
 
                     ` : ''}
                 </div>
-
                 
-                
-                
-                
-        <div class="mb-5">
-    <label class="block mb-1 text-slate-700 font-medium">Titolo: *</label>
-    <div class="input-icon-wrapper">
-        <i class="fa-solid fa-heading input-icon"></i>
-        <input type="text" class="book-title input-with-icon w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" required>
-    </div>
-    <p class="hidden error-message text-sm text-red-500 mt-1">Il titolo è obbligatorio</p>
-</div>
-
-<!-- Autore: Cambiato l'icona in user -->
-<div class="mb-5">
-    <label class="block mb-1 text-slate-700 font-medium">Autore:</label>
-    <div class="input-icon-wrapper">
-        <i class="fa-solid fa-user input-icon"></i>
-        <input type="text" class="book-author input-with-icon w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-    </div>
-</div>
-
-
+                <div class="mb-5">
+                    <label class="block mb-1 text-slate-700 font-medium">Titolo: *</label>
+                    <input type="text" class="book-title w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" required>
+                    <p class="hidden error-message text-sm text-red-500 mt-1">Il titolo è obbligatorio</p>
+                </div>
+                <div class="mb-5">
+                    <label class="block mb-1 text-slate-700 font-medium">Autore:</label>
+                    <input type="text" class="book-author w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                </div>
                 <div class="mb-5">
                     <label class="block mb-1 text-slate-700 font-medium">Editore:</label>
-                    <div class="input-icon-wrapper">
-                        <i class="fa-solid fa-building input-icon"></i>
-                        <input type="text" class="book-publisher input-with-icon w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-                    </div>
+                    <input type="text" class="book-publisher w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
                 </div>
+               
+
+
+
+
+
+
 
 
 
 <div class="mb-5">
-    <label class="block mb-1 text-slate-700 font-medium">Anno:</label>
-    <div class="input-icon-wrapper">
-        <i class="fa-solid fa-calendar input-icon"></i>
-        <input type="tel" inputmode="numeric" class="book-year input-with-icon w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" maxlength="4">
-    </div>
-    <p class="hidden error-message text-sm text-red-500 mt-1">Anno non valido</p>
-</div>
-
-                
-
-      <div class="mb-5">
     <div class="flex items-center gap-1">
         <label class="block text-slate-700 font-medium">ISBN:</label>
         <div class="flex items-center relative group">
@@ -741,23 +646,16 @@ function showSuccessPopup(message) {
             </div>
         </div>
     </div>
-                
+    <input type="tel" inputmode="numeric" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" maxlength="13">
+    <p class="hidden error-message text-sm text-red-500 mt-1">ISBN non valido</p>
+</div>
 
 
                 
-
-                
-                <div class="input-icon-wrapper">
-                        <i class="fa-solid fa-barcode input-icon"></i>
-                        <input type="tel" inputmode="numeric" class="book-isbn input-with-icon w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" maxlength="13">
-                    </div>
-                    <p class="hidden error-message text-sm text-red-500 mt-1">ISBN non valido</p>
-                </div>
                 
                 <button type="button" class="add-book-btn" onclick="createBookEntry()">+ Aggiungi Libro</button>
-            `;
 
-            
+            `;
 
             const inputs = bookDiv.querySelectorAll('input');
             inputs.forEach(input => {
