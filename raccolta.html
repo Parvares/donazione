@@ -168,11 +168,11 @@
 
         
 
-           footer {
+               footer {
         background-color: var(--primary);
         color: #fff;
         text-align: center;
-        padding: 1rem 0;
+        padding: 1rem 0; /* Ridotto il padding verticale */
         min-height: 100px;
     }
 
@@ -182,11 +182,20 @@
         margin-bottom: 0.5rem;
     }
 
+    footer .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
     footer .info {
         font-size: 0.85rem; /* Riduce il font dei testi */
         display: flex;
         justify-content: center; /* Centra orizzontalmente le informazioni */
         gap: 2rem; /* Spaziatura tra le colonne */
+        padding-left: 2rem; /* Sposta leggermente a destra */
+        padding-top: 1rem; /* Aggiunge un po' di spazio sopra le informazioni */
     }
 
     footer .info div {
@@ -197,7 +206,6 @@
     footer .info div span {
         display: block; /* Ogni riga va su una nuova linea */
     }
-
         
 
         
