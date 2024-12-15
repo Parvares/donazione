@@ -264,10 +264,10 @@
 
 
 
-   footer {
+ footer {
     background-color: var(--primary);
     color: #fff;
-    padding: 1rem 0;
+    padding: 2rem 0; /* Increased padding to increase height */
 }
 
 footer .container {
@@ -286,10 +286,16 @@ footer .container {
     font-size: 0.85rem;
 }
 
-.location, .contact {
+.location {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    flex-wrap: wrap; /* Allow wrapping */
+}
+
+.location span {
+    display: block; /* Make the span a block-level element */
+    width: 100%; /* Ensure it takes full width */
 }
 
 .contact {
