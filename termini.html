@@ -120,12 +120,10 @@
 
 
 .nav-icons {
-    position: absolute;
-    top: -40px; /* Puoi anche regolare questo valore se necessario */
-    left: 0; /* Sposta le icone a sinistra */
-    display: flex;
-    align-items: center;
-    gap: 3rem; /* Distanza tra le icone */
+    display: flex; /* Usa flexbox per allineare le icone */
+    justify-content: flex-start; /* Allinea le icone a sinistra */
+    align-items: center; /* Allinea verticalmente le icone */
+    gap: 2rem; /* Distanza tra le icone */
     padding-top: 20px;
 }
 
@@ -153,13 +151,11 @@
     }
 }
 
+/* Responsive adjustments */
 @media (max-width: 768px) {
     .nav-icons {
-        position: relative;
-        left: 0;
-        top: 0;
-        transform: none;
-        justify-content: flex-start; /* Assicura che le icone siano a sinistra */
+        position: relative; /* Allineamento normale su schermi più piccoli */
+        justify-content: flex-start; /* Allinea le icone a sinistra anche sui dispositivi più piccoli */
     }
 }
 
@@ -168,37 +164,41 @@
 
       
 
-       .nav-icons a {
-           color: #970a2c;
-           font-size: 1.25rem;
-           text-decoration: none;
-           transition: transform 0.3s ease;
-           display: flex;
-           align-items: center;
-           height: 100%;
-       }
+      .nav-icons a {
+    color: #970a2c;
+    font-size: 1.25rem;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+    display: flex;
+    align-items: center;
+}
 
-       .nav-icons a:hover {
-           transform: scale(1.1);
-       }
+.nav-icons a:hover {
+    transform: scale(1.1);
+}
 
-       .nav-icons a:first-child {
-           font-weight: bold;
-           font-size: 1.8rem;
-           position: relative;
-           letter-spacing: 0.5rem;
-       }
+.nav-icons a:first-child {
+    font-weight: bold;
+    font-size: 1.8rem;
+    position: relative;
+    letter-spacing: 0.5rem;
+}
 
-       .nav-icons a:first-child::after {
-           content: '';
-           position: absolute;
-           left: calc(100% + 1.5rem);
-           top: 50%;
-           transform: translateY(-50%);
-           height: 20px;
-           width: 1px;
-           background-color: rgba(128, 128, 128, 0.3);
-       }
+.nav-icons a:first-child::after {
+    content: '';
+    position: absolute;
+    left: calc(100% + 1.5rem);
+    top: 50%;
+    transform: translateY(-50%);
+    height: 20px;
+    width: 1px;
+    background-color: rgba(128, 128, 128, 0.3);
+}
+
+
+
+
+      
        
        header img {
            height: 70px;
