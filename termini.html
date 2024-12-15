@@ -93,6 +93,7 @@
            gap: 1rem;
        }
 
+       /* Nuovo stile per il titolo della biblioteca */
        .library-name {
            display: flex;
            align-items: center;
@@ -108,41 +109,45 @@
            vertical-align: middle;
        }
 
-   .content-wrapper {
+
+
+
+      .content-wrapper {
     max-width: 900px;
     width: 100%;
     margin: 2rem auto;
     padding: 0 1rem;
     position: relative;
-    margin-top: 30px; /* Reduced from 60px to move content up */
+    margin-top: 60px;
 }
 
 .nav-icons {
+    position: absolute;
+    top: -60px;
+    left: 50%; /* Centrato rispetto al contenitore */
+    transform: translateX(calc(-50% - 400px)); /* Spostato a sinistra della larghezza desiderata */
     display: flex;
     align-items: center;
     gap: 3rem;
-    justify-content: flex-start; /* Allinea le icone a sinistra */
     padding-top: 20px;
-    position: relative; /* Rimuovi il posizionamento assoluto */
-    top: 0; /* Rimuovi il top negativo */
-    left: 0; /* Allinea a sinistra */
 }
 
-
+/* Responsive adjustments */
+@media (max-width: 1400px) {
+    .nav-icons {
+        transform: translateX(calc(-50% - 300px));
+    }
+}
 
 @media (max-width: 1200px) {
     .nav-icons {
-        transform: none; /* Rimosso qualsiasi transform */
-        transform: translateX(0); /* Rimosso calcolo */
-        left: 0; /* Forzato a 0 */
+        transform: translateX(calc(-50% - 200px));
     }
 }
 
 @media (max-width: 992px) {
     .nav-icons {
-        transform: none; /* Rimosso qualsiasi transform */
-        transform: translateX(0); /* Rimosso calcolo */
-        left: 0; /* Forzato a 0 */
+        transform: translateX(calc(-50% - 100px));
     }
 }
 
@@ -155,6 +160,9 @@
         justify-content: flex-start;
     }
 }
+
+
+
 
        .nav-icons a {
            color: #970a2c;
@@ -256,60 +264,28 @@
 
 
 
+       footer {
+           background-color: var(--primary);
+           color: #fff;
+           text-align: center;
+           padding: 0.3rem 0;
+           margin-top: 3rem;
+       }
 
+       footer a {
+           color: #fff;
+           border-bottom: 1px solid transparent;
+       }
 
-footer {
-    background-color: var(--primary);
-    color: #fff;
-    padding: 1.5rem 0; /* Altezza ridotta */
-}
+       footer a:hover {
+           border-bottom-color: #fff;
+       }
 
-footer .container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem; /* Spaziatura minima */
-}
-
-footer img {
-    height: 35px; /* Logo leggermente più piccolo */
-    max-width: 100%;
-    margin-right: 1rem; /* Spaziatura tra logo e stringhe */
-}
-
-footer .info {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1.5rem; /* Minore spazio tra blocchi di testo */
-    font-size: 0.85rem; /* Testo ridotto */
-}
-
-footer .info > div {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    line-height: 1.4; /* Migliore leggibilità */
-}
-
-footer .info span.block {
-    display: block; /* Forza il rientro a capo per indirizzi e orari */
-}
-
-footer i {
-    font-size: 1rem; /* Icone ridimensionate */
-}
-
-@media (max-width: 768px) {
-    footer .info {
-        flex-direction: column; /* Layout verticale su schermi piccoli */
-        align-items: flex-start;
-    }
-}
-
-
+       @media (max-width: 768px) {
+           body {
+               font-size: 20px;
+               line-height: 1.5;
+           }
 
            header {
                min-height: auto;
@@ -347,10 +323,6 @@ footer i {
                margin: 1rem;
                padding: 1.5rem;
            }
-
-           .footer-info {
-               flex-direction: column;
-           }
        }
 
        @media print {
@@ -386,6 +358,15 @@ footer i {
         </div>
     </div>
 
+    <header>
+        <div class="container-header">
+            <img src="logobianco.png" alt="Logo Biblioteche di Roma">
+            <img class="logo-morante" src="logomorante.png" alt="Logo Biblioteca Morante">
+        </div>
+    </header>
+    
+   
+   
   <header>
     <div class="container-header">
         <a href="https://www.bibliotechediroma.it/opac/.do">
@@ -395,7 +376,9 @@ footer i {
             <img src="logomorante.png" alt="Logo Biblioteca Morante" style="height: 180px; max-width: 100%;">
         </a>
     </div>
-  </header>
+</header>
+
+
 
   <div class="content-wrapper">
         <div class="nav-icons">
@@ -407,13 +390,20 @@ footer i {
             </a>
         </div>
 
+
+
+
         <main>
-            <div class="library-name">
+
+    <div class="library-name">
                 <img src="location.svg" alt="Location">
                 <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank">
                     Biblioteca Elsa Morante
                 </a>
             </div>
+
+
+
 
             <h1>Donazione di libri</h1>
             <section>
@@ -485,44 +475,8 @@ footer i {
         </main>
     </div>
 
-
-
-
-
-
-
-
-   <footer>
-    <div class="container mx-auto px-4">
-        <!-- Logo -->
-        <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" rel="noopener noreferrer">
-            <img src="footermorante.png" alt="Logo Biblioteca Morante">
-        </a>
-
-        <!-- Informazioni -->
-        <div class="info">
-            <div>
-                <i class="fas fa-location-dot"></i>
-                <span>Via Adolfo Cozza 7<span class="block">Municipio X, 00121 Roma</span></span>
-            </div>
-            <div>
-                <i class="fas fa-phone"></i>
-                <span>06 4546 0481</span>
-            </div>
-            <div>
-                <i class="fas fa-clock"></i>
-                <span>Lunedì-Venerdì 09:00-18:30<span class="block">Sabato 09:00-13:00</span></span>
-            </div>
-        </div>
-    </div>
-</footer>
-
-
-
-
-
-
-
-
+    <footer>
+        <p>Scopri di più su <a href="https://www.bibliotechediroma.it/opac/.do" target="_blank">Biblioteche di Roma</a></p>
+    </footer>
 </body>
 </html>
