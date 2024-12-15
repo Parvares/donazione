@@ -83,14 +83,14 @@
 }
 
 .nav-icons {
-    position: absolute;
-    top: -60px;
-    left: 50%; /* Centrato rispetto al contenitore */
-    transform: translateX(calc(-50% - 400px)); /* Spostato a sinistra della larghezza desiderata */
     display: flex;
     align-items: center;
     gap: 3rem;
+    justify-content: flex-start; /* Allinea le icone a sinistra */
     padding-top: 20px;
+    position: relative; /* Posizione relativa per il flusso del documento */
+    top: 0; /* Rimuove il top negativo */
+    left: 0; /* Posiziona a sinistra */
 }
 
 /* Responsive adjustments */
@@ -112,13 +112,10 @@
     }
 }
 
+
 @media (max-width: 768px) {
     .nav-icons {
-        position: relative;
-        left: 0;
-        top: 0;
-        transform: none;
-        justify-content: flex-start;
+        justify-content: flex-start; /* Assicura che le icone siano a sinistra su schermi piccoli */
     }
 }
 
