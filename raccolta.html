@@ -184,20 +184,26 @@
 
         
 
-    footer .info {
+  footer .info {
     font-size: 0.85rem; /* Keeps the font size smaller */
     display: flex;
     justify-content: flex-end; /* Aligns the content towards the right */
     gap: 2rem; /* Keeps the spacing between the columns */
-    margin-top: -20px; /* Moves the content upwards */
+    margin-top: -15px; /* Moves the content upwards */
     padding-right: 20px; /* Adds a little right margin for spacing */
 }
 
+footer .info div {
+    text-align: left; /* Aligns the text to the left */
+    line-height: 1.4; /* Provides a little space between lines */
+    display: flex; /* Use flexbox to align icon and text horizontally */
+    align-items: center; /* Vertically align the icon and text */
+}
 
-    footer .info div {
-        text-align: center; /* Centra ogni blocco */
-        line-height: 1.4; /* Leggero spazio tra le righe interne */
-    }
+footer .info div i {
+    margin-right: 8px; /* Adds a small gap between the icon and the text */
+}
+
 
     footer .info div span {
         display: block; /* Ogni riga va su una nuova linea */
