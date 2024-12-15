@@ -168,38 +168,34 @@
 
         
 
-              footer {
+             footer {
         background-color: var(--primary);
         color: #fff;
-        text-align: left; /* Allinea a sinistra il contenuto del footer */
-        padding: 1rem 2rem; /* Aggiunta del padding laterale */
+        text-align: center;
+        padding: 1rem 0;
         min-height: 100px;
-        display: flex; /* Usa flexbox per allineare il contenuto orizzontalmente */
-        justify-content: space-between; /* Spaziatura tra logo e informazioni */
-        align-items: center; /* Allineamento verticale */
     }
 
     footer img {
-        height: 40px; /* Ridotto l'altezza del logo */
+        height: 40px; /* Riduce l'altezza dell'immagine */
         max-width: 100%;
+        margin-bottom: 0.5rem;
     }
 
     footer .info {
+        font-size: 0.85rem; /* Riduce il font dei testi */
         display: flex;
-        flex-direction: column; /* Le informazioni saranno una sopra l'altra */
-        gap: 0.5rem; /* Spaziatura tra le righe */
+        justify-content: center; /* Centra orizzontalmente le informazioni */
+        gap: 2rem; /* Spaziatura tra le colonne */
     }
 
     footer .info div {
-        line-height: 1.4; /* Imposta una linea più alta tra le righe */
+        text-align: center; /* Centra ogni blocco */
+        line-height: 1.4; /* Leggero spazio tra le righe interne */
     }
 
     footer .info div span {
-        display: block; /* Forza l'andata a capo */
-    }
-
-    footer .info {
-        padding-left: 2rem; /* Aggiunge un po' di spazio a sinistra per spostare leggermente a destra le informazioni */
+        display: block; /* Ogni riga va su una nuova linea */
     }
         
 
