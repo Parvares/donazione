@@ -261,7 +261,7 @@
 footer {
     background-color: var(--primary);
     color: #fff;
-    padding: 1.5rem 0; /* Altezza ridotta */
+    padding: 1.5rem 1rem; /* Added horizontal padding */
 }
 
 footer .container {
@@ -269,43 +269,63 @@ footer .container {
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    gap: 1rem; /* Spaziatura minima */
+    gap: 1rem;
+    max-width: 1200px; /* Added max-width to match content wrapper */
+    margin: 0 auto; /* Center the container */
+    padding: 0 1rem; /* Added side padding */
 }
 
-
-
-
 footer img {
-    height: 45px; /* Increased from 35px */
+    height: 35px;
     max-width: 100%;
     margin-right: 1rem;
 }
 
 footer .info {
-    font-size: 0.95rem; /* Slightly larger from 0.85rem */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
     gap: 1.5rem;
+    font-size: 0.85rem;
+    flex-grow: 1; /* Allow info to take remaining space */
 }
 
 footer .info > div {
-    gap: 0.7rem; /* Slightly increased spacing */
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    line-height: 1.4;
 }
 
-      
-
 footer .info span.block {
-    display: block; /* Forza il rientro a capo per indirizzi e orari */
+    display: block;
 }
 
 footer i {
-    font-size: 1.2rem; /* Slightly larger icons */
+    font-size: 1rem;
 }
 
 @media (max-width: 768px) {
+    footer .container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
     footer .info {
-        flex-direction: column; /* Layout verticale su schermi piccoli */
-        align-items: flex-start;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    footer .info > div {
+        margin-bottom: 0.5rem;
+        text-align: center;
     }
 }
+
+      
       
       
            
