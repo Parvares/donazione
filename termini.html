@@ -93,7 +93,6 @@
            gap: 1rem;
        }
 
-       /* Nuovo stile per il titolo della biblioteca */
        .library-name {
            display: flex;
            align-items: center;
@@ -109,60 +108,53 @@
            vertical-align: middle;
        }
 
+       .content-wrapper {
+           max-width: 900px;
+           width: 100%;
+           margin: 2rem auto;
+           padding: 0 1rem;
+           position: relative;
+           margin-top: 60px;
+       }
 
+       .nav-icons {
+           position: absolute;
+           top: -60px;
+           left: 50%;
+           transform: translateX(calc(-50% - 400px));
+           display: flex;
+           align-items: center;
+           gap: 3rem;
+           padding-top: 20px;
+       }
 
+       @media (max-width: 1400px) {
+           .nav-icons {
+               transform: translateX(calc(-50% - 300px));
+           }
+       }
 
-      .content-wrapper {
-    max-width: 900px;
-    width: 100%;
-    margin: 2rem auto;
-    padding: 0 1rem;
-    position: relative;
-    margin-top: 60px;
-}
+       @media (max-width: 1200px) {
+           .nav-icons {
+               transform: translateX(calc(-50% - 200px));
+           }
+       }
 
-.nav-icons {
-    position: absolute;
-    top: -60px;
-    left: 50%; /* Centrato rispetto al contenitore */
-    transform: translateX(calc(-50% - 400px)); /* Spostato a sinistra della larghezza desiderata */
-    display: flex;
-    align-items: center;
-    gap: 3rem;
-    padding-top: 20px;
-}
+       @media (max-width: 992px) {
+           .nav-icons {
+               transform: translateX(calc(-50% - 100px));
+           }
+       }
 
-/* Responsive adjustments */
-@media (max-width: 1400px) {
-    .nav-icons {
-        transform: translateX(calc(-50% - 300px));
-    }
-}
-
-@media (max-width: 1200px) {
-    .nav-icons {
-        transform: translateX(calc(-50% - 200px));
-    }
-}
-
-@media (max-width: 992px) {
-    .nav-icons {
-        transform: translateX(calc(-50% - 100px));
-    }
-}
-
-@media (max-width: 768px) {
-    .nav-icons {
-        position: relative;
-        left: 0;
-        top: 0;
-        transform: none;
-        justify-content: flex-start;
-    }
-}
-      
-
-      
+       @media (max-width: 768px) {
+           .nav-icons {
+               position: relative;
+               left: 0;
+               top: 0;
+               transform: none;
+               justify-content: flex-start;
+           }
+       }
 
        .nav-icons a {
            color: #970a2c;
@@ -262,9 +254,11 @@
            border-bottom-color: var(--primary);
        }
 
-      
-       
-      footer {
+
+
+
+
+footer {
     background-color: var(--primary);
     color: #fff;
     padding: 1.5rem 0; /* Altezza ridotta */
@@ -314,14 +308,8 @@ footer i {
         align-items: flex-start;
     }
 }
-
       
       
-       @media (max-width: 768px) {
-           body {
-               font-size: 20px;
-               line-height: 1.5;
-           }
            
            header {
                min-height: auto;
@@ -359,6 +347,10 @@ footer i {
                margin: 1rem;
                padding: 1.5rem;
            }
+
+           .footer-info {
+               flex-direction: column;
+           }
        }
 
        @media print {
@@ -394,9 +386,6 @@ footer i {
         </div>
     </div>
 
-    
-   
-   
   <header>
     <div class="container-header">
         <a href="https://www.bibliotechediroma.it/opac/.do">
@@ -406,10 +395,7 @@ footer i {
             <img src="logomorante.png" alt="Logo Biblioteca Morante" style="height: 180px; max-width: 100%;">
         </a>
     </div>
-</header>
-
-
-   
+  </header>
 
   <div class="content-wrapper">
         <div class="nav-icons">
@@ -421,21 +407,14 @@ footer i {
             </a>
         </div>
 
-
-      
-
         <main>
-
-    <div class="library-name">
+            <div class="library-name">
                 <img src="location.svg" alt="Location">
                 <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank">
                     Biblioteca Elsa Morante
                 </a>
             </div>
 
-
-
-           
             <h1>Donazione di libri</h1>
             <section>
                 <h2>Criteri di Accettazione</h2>
@@ -506,40 +485,39 @@ footer i {
         </main>
     </div>
 
+    
 
-  <footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
-    <div class="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
-        <div class="mb-4 md:mb-0">
-            <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" rel="noopener noreferrer">
-                <img src="footermorante.png" alt="Logo Biblioteca Morante" class="h-8 md:h-10">
-            </a>
-        </div>
+
+
+
+
+
+   <footer>
+    <div class="container mx-auto px-4">
+        <!-- Logo -->
+        <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" rel="noopener noreferrer">
+            <img src="footermorante.png" alt="Logo Biblioteca Morante">
+        </a>
         
-        <div class="flex flex-col md:flex-row md:space-x-8 space-y-2 md:space-y-0 text-center md:text-left text-sm">
-            <div class="flex items-center justify-center md:justify-start space-x-2">
-                <i class="fas fa-location-dot w-4"></i>
-                <span class="flex flex-col">
-                    <span>Via Adolfo Cozza 7</span>
-                    <span>Municipio X, 00121 Roma</span>
-                </span>
+        <!-- Informazioni -->
+        <div class="info">
+            <div>
+                <i class="fas fa-location-dot"></i>
+                <span>Via Adolfo Cozza 7<span class="block">Municipio X, 00121 Roma</span></span>
             </div>
-            
-            <div class="flex items-center justify-center md:justify-start space-x-4">
-                <div class="flex items-center space-x-2">
-                    <i class="fas fa-phone w-4"></i>
-                    <span>06 4546 0481 / 0483</span>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <i class="fas fa-clock w-4"></i>
-                    <span class="flex flex-col">
-                        <span>Lunedì-Venerdì 09:00-18:30</span>
-                        <span>Sabato 09:00-13:00</span>
-                    </span>
-                </div>
+            <div>
+                <i class="fas fa-phone"></i>
+                <span>06 4546 0481</span>
+            </div>
+            <div>
+                <i class="fas fa-clock"></i>
+                <span>Lunedì-Venerdì 09:00-18:30<span class="block">Sabato 09:00-13:00</span></span>
             </div>
         </div>
     </div>
 </footer>
+
+
 
 
 
