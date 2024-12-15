@@ -73,25 +73,27 @@
 
 
         
-     .content-wrapper {
-            max-width: 900px;
-            width: 100%;
-            margin: 2rem auto;
-            padding: 0 1rem;
+
+        .content-wrapper {
             position: relative;
-            margin-top: 60px;
+            width: 100%;
+            max-width: 1400px;  /* Aumentato per dare più spazio */
+            margin: 60px auto 2rem;
+            padding: 0;
         }
 
-        /* Nuovo stile per nav-icons */
+        /* Stile completamente nuovo per nav-icons */
         .nav-icons {
+            position: fixed;
+            left: 50px;  /* Distanza fissa dal bordo sinistro */
+            top: 200px;  /* Posizione verticale fissa */
             display: flex;
-            align-items: center;
             gap: 2rem;
-            padding-top: 20px;
-            position: absolute;
-            left: 0;
-            margin-left: -100px;  /* Sposta le icone più a sinistra del contenitore */
+            align-items: center;
+            padding: 0;
+            z-index: 100;
         }
+
 
         
 
@@ -124,13 +126,20 @@
 
         
 
-   .nav-icons a {
+      .nav-icons a {
             display: flex;
             align-items: center;
         }
 
         .nav-icons a:hover {
             transform: scale(1.1);
+        }
+
+        /* Container per il contenuto principale */
+        .container-fluid {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 1rem;
         }
 
         .nav-icons a:first-child {
