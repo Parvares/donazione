@@ -264,13 +264,66 @@
 
 
 
-      footer {
-            background-color: var(--primary);
-            color: #fff;
-            text-align: center;
-            padding: 1.8rem 0;
-        }
+   footer {
+    background-color: var(--primary);
+    color: #fff;
+    padding: 1rem 0;
+}
 
+footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+      .footer-info {
+    display: flex;
+    gap: 2rem;
+    font-size: 0.85rem;
+}
+
+.location, .contact {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.contact {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.phone, .hours {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+footer i {
+    width: 1rem;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    footer .container {
+        flex-direction: column;
+        text-align: center;
+        padding: 0.5rem;
+    }
+
+    .footer-info {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .contact {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
 
          footer a {
             color: #fff;
@@ -472,34 +525,28 @@
     
 
 
-   <footer class="bg-[#970a2c] text-white mt-16 py-4"> <!-- Reduced padding to py-4 -->
-    <div class="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
-        <div class="mb-2 md:mb-0"> <!-- Reduced bottom margin -->
-            <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" rel="noopener noreferrer">
-                <img src="footermorante.png" alt="Logo Biblioteca Morante" class="h-6 md:h-8"> <!-- Reduced logo size -->
-            </a>
-        </div>
+ <footer>
+    <div class="container">
+        <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" rel="noopener noreferrer">
+            <img src="footermorante.png" alt="Logo Biblioteca Morante" style="height: 25px;">
+        </a>
         
-        <div class="flex flex-col md:flex-row md:space-x-6 space-y-1 md:space-y-0 text-center md:text-left text-xs"> <!-- Reduced text size and spacing -->
-            <div class="flex items-center justify-center md:justify-start space-x-1">
-                <i class="fas fa-location-dot w-4"></i>
-                <span class="flex flex-col text-xs"> <!-- Reduced text size -->
-                    <span>Via Adolfo Cozza 7</span>
-                    <span>Municipio X, 00121 Roma</span>
+        <div class="footer-info">
+            <div class="location">
+                <i class="fas fa-location-dot"></i>
+                <span>
+                    Via Adolfo Cozza 7, Municipio X
                 </span>
             </div>
             
-            <div class="flex items-center justify-center md:justify-start space-x-3"> <!-- Reduced space between items -->
-                <div class="flex items-center space-x-1"> <!-- Reduced space between icon and text -->
-                    <i class="fas fa-phone w-4"></i>
-                    <span class="text-xs">06 4546 0481 / 0483</span> <!-- Reduced text size -->
+            <div class="contact">
+                <div class="phone">
+                    <i class="fas fa-phone"></i>
+                    <span>06 4546 0481</span>
                 </div>
-                <div class="flex items-center space-x-1">
-                    <i class="fas fa-clock w-4"></i>
-                    <span class="flex flex-col text-xs"> <!-- Reduced text size -->
-                        <span>Lunedì-Venerdì 09:00-18:30</span>
-                        <span>Sabato 09:00-13:00</span>
-                    </span>
+                <div class="hours">
+                    <i class="fas fa-clock"></i>
+                    <span>Lun-Ven 9-18:30, Sab 9-13</span>
                 </div>
             </div>
         </div>
