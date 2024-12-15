@@ -256,23 +256,26 @@
 
 
 
+
+
 footer {
     background-color: var(--primary);
     color: #fff;
-    padding: 1.8rem 0;
+    padding: 1rem 0; /* Altezza ridotta */
 }
 
 footer .container {
     display: flex;
-    flex-wrap: wrap; /* Consente la gestione su schermi più piccoli */
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    gap: 1rem;
+    gap: 1rem; /* Spaziatura minima */
 }
 
 footer img {
-    height: 40px; /* Riduce il logo */
+    height: 35px; /* Logo leggermente più piccolo */
     max-width: 100%;
+    margin-right: 1rem; /* Spaziatura tra logo e stringhe */
 }
 
 footer .info {
@@ -280,27 +283,32 @@ footer .info {
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    gap: 2rem; /* Spaziatura tra le informazioni */
-    font-size: 0.9rem; /* Riduce leggermente la dimensione del testo */
+    gap: 1.5rem; /* Minore spazio tra blocchi di testo */
+    font-size: 0.85rem; /* Testo ridotto */
 }
 
 footer .info > div {
     display: flex;
     align-items: center;
-    gap: 0.5rem; /* Spaziatura tra l'icona e il testo */
+    gap: 0.5rem;
+    line-height: 1.4; /* Migliore leggibilità */
+}
+
+footer .info span.block {
+    display: block; /* Forza il rientro a capo per indirizzi e orari */
 }
 
 footer i {
-    font-size: 1rem; /* Riduce la dimensione delle icone */
+    font-size: 1rem; /* Icone ridimensionate */
 }
 
 @media (max-width: 768px) {
     footer .info {
-        flex-direction: column; /* Disposizione verticale su schermi piccoli */
+        flex-direction: column; /* Layout verticale su schermi piccoli */
         align-items: flex-start;
     }
 }
-
+      
       
            
            header {
@@ -479,7 +487,12 @@ footer i {
 
     
 
-<footer>
+
+
+
+
+
+   <footer>
     <div class="container mx-auto px-4">
         <!-- Logo -->
         <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" rel="noopener noreferrer">
@@ -490,7 +503,7 @@ footer i {
         <div class="info">
             <div>
                 <i class="fas fa-location-dot"></i>
-                <span>Via Adolfo Cozza 7, 00121 Roma</span>
+                <span>Via Adolfo Cozza 7<span class="block">Municipio X, 00121 Roma</span></span>
             </div>
             <div>
                 <i class="fas fa-phone"></i>
@@ -498,7 +511,7 @@ footer i {
             </div>
             <div>
                 <i class="fas fa-clock"></i>
-                <span>Lun-Ven 09:00-18:30</span>
+                <span>Lunedì-Venerdì 09:00-18:30<span class="block">Sabato 09:00-13:00</span></span>
             </div>
         </div>
     </div>
