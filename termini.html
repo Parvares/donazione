@@ -117,14 +117,15 @@
     margin-top: 30px; /* Reduced from 60px to move content up */
 }
 
+
+
 .nav-icons {
     position: absolute;
-    top: -40px; /* Moved higher */
-    left: 0; /* Aligned to the left */
-    transform: none;
+    top: -40px; /* Puoi anche regolare questo valore se necessario */
+    left: 0; /* Sposta le icone a sinistra */
     display: flex;
     align-items: center;
-    gap: 3rem;
+    gap: 3rem; /* Distanza tra le icone */
     padding-top: 20px;
 }
 
@@ -132,33 +133,40 @@
     .nav-icons {
         position: relative;
         top: 0;
-        left: 0;
+        left: 0; /* Assicura che siano allineate a sinistra anche su dispositivi più piccoli */
         padding: 0.5rem 0;
-        justify-content: flex-start;
+        justify-content: flex-start; /* Allinea le icone a sinistra */
     }
 }
 
-       @media (max-width: 1200px) {
-           .nav-icons {
-               transform: translateX(calc(-50% - 200px));
-           }
-       }
+@media (max-width: 1200px) {
+    .nav-icons {
+        /* Rimuovi la trasformazione orizzontale */
+        transform: none;
+    }
+}
 
-       @media (max-width: 992px) {
-           .nav-icons {
-               transform: translateX(calc(-50% - 100px));
-           }
-       }
+@media (max-width: 992px) {
+    .nav-icons {
+        /* Rimuovi la trasformazione orizzontale */
+        transform: none;
+    }
+}
 
-       @media (max-width: 768px) {
-           .nav-icons {
-               position: relative;
-               left: 0;
-               top: 0;
-               transform: none;
-               justify-content: flex-start;
-           }
-       }
+@media (max-width: 768px) {
+    .nav-icons {
+        position: relative;
+        left: 0;
+        top: 0;
+        transform: none;
+        justify-content: flex-start; /* Assicura che le icone siano a sinistra */
+    }
+}
+
+
+
+
+      
 
        .nav-icons a {
            color: #970a2c;
