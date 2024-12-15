@@ -119,46 +119,38 @@
 
 .nav-icons {
     position: absolute;
-    top: -40px; 
-    left: -20px; /* Modificato da 0 a -20px per spostare più a sinistra */
-    transform: none;
+    top: -40px;
+    left: 0; /* Impostato a 0 */
+    transform: none; /* Rimosso ogni trasformazione */
     display: flex;
     align-items: center;
     gap: 3rem;
     padding-top: 20px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
     .nav-icons {
-        position: relative;
-        top: 0;
-        left: 0;
-        padding: 0.5rem 0;
-        justify-content: flex-start;
+        transform: none; /* Rimosso qualsiasi transform */
+        left: 0; /* Forzato a 0 */
     }
 }
 
-       @media (max-width: 1200px) {
-           .nav-icons {
-               transform: translateX(calc(-50% - 200px));
-           }
-       }
+@media (max-width: 992px) {
+    .nav-icons {
+        transform: none; /* Rimosso qualsiasi transform */
+        left: 0; /* Forzato a 0 */
+    }
+}
 
-       @media (max-width: 992px) {
-           .nav-icons {
-               transform: translateX(calc(-50% - 100px));
-           }
-       }
-
-       @media (max-width: 768px) {
-           .nav-icons {
-               position: relative;
-               left: 0;
-               top: 0;
-               transform: none;
-               justify-content: flex-start;
-           }
-       }
+@media (max-width: 768px) {
+    .nav-icons {
+        position: relative;
+        left: 0;
+        top: 0;
+        transform: none;
+        justify-content: flex-start;
+    }
+}
 
        .nav-icons a {
            color: #970a2c;
