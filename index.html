@@ -885,28 +885,30 @@ function showSuccessPopup(message) {
 
 
 
-<footer class="bg-[#970a2c] text-white mt-16 py-4">
+
+    <footer class="bg-[#970a2c] text-white mt-16 py-4">
     <div class="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
         <div class="mb-4 md:mb-0">
-            <img src="footermorante.png" alt="Logo Biblioteca Morante" class="h-12 md:h-16">
+            <!-- Reduced height of the logo -->
+            <img src="footermorante.png" alt="Logo Biblioteca Morante" class="h-8 md:h-10">
         </div>
         
-        <div class="flex flex-col space-y-2 text-center md:text-left text-sm">
+        <div class="flex flex-col md:flex-row md:space-x-8 space-y-2 md:space-y-0 text-center md:text-left text-sm">
+            <!-- First row -->
             <div class="flex items-center justify-center md:justify-start space-x-2">
-                <i class="fas fa-location-dot w-5"></i>
-                <span>Via Adolfo Cozza 7, Municipio X<br>00121 Roma</span>
+                <i class="fas fa-location-dot w-4"></i>
+                <span>Via Adolfo Cozza 7, Municipio X, 00121 Roma</span>
             </div>
             
-            <div class="flex items-center justify-center md:justify-start space-x-2">
-                <i class="fas fa-phone w-5"></i>
-                <span>06 4546 0481 / 0483</span>
-            </div>
-            
-            <div class="flex items-center justify-center md:justify-start space-x-2">
-                <i class="fas fa-clock w-5"></i>
-                <div>
-                    <div>Lunedì - Venerdì: 09:00 - 18:30</div>
-                    <div>Sabato: 09:00 - 13:00</div>
+            <!-- Second row -->
+            <div class="flex items-center justify-center md:justify-start space-x-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-phone w-4"></i>
+                    <span>06 4546 0481 / 0483</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-clock w-4"></i>
+                    <span>Lun-Ven 09:00-18:30, Sab 09:00-13:00</span>
                 </div>
             </div>
         </div>
