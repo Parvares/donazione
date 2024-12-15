@@ -116,51 +116,49 @@
     margin: 2rem auto;
     padding: 0 1rem;
     position: relative;
-    margin-top: 30px;
+    margin-top: 60px;
 }
 
 .nav-icons {
     position: absolute;
-    top: -40px;
-    left: -100px; /* Move far to the left of the content wrapper */
+    top: -60px;
+    left: 50%; /* Centrato rispetto al contenitore */
+    transform: translateX(calc(-50% - 400px)); /* Spostato a sinistra della larghezza desiderata */
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 3rem;
     padding-top: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1400px) {
+    .nav-icons {
+        transform: translateX(calc(-50% - 300px));
+    }
+}
+
+@media (max-width: 1200px) {
+    .nav-icons {
+        transform: translateX(calc(-50% - 200px));
+    }
+}
+
+@media (max-width: 992px) {
+    .nav-icons {
+        transform: translateX(calc(-50% - 100px));
+    }
 }
 
 @media (max-width: 768px) {
     .nav-icons {
         position: relative;
-        top: 0;
         left: 0;
-        padding: 0.5rem 0;
+        top: 0;
+        transform: none;
         justify-content: flex-start;
     }
 }
 
-      
-       @media (max-width: 1200px) {
-           .nav-icons {
-               transform: translateX(calc(-50% - 200px));
-           }
-       }
-
-       @media (max-width: 992px) {
-           .nav-icons {
-               transform: translateX(calc(-50% - 100px));
-           }
-       }
-
-       @media (max-width: 768px) {
-           .nav-icons {
-               position: relative;
-               left: 0;
-               top: 0;
-               transform: none;
-               justify-content: flex-start;
-           }
-       }
 
        .nav-icons a {
            color: #970a2c;
