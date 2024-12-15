@@ -165,50 +165,18 @@
             margin-bottom: 1.5rem;
         }
 
+        footer {
+            background-color: var(--primary);
+            color: #fff;
+            text-align: center;
+            padding: 1.8rem 0;
+        }
 
-        
+        footer a {
+            color: #fff;
+            text-decoration: underline;
+        }
 
-footer {
-    background-color: var(--primary);
-    color: #fff;
-    text-align: center;
-    padding: 0.5rem 0;  /* Ridotto il padding per abbassare l'altezza del footer */
-    min-height: 80px;  /* Ridotto l'altezza minima */
-}
-
-footer img {
-    height: 30px; /* Ridotto l'altezza del logo del footer */
-    max-width: 100%;
-    margin-bottom: 0.5rem;
-}
-
-footer .info {
-    display: flex;
-    justify-content: center; /* Allinea orizzontalmente le informazioni */
-    gap: 2rem; /* Spaziatura tra le colonne */
-    flex-wrap: wrap; /* Permette agli elementi di andare a capo su schermi piccoli */
-}
-
-footer .info div {
-    text-align: center; /* Centra ogni blocco */
-    line-height: 1.4; /* Leggero spazio tra le righe interne */
-}
-
-footer .info div span {
-    display: block; /* Ogni riga va su una nuova linea */
-    margin-bottom: 0.2rem; /* Distanza tra le linee di testo */
-}
-
-@media (max-width: 768px) {
-    footer .info {
-        gap: 1rem;  /* Riduce lo spazio tra le colonne sui dispositivi più piccoli */
-    }
-}
-
-        
-        
-
-        
      .print-button {
     background: none;
     border: none;
@@ -430,31 +398,44 @@ footer .info div span {
     
 
 
-
-
-<footer>
-    <div class="container mx-auto px-4">
-        <!-- Logo -->
-        <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" rel="noopener noreferrer">
-            <img src="footermorante.png" alt="Logo Biblioteca Morante">
-        </a>
+    <footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
+    <div class="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
+        <div class="mb-4 md:mb-0">
+            <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" rel="noopener noreferrer">
+                <img src="footermorante.png" alt="Logo Biblioteca Morante" class="h-8 md:h-10">
+            </a>
+        </div>
         
-        <!-- Informazioni -->
-        <div class="info">
-            <div>
-                <i class="fas fa-location-dot"></i>
-                <span>Via Adolfo Cozza 7</span>
-                <span>Municipio X, 00121 Roma</span>
+        <div class="flex flex-col md:flex-row md:space-x-8 space-y-2 md:space-y-0 text-center md:text-left text-sm">
+            <div class="flex items-center justify-center md:justify-start space-x-2">
+                <i class="fas fa-location-dot w-4"></i>
+                <span class="flex flex-col">
+                    <span>Via Adolfo Cozza 7</span>
+                    <span>Municipio X, 00121 Roma</span>
+                </span>
             </div>
-            <div>
-                <i class="fas fa-phone"></i>
-                <span>06 4546 0481</span>
-            </div>
-            <div>
-                <i class="fas fa-clock"></i>
-                <span>Lunedì-Venerdì 09:00-18:30</span>
-                <span>Sabato 09:00-13:00</span>
+            
+            <div class="flex items-center justify-center md:justify-start space-x-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-phone w-4"></i>
+                    <span>06 4546 0481 / 0483</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-clock w-4"></i>
+                    <span class="flex flex-col">
+                        <span>Lunedì-Venerdì 09:00-18:30</span>
+                        <span>Sabato 09:00-13:00</span>
+                    </span>
+                </div>
             </div>
         </div>
     </div>
 </footer>
+
+
+
+
+    
+
+</body>
+</html>
