@@ -165,12 +165,15 @@
             margin-bottom: 1.5rem;
         }
 
-       footer {
+
+        
+
+          footer {
         background-color: var(--primary);
         color: #fff;
         text-align: center;
-        padding: 1rem 0; /* Riduce il padding */
-        min-height: 100px; /* Altezza minima ridotta */
+        padding: 1rem 0;
+        min-height: 100px;
     }
 
     footer img {
@@ -181,21 +184,22 @@
     footer .info {
         font-size: 0.85rem; /* Riduce il font dei testi */
         display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 1rem; /* Spaziatura tra gli elementi */
+        flex-direction: column; /* Organizza gli elementi verticalmente */
+        align-items: flex-end; /* Sposta tutto a destra */
+        gap: 0.5rem; /* Spaziatura tra le righe */
+        padding-right: 2rem; /* Sposta tutto più a destra */
     }
 
     footer .info div {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem; /* Spaziatura tra icone e testo */
+        text-align: right; /* Testo allineato a destra */
     }
 
     footer .info div i {
-        font-size: 1rem; /* Riduce la dimensione delle icone */
+        font-size: 1rem;
     }
 
+
+        
      .print-button {
     background: none;
     border: none;
@@ -417,7 +421,7 @@
     
 
 
-    <footer>
+<footer>
     <div class="container mx-auto px-4">
         <!-- Logo -->
         <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" rel="noopener noreferrer">
@@ -428,7 +432,7 @@
         <div class="info">
             <div>
                 <i class="fas fa-location-dot"></i>
-                <span>Via Adolfo Cozza 7, Municipio X, 00121 Roma</span>
+                <span>Via Adolfo Cozza 7<br>Municipio X, 00121 Roma</span>
             </div>
             <div>
                 <i class="fas fa-phone"></i>
@@ -436,11 +440,12 @@
             </div>
             <div>
                 <i class="fas fa-clock"></i>
-                <span>Lun-Ven 09:00-18:30, Sab 09:00-13:00</span>
+                <span>Lunedì-Venerdì 09:00-18:30<br>Sabato 09:00-13:00</span>
             </div>
         </div>
     </div>
 </footer>
+
 
 
 
