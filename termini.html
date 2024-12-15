@@ -120,13 +120,14 @@
 .nav-icons {
     position: absolute;
     top: -40px;
-    left: 0; /* Impostato a 0 */
-    transform: none; /* Rimosso ogni trasformazione */
+    left: 0; /* Spostato a sinistra */
     display: flex;
     align-items: center;
     gap: 3rem;
     padding-top: 20px;
+    justify-content: flex-start; /* Modifica per allineare a sinistra */
 }
+
 
 @media (max-width: 1200px) {
     .nav-icons {
