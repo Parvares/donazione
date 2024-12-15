@@ -168,43 +168,38 @@
 
         
 
-               footer {
+              footer {
         background-color: var(--primary);
         color: #fff;
-        text-align: center;
-        padding: 1rem 0; /* Ridotto il padding verticale */
+        text-align: left; /* Allinea a sinistra il contenuto del footer */
+        padding: 1rem 2rem; /* Aggiunta del padding laterale */
         min-height: 100px;
+        display: flex; /* Usa flexbox per allineare il contenuto orizzontalmente */
+        justify-content: space-between; /* Spaziatura tra logo e informazioni */
+        align-items: center; /* Allineamento verticale */
     }
 
     footer img {
-        height: 40px; /* Riduce l'altezza dell'immagine */
+        height: 40px; /* Ridotto l'altezza del logo */
         max-width: 100%;
-        margin-bottom: 0.5rem;
-    }
-
-    footer .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
     }
 
     footer .info {
-        font-size: 0.85rem; /* Riduce il font dei testi */
         display: flex;
-        justify-content: center; /* Centra orizzontalmente le informazioni */
-        gap: 2rem; /* Spaziatura tra le colonne */
-        padding-left: 2rem; /* Sposta leggermente a destra */
-        padding-top: 1rem; /* Aggiunge un po' di spazio sopra le informazioni */
+        flex-direction: column; /* Le informazioni saranno una sopra l'altra */
+        gap: 0.5rem; /* Spaziatura tra le righe */
     }
 
     footer .info div {
-        text-align: center; /* Centra ogni blocco */
-        line-height: 1.4; /* Leggero spazio tra le righe interne */
+        line-height: 1.4; /* Imposta una linea più alta tra le righe */
     }
 
     footer .info div span {
-        display: block; /* Ogni riga va su una nuova linea */
+        display: block; /* Forza l'andata a capo */
+    }
+
+    footer .info {
+        padding-left: 2rem; /* Aggiunge un po' di spazio a sinistra per spostare leggermente a destra le informazioni */
     }
         
 
