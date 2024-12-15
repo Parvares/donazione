@@ -28,7 +28,7 @@
            --text: #180207;
            --bg: #f3f4f6;
        }
-
+       
        body {
            background-color: var(--bg);
            color: var(--text);
@@ -38,7 +38,7 @@
            letter-spacing: normal;
            word-spacing: 0px;
        }
-
+       
        .top-banner {
            background-color: white;
            padding: 0.8rem 2rem; 
@@ -67,7 +67,7 @@
        .social-icons a:hover {
            transform: scale(1.2);
        }
-
+       
        header {
            background-color: var(--primary);
            color: #fff;
@@ -93,7 +93,6 @@
            gap: 1rem;
        }
 
-       /* Nuovo stile per il titolo della biblioteca */
        .library-name {
            display: flex;
            align-items: center;
@@ -109,60 +108,53 @@
            vertical-align: middle;
        }
 
+       .content-wrapper {
+           max-width: 900px;
+           width: 100%;
+           margin: 2rem auto;
+           padding: 0 1rem;
+           position: relative;
+           margin-top: 60px;
+       }
 
+       .nav-icons {
+           position: absolute;
+           top: -60px;
+           left: 50%;
+           transform: translateX(calc(-50% - 400px));
+           display: flex;
+           align-items: center;
+           gap: 3rem;
+           padding-top: 20px;
+       }
 
+       @media (max-width: 1400px) {
+           .nav-icons {
+               transform: translateX(calc(-50% - 300px));
+           }
+       }
 
-      .content-wrapper {
-    max-width: 900px;
-    width: 100%;
-    margin: 2rem auto;
-    padding: 0 1rem;
-    position: relative;
-    margin-top: 60px;
-}
+       @media (max-width: 1200px) {
+           .nav-icons {
+               transform: translateX(calc(-50% - 200px));
+           }
+       }
 
-.nav-icons {
-    position: absolute;
-    top: -60px;
-    left: 50%; /* Centrato rispetto al contenitore */
-    transform: translateX(calc(-50% - 400px)); /* Spostato a sinistra della larghezza desiderata */
-    display: flex;
-    align-items: center;
-    gap: 3rem;
-    padding-top: 20px;
-}
+       @media (max-width: 992px) {
+           .nav-icons {
+               transform: translateX(calc(-50% - 100px));
+           }
+       }
 
-/* Responsive adjustments */
-@media (max-width: 1400px) {
-    .nav-icons {
-        transform: translateX(calc(-50% - 300px));
-    }
-}
-
-@media (max-width: 1200px) {
-    .nav-icons {
-        transform: translateX(calc(-50% - 200px));
-    }
-}
-
-@media (max-width: 992px) {
-    .nav-icons {
-        transform: translateX(calc(-50% - 100px));
-    }
-}
-
-@media (max-width: 768px) {
-    .nav-icons {
-        position: relative;
-        left: 0;
-        top: 0;
-        transform: none;
-        justify-content: flex-start;
-    }
-}
-
-
-
+       @media (max-width: 768px) {
+           .nav-icons {
+               position: relative;
+               left: 0;
+               top: 0;
+               transform: none;
+               justify-content: flex-start;
+           }
+       }
 
        .nav-icons a {
            color: #970a2c;
@@ -196,6 +188,18 @@
            background-color: rgba(128, 128, 128, 0.3);
        }
 
+
+<div class="nav-icons">
+    <a href="https://www.bibliotechediroma.it/opac/news/donazioni/33158" title="Indietro">
+        <img src="left.svg" alt="Indietro" style="height: 22px; width: 22px;">
+    </a>
+    <a href="https://www.bibliotechediroma.it/opac/.do" title="Home">
+        <img src="home.svg" alt="Home" style="height: 22px; width: 22px;">
+    </a>
+</div>
+
+      
+       
        header img {
            height: 70px;
            max-width: 100%;
@@ -206,7 +210,7 @@
            filter: none;
            max-width: 100%;
        }
-
+       
        main {
            max-width: 800px;
            margin: 2rem auto;
@@ -215,11 +219,11 @@
            border-radius: 12px;
            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
        }
-
+       
        main h1 {
            color: var(--primary);
        }
-
+       
        h2 {
            color: var(--primary);
            font-size: 1.5rem;
@@ -227,18 +231,18 @@
            padding-bottom: 0.5rem;
            border-bottom: 2px solid var(--primary);
        }
-
+       
        ul {
            list-style-type: none;
            padding-left: 0;
        }
-
+       
        ul li {
            padding: 0.5rem 0;
            position: relative;
            padding-left: 1.5rem;
        }
-
+       
        ul li::before {
            content: "•";
            color: var(--primary);
@@ -246,113 +250,86 @@
            position: absolute;
            left: 0;
        }
-
+       
        p {
            margin-bottom: 1.5rem;
        }
-
+       
        a {
            color: var(--primary);
            text-decoration: none;
            border-bottom: 1px solid transparent;
            transition: border-color 0.3s;
        }
-
+       
        a:hover {
            border-bottom-color: var(--primary);
        }
 
 
 
- footer {
+
+
+footer {
     background-color: var(--primary);
     color: #fff;
-    padding: 2rem 0; /* Increased padding to increase height */
+    padding: 1.5rem 0; /* Altezza ridotta */
 }
 
 footer .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
     justify-content: space-between;
-    gap: 1rem;
+    align-items: center;
+    gap: 1rem; /* Spaziatura minima */
 }
 
-      .footer-info {
+footer img {
+    height: 35px; /* Logo leggermente più piccolo */
+    max-width: 100%;
+    margin-right: 1rem; /* Spaziatura tra logo e stringhe */
+}
+
+footer .info {
     display: flex;
-    gap: 2rem;
-    font-size: 0.85rem;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem; /* Minore spazio tra blocchi di testo */
+    font-size: 0.85rem; /* Testo ridotto */
 }
 
-.location {
+footer .info > div {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    flex-wrap: wrap; /* Allow wrapping */
+    line-height: 1.4; /* Migliore leggibilità */
 }
 
-.location span {
-    display: block; /* Make the span a block-level element */
-    width: 100%; /* Ensure it takes full width */
+footer .info span.block {
+    display: block; /* Forza il rientro a capo per indirizzi e orari */
 }
 
-.contact {
-    display: flex;
-    gap: 1.5rem;
-}
-
-.phone, .hours {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
 footer i {
-    width: 1rem;
-    text-align: center;
+    font-size: 1rem; /* Icone ridimensionate */
 }
 
 @media (max-width: 768px) {
-    footer .container {
-        flex-direction: column;
-        text-align: center;
-        padding: 0.5rem;
-    }
-
-    .footer-info {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-    
-    .contact {
-        flex-direction: column;
-        gap: 0.5rem;
+    footer .info {
+        flex-direction: column; /* Layout verticale su schermi piccoli */
+        align-items: flex-start;
     }
 }
-
-         footer a {
-            color: #fff;
-            text-decoration: underline;
-        }
-
-       footer a:hover {
-           border-bottom-color: #fff;
-       }
-
-       @media (max-width: 768px) {
-           body {
-               font-size: 20px;
-               line-height: 1.5;
-           }
-
+      
+      
+           
            header {
                min-height: auto;
                padding: 1rem 0;
                display: flex;
                flex-direction: column;
            }
-
+           
            .nav-icons {
                position: relative;
                top: 0;
@@ -360,7 +337,7 @@ footer i {
                padding: 0.5rem 0;
                justify-content: center;
            }
-
+           
            .container {
                padding: 0.5rem;
                flex-direction: row;
@@ -369,18 +346,22 @@ footer i {
                gap: 1.5rem;
                width: 100%;
            }
-
+           
            header img {
                height: 37px;
            }
-
+           
            header .logo-morante {
                height: 87px;
            }
-
+           
            main {
                margin: 1rem;
                padding: 1.5rem;
+           }
+
+           .footer-info {
+               flex-direction: column;
            }
        }
 
@@ -417,9 +398,6 @@ footer i {
         </div>
     </div>
 
-
-   
-   
   <header>
     <div class="container-header">
         <a href="https://www.bibliotechediroma.it/opac/.do">
@@ -429,9 +407,7 @@ footer i {
             <img src="logomorante.png" alt="Logo Biblioteca Morante" style="height: 180px; max-width: 100%;">
         </a>
     </div>
-</header>
-
-
+  </header>
 
   <div class="content-wrapper">
         <div class="nav-icons">
@@ -443,20 +419,13 @@ footer i {
             </a>
         </div>
 
-
-
-
         <main>
-
-    <div class="library-name">
+            <div class="library-name">
                 <img src="location.svg" alt="Location">
                 <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank">
                     Biblioteca Elsa Morante
                 </a>
             </div>
-
-
-
 
             <h1>Donazione di libri</h1>
             <section>
@@ -469,7 +438,7 @@ footer i {
                     <li>Sostenibilità del trattamento catalografico</li>
                     <li>Disponibilità effettiva di spazio</li>
                 </ul>
-
+                
                 <h2>Materiale Non Accettato</h2>
                 <ul>
                     <li>Libri in cattivo stato, sottolineati o danneggiati</li>
@@ -531,36 +500,39 @@ footer i {
     
 
 
- <footer>
-    <div class="container">
+
+
+
+
+   <footer>
+    <div class="container mx-auto px-4">
+        <!-- Logo -->
         <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" rel="noopener noreferrer">
-            <img src="footermorante.png" alt="Logo Biblioteca Morante" style="height: 25px;">
+            <img src="footermorante.png" alt="Logo Biblioteca Morante">
         </a>
         
-        <div class="footer-info">
-            <div class="location">
+        <!-- Informazioni -->
+        <div class="info">
+            <div>
                 <i class="fas fa-location-dot"></i>
-                <span>
-                    Via Adolfo Cozza 7, Municipio X
-                </span>
+                <span>Via Adolfo Cozza 7<span class="block">Municipio X, 00121 Roma</span></span>
             </div>
-            
-            <div class="contact">
-                <div class="phone">
-                    <i class="fas fa-phone"></i>
-                    <span>06 4546 0481</span>
-                </div>
-                <div class="hours">
-                    <i class="fas fa-clock"></i>
-                    <span>Lun-Ven 9-18:30, Sab 9-13</span>
-                </div>
+            <div>
+                <i class="fas fa-phone"></i>
+                <span>06 4546 0481</span>
+            </div>
+            <div>
+                <i class="fas fa-clock"></i>
+                <span>Lunedì-Venerdì 09:00-18:30<span class="block">Sabato 09:00-13:00</span></span>
             </div>
         </div>
     </div>
 </footer>
 
 
-   
+
+
+
 
 
    
