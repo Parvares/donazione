@@ -254,52 +254,22 @@
            border-bottom-color: var(--primary);
        }
 
-       footer {
-           background-color: var(--primary);
-           color: #fff;
-           text-align: center;
-           padding: 1rem 0;
-           margin-top: 2rem;
-       }
 
-       .footer-content {
-           display: flex;
-           flex-direction: column;
-           align-items: center;
-           max-width: 1200px;
-           margin: 0 auto;
-           padding: 0 1rem;
-       }
 
-       .footer-logo {
-           max-height: 50px;
-           margin-bottom: 1rem;
-       }
+ footer {
+            background-color: var(--primary);
+            color: #fff;
+            text-align: center;
+            padding: 1.8rem 0;
+        }
 
-       .footer-info {
-           display: flex;
-           flex-wrap: wrap;
-           justify-content: center;
-           align-items: center;
-           gap: 1rem;
-           text-align: center;
-       }
+        footer a {
+            color: #fff;
+            text-decoration: underline;
+        }
 
-       .footer-info > div {
-           display: flex;
-           align-items: center;
-           gap: 0.5rem;
-       }
 
-       .footer-info i {
-           margin-right: 0.5rem;
-       }
-
-       @media (max-width: 768px) {
-           body {
-               font-size: 20px;
-               line-height: 1.5;
-           }
+      
            
            header {
                min-height: auto;
@@ -475,29 +445,47 @@
         </main>
     </div>
 
-    <footer>
-        <div class="footer-content">
+    
+
+
+<footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
+    <div class="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
+        <div class="mb-4 md:mb-0">
             <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" rel="noopener noreferrer">
-                <img src="footermorante.png" alt="Logo Biblioteca Morante" class="footer-logo">
+                <img src="footermorante.png" alt="Logo Biblioteca Morante" class="h-8 md:h-10">
             </a>
+        </div>
+        
+        <div class="flex flex-col md:flex-row md:space-x-8 space-y-2 md:space-y-0 text-center md:text-left text-sm">
+            <div class="flex items-center justify-center md:justify-start space-x-2">
+                <i class="fas fa-location-dot w-4"></i>
+                <span class="flex flex-col">
+                    <span>Via Adolfo Cozza 7</span>
+                    <span>Municipio X, 00121 Roma</span>
+                </span>
+            </div>
             
-            <div class="footer-info">
-                <div>
-                    <i class="fas fa-location-dot"></i>
-                    <span>Via Adolfo Cozza 7, Municipio X, 00121 Roma</span>
-                </div>
-                
-                <div>
-                    <i class="fas fa-phone"></i>
+            <div class="flex items-center justify-center md:justify-start space-x-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-phone w-4"></i>
                     <span>06 4546 0481 / 0483</span>
                 </div>
-                
-                <div>
-                    <i class="fas fa-clock"></i>
-                    <span>Lunedì-Venerdì 09:00-18:30, Sabato 09:00-13:00</span>
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-clock w-4"></i>
+                    <span class="flex flex-col">
+                        <span>Lunedì-Venerdì 09:00-18:30</span>
+                        <span>Sabato 09:00-13:00</span>
+                    </span>
                 </div>
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
+
+
+
+
+
+   
 </body>
 </html>
