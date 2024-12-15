@@ -165,19 +165,36 @@
             margin-bottom: 1.5rem;
         }
 
-        footer {
-    background-color: var(--primary);
-    color: #fff;
-    text-align: center;
-    padding: 3.0rem 0;
-    min-height: 300px; /* Altezza minima del footer */
-}
+       footer {
+        background-color: var(--primary);
+        color: #fff;
+        text-align: center;
+        padding: 1rem 0; /* Riduce il padding */
+        min-height: 100px; /* Altezza minima ridotta */
+    }
 
+    footer img {
+        height: 40px; /* Riduce l'altezza dell'immagine */
+        max-width: 100%;
+    }
 
-        footer a {
-            color: #fff;
-            text-decoration: underline;
-        }
+    footer .info {
+        font-size: 0.85rem; /* Riduce il font dei testi */
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem; /* Spaziatura tra gli elementi */
+    }
+
+    footer .info div {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem; /* Spaziatura tra icone e testo */
+    }
+
+    footer .info div i {
+        font-size: 1rem; /* Riduce la dimensione delle icone */
+    }
 
      .print-button {
     background: none;
@@ -399,7 +416,8 @@
 
     
 
-  <footer>
+
+    <footer>
     <div class="container mx-auto px-4">
         <!-- Logo -->
         <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" rel="noopener noreferrer">
@@ -410,7 +428,7 @@
         <div class="info">
             <div>
                 <i class="fas fa-location-dot"></i>
-                <span>Via Adolfo Cozza 7<span class="block">Municipio X, 00121 Roma</span></span>
+                <span>Via Adolfo Cozza 7, Municipio X, 00121 Roma</span>
             </div>
             <div>
                 <i class="fas fa-phone"></i>
@@ -418,11 +436,12 @@
             </div>
             <div>
                 <i class="fas fa-clock"></i>
-                <span>Lunedì-Venerdì 09:00-18:30<span class="block">Sabato 09:00-13:00</span></span>
+                <span>Lun-Ven 09:00-18:30, Sab 09:00-13:00</span>
             </div>
         </div>
     </div>
 </footer>
+
 
 
 
