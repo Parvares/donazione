@@ -168,35 +168,44 @@
 
         
 
-             footer {
-        background-color: var(--primary);
-        color: #fff;
-        text-align: center;
-        padding: 1rem 0;
-        min-height: 100px;
-    }
+footer {
+    background-color: var(--primary);
+    color: #fff;
+    text-align: center;
+    padding: 0.5rem 0;  /* Ridotto il padding per abbassare l'altezza del footer */
+    min-height: 80px;  /* Ridotto l'altezza minima */
+}
 
-    footer img {
-        height: 40px; /* Riduce l'altezza dell'immagine */
-        max-width: 100%;
-        margin-bottom: 0.5rem;
-    }
+footer img {
+    height: 30px; /* Ridotto l'altezza del logo del footer */
+    max-width: 100%;
+    margin-bottom: 0.5rem;
+}
 
+footer .info {
+    display: flex;
+    justify-content: center; /* Allinea orizzontalmente le informazioni */
+    gap: 2rem; /* Spaziatura tra le colonne */
+    flex-wrap: wrap; /* Permette agli elementi di andare a capo su schermi piccoli */
+}
+
+footer .info div {
+    text-align: center; /* Centra ogni blocco */
+    line-height: 1.4; /* Leggero spazio tra le righe interne */
+}
+
+footer .info div span {
+    display: block; /* Ogni riga va su una nuova linea */
+    margin-bottom: 0.2rem; /* Distanza tra le linee di testo */
+}
+
+@media (max-width: 768px) {
     footer .info {
-        font-size: 0.85rem; /* Riduce il font dei testi */
-        display: flex;
-        justify-content: center; /* Centra orizzontalmente le informazioni */
-        gap: 2rem; /* Spaziatura tra le colonne */
+        gap: 1rem;  /* Riduce lo spazio tra le colonne sui dispositivi più piccoli */
     }
+}
 
-    footer .info div {
-        text-align: center; /* Centra ogni blocco */
-        line-height: 1.4; /* Leggero spazio tra le righe interne */
-    }
-
-    footer .info div span {
-        display: block; /* Ogni riga va su una nuova linea */
-    }
+        
         
 
         
