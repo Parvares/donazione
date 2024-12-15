@@ -183,21 +183,22 @@
     }
 
     footer .info {
-        font-size: 0.85rem; /* Riduce il font dei testi */
-        display: flex;
-        justify-content: center; /* Centra orizzontalmente le informazioni */
-        gap: 2rem; /* Spaziatura tra le colonne */
-    }
+    font-size: 0.85rem;
+    display: flex;
+    justify-content: flex-end; /* Changed from center to align right */
+    gap: 1rem; /* Reduced spacing between columns */
+    margin-top: -1rem; /* Moved up */
+    padding-right: 2rem; /* Added right padding to create margin */
+}
 
-    footer .info div {
-        text-align: center; /* Centra ogni blocco */
-        line-height: 1.4; /* Leggero spazio tra le righe interne */
-    }
+footer .info div {
+    text-align: right; /* Changed from center to align right */
+    line-height: 1.4;
+}
 
-    footer .info div span {
-        display: block; /* Ogni riga va su una nuova linea */
-    }
-        
+footer .info div span {
+    display: block;
+}
 
         
      .print-button {
