@@ -73,7 +73,7 @@
 
 
         
-      .content-wrapper {
+     .content-wrapper {
             max-width: 900px;
             width: 100%;
             margin: 2rem auto;
@@ -82,15 +82,18 @@
             margin-top: 60px;
         }
 
+        /* Nuovo stile per nav-icons */
         .nav-icons {
             display: flex;
             align-items: center;
             gap: 2rem;
             padding-top: 20px;
-            margin-left: 20px; /* Add left margin */
-            position: relative; /* Change to relative positioning */
-            transform: none; /* Remove transform */
+            position: absolute;
+            left: 0;
+            margin-left: -100px;  /* Sposta le icone più a sinistra del contenitore */
         }
+
+        
 
 /* Responsive adjustments */
 @media (max-width: 1400px) {
@@ -121,14 +124,14 @@
 
         
 
-.nav-icons a {
-    display: flex;
-    align-items: center;
-}
+   .nav-icons a {
+            display: flex;
+            align-items: center;
+        }
 
-.nav-icons a:hover {
-    transform: scale(1.1);
-}
+        .nav-icons a:hover {
+            transform: scale(1.1);
+        }
 
         .nav-icons a:first-child {
             font-weight: bold;
