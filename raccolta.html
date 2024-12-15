@@ -83,17 +83,14 @@
         }
 
         /* Stile completamente nuovo per nav-icons */
-        .nav-icons {
-            position: fixed;
-            left: 50px;  /* Distanza fissa dal bordo sinistro */
-            top: 200px;  /* Posizione verticale fissa */
+   .nav-icons {
             display: flex;
-            gap: 2rem;
             align-items: center;
-            padding: 0;
-            z-index: 100;
+            gap: 0.5rem; /* Riduco il gap per avvicinare le icone */
+            padding-top: 20px;
+            position: relative;
+            transform: translateX(-20px); /* Sposta le icone più a sinistra */
         }
-
 
         
 
@@ -126,7 +123,7 @@
 
         
 
-      .nav-icons a {
+   .nav-icons a {
             display: flex;
             align-items: center;
         }
