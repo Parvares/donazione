@@ -85,12 +85,9 @@
 .nav-icons {
     display: flex;
     align-items: center;
-    gap: 3rem;
-    justify-content: flex-start; /* Allinea le icone a sinistra */
+    justify-content: flex-start; /* Allinea a sinistra */
+    gap: 2rem; /* Spazio tra le icone */
     padding-top: 20px;
-    position: relative; /* Posizione relativa per il flusso del documento */
-    top: 0; /* Rimuove il top negativo */
-    left: 0; /* Posiziona a sinistra */
 }
 
 /* Responsive adjustments */
@@ -115,21 +112,16 @@
 
 @media (max-width: 768px) {
     .nav-icons {
-        justify-content: flex-start; /* Assicura che le icone siano a sinistra su schermi piccoli */
+        justify-content: flex-start; /* Mantiene l'allineamento a sinistra su schermi piccoli */
     }
 }
 
 
         
 
-        .nav-icons a {
-    color: #970a2c;
-    font-size: 1.25rem;
-    text-decoration: none;
-    transition: transform 0.3s ease;
+.nav-icons a {
     display: flex;
     align-items: center;
-    padding: 0.5rem;
 }
 
 .nav-icons a:hover {
