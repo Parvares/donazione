@@ -118,21 +118,24 @@
        }
 
        .nav-icons {
-           position: absolute;
-           top: -60px;
-           left: 50%;
-           transform: translateX(calc(-50% - 400px));
-           display: flex;
-           align-items: center;
-           gap: 3rem;
-           padding-top: 20px;
-       }
+    position: relative;
+    left: 0;
+    transform: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    padding: 1rem 0;
+    background-color: #f3f4f6; /* Match the gray background color */
+}
 
-       @media (max-width: 1400px) {
-           .nav-icons {
-               transform: translateX(calc(-50% - 300px));
-           }
-       }
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .nav-icons {
+        gap: 2rem;
+        padding: 0.5rem 0;
+    }
+}
 
        @media (max-width: 1200px) {
            .nav-icons {
