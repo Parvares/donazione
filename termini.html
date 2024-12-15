@@ -108,20 +108,21 @@
            vertical-align: middle;
        }
 
-   .content-wrapper {
+
+
+.content-wrapper {
     max-width: 900px;
     width: 100%;
     margin: 2rem auto;
     padding: 0 1rem;
     position: relative;
-    margin-top: 30px; /* Reduced from 60px to move content up */
+    margin-top: 30px;
 }
 
 .nav-icons {
     position: absolute;
-    top: -40px; /* Moved higher */
-    left: 0; /* Aligned to the left */
-    transform: none;
+    top: -40px;
+    left: 1rem; /* Added left padding to align with content */
     display: flex;
     align-items: center;
     gap: 3rem;
@@ -138,6 +139,7 @@
     }
 }
 
+      
        @media (max-width: 1200px) {
            .nav-icons {
                transform: translateX(calc(-50% - 200px));
