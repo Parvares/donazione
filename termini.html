@@ -262,14 +262,19 @@
 
 
 
-      footer {
+
+footer {
     background-color: var(--primary);
     color: #fff;
     padding: 1.5rem 0;
 }
 
 footer .container {
-    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 1rem;
@@ -278,14 +283,15 @@ footer .container {
 footer img {
     height: 35px;
     max-width: 100%;
-    display: block;
-    margin: 0 auto 1.5rem;
+    margin-right: 1rem;
 }
 
 footer .info {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
 }
 
 footer .info > div {
@@ -294,61 +300,44 @@ footer .info > div {
     gap: 0.5rem;
 }
 
-footer .info i {
-    font-size: 1rem;
-}
-
 footer .info span.block {
     display: block;
 }
 
-/* Layout mobile */
+footer i {
+    font-size: 1rem;
+}
+
+/* Solo modifiche per mobile */
 @media (max-width: 768px) {
     footer .info {
         flex-direction: column;
-        align-items: center;
+        width: 100%;
     }
 
     /* Indirizzo centrato in alto */
-    footer .info .location {
+    footer .info > div:first-child {
         width: 100%;
         justify-content: center;
-        order: 1;
-        margin-bottom: 1rem;
     }
 
     /* Container per telefono e orari */
-    footer .info .bottom-row {
+    footer .info .bottom-container {
         width: 100%;
         display: flex;
         justify-content: space-between;
-        order: 2;
         gap: 1rem;
     }
 
-    /* Gestione del wrapping per schermi molto piccoli */
+    /* Per schermi molto piccoli */
     @media (max-width: 480px) {
-        footer .info .bottom-row {
+        footer .info .bottom-container {
             flex-direction: column;
             align-items: center;
-            text-align: center;
         }
     }
 }
-
-/* Layout desktop */
-@media (min-width: 769px) {
-    footer .info {
-        justify-content: space-between;
-        align-items: center;
-    }
-    
-    footer .info .bottom-row {
-        display: flex;
-        gap: 2rem;
-    }
-}
-
+      
 
       
       
@@ -542,7 +531,7 @@ footer .info span.block {
         
         <div class="info">
             <!-- Indirizzo -->
-            <div class="location">
+            <div>
                 <i class="fas fa-location-dot"></i>
                 <span>
                     Via Adolfo Cozza 7
@@ -550,8 +539,7 @@ footer .info span.block {
                 </span>
             </div>
             
-            <!-- Container per telefono e orari -->
-            <div class="bottom-row">
+            <div class="bottom-container">
                 <!-- Telefono -->
                 <div>
                     <i class="fas fa-phone"></i>
