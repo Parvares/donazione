@@ -275,9 +275,6 @@ footer .container {
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
 }
 
 footer img {
@@ -298,6 +295,7 @@ footer .info > div {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    line-height: 1.4;
 }
 
 footer .info span.block {
@@ -311,32 +309,33 @@ footer i {
 /* Solo modifiche per mobile */
 @media (max-width: 768px) {
     footer .info {
-        flex-direction: column;
         width: 100%;
-    }
-
-    /* Indirizzo centrato in alto */
-    footer .info > div:first-child {
-        width: 100%;
-        justify-content: center;
-    }
-
-    /* Container per telefono e orari */
-    footer .info .bottom-container {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
+        display: grid;
+        grid-template-areas: 
+            "address"
+            "contacts";
+        justify-items: center;
         gap: 1rem;
     }
 
-    /* Per schermi molto piccoli */
-    @media (max-width: 480px) {
-        footer .info .bottom-container {
-            flex-direction: column;
-            align-items: center;
-        }
+    footer .info > div:first-child {
+        grid-area: address;
+        justify-content: center;
+        text-align: center;
+    }
+
+    footer .info > div:not(:first-child) {
+        grid-area: contacts;
+    }
+
+    footer .info > div:nth-child(2),
+    footer .info > div:nth-child(3) {
+        display: inline-flex;
+        margin: 0 1rem;
     }
 }
+
+
       
 
       
@@ -530,7 +529,6 @@ footer i {
         </a>
         
         <div class="info">
-            <!-- Indirizzo -->
             <div>
                 <i class="fas fa-location-dot"></i>
                 <span>
@@ -539,26 +537,21 @@ footer i {
                 </span>
             </div>
             
-            <div class="bottom-container">
-                <!-- Telefono -->
-                <div>
-                    <i class="fas fa-phone"></i>
-                    <span>06 4546 0481</span>
-                </div>
-                
-                <!-- Orari -->
-                <div>
-                    <i class="fas fa-clock"></i>
-                    <span>
-                        Lunedì-Venerdì 09:00-18:30
-                        <span class="block">Sabato 09:00-13:00</span>
-                    </span>
-                </div>
+            <div>
+                <i class="fas fa-phone"></i>
+                <span>06 4546 0481</span>
+            </div>
+            
+            <div>
+                <i class="fas fa-clock"></i>
+                <span>
+                    Lunedì-Venerdì 09:00-18:30
+                    <span class="block">Sabato 09:00-13:00</span>
+                </span>
             </div>
         </div>
     </div>
 </footer>
-
 
 
 
