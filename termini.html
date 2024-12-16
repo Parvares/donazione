@@ -283,20 +283,35 @@ footer img {
     margin-right: 1rem; /* Spaziatura tra logo e stringhe */
 }
 
+
+      
 footer .info {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    gap: 1.5rem; /* Minore spazio tra blocchi di testo */
-    font-size: 0.85rem; /* Testo ridotto */
+    gap: 1.5rem;
+    font-size: 0.85rem;
+    width: 100%;
 }
 
 footer .info > div {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    line-height: 1.4; /* Migliore leggibilità */
+    line-height: 1.4;
+}
+
+
+      /* Questa è la modifica chiave per ottenere il layout desiderato */
+footer .info > div:first-child {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+footer .info > div:not(:first-child) {
+    flex: 0 1 auto;
 }
 
 footer .info span.block {
@@ -309,11 +324,14 @@ footer i {
 
 @media (max-width: 768px) {
     footer .info {
-        flex-direction: column; /* Layout verticale su schermi piccoli */
+        flex-direction: column;
         align-items: flex-start;
     }
-}
-      
+    
+    footer .info > div:first-child {
+        justify-content: flex-start;
+    }
+} 
       
            
            header {
