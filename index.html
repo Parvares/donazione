@@ -805,30 +805,31 @@ async function searchBooks() {
     `;
 
     try {
-        // Fetch books from SBN API
-        const response = await fetch(`https://opac.sbn.it/opacsbn/opaclib?db=solr_iccu&resultForward=opac-search-book&searchForm=opac-search&do_search=Cerca&fname=none&rpnlabel=&rpnquery=%2540attrset%2Bbib-1%2B%2540attr%2B1%253D4%2B%2540attr%2B4%253D2%2B%2522${encodeURIComponent(query)}%2522&sortby=0&startRow=1&maxRows=5`);
-        const text = await response.text();
-        
-        // Parse HTML response (you might need to adjust this based on the exact SBN API response)
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(text, 'text/html');
-        const bookResults = doc.querySelectorAll('.result-item');
+        // Fetch books from Google Books API
+        // Aggiungi la tua API key di Google Books qui
+        const apiKey = 'YOUR_GOOGLE_BOOKS_API_KEY'; 
+        const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&langRestrict=it&maxResults=5&key=${apiKey}`);
+        const data = await response.json();
 
-        if (bookResults.length > 0) {
+        // Check if there are results
+        if (data.items && data.items.length > 0) {
             // Clear previous results
             searchResultsContainer.innerHTML = '';
 
             // Create results
-            bookResults.forEach(bookElement => {
+            data.items.forEach(book => {
+                const volumeInfo = book.volumeInfo;
                 const resultDiv = document.createElement('div');
                 resultDiv.className = 'p-3 hover:bg-gray-100 cursor-pointer border-b last:border-b-0';
                 
-                // Extract book details
-                const title = bookElement.querySelector('.title')?.textContent.trim() || 'Titolo non disponibile';
-                const author = bookElement.querySelector('.author')?.textContent.trim() || 'Autore non disponibile';
-                const year = bookElement.querySelector('.year')?.textContent.trim() || '';
-                const isbn = ''; // SBN might not provide ISBN directly in search results
-                const publisher = bookElement.querySelector('.publisher')?.textContent.trim() || 'Editore non disponibile';
+                // Prepare book details
+                const title = volumeInfo.title || 'Titolo non disponibile';
+                const author = volumeInfo.authors ? volumeInfo.authors[0] : 'Autore non disponibile';
+                const year = volumeInfo.publishedDate ? volumeInfo.publishedDate.split('-')[0] : '';
+                const isbn = volumeInfo.industryIdentifiers 
+                    ? volumeInfo.industryIdentifiers.find(id => id.type === 'ISBN_13' || id.type === 'ISBN_10')?.identifier 
+                    : '';
+                const publisher = volumeInfo.publisher || 'Editore non disponibile';
 
                 resultDiv.innerHTML = `
                     <div class="font-medium">${title}</div>
@@ -892,7 +893,6 @@ async function searchBooks() {
         `;
     }
 }
-
 
 
         
