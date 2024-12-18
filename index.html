@@ -734,6 +734,9 @@ function showSuccessPopup(message) {
         }
 
         
+
+
+
         
         
 document.addEventListener('DOMContentLoaded', () => {
@@ -743,8 +746,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function createBookSearchContainer() {
         const searchContainer = document.createElement('div');
         searchContainer.className = 'book-search-container mb-5';
-        searchContainer.innerHTML = `
-            <div class="flex items-center gap-2 mb-3">
+        searchContainer.innerHTML = 
+            `<div class="flex items-center gap-2 mb-3">
                 <input 
                     type="text" 
                     id="bookSearchInput"
@@ -758,8 +761,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <i class="fas fa-search"></i>
                 </button>
             </div>
-            <div id="bookSearchResults" class="book-results border rounded"></div>
-        `;
+            <div id="bookSearchResults" class="book-results border rounded"></div>`;
         return searchContainer;
     }
 
@@ -782,7 +784,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const searchButton = document.getElementById('bookSearchButton');
         const searchResultsContainer = document.getElementById('bookSearchResults');
 
-        // Search books using Open Library API
+        // Search books using SBN API
         async function searchBooks() {
             const query = searchInput.value.trim();
             if (!query) {
@@ -791,38 +793,36 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Show loading state
-            searchResultsContainer.innerHTML = `
-                <div class="p-3 text-center text-gray-500">
+            searchResultsContainer.innerHTML = 
+                `<div class="p-3 text-center text-gray-500">
                     Ricerca in corso...
-                </div>
-            `;
+                </div>`;
 
             try {
-                // Fetch books from Open Library API
-                const response = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=5`);
+                // Fetch books from SBN API (Replace this URL with the actual SBN API endpoint)
+                const response = await fetch(`https://api.sbn.it/search?q=${encodeURIComponent(query)}&limit=5`);
                 const data = await response.json();
 
                 // Check if there are results
-                if (data.docs && data.docs.length > 0) {
+                if (data && data.items && data.items.length > 0) {
                     // Clear previous results
                     searchResultsContainer.innerHTML = '';
 
                     // Create results
-                    data.docs.forEach(book => {
+                    data.items.forEach(book => {
                         const resultDiv = document.createElement('div');
                         resultDiv.className = 'p-3 hover:bg-gray-100 cursor-pointer border-b last:border-b-0';
                         
-                        // Prepare book details
+                        // Prepare book details (modify according to SBN API response structure)
                         const title = book.title || 'Titolo non disponibile';
-                        const author = book.author_name ? book.author_name[0] : 'Autore non disponibile';
-                        const year = book.first_publish_year || '';
-                        const isbn = book.isbn ? book.isbn[0] : '';
-                        const publisher = book.publisher ? book.publisher[0] : 'Editore non disponibile';
+                        const author = book.author || 'Autore non disponibile';
+                        const year = book.year || '';
+                        const isbn = book.isbn || '';
+                        const publisher = book.publisher || 'Editore non disponibile';
 
-                        resultDiv.innerHTML = `
-                            <div class="font-medium">${title}</div>
-                            <div class="text-sm text-gray-600">${author} (${year || 'Anno non disponibile'})</div>
-                        `;
+                        resultDiv.innerHTML = 
+                            `<div class="font-medium">${title}</div>
+                            <div class="text-sm text-gray-600">${author} (${year || 'Anno non disponibile'})</div>`;
 
                         // Add click event to fill book details
                         resultDiv.addEventListener('click', () => {
@@ -866,19 +866,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 } else {
                     // No results found
-                    searchResultsContainer.innerHTML = `
-                        <div class="p-3 text-center text-gray-500">
+                    searchResultsContainer.innerHTML = 
+                        `<div class="p-3 text-center text-gray-500">
                             Nessun libro trovato
-                        </div>
-                    `;
+                        </div>`;
                 }
             } catch (error) {
                 console.error('Errore durante la ricerca dei libri:', error);
-                searchResultsContainer.innerHTML = `
-                    <div class="p-3 text-center text-red-500">
+                searchResultsContainer.innerHTML = 
+                    `<div class="p-3 text-center text-red-500">
                         Errore durante la ricerca. Riprova più tardi.
-                    </div>
-                `;
+                    </div>`;
             }
         }
 
@@ -901,12 +899,12 @@ document.addEventListener('DOMContentLoaded', () => {
         bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
         bookCount++;
 
-        bookDiv.innerHTML = `
-            <div class="flex justify-between items-center mb-4">
+        bookDiv.innerHTML = 
+            `<div class="flex justify-between items-center mb-4">
                 <span class="book-counter flex items-center justify-center w-6 h-6 rounded-full text-white font-semibold text-sm" style="background-color: rgb(34, 197, 94)">${bookCount}</span>
-                ${bookCount > 1 ? `
-                    <button type="button" class="remove-book-btn" onclick="removeBook(this)">✖</button>
-                ` : ''}
+                ${bookCount > 1 ? 
+                    `<button type="button" class="remove-book-btn" onclick="removeBook(this)">✖</button>`
+                 : ''}
             </div>
             
             <div class="mb-5">
@@ -1021,26 +1019,6 @@ document.addEventListener('DOMContentLoaded', () => {
         bookEntries.forEach((entry, index) => {
             entry.querySelector('.book-counter').textContent = index + 1;
         });
-    }
-
-    // Existing input validation functions
-    function showError(input, message) {
-        const errorElement = input.parentElement.querySelector('.error-message');
-        if (errorElement) {
-            errorElement.textContent = message;
-            errorElement.classList.remove('hidden');
-            input.classList.add('border-red-500');
-            input.classList.remove('border-gray-300', 'focus:border-blue-500');
-        }
-    }
-
-    function hideError(input) {
-        const errorElement = input.parentElement.querySelector('.error-message');
-        if (errorElement) {
-            errorElement.classList.add('hidden');
-            input.classList.remove('border-red-500');
-            input.classList.add('border-gray-300', 'focus:border-blue-500');
-        }
     }
 
     // Create first book entry and set up book search
