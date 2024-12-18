@@ -17,13 +17,278 @@
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     
-
-<style>
-:root{--primary:#6b0a20;--secondary:#540f26;--accent:#700f0a}button[type=submit]{background-color:#0078d7!important;color:#fff;border:none;border-radius:5px;padding:10px 20px;font-size:16px;cursor:pointer;transition:background-color .3s ease}button[type=submit]:hover{background-color:#005a9e!important}.book-counter{background:linear-gradient(to bottom right,#34d399,#10b981)}.book-entry>button[type=button].add-book-btn{width:100%;padding:.75rem 1rem;background:linear-gradient(to bottom right,#34d399,#10b981);color:#fff;border:none;border-radius:.375rem;transition:transform .3s ease;margin-top:.5rem;box-shadow:0 4px 6px rgba(0,0,0,.1)}.book-entry>button[type=button].add-book-btn:hover{transform:translateY(-2px);background:linear-gradient(to bottom right,#10b981,#059669);box-shadow:0 6px 8px rgba(0,0,0,.15)}.book-entry>button[type=button].remove-book-btn{background:none;border:none;color:#ff4347;font-size:1.5rem;cursor:pointer;padding:0;transition:transform .3s ease,color .3s ease}.book-entry>button[type=button].remove-book-btn:hover{transform:scale(1.2);color:#d9292e}.top-banner{background-color:#fff;padding:.8rem 2rem;display:flex;justify-content:space-between;align-items:center}.roma-logo{height:40px}.print-button{background:none;border:none;color:var(--primary);font-size:1.5rem;cursor:pointer;padding:0;margin-right:1rem;transition:transform .3s ease}.print-button:hover{transform:scale(1.2)}.social-icons{display:flex;gap:1rem;justify-content:flex-end;align-items:center}.social-icons a{color:var(--primary);font-size:1.5rem;transition:transform .3s ease}.social-icons a:hover{transform:scale(1.2)}header{background-color:var(--primary);color:#fff;padding:2rem 0;min-height:4cm;display:flex;justify-content:center;align-items:center;position:relative;flex-direction:column;text-align:center}.container-header{max-width:1200px;margin:0 auto;padding:0 2rem;display:flex;justify-content:center;align-items:center;text-align:center;flex-wrap:wrap;gap:1rem}.content-wrapper{max-width:900px;width:100%;margin:2rem auto;padding:0 1rem;position:relative;margin-top:60px}.nav-icons{position:absolute;top:-60px;left:50%;transform:translateX(calc(-50% - 400px));display:flex;align-items:center;gap:3rem;padding-top:20px}@media (max-width:1400px){.nav-icons{transform:translateX(calc(-50% - 300px))}}@media (max-width:1200px){.nav-icons{transform:translateX(calc(-50% - 200px))}}@media (max-width:992px){.nav-icons{transform:translateX(calc(-50% - 100px))}}@media (max-width:768px){.nav-icons{position:relative;left:0;top:0;transform:none;justify-content:flex-start}}.nav-icons a{color:#970a2c;font-size:1.25rem;text-decoration:none;transition:transform .3s ease;display:flex;align-items:center;height:100%;padding:5px}.nav-icons a:hover{transform:scale(1.1)}.nav-icons a:first-child{font-weight:bold;font-size:1.8rem;position:relative;letter-spacing:.5rem}.nav-icons a:first-child::after{content:'';position:absolute;left:calc(100% + 1.5rem);top:50%;transform:translateY(-50%);height:20px;width:1px;background-color:rgba(128,128,128,.3)}header img{height:70px;max-width:100%}header .logo-morante{height:180px;filter:none;max-width:100%}footer{box-shadow:0 -2px 4px -1px rgba(0,0,0,.1)}footer i{font-size:1rem}@media (max-width:768px){footer .container{text-align:center}}
-</style>
+    <style>
 
 
-    
+        
+:root {
+    --primary: #6b0a20;    /* Slightly darker red */
+    --secondary: #540f26;  /* Even darker red */
+    --accent: #700f0a;     /* Darker bordeaux */
+}
+
+        
+
+/* Sostituisci il pulsante di invio con il colore amaranto dell'intestazione */
+ button[type="submit"] {
+        background-color: #0078d7 !important; /* Azzurro intenso */
+        color: white; /* Testo in bianco per leggibilità */
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    button[type="submit"]:hover {
+        background-color: #005a9e !important; /* Azzurro più scuro per effetto hover */
+    }
+
+
+
+
+
+/* Aggiorna il colore del contatore dei libri con una sfumatura di verde */
+.book-counter {
+    background: linear-gradient(to bottom right, #34d399, #10b981);
+}
+
+/* Stile per il pulsante "Aggiungi Libro" con sfumatura verde */
+.book-entry > button[type="button"].add-book-btn {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: linear-gradient(to bottom right, #34d399, #10b981);
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    transition: transform 0.3s ease;
+    margin-top: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.book-entry > button[type="button"].add-book-btn:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(to bottom right, #10b981, #059669);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+
+
+
+
+        
+
+/* Stile per il pulsante di rimozione (x) */
+.book-entry > button[type="button"].remove-book-btn {
+    background: none;
+    border: none;
+    color: #ff4347;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.book-entry > button[type="button"].remove-book-btn:hover {
+    transform: scale(1.2);
+    color: #d9292e;
+}
+
+        
+        
+        .top-banner {
+            background-color: white;
+            padding: 0.8rem 2rem; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .roma-logo {
+            height: 40px;
+        }
+
+        .print-button {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            margin-right: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .print-button:hover {
+            transform: scale(1.2);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .social-icons a {
+            color: var(--primary);
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            transform: scale(1.2);
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: #fff;
+            padding: 2rem 0;
+            min-height: 4cm;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .container-header {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+
+
+
+ .content-wrapper {
+    max-width: 900px;
+    width: 100%;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    position: relative;
+    margin-top: 60px;
+}
+
+.nav-icons {
+    position: absolute;
+    top: -60px;
+    left: 50%; /* Centrato rispetto al contenitore */
+    transform: translateX(calc(-50% - 400px)); /* Spostato a sinistra della larghezza desiderata */
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    padding-top: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1400px) {
+    .nav-icons {
+        transform: translateX(calc(-50% - 300px));
+    }
+}
+
+@media (max-width: 1200px) {
+    .nav-icons {
+        transform: translateX(calc(-50% - 200px));
+    }
+}
+
+@media (max-width: 992px) {
+    .nav-icons {
+        transform: translateX(calc(-50% - 100px));
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-icons {
+        position: relative;
+        left: 0;
+        top: 0;
+        transform: none;
+        justify-content: flex-start;
+    }
+}
+
+
+        
+
+        .nav-icons a {
+            color: #970a2c;
+            font-size: 1.25rem;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            padding: 5px;  /* Added padding for better touch target */
+        }
+
+        .nav-icons a:hover {
+            transform: scale(1.1);
+        }
+
+        .nav-icons a:first-child {
+            font-weight: bold;
+            font-size: 1.8rem;
+            position: relative;
+            letter-spacing: 0.5rem;
+        }
+
+        .nav-icons a:first-child::after {
+            content: '';
+            position: absolute;
+            left: calc(100% + 1.5rem);
+            top: 50%;
+            transform: translateY(-50%);
+            height: 20px;
+            width: 1px;
+            background-color: rgba(128, 128, 128, 0.3);
+        }
+
+
+
+        
+        
+        header img {
+            height: 70px;
+            max-width: 100%;
+        }
+
+        header .logo-morante {
+            height: 180px;
+            filter: none;
+            max-width: 100%;
+        }
+
+
+
+footer {
+    box-shadow: 0 -2px 4px -1px rgba(0, 0, 0, 0.1);
+}
+
+footer i {
+    font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+    footer .container {
+        text-align: center;
+    }
+}
+
+
+
+
+        
+    </style>
 </head>
 <body>
     <div class="top-banner">
@@ -156,35 +421,484 @@
 
     
 
-<script> (emailjs.init("z6OeY42qSulJ-8EcS"),function(){let o=0;function e(e,t){const n=e.parentElement.querySelector(".error-message");n&&(n.textContent=t,n.classList.remove("hidden"),e.classList.add("border-red-500"),e.classList.remove("border-gray-300","focus:border-blue-500"))}function t(e){const t=e.parentElement.querySelector(".error-message");t&&(t.classList.add("hidden"),e.classList.remove("border-red-500"),e.classList.add("border-gray-300","focus:border-blue-500"))}function n(e){const n=e.value.trim();let i=!0;if(e.hasAttribute("required")&&!n&&(e.previousElementSibling.textContent.replace(":",""),e.id),i){switch(e.id){case"telefono":/^[0-9]{6,15}$/.test(n)||e.id;break;case"email":!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(n)?e.id:e.id}}return i}function i(e){const n=e.value.trim(),i=new Date().getFullYear();let r=!0;if(e.hasAttribute("required")&&!n&&(e.id),e.classList.contains("book-year")){if(n){if(n.length<4)return!0;const t=parseInt(n);Number.isInteger(t)&&t>=1900&&t<=i||(e.id,e.value=n.slice(0,4),r=!1)}}else if(e.classList.contains("book-isbn")&&n&&!/^(?:\d{10}|\d{13})$/.test(n)&&(e.id,r=!1),r)return t(e),r}function r(){const e=document.createElement("div");e.className="book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform",o++;let t=o>1?'<button type="button" class="remove-book-btn" onclick="removeBook(this)"></button>':"";e.innerHTML=\n <div class="flex justify-between items-center mb-4">\n <span class="book-counter flex items-center justify-center w-6 h-6 rounded-full text-white font-semibold text-sm" style="background-color: rgb(34, 197, 94)">${o}</span>\n ${t}\n </div>\n \n <div class="mb-5">\n <label class="block mb-1 text-slate-700 font-medium">Titolo: *</label>\n <input type="text" class="book-title w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" required>\n <p class="hidden error-message text-sm text-red-500 mt-1">Il titolo è obbligatorio</p>\n </div>\n <div class="mb-5">\n <label class="block mb-1 text-slate-700 font-medium">Autore:</label>\n <input type="text" class="book-author w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">\n </div>\n <!-- Rest of the book entry HTML -->,document.getElementById("bookList").appendChild(e),function(){const e=document.querySelectorAll(".book-entry");e.forEach((t,n)=>{t.querySelector(".book-counter").textContent=n+1})}()}function l(e){const t=e.closest(".book-entry");t&&(t.remove(),o--,function(){const e=document.querySelectorAll(".book-entry");e.forEach((t,n)=>{t.querySelector(".book-counter").textContent=n+1})()}())}function a(){const e=document.querySelectorAll("input");e.forEach(e=>{e.id&&(e.addEventListener("input",()=>{e.classList.contains("book-year")||e.classList.contains("book-isbn")?i(e):n(e)}),e.addEventListener("blur",()=>{e.classList.contains("book-year")||e.classList.contains("book-isbn")?i(e):n(e)}))})}document.addEventListener("DOMContentLoaded",()=>{r(),a()})})(); const formattedBooks = books.map((book, index) => 
-    `<br><em>Libro ${index + 1}:</em><br>` +
-    `<table style="width:100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed;">
-        <colgroup>
-            <col style="width: 100px;">
-            <col style="width: auto;">
-        </colgroup>
-        <tr>
-            <td style="padding:5px; border:1px solid #ddd;"><strong>Titolo:</strong></td>
-            <td style="padding:5px; border:1px solid #ddd;">${book.title}</td>
-        </tr>
-        <tr>
-            <td style="padding:5px; border:1px solid #ddd;"><strong>Autore:</strong></td>
-            <td style="padding:5px; border:1px solid #ddd;">${book.author}</td>
-        </tr>
-        <tr>
-            <td style="padding:5px; border:1px solid #ddd;"><strong>Editore:</strong></td>
-            <td style="padding:5px; border:1px solid #ddd;">${book.publisher}</td>
-        </tr>
-        <tr>
-            <td style="padding:5px; border:1px solid #ddd;"><strong>Anno:</strong></td>
-            <td style="padding:5px; border:1px solid #ddd;">${book.year}</td>
-        </tr>
-        <tr>
-            <td style="padding:5px; border:1px solid #ddd;"><strong>ISBN:</strong></td>
-            <td style="padding:5px; border:1px solid #ddd;">${book.isbn}</td>
-        </tr>
-    </table>`
-).join('');</script>
+    <script>
+        // Initialize EmailJS
+        (function() {
+            emailjs.init("z6OeY42qSulJ-8EcS");
+        })();
+
+
+
+        
+// Prima aggiungi questa funzione accanto alle altre funzioni di utility (dopo showGlobalErrorPopup)
+function showGlobalErrorPopup(message) {
+    // Remove any existing error popups first
+    const existingPopups = document.querySelectorAll('.error-popup');
+    existingPopups.forEach(popup => document.body.removeChild(popup));
+
+    // Create a popup div
+    const popup = document.createElement('div');
+    popup.className = 'error-popup fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50 shadow-lg';
+    popup.innerHTML = `
+        <strong class="font-bold">Errore!</strong>
+        <span class="block sm:inline">${message}</span>
+    `;
+
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+        if (document.body.contains(popup)) {
+            document.body.removeChild(popup);
+        }
+    }, 5000);
+
+    document.body.appendChild(popup);
+}
+
+
+        
+
+function showSuccessPopup(message) {
+    // Rimuovi eventuali popup esistenti
+    const existingPopups = document.querySelectorAll('.success-popup');
+    existingPopups.forEach(popup => document.body.removeChild(popup));
+
+    // Crea il div del popup
+    const popup = document.createElement('div');
+    popup.className = 'success-popup fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded z-50 shadow-lg';
+    popup.innerHTML = `
+        <strong class="font-bold">Successo!</strong>
+        <span class="block sm:inline">${message}</span>
+    `;
+
+    // Rimuovi automaticamente dopo 5 secondi
+    setTimeout(() => {
+        if (document.body.contains(popup)) {
+            document.body.removeChild(popup);
+        }
+    }, 5000);
+
+    document.body.appendChild(popup);
+}
+
+function showLoadingOverlay() {
+    const overlay = document.createElement('div');
+    overlay.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    overlay.id = 'loadingOverlay';
+    
+    const spinner = document.createElement('div');
+    spinner.className = 'bg-white p-5 rounded-lg flex flex-col items-center';
+    spinner.innerHTML = `
+        <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500 mb-3"></div>
+        <div class="text-white font-medium">Invio donazione in corso...</div>
+    `;
+    
+    overlay.appendChild(spinner);
+    document.body.appendChild(overlay);
+}
+
+function removeLoadingOverlay() {
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) {
+        overlay.remove();
+    }
+}
+
+
+        
+
+// Aggiungi questa nuova funzione subito dopo showGlobalErrorPopup
+function showSuccessPopup(message) {
+    // Rimuovi eventuali popup esistenti
+    const existingPopups = document.querySelectorAll('.success-popup');
+    existingPopups.forEach(popup => document.body.removeChild(popup));
+
+    // Crea il div del popup
+    const popup = document.createElement('div');
+    popup.className = 'success-popup fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded z-50 shadow-lg';
+    popup.innerHTML = `
+        <strong class="font-bold">Successo!</strong>
+        <span class="block sm:inline">${message}</span>
+    `;
+
+    // Rimuovi automaticamente dopo 5 secondi
+    setTimeout(() => {
+        if (document.body.contains(popup)) {
+            document.body.removeChild(popup);
+        }
+    }, 5000);
+
+    document.body.appendChild(popup);
+}
+
+
+        
+
+        let bookCount = 0;
+
+        function showError(input, message) {
+            const errorElement = input.parentElement.querySelector('.error-message');
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.classList.remove('hidden');
+                input.classList.add('border-red-500');
+                input.classList.remove('border-gray-300', 'focus:border-blue-500');
+            }
+        }
+
+        function hideError(input) {
+            const errorElement = input.parentElement.querySelector('.error-message');
+            if (errorElement) {
+                errorElement.classList.add('hidden');
+                input.classList.remove('border-red-500');
+                input.classList.add('border-gray-300', 'focus:border-blue-500');
+            }
+        }
+
+        function validateField(input) {
+            const value = input.value.trim();
+            let isValid = true;
+
+            if (input.hasAttribute('required') && !value) {
+                showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
+                isValid = false;
+            } else {
+                switch (input.id) {
+                    case 'telefono':
+                        if (value && !/^[0-9]{6,15}$/.test(value)) {
+                            showError(input, 'Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)');
+                            isValid = false;
+                        }
+                        break;
+                        
+                    case 'email':
+                        if (!value) {
+                            showError(input, 'L\'email è obbligatoria');
+                            isValid = false;
+                        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+                            showError(input, 'Inserire un indirizzo email valido');
+                            isValid = false;
+                        }
+                        break;
+                }
+            }
+
+            if (isValid) {
+                hideError(input);
+            }
+
+            return isValid;
+        }
+
+
+        
+
+       function validateBookField(input) {
+    const value = input.value.trim();
+    let isValid = true;
+
+    if (input.hasAttribute('required') && !value) {
+        showError(input, 'Questo campo è obbligatorio');
+        isValid = false;
+    } else if (input.classList.contains('book-year')) {
+        const currentYear = new Date().getFullYear();
+        
+        // Allow partial input without showing error
+        if (value) {
+            // Check if input is currently being typed (less than 4 digits)
+            if (value.length < 4) {
+                return true; // Don't validate while typing
+            }
+
+            const year = parseInt(value);
+            
+            // Validate fully entered year
+            if (!Number.isInteger(year) || year < 1900 || year > currentYear) {
+                showError(input, `L'anno deve essere un numero di 4 cifre compreso tra 1900 e ${currentYear}`);
+                input.value = value.slice(0, 4); // Tronca a 4 cifre
+                isValid = false;
+            }
+        }
+    } else if (input.classList.contains('book-isbn')) {
+        if (value && !/^(?:\d{10}|\d{13})$/.test(value)) {
+            showError(input, 'ISBN deve essere di 10 o 13 cifre');
+            isValid = false;
+        }
+    }
+
+    if (isValid) {
+        hideError(input);
+    }
+
+    return isValid;
+}
+        
+
+
+
+        
+        function createBookEntry() {
+            const bookDiv = document.createElement('div');
+            bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
+            bookCount++;
+
+            bookDiv.innerHTML = `
+                <div class="flex justify-between items-center mb-4">
+                    <span class="book-counter flex items-center justify-center w-6 h-6 rounded-full text-white font-semibold text-sm" style="background-color: rgb(34, 197, 94)">${bookCount}</span>
+                    ${bookCount > 1 ? `
+                        <button type="button" class="remove-book-btn" onclick="removeBook(this)">✖</button>
+
+                    ` : ''}
+                </div>
+                
+                <div class="mb-5">
+                    <label class="block mb-1 text-slate-700 font-medium">Titolo: *</label>
+                    <input type="text" class="book-title w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" required>
+                    <p class="hidden error-message text-sm text-red-500 mt-1">Il titolo è obbligatorio</p>
+                </div>
+                <div class="mb-5">
+                    <label class="block mb-1 text-slate-700 font-medium">Autore:</label>
+                    <input type="text" class="book-author w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                </div>
+                <div class="mb-5">
+                    <label class="block mb-1 text-slate-700 font-medium">Editore:</label>
+                    <input type="text" class="book-publisher w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                </div>
+               
+
+
+<div class="mb-5">
+    <label class="block mb-1 text-slate-700 font-medium">Anno:</label>
+    <input type="number" min="1400" max="2024" class="book-year w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+
+    <p class="hidden error-message text-sm text-red-500 mt-1">Anno non valido</p>
+</div>
+
+
+
+<div class="mb-5">
+    <div class="flex items-center gap-1">
+        <label class="block text-slate-700 font-medium">ISBN (raccomandato):</label>
+        <div class="relative group -mt-1">
+            <i class="fa-solid fa-circle-info text-gray-500 hover:text-gray-700 transition-colors text-sm"></i>
+            <div class="invisible group-hover:visible absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-white border border-gray-200 text-gray-700 text-sm rounded-lg w-64 shadow-lg z-10">
+                <div class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full w-0 h-0 border-8 border-transparent border-t-white"></div>
+                <div class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full w-0 h-0 border-[9px] border-transparent border-t-gray-200"></div>
+                L'ISBN (International Standard Book Number) è un codice numerico di 10 o 13 cifre che identifica univocamente un libro. Lo trovi sul retro del libro sopra al codice a barre o nella pagina del copyright.
+            </div>
+        </div>
+    </div>
+    <input type="tel" inputmode="numeric" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" maxlength="13">
+    <p class="hidden error-message text-sm text-red-500 mt-1">ISBN non valido</p>
+</div>
+
+                
+
+                
+                
+                <button type="button" class="add-book-btn" onclick="createBookEntry()">+ Aggiungi Libro</button>
+
+            `;
+
+            const inputs = bookDiv.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
+                        validateBookField(input);
+                    }
+                });
+                input.addEventListener('blur', () => {
+                    if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
+                        validateBookField(input);
+                    }
+                });
+            });
+
+            document.getElementById('bookList').appendChild(bookDiv);
+            updateBookCounters();
+        }
+
+        function removeBook(button) {
+            const bookEntry = button.closest('.book-entry');
+            if (bookEntry) {
+                bookEntry.remove();
+                bookCount--;
+                updateBookCounters();
+            }
+        }
+
+        function updateBookCounters() {
+            const bookEntries = document.querySelectorAll('.book-entry');
+            bookEntries.forEach((entry, index) => {
+                entry.querySelector('.book-counter').textContent = index + 1;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            createBookEntry();
+
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                if (input.id) {
+                    input.addEventListener('input', () => validateField(input));
+                    input.addEventListener('blur', () => validateField(input));
+                }
+            });
+        });
+
+
+
+
+        document.getElementById('donationForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    
+    let isValid = true;
+    const inputs = event.target.querySelectorAll('input');
+    
+    // Reset global error message
+    const existingPopups = document.querySelectorAll('.error-popup');
+    existingPopups.forEach(popup => document.body.removeChild(popup));
+    
+    // Validate all form fields
+    inputs.forEach(input => {
+        if (input.id) {
+            if (!validateField(input)) {
+                isValid = false;
+            }
+        }
+    });
+
+    // Validate book fields
+    const bookEntries = document.querySelectorAll('.book-entry');
+    bookEntries.forEach(entry => {
+        const bookInputs = entry.querySelectorAll('input');
+        bookInputs.forEach(input => {
+            if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
+                if (!validateBookField(input)) {
+                    isValid = false;
+                }
+            }
+        });
+    });
+
+    // Validate checkbox
+    const acceptCheckbox = document.getElementById('accept');
+    if (!acceptCheckbox.checked) {
+        showError(acceptCheckbox, 'Devi accettare i termini e condizioni');
+        isValid = false;
+    } else {
+        hideError(acceptCheckbox);
+    }
+
+    if (!isValid) {
+        showGlobalErrorPopup('Per favore, compila correttamente tutti i campi obbligatori.');
+        return;
+    }
+
+    const nome = document.getElementById('nome').value.trim();
+    const cognome = document.getElementById('cognome').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const tessera = document.getElementById('tessera').value.trim();
+    const telefono = document.getElementById('telefono').value.trim();
+
+    const books = [];
+    
+    for (const bookDiv of bookEntries) {
+        const title = bookDiv.querySelector('.book-title').value.trim();
+        if (!title) {
+            showError(bookDiv.querySelector('.book-title'), 'Il titolo è obbligatorio');
+            return;
+        }
+        
+        books.push({
+            title: title,
+            author: bookDiv.querySelector('.book-author').value.trim() || 'Non specificato',
+            publisher: bookDiv.querySelector('.book-publisher').value.trim() || 'Non specificato',
+            year: bookDiv.querySelector('.book-year').value.trim() || 'Non specificato',
+            isbn: bookDiv.querySelector('.book-isbn').value.trim() || 'Non specificato'
+        });
+    }
+
+    if (books.length === 0) {
+        showGlobalErrorPopup('Aggiungi almeno un libro alla donazione.');
+        return;
+    }
+
+    const formattedBooks = books.map((book, index) => 
+        `<br><em>Libro ${index + 1}:</em><br>` +
+        `<table style="width:100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed;">
+            <colgroup>
+                <col style="width: 100px;">
+                <col style="width: auto;">
+            </colgroup>
+            <tr>
+                <td style="padding:5px; border:1px solid #ddd;"><strong>Titolo:</strong></td>
+                <td style="padding:5px; border:1px solid #ddd;">${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}</td>
+            </tr>
+            <tr>
+                <td style="padding:5px; border:1px solid #ddd;"><strong>Editore:</strong></td>
+                <td style="padding:5px; border:1px solid #ddd;">${book.publisher}</td>
+            </tr>
+            <tr>
+                <td style="padding:5px; border:1px solid #ddd;"><strong>Anno:</strong></td>
+                <td style="padding:5px; border:1px solid #ddd;">${book.year}</td>
+            </tr>
+            <tr>
+                <td style="padding:5px; border:1px solid #ddd;"><strong>ISBN:</strong></td>
+                <td style="padding:5px; border:1px solid #ddd;">${book.isbn}</td>
+            </tr>
+        </table>`).join('');
+
+    showLoadingOverlay(); // Mostra subito il loading overlay
+
+    try {
+        const response = await emailjs.send(
+            'service_yepi8uu',
+            'template_s1jmd7r', 
+            {
+                to_email: 'bibliotecamorante@gmail.com',
+                from_name: `${nome} ${cognome}`,
+                from_email: email,
+                reply_to: email,
+                tessera: tessera || 'Non specificata',
+                telefono: telefono || 'Non specificato',
+                books: formattedBooks
+            },
+            'z6OeY42qSulJ-8EcS'
+        );
+
+        // Rimuovi il loading overlay prima di mostrare il popup di successo
+        removeLoadingOverlay();
+        showSuccessPopup('La tua donazione è stata inviata con successo!');
+        
+        // Reset del form
+        event.target.reset();
+        document.getElementById('bookList').innerHTML = '';
+        bookCount = 0;
+        createBookEntry();
+
+        // Reset degli errori
+        const errorMessages = document.querySelectorAll('.error-message');
+        errorMessages.forEach(msg => msg.classList.add('hidden'));
+        const inputFields = document.querySelectorAll('input');
+        inputFields.forEach(input => {
+            input.classList.remove('border-red-500');
+            input.classList.add('border-gray-300', 'focus:border-blue-500');
+        });
+
+    } catch (error) {
+        removeLoadingOverlay();
+        console.error('Errore dettagliato durante l\'invio:', error);
+        const errorMessage = error.text || error.message || 'Errore sconosciuto durante l\'invio';
+        showGlobalErrorPopup(`Si è verificato un errore durante l'invio: ${errorMessage}`);
+    } finally {
+        const submitButton = event.target.querySelector('button[type="submit"]');
+        submitButton.disabled = false;
+        submitButton.textContent = 'Invia Donazione';
+    }
+});
+        
+    </script>
+
 
 
 
