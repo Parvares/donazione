@@ -331,16 +331,41 @@
 
 
         
-    <div class="flex items-center mb-4" style="color: #970a2c;">
-    <a href="#" onclick="SebinaYou.Maps.popup('mappa-re2','RMBO2',20); SebinaYou.Maps.scrollToMap();">
+  <div class="flex items-center mb-4" style="color: #970a2c;">
+    <a href="#map-library" onclick="scrollToMap(); return false;">
         <img src="location.svg" alt="Location Icon" class="mr-2" style="height: 24px; width: 24px;">
     </a>
     <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" 
        class="text-xl hover:underline" 
-        style="color: #970a2c; font-size: 1rem;">
+       style="color: #970a2c; font-size: 1rem;">
         Biblioteca Elsa Morante
     </a>
 </div>
+
+<!-- Mappa della Biblioteca Elsa Morante -->
+<div id="map-library" class="sy-map-container leaflet-container" 
+     data-libraries="[{&quot;id&quot;:193,&quot;cd&quot;:&quot;RMBO2&quot;,&quot;ds&quot;:&quot;Biblioteca Elsa Morante&quot;,&quot;dsExtended&quot;:&quot;Biblioteca Elsa Morante&quot;,&quot;tooltip&quot;:&quot;Biblioteca Elsa Morante&quot;,&quot;wheretype&quot;:&quot;BIB&quot;,&quot;located&quot;:true,&quot;latitude&quot;:&quot;41.7325117&quot;,&quot;longitude&quot;:&quot;12.2718834&quot;,&quot;status&quot;:1,&quot;balloon&quot;:&quot;<div class=\&quot;baloon\&quot;>\r\n            <h3>Biblioteca Elsa Morante</h3> \r\n        <p> \r\n                    Via Adolfo Cozza 7 / (accesso disabili) Lungomare P. Toscanelli 184\r\n                                    <br />00121\r\n                            ROMA\r\n                    </p>\r\n    \r\n    <!--\r\n            <p><a href=\&quot;mailto:elsamorante@bibliotechediroma.it\&quot;>elsamorante@bibliotechediroma.it</a>                                                            </p>\r\n        -->\r\n                   <a style=\&quot;color: #bc0b34; font-size: 16px;\&quot; href=\&quot;https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2\&quot; onclick=\&quot;A.a13m06('RMBO2','BIB',RENDERING.rBody);return false;\&quot; >Vai alla scheda</a>\r\n       </div>&quot;,&quot;attribute&quot;:&quot;&quot;,&quot;permalink&quot;:&quot;https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2&quot;,&quot;type&quot;:&quot;where&quot;}]" 
+     data-actionmap="where" data-zoom="25" data-showtooltip="true" data-done-maps="true" tabindex="0" style="position: relative; outline: none;">
+     <!-- Mappa e altri elementi -->
+</div>
+
+<script>
+    // Funzione che fa scrollare la pagina verso la mappa della biblioteca
+    function scrollToMap() {
+        // Trova l'elemento della mappa sulla pagina
+        const mapLibrary = document.getElementById("map-library");
+
+        // Scrolla verso la mappa
+        mapLibrary.scrollIntoView({ behavior: "smooth" });
+
+        // Zoom e centro sulla posizione specifica della Biblioteca Elsa Morante
+        if (typeof SebinaYou !== 'undefined' && SebinaYou.Maps) {
+            SebinaYou.Maps.popup('mappa-re2', 'RMBO2', 20); // Apertura del popup
+            SebinaYou.Maps.scrollToMap(); // Scroll fino alla mappa
+        }
+    }
+</script>
+
 
 
 
