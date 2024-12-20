@@ -639,56 +639,54 @@ function showSuccessPopup(message) {
 
 
 
-	    function createBookEntry() {
+function createBookEntry() {
     const bookDiv = document.createElement('div');
     bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
     bookCount++;
 
-    // Header con numero libro e pulsante rimuovi
-    const headerHtml = `
+    // Create search container for this book entry
+    const searchContainer = document.createElement('div');
+    searchContainer.className = 'book-search-container mb-5';
+    searchContainer.innerHTML = `
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4 rounded-r">
+            <div class="flex items-start gap-2">
+                <i class="fas fa-search text-blue-500 mt-1"></i>
+                <div>
+                    <h4 class="font-medium text-blue-800 mb-1">Ricerca Rapida Libri</h4>
+                    <p class="text-sm text-blue-700">
+                        Inserisci il titolo o l'ISBN del libro per cercare e compilare automaticamente i dettagli. Puoi anche inserire i dati manualmente nei campi sottostanti.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center gap-2 mb-3">
+            <input 
+                type="text" 
+                class="book-search-input w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base"
+                placeholder="Cerca un libro per titolo o ISBN..."
+                aria-label="Cerca libro"
+            />
+            <button 
+                class="book-search-button bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors flex items-center gap-2"
+                aria-label="Avvia ricerca"
+            >
+                <i class="fas fa-search"></i>
+                <span class="hidden sm:inline">Cerca</span>
+            </button>
+        </div>
+        <div class="book-search-results border rounded"></div>
+    `;
+
+    // Main book entry content
+    const bookContent = document.createElement('div');
+    bookContent.innerHTML = `
         <div class="flex justify-between items-center mb-4">
             <span class="book-counter flex items-center justify-center w-6 h-6 rounded-full text-white font-semibold text-sm" style="background-color: rgb(34, 197, 94)">${bookCount}</span>
             ${bookCount > 1 ? `
-                <button type="button" class="remove-book-btn">✖</button>
+                <button type="button" class="remove-book-btn" onclick="removeBook(this)">✖</button>
             ` : ''}
         </div>
-    `;
-
-    // Sezione ricerca rapida
-    const searchHtml = `
-        <div class="book-search-container mb-5">
-            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4 rounded-r">
-                <div class="flex items-start gap-2">
-                    <i class="fas fa-search text-blue-500 mt-1"></i>
-                    <div>
-                        <h4 class="font-medium text-blue-800 mb-1">Ricerca Rapida Libri</h4>
-                        <p class="text-sm text-blue-700">
-                            Inserisci il titolo o l'ISBN del libro per cercare e compilare automaticamente i dettagli. Puoi anche inserire i dati manualmente nei campi sottostanti.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="flex items-center gap-2 mb-3">
-                <input 
-                    type="text" 
-                    class="book-search-input w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base"
-                    placeholder="Cerca un libro per titolo o ISBN..."
-                    aria-label="Cerca libro"
-                />
-                <button 
-                    class="book-search-button bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors flex items-center gap-2"
-                    aria-label="Avvia ricerca"
-                >
-                    <i class="fas fa-search"></i>
-                    <span class="hidden sm:inline">Cerca</span>
-                </button>
-            </div>
-            <div class="book-search-results border rounded"></div>
-        </div>
-    `;
-
-    // Campi del libro
-    const fieldsHtml = `
+        
         <div class="mb-5">
             <label class="block mb-1 text-slate-700 font-medium">Titolo: *</label>
             <input type="text" class="book-title w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" required>
@@ -713,6 +711,8 @@ function showSuccessPopup(message) {
                 <div class="relative group -mt-1">
                     <i class="fa-solid fa-circle-info text-gray-500 hover:text-gray-700 transition-colors text-sm"></i>
                     <div class="invisible group-hover:visible absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-white border border-gray-200 text-gray-700 text-sm rounded-lg w-64 shadow-lg z-10">
+                        <div class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full w-0 h-0 border-8 border-transparent border-t-white"></div>
+                        <div class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full w-0 h-0 border-[9px] border-transparent border-t-gray-200"></div>
                         L'ISBN (International Standard Book Number) è un codice numerico di 10 o 13 cifre che identifica univocamente un libro. Lo trovi sul retro del libro sopra al codice a barre o nella pagina del copyright.
                     </div>
                 </div>
@@ -720,29 +720,46 @@ function showSuccessPopup(message) {
             <input type="tel" inputmode="numeric" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" maxlength="13">
             <p class="hidden error-message text-sm text-red-500 mt-1">ISBN non valido</p>
         </div>
-        <button type="button" class="add-book-btn bg-gradient-to-r from-green-400 to-green-600 text-white w-full py-3 rounded-md hover:from-green-500 hover:to-green-700 transition-all duration-300 flex items-center justify-center gap-2">
-            <i class="fas fa-plus"></i>
-            Aggiungi Libro
-        </button>
+        
+        <button type="button" class="add-book-btn" onclick="createBookEntry()">+ Aggiungi Libro</button>
     `;
 
-    // Combina tutti gli elementi
-    bookDiv.innerHTML = headerHtml + searchHtml + fieldsHtml;
+    // Append search container and book content to the main book div
+    bookDiv.appendChild(searchContainer);
+    bookDiv.appendChild(bookContent);
 
-    // Setup degli event listener per la ricerca
-    const searchInput = bookDiv.querySelector('.book-search-input');
-    const searchButton = bookDiv.querySelector('.book-search-button');
-    const searchResults = bookDiv.querySelector('.book-search-results');
+    const bookList = document.getElementById('bookList');
+    bookList.appendChild(bookDiv);
+    
+    // Set up search functionality for this book entry
+    setupBookSearch(bookDiv);
+    
+    // Add validation listeners
+    const inputs = bookDiv.querySelectorAll('input');
+    inputs.forEach(input => {
+        if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
+            input.addEventListener('input', () => validateBookField(input));
+            input.addEventListener('blur', () => validateBookField(input));
+        }
+    });
 
-    // Funzione di ricerca
-    const searchBooks = async () => {
+    updateBookCounters();
+}
+
+// Updated setupBookSearch function to work with individual book entries
+function setupBookSearch(bookEntry) {
+    const searchInput = bookEntry.querySelector('.book-search-input');
+    const searchButton = bookEntry.querySelector('.book-search-button');
+    const searchResultsContainer = bookEntry.querySelector('.book-search-results');
+
+    async function searchBooks() {
         const query = searchInput.value.trim();
         if (!query) {
-            searchResults.innerHTML = '';
+            searchResultsContainer.innerHTML = '';
             return;
         }
 
-        searchResults.innerHTML = `
+        searchResultsContainer.innerHTML = `
             <div class="p-3 text-center text-gray-500">
                 Ricerca in corso...
             </div>
@@ -754,7 +771,8 @@ function showSuccessPopup(message) {
             const data = await response.json();
 
             if (data.items && data.items.length > 0) {
-                searchResults.innerHTML = '';
+                searchResultsContainer.innerHTML = '';
+
                 data.items.forEach(book => {
                     const volumeInfo = book.volumeInfo;
                     const resultDiv = document.createElement('div');
@@ -774,26 +792,36 @@ function showSuccessPopup(message) {
                     `;
 
                     resultDiv.addEventListener('click', () => {
-                        const titleInput = bookDiv.querySelector('.book-title');
-                        const authorInput = bookDiv.querySelector('.book-author');
-                        const publisherInput = bookDiv.querySelector('.book-publisher');
-                        const yearInput = bookDiv.querySelector('.book-year');
-                        const isbnInput = bookDiv.querySelector('.book-isbn');
+                        const titleInput = bookEntry.querySelector('.book-title');
+                        const authorInput = bookEntry.querySelector('.book-author');
+                        const publisherInput = bookEntry.querySelector('.book-publisher');
+                        const yearInput = bookEntry.querySelector('.book-year');
+                        const isbnInput = bookEntry.querySelector('.book-isbn');
 
-                        titleInput.value = title;
-                        authorInput.value = author !== 'Autore non disponibile' ? author : '';
-                        publisherInput.value = publisher !== 'Editore non disponibile' ? publisher : '';
-                        yearInput.value = year;
-                        isbnInput.value = isbn;
+                        function setInputValue(input, value) {
+                            if (input && value) {
+                                input.value = value;
+                                ['input', 'blur'].forEach(eventType => {
+                                    const event = new Event(eventType, { bubbles: true });
+                                    input.dispatchEvent(event);
+                                });
+                            }
+                        }
 
-                        searchResults.innerHTML = '';
+                        setInputValue(titleInput, title);
+                        setInputValue(authorInput, author !== 'Autore non disponibile' ? author : '');
+                        setInputValue(publisherInput, publisher !== 'Editore non disponibile' ? publisher : '');
+                        setInputValue(yearInput, year);
+                        setInputValue(isbnInput, isbn);
+
+                        searchResultsContainer.innerHTML = '';
                         searchInput.value = '';
                     });
 
-                    searchResults.appendChild(resultDiv);
+                    searchResultsContainer.appendChild(resultDiv);
                 });
             } else {
-                searchResults.innerHTML = `
+                searchResultsContainer.innerHTML = `
                     <div class="p-3 text-center text-gray-500">
                         Nessun libro trovato
                     </div>
@@ -801,15 +829,14 @@ function showSuccessPopup(message) {
             }
         } catch (error) {
             console.error('Errore durante la ricerca dei libri:', error);
-            searchResults.innerHTML = `
+            searchResultsContainer.innerHTML = `
                 <div class="p-3 text-center text-red-500">
                     Errore durante la ricerca. Riprova più tardi.
                 </div>
             `;
         }
-    };
+    }
 
-    // Setup degli event listener per la ricerca
     const debouncedSearch = debounce(searchBooks, 500);
     searchInput.addEventListener('input', debouncedSearch);
     searchButton.addEventListener('click', searchBooks);
@@ -818,6 +845,12 @@ function showSuccessPopup(message) {
             searchBooks();
         }
     });
+}
+
+
+
+
+		    
 
     // Setup degli altri event listener
     const addButton = bookDiv.querySelector('.add-book-btn');
