@@ -636,7 +636,7 @@ function showSuccessPopup(message) {
 
 
         
- function createBookEntry() {
+function createBookEntry() {
     const bookDiv = document.createElement('div');
     bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
     bookCount++;
@@ -646,7 +646,7 @@ function showSuccessPopup(message) {
         <div class="flex justify-between items-center mb-4">
             <span class="book-counter flex items-center justify-center w-6 h-6 rounded-full text-white font-semibold text-sm" style="background-color: rgb(34, 197, 94)">${bookCount}</span>
             ${bookCount > 1 ? `
-                <button type="button" class="remove-book-btn" onclick="removeBook(this)">✖</button>
+                <button type="button" class="remove-book-btn">✖</button>
             ` : ''}
         </div>
     `;
@@ -717,18 +717,33 @@ function showSuccessPopup(message) {
             <input type="tel" inputmode="numeric" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" maxlength="13">
             <p class="hidden error-message text-sm text-red-500 mt-1">ISBN non valido</p>
         </div>
-        <button type="button" class="add-book-btn" onclick="createBookEntry()">+ Aggiungi Libro</button>
+        <button type="button" class="add-book-btn bg-gradient-to-r from-green-400 to-green-600 text-white w-full py-3 rounded-md hover:from-green-500 hover:to-green-700 transition-all duration-300 flex items-center justify-center gap-2">
+            <i class="fas fa-plus"></i>
+            Aggiungi Libro
+        </button>
     `;
 
     // Combiniamo tutto il contenuto
     bookDiv.innerHTML = headerHtml + searchHtml + fieldsHtml;
 
-    // Aggiungiamo gli event listener per la ricerca
+    // Aggiungiamo gli event listeners dopo aver creato il DOM
+    const addButton = bookDiv.querySelector('.add-book-btn');
+    if (addButton) {
+        addButton.addEventListener('click', createBookEntry);
+    }
+
+    const removeButton = bookDiv.querySelector('.remove-book-btn');
+    if (removeButton) {
+        removeButton.addEventListener('click', function() {
+            removeBook(this);
+        });
+    }
+
+    // Setup della ricerca
     const searchInput = bookDiv.querySelector('.book-search-input');
     const searchButton = bookDiv.querySelector('.book-search-button');
     const searchResults = bookDiv.querySelector('.book-search-results');
 
-    // Riutilizziamo la funzione di ricerca esistente ma adattata per questa istanza
     const searchBooks = async () => {
         const query = searchInput.value.trim();
         if (!query) {
@@ -804,32 +819,33 @@ function showSuccessPopup(message) {
     };
 
     const debouncedSearch = debounce(searchBooks, 500);
-    searchInput.addEventListener('input', debouncedSearch);
-    searchButton.addEventListener('click', searchBooks);
-    searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            searchBooks();
-        }
-    });
+    
+    if (searchInput) {
+        searchInput.addEventListener('input', debouncedSearch);
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchBooks();
+            }
+        });
+    }
 
-    // Aggiungiamo gli event listener per la validazione
+    if (searchButton) {
+        searchButton.addEventListener('click', searchBooks);
+    }
+
+    // Aggiungiamo la validazione
     const inputs = bookDiv.querySelectorAll('input');
     inputs.forEach(input => {
-        input.addEventListener('input', () => {
-            if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
-                validateBookField(input);
-            }
-        });
-        input.addEventListener('blur', () => {
-            if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
-                validateBookField(input);
-            }
-        });
+        if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
+            input.addEventListener('input', () => validateBookField(input));
+            input.addEventListener('blur', () => validateBookField(input));
+        }
     });
 
     document.getElementById('bookList').appendChild(bookDiv);
     updateBookCounters();
 }
+	    
 
 	    
 
