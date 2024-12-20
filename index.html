@@ -637,12 +637,14 @@ function showSuccessPopup(message) {
 
         
 
-function createBookEntry() {
+
+
+	    function createBookEntry() {
     const bookDiv = document.createElement('div');
     bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
     bookCount++;
 
-    // Aggiungiamo prima il contatore e il pulsante di rimozione
+    // Header con numero libro e pulsante rimuovi
     const headerHtml = `
         <div class="flex justify-between items-center mb-4">
             <span class="book-counter flex items-center justify-center w-6 h-6 rounded-full text-white font-semibold text-sm" style="background-color: rgb(34, 197, 94)">${bookCount}</span>
@@ -652,7 +654,7 @@ function createBookEntry() {
         </div>
     `;
 
-    // Aggiungiamo la sezione di ricerca rapida
+    // Sezione ricerca rapida
     const searchHtml = `
         <div class="book-search-container mb-5">
             <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4 rounded-r">
@@ -685,7 +687,7 @@ function createBookEntry() {
         </div>
     `;
 
-    // Aggiungiamo i campi del libro
+    // Campi del libro
     const fieldsHtml = `
         <div class="mb-5">
             <label class="block mb-1 text-slate-700 font-medium">Titolo: *</label>
@@ -724,15 +726,15 @@ function createBookEntry() {
         </button>
     `;
 
-    // Combiniamo tutto il contenuto
+    // Combina tutti gli elementi
     bookDiv.innerHTML = headerHtml + searchHtml + fieldsHtml;
 
-    // Setup della ricerca
+    // Setup degli event listener per la ricerca
     const searchInput = bookDiv.querySelector('.book-search-input');
     const searchButton = bookDiv.querySelector('.book-search-button');
     const searchResults = bookDiv.querySelector('.book-search-results');
 
-    // Funzione di ricerca per questa scheda libro
+    // Funzione di ricerca
     const searchBooks = async () => {
         const query = searchInput.value.trim();
         if (!query) {
@@ -807,23 +809,17 @@ function createBookEntry() {
         }
     };
 
+    // Setup degli event listener per la ricerca
     const debouncedSearch = debounce(searchBooks, 500);
-    
-    // Aggiungiamo gli event listener per la ricerca
-    if (searchInput) {
-        searchInput.addEventListener('input', debouncedSearch);
-        searchInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                searchBooks();
-            }
-        });
-    }
+    searchInput.addEventListener('input', debouncedSearch);
+    searchButton.addEventListener('click', searchBooks);
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            searchBooks();
+        }
+    });
 
-    if (searchButton) {
-        searchButton.addEventListener('click', searchBooks);
-    }
-
-    // Aggiungiamo gli event listeners dopo aver creato il DOM
+    // Setup degli altri event listener
     const addButton = bookDiv.querySelector('.add-book-btn');
     if (addButton) {
         addButton.addEventListener('click', createBookEntry);
@@ -836,7 +832,7 @@ function createBookEntry() {
         });
     }
 
-    // Aggiungiamo la validazione
+    // Setup della validazione
     const inputs = bookDiv.querySelectorAll('input');
     inputs.forEach(input => {
         if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
@@ -848,7 +844,6 @@ function createBookEntry() {
     document.getElementById('bookList').appendChild(bookDiv);
     updateBookCounters();
 }
-
 	    
 	    
 
