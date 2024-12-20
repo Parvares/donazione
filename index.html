@@ -784,12 +784,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const searchInput = document.getElementById('bookSearchInput');
         const searchButton = document.getElementById('bookSearchButton');
         const searchResultsContainer = document.getElementById('bookSearchResults');
+		
+		
 
-        
-        
-        
-        
-        
+// Search books using Google Books API
 async function searchBooks() {
     const query = searchInput.value.trim();
     if (!query) {
@@ -807,7 +805,7 @@ async function searchBooks() {
     try {
         // Fetch books from Google Books API
         // Aggiungi la tua API key di Google Books qui
-        const apiKey = 'YOUR_GOOGLE_BOOKS_API_KEY'; 
+        const apiKey = 'AIzaSyCHJzsPtp8CfKeUag-vvyTxobwR_DmYink'; 
         const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&langRestrict=it&maxResults=5&key=${apiKey}`);
         const data = await response.json();
 
@@ -893,9 +891,8 @@ async function searchBooks() {
         `;
     }
 }
-
-
-        
+		
+		
 
         // Add event listeners
         const debouncedSearch = debounce(searchBooks, 500);
@@ -1081,6 +1078,12 @@ async function searchBooks() {
     });
 });
 
+        
+
+
+
+        
+
 
 
 
@@ -1092,9 +1095,7 @@ async function searchBooks() {
     </script>
 
 
-
-
-
+    
 
 
     <footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
