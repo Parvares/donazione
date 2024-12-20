@@ -637,16 +637,24 @@ function showSuccessPopup(message) {
 
         
 
-	    function createBookEntry() {
+
+
+
+// First, let's modify how we attach the onclick handler
+function createBookEntry() {
     const bookDiv = document.createElement('div');
     bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
     bookCount++;
+
+    const addBookHandler = function() {
+        createBookEntry();
+    };
 
     bookDiv.innerHTML = `
         <div class="flex justify-between items-center mb-4">
             <span class="book-counter flex items-center justify-center w-6 h-6 rounded-full text-white font-semibold text-sm" style="background-color: rgb(34, 197, 94)">${bookCount}</span>
             ${bookCount > 1 ? `
-                <button type="button" class="remove-book-btn" onclick="removeBook(this)">✖</button>
+                <button type="button" class="remove-book-btn">✖</button>
             ` : ''}
         </div>
 
@@ -714,8 +722,19 @@ function showSuccessPopup(message) {
             <p class="hidden error-message text-sm text-red-500 mt-1">ISBN non valido</p>
         </div>
         
-        <button type="button" class="add-book-btn" onclick="createBookEntry()">+ Aggiungi Libro</button>
+        <button type="button" class="add-book-btn">+ Aggiungi Libro</button>
     `;
+
+    // Add event listeners after the HTML is inserted
+    const addBookBtn = bookDiv.querySelector('.add-book-btn');
+    addBookBtn.addEventListener('click', addBookHandler);
+
+    const removeBookBtn = bookDiv.querySelector('.remove-book-btn');
+    if (removeBookBtn) {
+        removeBookBtn.addEventListener('click', function() {
+            removeBook(this);
+        });
+    }
 
     // Add event listeners for the search functionality
     const searchInput = bookDiv.querySelector('.book-search-input');
@@ -775,7 +794,7 @@ function showSuccessPopup(message) {
                         if (yearInput) yearInput.value = year;
                         if (isbnInput) isbnInput.value = isbn;
 
-                        // Clear search results
+                        // Clear search results and input
                         searchResults.innerHTML = '';
                         searchInput.value = '';
                     });
@@ -827,6 +846,8 @@ function showSuccessPopup(message) {
     document.getElementById('bookList').appendChild(bookDiv);
     updateBookCounters();
 }
+
+	    
 
 
 	    
