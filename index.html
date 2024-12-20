@@ -636,6 +636,7 @@ function showSuccessPopup(message) {
 
 
         
+
 function createBookEntry() {
     const bookDiv = document.createElement('div');
     bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
@@ -726,24 +727,12 @@ function createBookEntry() {
     // Combiniamo tutto il contenuto
     bookDiv.innerHTML = headerHtml + searchHtml + fieldsHtml;
 
-    // Aggiungiamo gli event listeners dopo aver creato il DOM
-    const addButton = bookDiv.querySelector('.add-book-btn');
-    if (addButton) {
-        addButton.addEventListener('click', createBookEntry);
-    }
-
-    const removeButton = bookDiv.querySelector('.remove-book-btn');
-    if (removeButton) {
-        removeButton.addEventListener('click', function() {
-            removeBook(this);
-        });
-    }
-
     // Setup della ricerca
     const searchInput = bookDiv.querySelector('.book-search-input');
     const searchButton = bookDiv.querySelector('.book-search-button');
     const searchResults = bookDiv.querySelector('.book-search-results');
 
+    // Funzione di ricerca per questa scheda libro
     const searchBooks = async () => {
         const query = searchInput.value.trim();
         if (!query) {
@@ -820,6 +809,7 @@ function createBookEntry() {
 
     const debouncedSearch = debounce(searchBooks, 500);
     
+    // Aggiungiamo gli event listener per la ricerca
     if (searchInput) {
         searchInput.addEventListener('input', debouncedSearch);
         searchInput.addEventListener('keypress', (e) => {
@@ -831,6 +821,19 @@ function createBookEntry() {
 
     if (searchButton) {
         searchButton.addEventListener('click', searchBooks);
+    }
+
+    // Aggiungiamo gli event listeners dopo aver creato il DOM
+    const addButton = bookDiv.querySelector('.add-book-btn');
+    if (addButton) {
+        addButton.addEventListener('click', createBookEntry);
+    }
+
+    const removeButton = bookDiv.querySelector('.remove-book-btn');
+    if (removeButton) {
+        removeButton.addEventListener('click', function() {
+            removeBook(this);
+        });
     }
 
     // Aggiungiamo la validazione
@@ -845,6 +848,8 @@ function createBookEntry() {
     document.getElementById('bookList').appendChild(bookDiv);
     updateBookCounters();
 }
+
+	    
 	    
 
 	    
