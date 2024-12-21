@@ -36,19 +36,34 @@
             margin-top: 1.5rem;
             margin-bottom: 1rem;
             padding-bottom: 0.5rem;
-            border-bottom: 2px solid #970a2c;  /* Changed to match header color */
-        }    
-
-
-    /* Reduce space between title and notice */
-        .max-w-4xl.mx-auto.bg-white.p-8.rounded-lg.mt-2 {
-            margin-bottom: 1rem;  /* Reduced from default spacing */
+            border-bottom: 2px solid #970a2c;
         }
 
-        /* Further reduce space by adjusting the flex container's spacing */
+        /* Remove excess margin from the main container */
+        .max-w-4xl.mx-auto.bg-white.p-8.rounded-lg.mt-2 {
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        /* Remove excess margin and spacing from the flex container */
         .flex.flex-col.mb-10.text-left.space-y-4.px-4 {
-            margin-bottom: 1rem;  /* Reduced from 2.5rem (mb-10) */
-            gap: 0.5rem;  /* Reduced from 1rem (space-y-4) */
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        /* Adjust title spacing */
+        .text-3xl.md\:text-4xl.text-slate-700.font-bold.leading-tight.text-left {
+            margin-bottom: 1rem;
+        }
+
+        /* Remove margin from location link container */
+        .flex.items-center.gap-2.mb-2 {
+            margin-bottom: 0;
+        }
+
+        /* Adjust spacing for the notice box */
+        .bg-blue-50.border-l-4.border-blue-500.p-4.mb-6.rounded-r {
+            margin-top: 1rem;
         }	    
 	    
 
