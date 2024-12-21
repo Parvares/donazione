@@ -1045,8 +1045,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to auto-resize textarea
     const autoResize = () => {
-        textarea.style.height = 'auto'; // Reset height to recalculate
-        textarea.style.height = textarea.scrollHeight + 'px';
+        // Store the current scroll position
+        const scrollPos = window.scrollY;
+        
+        // Reset height only if content height is less than current height
+        const currentHeight = textarea.offsetHeight;
+        textarea.style.height = 'auto';
+        
+        const scrollHeight = textarea.scrollHeight;
+        
+        // Only update height if it's greater than the minimum
+        if (scrollHeight >= 75) {
+            textarea.style.height = `${scrollHeight}px`;
+        } else {
+            textarea.style.height = '75px';
+        }
+        
+        // Restore scroll position
+        window.scrollTo(0, scrollPos);
     };
 
     const updateCharCount = () => {
@@ -1068,18 +1084,25 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             charCount.style.display = 'none';
         }
-
-        // Auto-resize the textarea
-        autoResize();
     };
 
     // Initial setup
-    textarea.style.minHeight = '75px'; // Set minimum height
-    textarea.style.resize = 'vertical'; // Allow vertical resizing only
+    textarea.style.minHeight = '75px';
+    textarea.style.resize = 'vertical';
 
     // Event listeners
-    textarea.addEventListener('input', updateCharCount);
+    textarea.addEventListener('input', () => {
+        updateCharCount();
+        autoResize();
+    });
     
+    // Add resize event listener
+    textarea.addEventListener('mouseup', () => {
+        if (textarea.offsetHeight < textarea.scrollHeight) {
+            textarea.style.height = `${textarea.scrollHeight}px`;
+        }
+    });
+
     // Initial state
     charCount.style.display = 'none';
     
