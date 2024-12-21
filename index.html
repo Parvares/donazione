@@ -980,25 +980,40 @@ document.addEventListener('DOMContentLoaded', () => {
     const textarea = document.getElementById('notes');
     const charCount = document.getElementById('charCount');
     const maxLength = textarea.getAttribute('maxlength');
+    let hasStartedTyping = false;
 
     const updateCharCount = () => {
         const remaining = maxLength - textarea.value.length;
-        charCount.textContent = `${remaining} caratteri rimanenti`;
         
-        // Change color when approaching limit
-        if (remaining <= 50) {
-            charCount.classList.remove('text-gray-500');
-            charCount.classList.add('text-amber-600');
+        // Show character count only after user starts typing
+        if (hasStartedTyping || textarea.value.length > 0) {
+            charCount.textContent = `${remaining} caratteri rimanenti`;
+            
+            // Change color when approaching limit
+            if (remaining <= 50) {
+                charCount.classList.remove('text-gray-500');
+                charCount.classList.add('text-amber-600');
+            } else {
+                charCount.classList.remove('text-amber-600');
+                charCount.classList.add('text-gray-500');
+            }
+            charCount.style.display = 'block';
         } else {
-            charCount.classList.remove('text-amber-600');
-            charCount.classList.add('text-gray-500');
+            charCount.style.display = 'none';
         }
     };
 
-    textarea.addEventListener('input', updateCharCount);
+    textarea.addEventListener('input', () => {
+        if (!hasStartedTyping) {
+            hasStartedTyping = true;
+        }
+        updateCharCount();
+    });
     
-    // Initialize counter
-    updateCharCount();
+    // Hide counter initially if textarea is empty
+    if (textarea.value.length === 0) {
+        charCount.style.display = 'none';
+    }
 });
 	    
 
