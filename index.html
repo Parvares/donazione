@@ -1212,20 +1212,21 @@ function resetBookFields(button) {
 		
     try {
     // Update the emailjs.send portion of the submit event listener
-    const response = await emailjs.send(
-        process.env.EMAILJS_SERVICE_ID,
-        process.env.EMAILJS_TEMPLATE_ID, 
-        {
-            to_email: 'bibliotecamorante@gmail.com',
-            from_name: `${nome} ${cognome}`,
-            from_email: email,
-            reply_to: email,
-            tessera: tessera || 'Non specificata',
-            telefono: telefono || 'Non specificato',
-            books: formattedBooks,
-            notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
-        }
-    );
+   const response = await emailjs.send(
+    process.env.EMAILJS_SERVICE_ID,
+    process.env.EMAILJS_TEMPLATE_ID, 
+    {
+        to_email: process.env.RECIPIENT_EMAIL,
+        from_name: `${nome} ${cognome}`,
+        from_email: email,
+        reply_to: email,
+        tessera: tessera || 'Non specificata',
+        telefono: telefono || 'Non specificato',
+        books: formattedBooks,
+        notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
+    },
+    process.env.EMAILJS_PUBLIC_KEY
+);
 
         // Rimuovi il loading overlay prima di mostrare il popup di successo
         removeLoadingOverlay();
