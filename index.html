@@ -682,10 +682,25 @@ function createBookEntry() {
     bookDiv.innerHTML = `
         <div class="flex justify-between items-center mb-4">
             <span class="book-counter flex items-center justify-center w-6 h-6 rounded-full text-white font-semibold text-sm" style="background-color: rgb(34, 197, 94)">${bookCount}</span>
-            ${bookCount > 1 ? `
-                <button type="button" class="remove-book-btn" onclick="removeBook(this)">✖</button>
-            ` : ''}
+            <div class="flex gap-2">
+                ${bookCount > 1 ? `
+                    <button type="button" class="reset-book-btn text-blue-500 hover:text-blue-700" title="Azzera campi" onclick="resetBookFields(this)">
+                        <i class="fas fa-undo"></i>
+                    </button>
+                    <button type="button" class="remove-book-btn text-red-500 hover:text-red-700" title="Rimuovi libro" onclick="removeBook(this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                ` : `
+                    <button type="button" class="reset-book-btn text-blue-500 hover:text-blue-700" title="Azzera campi" onclick="resetBookFields(this)">
+                        <i class="fas fa-undo"></i>
+                    </button>
+                `}
+            </div>
         </div>
+
+
+
+ 
 
         <div class="mb-5">
             <label class="flex items-center gap-2 text-blue-600 font-medium mb-2">
@@ -855,6 +870,37 @@ function selectBook(element, bookData) {
             }
         }
 
+
+
+function resetBookFields(button) {
+    const bookEntry = button.closest('.book-entry');
+    if (bookEntry) {
+        // Reset all input fields
+        const inputs = bookEntry.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.value = '';
+            hideError(input);
+        });
+        
+        // Reset quick search
+        const quickSearch = bookEntry.querySelector('.quick-search');
+        if (quickSearch) {
+            quickSearch.value = '';
+        }
+        
+        // Hide search results if visible
+        const searchResults = bookEntry.querySelector('.search-results');
+        if (searchResults) {
+            searchResults.classList.add('hidden');
+        }
+    }
+}
+
+
+
+
+
+	    
         function updateBookCounters() {
             const bookEntries = document.querySelectorAll('.book-entry');
             bookEntries.forEach((entry, index) => {
