@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Dona libri a Ostia e supporta la cultura con libri usati o nuovi. Scopri come fare la differenza!">
-
     <title>Modulo donazione</title>
 
     <!-- Link to favicon -->
@@ -36,46 +35,6 @@
         }
         button[type="submit"]:hover {
             background-color: #005a9e !important; /* Azzurro più scuro per effetto hover */
-        }
-
-        /* Aggiorna il colore del contatore dei libri con una sfumatura di verde */
-        .book-counter {
-            background: linear-gradient(to bottom right, #34d399, #10b981);
-        }
-
-        /* Stile per il pulsante "Aggiungi Libro" con sfumatura verde */
-        .book-entry > button[type="button"].add-book-btn {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            background: linear-gradient(to bottom right, #34d399, #10b981);
-            color: white;
-            border: none;
-            border-radius: 0.375rem;
-            transition: transform 0.3s ease;
-            margin-top: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .book-entry > button[type="button"].add-book-btn:hover {
-            transform: translateY(-2px);
-            background: linear-gradient(to bottom right, #10b981, #059669);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-        }
-
-        /* Stile per il pulsante di rimozione (x) */
-        .book-entry > button[type="button"].remove-book-btn {
-            background: none;
-            border: none;
-            color: #ff4347;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0;
-            transition: transform 0.3s ease, color 0.3s ease;
-        }
-
-        .book-entry > button[type="button"].remove-book-btn:hover {
-            transform: scale(1.2);
-            color: #d9292e;
         }
 
         .top-banner {
@@ -254,15 +213,14 @@
             }
         }
 
-        /* Additional styles for "Dati Personali" and "Libri da donare" */
-        h3 {
-            text-transform: uppercase;
+        /* Styling for form headers */
+        .form-section-header {
+            font-size: 1.5rem;
+            color: var(--primary);
             font-weight: bold;
-            background: linear-gradient(to bottom, #34d399, #10b981);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 8px;
-            display: inline-block;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
         }
     </style>
 </head>
@@ -296,12 +254,6 @@
         </div>
     </header>
 
-	
-
-
-    
-   
-
     <div class="content-wrapper">
         <div class="nav-icons">
             <a href="https://www.bibliotechediroma.it/opac/news/donazioni/33158" title="Indietro">
@@ -312,39 +264,29 @@
             </a>
         </div>
 
-
-        
-
-<div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md mt-2">
-    <div class="flex flex-col mb-10 text-left space-y-4 px-4">
-        <div class="flex items-center gap-2 mb-2">
-            <a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" 
-               target="_blank" 
-               title="Visualizza la posizione sulla mappa">
-                <img src="location.svg" alt="Posizione" class="h-5 w-5 text-gray-600">
-            </a>
-            <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" 
-               class="text-base text-red-700 hover:underline hover:text-red-900 transition-colors">
-                Biblioteca Elsa Morante
-            </a>
-        </div>
-        <h1 class="text-3xl md:text-4xl text-slate-700 font-bold leading-tight text-left">
-            Donazione di libri
-        </h1>
-    </div>
-</div>
-
-    
-
-       
-
-            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r">
-                Compila il modulo per donare i tuoi libri alla biblioteca. I campi contrassegnati con * sono obbligatori. E' raccomandato compilare anche il campo ISBN per garantire una più accurata identificazione dei volumi.
+        <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md mt-2">
+            <div class="flex flex-col mb-10 text-left space-y-4 px-4">
+                <div class="flex items-center gap-2 mb-2">
+                    <a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" 
+                    target="_blank" 
+                    title="Visualizza la posizione sulla mappa">
+                        <img src="location.svg" alt="Posizione" class="h-5 w-5 text-gray-600">
+                    </a>
+                    <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" 
+                    class="text-base text-red-700 hover:underline hover:text-red-900 transition-colors">
+                        Biblioteca Elsa Morante
+                    </a>
+                </div>
+                <h1 class="text-3xl md:text-4xl text-slate-700 font-bold leading-tight text-left">
+                    Donazione di libri
+                </h1>
             </div>
-            
-            <form id="donationForm" novalidate>
-                <!-- Rest of the form remains the same as in the original document -->
-                <h3 class="text-xl text-slate-700 mt-6 mb-4 pb-2 border-b-2 border-gray-200">Dati Personali</h3>
+        </div>
+
+        <form id="donationForm" novalidate>
+            <h3 class="form-section-header">Dati Personali</h3>
+
+
                 
                 <div class="mb-5">
                     <label for="nome" class="block mb-1 text-slate-700 font-medium">Nome: *</label>
