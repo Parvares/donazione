@@ -1038,41 +1038,29 @@ function resetBookFields(button) {
 
 
 // Add this to your existing JavaScript
-document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
     const textarea = document.getElementById('notes');
     const charCount = document.getElementById('charCount');
     const maxLength = textarea.getAttribute('maxlength');
+    let manualHeight = null; // Track manual height
 
     // Function to auto-resize textarea
     const autoResize = () => {
-        // Store the current scroll position
-        const scrollPos = window.scrollY;
-        
-        // Reset height only if content height is less than current height
-        const currentHeight = textarea.offsetHeight;
-        textarea.style.height = 'auto';
-        
-        const scrollHeight = textarea.scrollHeight;
-        
-        // Only update height if it's greater than the minimum
-        if (scrollHeight >= 75) {
-            textarea.style.height = `${scrollHeight}px`;
+        // If user has manually resized, respect that height as minimum
+        if (manualHeight) {
+            textarea.style.height = `${Math.max(manualHeight, textarea.scrollHeight)}px`;
         } else {
-            textarea.style.height = '75px';
+            textarea.style.height = 'auto';
+            textarea.style.height = `${Math.max(75, textarea.scrollHeight)}px`;
         }
-        
-        // Restore scroll position
-        window.scrollTo(0, scrollPos);
     };
 
     const updateCharCount = () => {
         const remaining = maxLength - textarea.value.length;
         
-        // Show/hide character count based on content
         if (textarea.value.length > 0) {
             charCount.textContent = `${remaining} caratteri rimanenti`;
             
-            // Change color when approaching limit
             if (remaining <= 50) {
                 charCount.classList.remove('text-gray-500');
                 charCount.classList.add('text-amber-600');
@@ -1090,16 +1078,16 @@ document.addEventListener('DOMContentLoaded', () => {
     textarea.style.minHeight = '75px';
     textarea.style.resize = 'vertical';
 
-    // Event listeners
+    // Track manual resize
+    textarea.addEventListener('mouseup', () => {
+        manualHeight = textarea.offsetHeight;
+    });
+
+    // Handle input without losing manual height
     textarea.addEventListener('input', () => {
         updateCharCount();
-        autoResize();
-    });
-    
-    // Add resize event listener
-    textarea.addEventListener('mouseup', () => {
-        if (textarea.offsetHeight < textarea.scrollHeight) {
-            textarea.style.height = `${textarea.scrollHeight}px`;
+        if (textarea.scrollHeight > manualHeight) {
+            autoResize();
         }
     });
 
@@ -1112,6 +1100,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCharCount();
     }
 });
+
 	    
 
 	    
