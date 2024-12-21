@@ -857,7 +857,7 @@ function createBookEntry() {
 
 	    
 
-// Add this new function to handle book selection
+<!-- Modified selectBook function -->
 function selectBook(element, bookData) {
     const bookEntry = element.closest('.book-entry');
     bookEntry.querySelector('.book-title').value = bookData.title;
@@ -866,9 +866,13 @@ function selectBook(element, bookData) {
     bookEntry.querySelector('.book-year').value = bookData.year;
     bookEntry.querySelector('.book-isbn').value = bookData.isbn;
     bookEntry.querySelector('.search-results').classList.add('hidden');
-    bookEntry.querySelector('.quick-search').value = '';
+    
+    // Hide the quick search section
+    const quickSearchSection = bookEntry.querySelector('.mb-5:has(.quick-search)');
+    if (quickSearchSection) {
+        quickSearchSection.style.display = 'none';
+    }
 }
-
 
 
 
