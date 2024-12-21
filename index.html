@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Dona libri a Ostia e supporta la cultura con libri usati o nuovi. Scopri come fare la differenza!">
+   <meta name="description" content="Dona libri a Ostia e supporta la cultura con libri usati o nuovi. Scopri come fare la differenza!">
+
+
     <title>Modulo donazione</title>
 
     <!-- Link to favicon -->
@@ -16,27 +18,96 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
-        :root {
-            --primary: #6b0a20;    /* Slightly darker red */
-            --secondary: #540f26;  /* Even darker red */
-            --accent: #700f0a;     /* Darker bordeaux */
-        }
 
-        /* Sostituisci il pulsante di invio con il colore amaranto dell'intestazione */
-        button[type="submit"] {
-            background-color: #0078d7 !important; /* Azzurro intenso */
-            color: white; /* Testo in bianco per leggibilità */
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        button[type="submit"]:hover {
-            background-color: #005a9e !important; /* Azzurro più scuro per effetto hover */
-        }
 
+        
+:root {
+    --primary: #6b0a20;    /* Slightly darker red */
+    --secondary: #540f26;  /* Even darker red */
+    --accent: #700f0a;     /* Darker bordeaux */
+}
+
+
+  /* Update styles for section headers */
+    .section-header {
+        font-size: 1.5rem; /* 24px */
+        font-weight: 600;
+        color: #970a2c;
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #f3f4f6;
+    }
+	    
+        
+
+/* Sostituisci il pulsante di invio con il colore amaranto dell'intestazione */
+ button[type="submit"] {
+        background-color: #0078d7 !important; /* Azzurro intenso */
+        color: white; /* Testo in bianco per leggibilità */
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    button[type="submit"]:hover {
+        background-color: #005a9e !important; /* Azzurro più scuro per effetto hover */
+    }
+
+
+
+
+
+/* Aggiorna il colore del contatore dei libri con una sfumatura di verde */
+.book-counter {
+    background: linear-gradient(to bottom right, #34d399, #10b981);
+}
+
+/* Stile per il pulsante "Aggiungi Libro" con sfumatura verde */
+.book-entry > button[type="button"].add-book-btn {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: linear-gradient(to bottom right, #34d399, #10b981);
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    transition: transform 0.3s ease;
+    margin-top: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.book-entry > button[type="button"].add-book-btn:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(to bottom right, #10b981, #059669);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+
+
+
+
+        
+
+/* Stile per il pulsante di rimozione (x) */
+.book-entry > button[type="button"].remove-book-btn {
+    background: none;
+    border: none;
+    color: #ff4347;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.book-entry > button[type="button"].remove-book-btn:hover {
+    transform: scale(1.2);
+    color: #d9292e;
+}
+
+        
+        
         .top-banner {
             background-color: white;
             padding: 0.8rem 2rem; 
@@ -106,54 +177,60 @@
             gap: 1rem;
         }
 
-        .content-wrapper {
-            max-width: 900px;
-            width: 100%;
-            margin: 2rem auto;
-            padding: 0 1rem;
-            position: relative;
-            margin-top: 60px;
-        }
 
-        .nav-icons {
-            position: absolute;
-            top: -60px;
-            left: 50%; /* Centrato rispetto al contenitore */
-            transform: translateX(calc(-50% - 400px)); /* Spostato a sinistra della larghezza desiderata */
-            display: flex;
-            align-items: center;
-            gap: 3rem;
-            padding-top: 20px;
-        }
 
-        /* Responsive adjustments */
-        @media (max-width: 1400px) {
-            .nav-icons {
-                transform: translateX(calc(-50% - 300px));
-            }
-        }
 
-        @media (max-width: 1200px) {
-            .nav-icons {
-                transform: translateX(calc(-50% - 200px));
-            }
-        }
+ .content-wrapper {
+    max-width: 900px;
+    width: 100%;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    position: relative;
+    margin-top: 60px;
+}
 
-        @media (max-width: 992px) {
-            .nav-icons {
-                transform: translateX(calc(-50% - 100px));
-            }
-        }
+.nav-icons {
+    position: absolute;
+    top: -60px;
+    left: 50%; /* Centrato rispetto al contenitore */
+    transform: translateX(calc(-50% - 400px)); /* Spostato a sinistra della larghezza desiderata */
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    padding-top: 20px;
+}
 
-        @media (max-width: 768px) {
-            .nav-icons {
-                position: relative;
-                left: 0;
-                top: 0;
-                transform: none;
-                justify-content: flex-start;
-            }
-        }
+/* Responsive adjustments */
+@media (max-width: 1400px) {
+    .nav-icons {
+        transform: translateX(calc(-50% - 300px));
+    }
+}
+
+@media (max-width: 1200px) {
+    .nav-icons {
+        transform: translateX(calc(-50% - 200px));
+    }
+}
+
+@media (max-width: 992px) {
+    .nav-icons {
+        transform: translateX(calc(-50% - 100px));
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-icons {
+        position: relative;
+        left: 0;
+        top: 0;
+        transform: none;
+        justify-content: flex-start;
+    }
+}
+
+
+        
 
         .nav-icons a {
             color: #970a2c;
@@ -188,6 +265,10 @@
             background-color: rgba(128, 128, 128, 0.3);
         }
 
+
+
+        
+        
         header img {
             height: 70px;
             max-width: 100%;
@@ -199,29 +280,26 @@
             max-width: 100%;
         }
 
-        footer {
-            box-shadow: 0 -2px 4px -1px rgba(0, 0, 0, 0.1);
-        }
 
-        footer i {
-            font-size: 1rem;
-        }
 
-        @media (max-width: 768px) {
-            footer .container {
-                text-align: center;
-            }
-        }
+footer {
+    box-shadow: 0 -2px 4px -1px rgba(0, 0, 0, 0.1);
+}
 
-        /* Styling for form headers */
-        .form-section-header {
-            font-size: 1.5rem;
-            color: var(--primary);
-            font-weight: bold;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--primary);
-        }
+footer i {
+    font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+    footer .container {
+        text-align: center;
+    }
+}
+
+
+
+
+        
     </style>
 </head>
 <body>
@@ -243,16 +321,22 @@
         </div>
     </div>
 
-    <header>
-        <div class="container-header">
-            <a href="https://www.bibliotechediroma.it/opac/.do">
-                <img src="logobianco.png" alt="Logo Biblioteche di Roma" style="height: 70px; max-width: 100%;">
-            </a>
-            <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2">
-                <img src="logomorante.png" alt="Logo Biblioteca Morante" style="height: 180px; max-width: 100%;">
-            </a>
-        </div>
-    </header>
+    
+    
+  <header>
+    <div class="container-header">
+        <a href="https://www.bibliotechediroma.it/opac/.do">
+            <img src="logobianco.png" alt="Logo Biblioteche di Roma" style="height: 70px; max-width: 100%;">
+        </a>
+        <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2">
+            <img src="logomorante.png" alt="Logo Biblioteca Morante" style="height: 180px; max-width: 100%;">
+        </a>
+    </div>
+</header>
+
+
+    
+   
 
     <div class="content-wrapper">
         <div class="nav-icons">
@@ -264,16 +348,19 @@
             </a>
         </div>
 
-        <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md mt-2">
+
+        
+
+       <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg mt-2"> <!-- Removed shadow-md class -->
             <div class="flex flex-col mb-10 text-left space-y-4 px-4">
                 <div class="flex items-center gap-2 mb-2">
                     <a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" 
-                    target="_blank" 
-                    title="Visualizza la posizione sulla mappa">
+                       target="_blank" 
+                       title="Visualizza la posizione sulla mappa">
                         <img src="location.svg" alt="Posizione" class="h-5 w-5 text-gray-600">
                     </a>
-                    <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" 
-                    class="text-base text-red-700 hover:underline hover:text-red-900 transition-colors">
+                    <a href="https://www.bibliotechedirama.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" 
+                       class="text-base text-red-700 hover:underline hover:text-red-900 transition-colors">
                         Biblioteca Elsa Morante
                     </a>
                 </div>
@@ -283,65 +370,63 @@
             </div>
         </div>
 
-        <form id="donationForm" novalidate>
-    <h3 class="form-section-header">Dati Personali</h3>
+    
 
-    <div class="mb-5">
-        <label for="nome" class="block mb-1 text-slate-700 font-medium">Nome: *</label>
-        <input type="text" id="nome" name="nome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-        <p class="hidden error-message text-sm text-red-500 mt-1">Il nome è obbligatorio</p>
-    </div>
+       
 
-    <div class="mb-5">
-        <label for="cognome" class="block mb-1 text-slate-700 font-medium">Cognome: *</label>
-        <input type="text" id="cognome" name="cognome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-        <p class="hidden error-message text-sm text-red-500 mt-1">Il cognome è obbligatorio</p>
-    </div>
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r">
+                Compila il modulo per donare i tuoi libri alla biblioteca. I campi contrassegnati con * sono obbligatori. E' raccomandato compilare anche il campo ISBN per garantire una più accurata identificazione dei volumi.
+            </div>
+            
+            <form id="donationForm" novalidate>
+                <!-- Rest of the form remains the same as in the original document -->
+                <h3 class="section-header">Dati Personali</h3>
+                
+                <div class="mb-5">
+                    <label for="nome" class="block mb-1 text-slate-700 font-medium">Nome: *</label>
+                    <input type="text" id="nome" name="nome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                    <p class="hidden error-message text-sm text-red-500 mt-1">Il nome è obbligatorio</p>
+                </div>
+                
+                <div class="mb-5">
+                    <label for="cognome" class="block mb-1 text-slate-700 font-medium">Cognome: *</label>
+                    <input type="text" id="cognome" name="cognome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                    <p class="hidden error-message text-sm text-red-500 mt-1">Il cognome è obbligatorio</p>
+                </div>
+                
+                <div class="mb-5">
+                    <label for="tessera" class="block mb-1 text-slate-700 font-medium">Numero Tessera:</label>
+                    <input type="text" id="tessera" name="tessera" class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                </div>
 
-    <div class="mb-5">
-        <label for="tessera" class="block mb-1 text-slate-700 font-medium">Numero Tessera:</label>
-        <input type="text" id="tessera" name="tessera" class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-    </div>
+                <div class="mb-5">
+                    <label for="telefono" class="block mb-1 text-slate-700 font-medium">Telefono:</label>
+                    <input type="tel" id="telefono" name="telefono" class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                    <p class="hidden error-message text-sm text-red-500 mt-1">Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)</p>
+                </div>
+                
+                <div class="mb-5">
+                    <label for="email" class="block mb-1 text-slate-700 font-medium">Email: *</label>
+                    <input type="email" id="email" name="email" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+                    <p class="hidden error-message text-sm text-red-500 mt-1">Inserire un indirizzo email valido</p>
+                </div>
 
-    <div class="mb-5">
-        <label for="telefono" class="block mb-1 text-slate-700 font-medium">Telefono:</label>
-        <input type="tel" id="telefono" name="telefono" class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-        <p class="hidden error-message text-sm text-red-500 mt-1">Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)</p>
-    </div>
-
-    <div class="mb-5">
-        <label for="email" class="block mb-1 text-slate-700 font-medium">Email: *</label>
-        <input type="email" id="email" name="email" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-        <p class="hidden error-message text-sm text-red-500 mt-1">Inserire un indirizzo email valido</p>
-    </div>
-
-    <h3 class="form-section-header mt-8">Libri da donare</h3>
-
-    <div id="bookList">
-        <!-- Questa sezione sarà popolata dinamicamente con i dettagli dei libri -->
-    </div>
-
-    <button type="button" class="add-book-btn mt-4">Aggiungi Libro</button>
-
-    <div class="bg-gray-50 p-4 rounded mb-5">
-        <label class="flex items-start gap-3">
-            <input type="checkbox" id="accept" name="accept" required class="w-5 h-5 mt-1">
-            <span>Ho letto e accetto <a href="termini.html" target="_blank" class="text-blue-500 hover:underline">termini e condizioni</a></span>
-        </label>
-        <p class="hidden error-message text-sm text-red-500 mt-1">Devi accettare i termini e condizioni</p>
-    </div>
-
-    <button type="submit" class="w-full max-w-sm mx-auto block px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors font-medium text-base">
-        Invia Donazione
-    </button>
-</form>
-  
-	
-	
-	
-	
-	
-       </div>
+                <h3 class="section-header">Libri da donare</h3>
+                <div id="bookList"></div>
+                
+                <div class="bg-gray-50 p-4 rounded mb-5">
+                    <label class="flex items-start gap-3">
+                        <input type="checkbox" id="accept" name="accept" required class="w-5 h-5 mt-1">
+                        <span>Ho letto e accetto <a href="termini.html" target="_blank" class="text-blue-500 hover:underline">termini e condizioni</a></span>
+                    </label>
+                    <p class="hidden error-message text-sm text-red-500 mt-1">Devi accettare i termini e condizioni</p>
+                </div>
+                
+                <button type="submit" class="w-full max-w-sm mx-auto block px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors font-medium text-base">
+                    Invia Donazione
+                </button>
+            </form>
+        </div>
     </div>
 
 
