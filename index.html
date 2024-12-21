@@ -215,6 +215,17 @@
     margin-top: 60px;
 }
 
+
+
+<!-- Modified style section - Add this inside the existing style tag -->
+.required-asterisk {
+    color: #970a2c;
+    font-weight: bold;
+}
+
+	    
+
+	    
 .nav-icons {
     position: absolute;
     top: -60px;
@@ -408,17 +419,18 @@ footer i {
                 <!-- Rest of the form remains the same as in the original document -->
                 <h3 class="section-header">Dati Personali</h3>
                 
-                <div class="mb-5">
-                    <label for="nome" class="block mb-1 text-slate-700 font-medium">Nome: *</label>
-                    <input type="text" id="nome" name="nome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-                    <p class="hidden error-message text-sm text-red-500 mt-1">Il nome è obbligatorio</p>
-                </div>
-                
-                <div class="mb-5">
-                    <label for="cognome" class="block mb-1 text-slate-700 font-medium">Cognome: *</label>
-                    <input type="text" id="cognome" name="cognome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-                    <p class="hidden error-message text-sm text-red-500 mt-1">Il cognome è obbligatorio</p>
-                </div>
+                <!-- Modified form fields - Update these sections in the form -->
+<div class="mb-5">
+    <label for="nome" class="block mb-1 text-slate-700 font-medium">Nome: <span class="required-asterisk">*</span></label>
+    <input type="text" id="nome" name="nome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+    <p class="hidden error-message text-sm text-red-500 mt-1">Il nome è obbligatorio</p>
+</div>
+
+<div class="mb-5">
+    <label for="cognome" class="block mb-1 text-slate-700 font-medium">Cognome: <span class="required-asterisk">*</span></label>
+    <input type="text" id="cognome" name="cognome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+    <p class="hidden error-message text-sm text-red-500 mt-1">Il cognome è obbligatorio</p>
+</div>
                 
                 <div class="mb-5">
                     <label for="tessera" class="block mb-1 text-slate-700 font-medium">Numero Tessera:</label>
@@ -431,11 +443,11 @@ footer i {
                     <p class="hidden error-message text-sm text-red-500 mt-1">Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)</p>
                 </div>
                 
-                <div class="mb-5">
-                    <label for="email" class="block mb-1 text-slate-700 font-medium">Email: *</label>
-                    <input type="email" id="email" name="email" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-                    <p class="hidden error-message text-sm text-red-500 mt-1">Inserire un indirizzo email valido</p>
-                </div>
+              <div class="mb-5">
+    <label for="email" class="block mb-1 text-slate-700 font-medium">Email: <span class="required-asterisk">*</span></label>
+    <input type="email" id="email" name="email" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+    <p class="hidden error-message text-sm text-red-500 mt-1">Inserire un indirizzo email valido</p>
+</div>
 
                 <h3 class="section-header">Libri da donare</h3>
                 <div id="bookList"></div>
@@ -719,11 +731,12 @@ function createBookEntry() {
             <div class="search-results hidden mt-2 bg-white border border-gray-200 rounded-lg max-h-60 overflow-y-auto shadow-lg"></div>
         </div>
                 
-        <div class="mb-5">
-            <label class="block mb-1 text-slate-700 font-medium">Titolo: *</label>
-            <input type="text" class="book-title w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" required>
-            <p class="hidden error-message text-sm text-red-500 mt-1">Il titolo è obbligatorio</p>
-        </div>
+       <!-- Modified book entry template in createBookEntry() function -->
+<div class="mb-5">
+    <label class="block mb-1 text-slate-700 font-medium">Titolo: <span class="required-asterisk">*</span></label>
+    <input type="text" class="book-title w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" required>
+    <p class="hidden error-message text-sm text-red-500 mt-1">Il titolo è obbligatorio</p>
+</div>
         <div class="mb-5">
             <label class="block mb-1 text-slate-700 font-medium">Autore:</label>
             <input type="text" class="book-author w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
