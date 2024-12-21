@@ -29,8 +29,69 @@
 
 
 
+/* Stile base per tutti gli input */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+textarea,
+select {
+    border-radius: 0.5rem !important;  /* Bordi leggermente arrotondati */
+    transition: all 0.2s ease-in-out !important;
+}
+/* Stile per il focus */
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+select:focus {
+    outline: none !important;
+    border-color: #0078d7 !important;  /* Colore azzurro coerente con il bottone di submit */
+    box-shadow: 0 0 0 2px rgba(0, 120, 215, 0.1) !important;
+}
+/* Stile per gli input disabilitati */
+input:disabled,
+textarea:disabled,
+select:disabled {
+    background-color: #f3f4f6 !important;
+    cursor: not-allowed !important;
+}
+/* Stile per gli input con errore */
+input.error,
+textarea.error,
+select.error {
+    border-color: #ef4444 !important;
+    background-color: #fef2f2 !important;
+}
+/* Stile per il contenitore dei libri */
+.book-entry {
+    border-radius: 0.75rem !important;  /* Bordi leggermente più arrotondati per i contenitori */
+    overflow: hidden !important;
+}
+/* Stile per il pulsante di ricerca nei libri */
+.search-btn {
+    border-radius: 0 0.5rem 0.5rem 0 !important;
+}
+/* Stile per l'input di ricerca rapida */
+.quick-search {
+    border-radius: 0.5rem 0 0 0.5rem !important;
+}
+/* Stile per i risultati della ricerca */
+.search-results {
+    border-radius: 0.5rem !important;
+    margin-top: 0.5rem !important;
+}
+/* Stile per il textarea delle note */
+#notes {
+    border-radius: 0.5rem !important;
+    min-height: 75px !important;
+}
 
-/* MODIFICA QUI - Sostituisci la vecchia classe required-asterisk con questa nuova versione */
+
+	    
+
+
 .required-asterisk {
     color: #970a2c !important;
     font-weight: 900 !important;
