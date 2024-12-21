@@ -483,31 +483,7 @@ footer i {
 </div>
 
 
-		    // Add this to your existing JavaScript
-document.addEventListener('DOMContentLoaded', () => {
-    const textarea = document.getElementById('notes');
-    const charCount = document.getElementById('charCount');
-    const maxLength = textarea.getAttribute('maxlength');
 
-    const updateCharCount = () => {
-        const remaining = maxLength - textarea.value.length;
-        charCount.textContent = `${remaining} caratteri rimanenti`;
-        
-        // Change color when approaching limit
-        if (remaining <= 50) {
-            charCount.classList.remove('text-gray-500');
-            charCount.classList.add('text-amber-600');
-        } else {
-            charCount.classList.remove('text-amber-600');
-            charCount.classList.add('text-gray-500');
-        }
-    };
-
-    textarea.addEventListener('input', updateCharCount);
-    
-    // Initialize counter
-    updateCharCount();
-});
 
 
 		    
@@ -997,6 +973,36 @@ function resetBookFields(button) {
         });
 
 
+
+
+// Add this to your existing JavaScript
+document.addEventListener('DOMContentLoaded', () => {
+    const textarea = document.getElementById('notes');
+    const charCount = document.getElementById('charCount');
+    const maxLength = textarea.getAttribute('maxlength');
+
+    const updateCharCount = () => {
+        const remaining = maxLength - textarea.value.length;
+        charCount.textContent = `${remaining} caratteri rimanenti`;
+        
+        // Change color when approaching limit
+        if (remaining <= 50) {
+            charCount.classList.remove('text-gray-500');
+            charCount.classList.add('text-amber-600');
+        } else {
+            charCount.classList.remove('text-amber-600');
+            charCount.classList.add('text-gray-500');
+        }
+    };
+
+    textarea.addEventListener('input', updateCharCount);
+    
+    // Initialize counter
+    updateCharCount();
+});
+	    
+
+	    
 
 
         document.getElementById('donationForm').addEventListener('submit', async function(event) {
