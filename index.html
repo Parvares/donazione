@@ -980,13 +980,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const textarea = document.getElementById('notes');
     const charCount = document.getElementById('charCount');
     const maxLength = textarea.getAttribute('maxlength');
-    let hasStartedTyping = false;
+
+    // Function to auto-resize textarea
+    const autoResize = () => {
+        textarea.style.height = 'auto'; // Reset height to recalculate
+        textarea.style.height = textarea.scrollHeight + 'px';
+    };
 
     const updateCharCount = () => {
         const remaining = maxLength - textarea.value.length;
         
-        // Show character count only after user starts typing
-        if (hasStartedTyping || textarea.value.length > 0) {
+        // Show/hide character count based on content
+        if (textarea.value.length > 0) {
             charCount.textContent = `${remaining} caratteri rimanenti`;
             
             // Change color when approaching limit
@@ -1001,18 +1006,25 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             charCount.style.display = 'none';
         }
+
+        // Auto-resize the textarea
+        autoResize();
     };
 
-    textarea.addEventListener('input', () => {
-        if (!hasStartedTyping) {
-            hasStartedTyping = true;
-        }
-        updateCharCount();
-    });
+    // Initial setup
+    textarea.style.minHeight = '75px'; // Set minimum height
+    textarea.style.resize = 'vertical'; // Allow vertical resizing only
+
+    // Event listeners
+    textarea.addEventListener('input', updateCharCount);
     
-    // Hide counter initially if textarea is empty
-    if (textarea.value.length === 0) {
-        charCount.style.display = 'none';
+    // Initial state
+    charCount.style.display = 'none';
+    
+    // Set initial height if there's content
+    if (textarea.value.length > 0) {
+        autoResize();
+        updateCharCount();
     }
 });
 	    
