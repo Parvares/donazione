@@ -28,6 +28,28 @@
 }
 
 
+
+
+/* MODIFICA QUI - Sostituisci la vecchia classe required-asterisk con questa nuova versione */
+.required-asterisk {
+    color: #970a2c !important;
+    font-weight: 900 !important;
+    font-size: 1.25em !important;
+    display: inline-block !important;
+    margin-left: 4px !important;
+    vertical-align: middle !important;
+}
+
+/* Assicurati che il colore non venga sovrascritto */
+.text-slate-700 .required-asterisk {
+    color: #970a2c !important;
+}
+
+
+
+
+
+	    
  /* Update the section header style */
         .section-header {
             font-size: 1.5rem;
@@ -191,14 +213,7 @@
     text-align: center;
 }
 
-<!-- Modified style section - Add this inside the existing style tag -->
-.required-asterisk {
-    color: #970a2c;
-    font-weight: 700;  /* Bold */
-    font-size: 1.2em; /* Slightly larger */
-    display: inline-block;
-    margin-left: 2px;
-}
+
 	    
         .container-header {
             max-width: 1200px;
