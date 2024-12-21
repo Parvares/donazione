@@ -28,18 +28,29 @@
 }
 
 
-  /* Update styles for section headers */
-    .section-header {
-        font-size: 1.5rem; /* 24px */
-        font-weight: 600;
-        color: #970a2c;
-        margin-top: 1.5rem;
-        margin-bottom: 1rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid #f3f4f6;
-    }
+ /* Update the section header style */
+        .section-header {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #970a2c;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #970a2c;  /* Changed to match header color */
+        }    
+
+
+    /* Reduce space between title and notice */
+        .max-w-4xl.mx-auto.bg-white.p-8.rounded-lg.mt-2 {
+            margin-bottom: 1rem;  /* Reduced from default spacing */
+        }
+
+        /* Further reduce space by adjusting the flex container's spacing */
+        .flex.flex-col.mb-10.text-left.space-y-4.px-4 {
+            margin-bottom: 1rem;  /* Reduced from 2.5rem (mb-10) */
+            gap: 0.5rem;  /* Reduced from 1rem (space-y-4) */
+        }	    
 	    
-        
 
 /* Sostituisci il pulsante di invio con il colore amaranto dell'intestazione */
  button[type="submit"] {
