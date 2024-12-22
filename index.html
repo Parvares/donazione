@@ -879,52 +879,66 @@ function createBookEntry() {
 
     let debounceTimer;
 
-    const performSearch = async () => {
-        const query = searchInput.value.trim();
-        if (!query) {
-            resultsDiv.classList.add('hidden');
-            return;
-        }
+    
+	
+	
+	
+// All'inizio del tuo JavaScript, dopo la dichiarazione delle altre variabili d'ambiente
+const GOOGLE_BOOKS_API_KEY = process.env.GOOGLE_BOOKS_API_KEY;
 
-        try {
-            const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&key=AIzaSyCHJzsPtp8CfKeUag-vvyTxobwR_DmYink&maxResults=5`);
-            const data = await response.json();
+// Modifica la funzione performSearch
+const performSearch = async () => {
+    const query = searchInput.value.trim();
+    if (!query) {
+        resultsDiv.classList.add('hidden');
+        return;
+    }
 
-            if (data.items && data.items.length > 0) {
-                resultsDiv.innerHTML = data.items.map(book => {
-                    const info = book.volumeInfo;
-                    return `
-                        <div class="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 transition-colors duration-150" 
-                             onclick="selectBook(this, ${JSON.stringify({
-                                title: info.title || '',
-                                authors: info.authors ? info.authors.join(', ') : '',
-                                publisher: info.publisher || '',
-                                year: info.publishedDate ? info.publishedDate.substring(0, 4) : '',
-                                isbn: info.industryIdentifiers ? 
-                                    info.industryIdentifiers.find(id => id.type === 'ISBN_13')?.identifier || 
-                                    info.industryIdentifiers.find(id => id.type === 'ISBN_10')?.identifier || 
-                                    '' : ''
-                             }).replace(/"/g, '&quot;')})">
-                            <div class="font-medium text-blue-600">${info.title || 'Titolo sconosciuto'}</div>
-                            <div class="text-sm text-gray-600">
-                                ${info.authors ? info.authors.join(', ') : 'Autore sconosciuto'} 
-                                ${info.publishedDate ? `(${info.publishedDate.substring(0, 4)})` : ''}
-                            </div>
+    try {
+        const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&key=${GOOGLE_BOOKS_API_KEY}&maxResults=5`);
+        const data = await response.json();
+
+        if (data.items && data.items.length > 0) {
+            resultsDiv.innerHTML = data.items.map(book => {
+                const info = book.volumeInfo;
+                return `
+                    <div class="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 transition-colors duration-150" 
+                         onclick="selectBook(this, ${JSON.stringify({
+                            title: info.title || '',
+                            authors: info.authors ? info.authors.join(', ') : '',
+                            publisher: info.publisher || '',
+                            year: info.publishedDate ? info.publishedDate.substring(0, 4) : '',
+                            isbn: info.industryIdentifiers ? 
+                                info.industryIdentifiers.find(id => id.type === 'ISBN_13')?.identifier || 
+                                info.industryIdentifiers.find(id => id.type === 'ISBN_10')?.identifier || 
+                                '' : ''
+                         }).replace(/"/g, '&quot;')})">
+                        <div class="font-medium text-blue-600">${info.title || 'Titolo sconosciuto'}</div>
+                        <div class="text-sm text-gray-600">
+                            ${info.authors ? info.authors.join(', ') : 'Autore sconosciuto'} 
+                            ${info.publishedDate ? `(${info.publishedDate.substring(0, 4)})` : ''}
                         </div>
-                    `;
-                }).join('');
-                resultsDiv.classList.remove('hidden');
-            } else {
-                resultsDiv.innerHTML = '<div class="p-3 text-gray-600">Nessun risultato trovato</div>';
-                resultsDiv.classList.remove('hidden');
-            }
-        } catch (error) {
-            console.error('Error searching Google Books:', error);
-            resultsDiv.innerHTML = '<div class="p-3 text-red-600">Errore durante la ricerca</div>';
+                    </div>
+                `;
+            }).join('');
+            resultsDiv.classList.remove('hidden');
+        } else {
+            resultsDiv.innerHTML = '<div class="p-3 text-gray-600">Nessun risultato trovato</div>';
             resultsDiv.classList.remove('hidden');
         }
-    };
+    } catch (error) {
+        console.error('Error searching Google Books:', error);
+        resultsDiv.innerHTML = '<div class="p-3 text-red-600">Errore durante la ricerca</div>';
+        resultsDiv.classList.remove('hidden');
+    }
+};
+	
 
+
+
+
+
+	
     // Add input event with debounce
     searchInput.addEventListener('input', () => {
         clearTimeout(debounceTimer);
