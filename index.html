@@ -1125,9 +1125,32 @@ function resetBookFields(button) {
 
 	    
 
+// Funzione per verificare se l'URL corrente è in un dominio autorizzato
+function isAuthorizedDomain() {
+    const authorizedDomains = [
+        'parvares.github.io',
+        'bibliotecamorante.github.io'
+    ];
+    
+    try {
+        const currentHost = window.location.hostname.toLowerCase();
+        return authorizedDomains.some(domain => currentHost === domain);
+    } catch (error) {
+        console.error('Errore durante la verifica del dominio:', error);
+        return false;
+    }
+}
 
-        document.getElementById('donationForm').addEventListener('submit', async function(event) {
+// Modifica dell'event listener del form per includere la validazione del dominio
+document.getElementById('donationForm').addEventListener('submit', async function(event) {
     event.preventDefault();
+    
+    // Verifica del dominio autorizzato
+    if (!isAuthorizedDomain()) {
+        showGlobalErrorPopup('Questo form può essere utilizzato solo dai domini autorizzati.');
+        console.error('Tentativo di invio da dominio non autorizzato:', window.location.hostname);
+        return;
+    }
     
     let isValid = true;
     const inputs = event.target.querySelectorAll('input');
@@ -1201,6 +1224,7 @@ function resetBookFields(button) {
         return;
     }
 
+    // Formattazione dei libri per l'email
     const formattedBooks = books.map((book, index) => 
         `<br><em>Libro ${index + 1}:</em><br>` +
         `<table style="width:100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed;">
@@ -1226,31 +1250,25 @@ function resetBookFields(button) {
             </tr>
         </table>`).join('');
 
-    showLoadingOverlay(); // Mostra subito il loading overlay
-		
+    showLoadingOverlay();
 
-   try {
-                const response = await emailjs.send(
-                    EMAILJS_SERVICE_ID,
-                    EMAILJS_TEMPLATE_ID, 
-                    {
-                        to_email: 'bibliotecamorante@gmail.com',
-                        from_name: `${nome} ${cognome}`,
-                        from_email: email,
-                        reply_to: email,
-                        tessera: tessera || 'Non specificata',
-                        telefono: telefono || 'Non specificato',
-                        books: formattedBooks,
-                        notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
-                    },
-                    EMAILJS_PUBLIC_KEY
-                );
+    try {
+        const response = await emailjs.send(
+            EMAILJS_SERVICE_ID,
+            EMAILJS_TEMPLATE_ID, 
+            {
+                to_email: 'bibliotecamorante@gmail.com',
+                from_name: `${nome} ${cognome}`,
+                from_email: email,
+                reply_to: email,
+                tessera: tessera || 'Non specificata',
+                telefono: telefono || 'Non specificato',
+                books: formattedBooks,
+                notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
+            },
+            EMAILJS_PUBLIC_KEY
+        );
 
-
-
-	   
-
-        // Rimuovi il loading overlay prima di mostrare il popup di successo
         removeLoadingOverlay();
         showSuccessPopup('La tua donazione è stata inviata con successo!');
         
@@ -1280,6 +1298,9 @@ function resetBookFields(button) {
         submitButton.textContent = 'Invia Donazione';
     }
 });
+
+
+	    
         
     </script>
 
