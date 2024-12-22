@@ -1,8 +1,17 @@
-// Ottieni le variabili dall'oggetto window che verranno impostate dal workflow
+// config.js
 const config = {
-    EMAILJS_PUBLIC_KEY: window._env_.EMAILJS_PUBLIC_KEY,
-    EMAILJS_SERVICE_ID: window._env_.EMAILJS_SERVICE_ID,
-    EMAILJS_TEMPLATE_ID: window._env_.EMAILJS_TEMPLATE_ID
+    EMAILJS_PUBLIC_KEY: 'z6OeY42qSulJ-8EcS',
+    EMAILJS_SERVICE_ID: 'service_yepi8uu',
+    EMAILJS_TEMPLATE_ID: 'template_s1jmd7r'
 };
 
-export default config;
+// Aggiungiamo un layer di sicurezza base
+const getConfig = () => {
+    // Verifica che il dominio sia quello corretto
+    if (window.location.hostname !== 'parvares.github.io') {
+        return null;
+    }
+    return config;
+};
+
+export default getConfig();
