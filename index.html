@@ -570,8 +570,14 @@ footer i {
 
     <script>
         // Initialize EmailJS
+        // Carica le variabili d'ambiente
+        const EMAILJS_SERVICE_ID = process.env.EMAILJS_SERVICE_ID;
+        const EMAILJS_TEMPLATE_ID = process.env.EMAILJS_TEMPLATE_ID;
+        const EMAILJS_PUBLIC_KEY = process.env.EMAILJS_PUBLIC_KEY;
+
+        // Initialize EmailJS
         (function() {
-            emailjs.init("z6OeY42qSulJ-8EcS");
+            emailjs.init(EMAILJS_PUBLIC_KEY);
         })();
 
 
@@ -1207,24 +1213,28 @@ function resetBookFields(button) {
         </table>`).join('');
 
     showLoadingOverlay(); // Mostra subito il loading overlay
+		
 
-    try {
-  // Update the emailjs.send portion of the submit event listener
-const response = await emailjs.send(
-    'service_yepi8uu',
-    'template_s1jmd7r', 
-    {
-        to_email: 'bibliotecamorante@gmail.com',
-        from_name: `${nome} ${cognome}`,
-        from_email: email,
-        reply_to: email,
-        tessera: tessera || 'Non specificata',
-        telefono: telefono || 'Non specificato',
-        books: formattedBooks,
-        notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
-    },
-    'z6OeY42qSulJ-8EcS'
-);
+   try {
+                const response = await emailjs.send(
+                    EMAILJS_SERVICE_ID,
+                    EMAILJS_TEMPLATE_ID, 
+                    {
+                        to_email: 'bibliotecamorante@gmail.com',
+                        from_name: `${nome} ${cognome}`,
+                        from_email: email,
+                        reply_to: email,
+                        tessera: tessera || 'Non specificata',
+                        telefono: telefono || 'Non specificato',
+                        books: formattedBooks,
+                        notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
+                    },
+                    EMAILJS_PUBLIC_KEY
+                );
+
+
+
+	   
 
         // Rimuovi il loading overlay prima di mostrare il popup di successo
         removeLoadingOverlay();
