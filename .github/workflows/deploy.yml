@@ -1,24 +1,14 @@
 name: Deploy
-
 on:
   push:
     branches: [ main ]
-
 jobs:
   build:
     runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v2
-    
-    - name: Create env.js file
-      run: |
-        echo "window._env_ = {" > env.js
-        echo "  EMAILJS_PUBLIC_KEY: '${{ secrets.EMAILJS_PUBLIC_KEY }}'," >> env.js
-        echo "  EMAILJS_SERVICE_ID: '${{ secrets.EMAILJS_SERVICE_ID }}'," >> env.js
-        echo "  EMAILJS_TEMPLATE_ID: '${{ secrets.EMAILJS_TEMPLATE_ID }}'" >> env.js
-        echo "};" >> env.js
-    
+      
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@4.1.4
       with:
