@@ -568,11 +568,16 @@ footer i {
 
     
 
-    <script>
-        // Initialize EmailJS
-        (function() {
-            emailjs.init("z6OeY42qSulJ-8EcS");
-        })();
+<!-- Aggiungi questo nella sezione head, dopo gli altri script -->
+<script type="module">
+    import config from './config.js';
+    
+    // Initialize EmailJS
+    (function() {
+        emailjs.init(config.EMAILJS_PUBLIC_KEY);
+    })();
+</script>
+
 
 
 
@@ -1211,20 +1216,23 @@ function resetBookFields(button) {
     try {
   // Update the emailjs.send portion of the submit event listener
 const response = await emailjs.send(
-    'service_yepi8uu',
-    'template_s1jmd7r', 
-    {
-        to_email: 'bibliotecamorante@gmail.com',
-        from_name: `${nome} ${cognome}`,
-        from_email: email,
-        reply_to: email,
-        tessera: tessera || 'Non specificata',
-        telefono: telefono || 'Non specificato',
-        books: formattedBooks,
-        notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
-    },
-    'z6OeY42qSulJ-8EcS'
-);
+            config.EMAILJS_SERVICE_ID,
+            config.EMAILJS_TEMPLATE_ID, 
+            {
+                to_email: 'bibliotecamorante@gmail.com',
+                from_name: `${nome} ${cognome}`,
+                from_email: email,
+                reply_to: email,
+                tessera: tessera || 'Non specificata',
+                telefono: telefono || 'Non specificato',
+                books: formattedBooks,
+                notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
+            },
+            config.EMAILJS_PUBLIC_KEY
+        );
+
+
+		    
 
         // Rimuovi il loading overlay prima di mostrare il popup di successo
         removeLoadingOverlay();
