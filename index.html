@@ -571,7 +571,7 @@ footer i {
     <script>
         // Initialize EmailJS
         (function() {
-            emailjs.init("z6OeY42qSulJ-8EcS");
+            emailjs.init(config.emailjs.publicKey);
         })();
 
 
@@ -881,7 +881,7 @@ function createBookEntry() {
         }
 
         try {
-            const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&key=AIzaSyCHJzsPtp8CfKeUag-vvyTxobwR_DmYink&maxResults=5`);
+            const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&key=${config.googleBooks.apiKey}&maxResults=5`);
             const data = await response.json();
 
             if (data.items && data.items.length > 0) {
@@ -1211,8 +1211,8 @@ function resetBookFields(button) {
     try {
   // Update the emailjs.send portion of the submit event listener
 const response = await emailjs.send(
-    'service_yepi8uu',
-    'template_s1jmd7r', 
+    config.emailjs.serviceId,
+    config.emailjs.templateId,
     {
         to_email: 'bibliotecamorante@gmail.com',
         from_name: `${nome} ${cognome}`,
