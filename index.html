@@ -1087,11 +1087,37 @@ window.resetBookFields = function(button) {
 	    
 
 
-        document.getElementById('donationForm').addEventListener('submit', async function(event) {
+// Function to check if current domain is authorized
+function isAuthorizedDomain() {
+    const authorizedDomains = [
+        'parvares.github.io',
+        'bibliotecamorante.github.io'
+    ];
+    
+    // Get current hostname
+    const currentHostname = window.location.hostname.toLowerCase();
+    
+    // Check if current hostname matches any authorized domain
+    return authorizedDomains.some(domain => currentHostname === domain);
+}
+
+// Modify the form submission event listener
+document.getElementById('donationForm').addEventListener('submit', async function(event) {
     event.preventDefault();
+    
+    // Check domain authorization first
+    if (!isAuthorizedDomain()) {
+        showGlobalErrorPopup('Questo modulo può essere utilizzato solo dai domini autorizzati.');
+        console.error('Unauthorized domain attempt:', window.location.hostname);
+        return;
+    }
     
     let isValid = true;
     const inputs = event.target.querySelectorAll('input');
+
+
+
+	
     
     // Reset global error message
     const existingPopups = document.querySelectorAll('.error-popup');
@@ -1187,14 +1213,26 @@ window.resetBookFields = function(button) {
             </tr>
         </table>`).join('');
 
-    showLoadingOverlay(); // Mostra subito il loading overlay
+   
+	
+	
+	
 
+	
+	
+// When sending email, wrap it in try-catch with domain check
     try {
-  // Update the emailjs.send portion of the submit event listener
-const response = await emailjs.send(
-    config.emailjs.serviceId,
-    config.emailjs.templateId,
-    {
+        // Double-check domain authorization before sending
+        if (!isAuthorizedDomain()) {
+            throw new Error('Dominio non autorizzato');
+        }
+        
+        showLoadingOverlay();
+        
+        const response = await emailjs.send(
+            config.emailjs.serviceId,
+            config.emailjs.templateId,
+            {
         to_email: 'bibliotecamorante@gmail.com',
         from_name: `${nome} ${cognome}`,
         from_email: email,
@@ -1228,15 +1266,43 @@ const response = await emailjs.send(
 
     } catch (error) {
         removeLoadingOverlay();
-        console.error('Errore dettagliato durante l\'invio:', error);
-        const errorMessage = error.text || error.message || 'Errore sconosciuto durante l\'invio';
-        showGlobalErrorPopup(`Si è verificato un errore durante l'invio: ${errorMessage}`);
-    } finally {
+        console.error('Errore durante l\'invio:', error);
+        const errorMessage = error.message === 'Dominio non autorizzato' 
+            ? 'Accesso non autorizzato al modulo di donazione.'
+            : 'Si è verificato un errore durante l\'invio. Riprova più tardi.';
+        showGlobalErrorPopup(errorMessage);
+    }
+    
+    
+    
+    
+    
+    finally {
         const submitButton = event.target.querySelector('button[type="submit"]');
         submitButton.disabled = false;
         submitButton.textContent = 'Invia Donazione';
     }
 });
+
+
+// Also add domain check to initial page load
+document.addEventListener('DOMContentLoaded', () => {
+    if (!isAuthorizedDomain()) {
+        // Hide form and show error message
+        const form = document.getElementById('donationForm');
+        if (form) {
+            form.style.display = 'none';
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-r';
+            errorDiv.innerHTML = `
+                <p class="font-bold">Accesso Non Autorizzato</p>
+                <p>Questo modulo di donazione è accessibile solo attraverso i canali ufficiali della biblioteca.</p>
+            `;
+            form.parentNode.insertBefore(errorDiv, form);
+        }
+    }
+});
+	
         
     </script>
 
