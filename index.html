@@ -762,7 +762,7 @@ function removeLoadingOverlay() {
 
 
         
-function createBookEntry() {
+    window.createBookEntry = function() {
     const bookDiv = document.createElement('div');
     bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
     bookCount++;
@@ -939,7 +939,7 @@ function createBookEntry() {
 	    
 
 // Modified selectBook function
-function selectBook(element, bookData) {
+window.selectBook = function(element, bookData) {
     const bookEntry = element.closest('.book-entry');
     bookEntry.querySelector('.book-title').value = bookData.title;
     bookEntry.querySelector('.book-author').value = bookData.authors;
@@ -953,23 +953,21 @@ function selectBook(element, bookData) {
     if (quickSearchSection) {
         quickSearchSection.style.display = 'none';
     }
-}
-
+};
 
 
 	    
-        function removeBook(button) {
-            const bookEntry = button.closest('.book-entry');
-            if (bookEntry) {
-                bookEntry.remove();
-                bookCount--;
-                updateBookCounters();
-            }
-        }
+// Rendi globali anche le altre funzioni utilizzate nei click handler
+window.removeBook = function(button) {
+    const bookEntry = button.closest('.book-entry');
+    if (bookEntry) {
+        bookEntry.remove();
+        bookCount--;
+        updateBookCounters();
+    }
+};
 
-
-
-function resetBookFields(button) {
+window.resetBookFields = function(button) {
     const bookEntry = button.closest('.book-entry');
     if (bookEntry) {
         // Reset all input fields
@@ -991,7 +989,7 @@ function resetBookFields(button) {
             searchResults.classList.add('hidden');
         }
     }
-}
+};
 
 
 
