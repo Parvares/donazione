@@ -1195,7 +1195,7 @@ const response = await emailjs.send(
     config.emailjs.serviceId,
     config.emailjs.templateId,
     {
-        to_email: 'bibliotecamorante@gmail.com',
+        to_email: config.library.email,
         from_name: `${nome} ${cognome}`,
         from_email: email,
         reply_to: email,
