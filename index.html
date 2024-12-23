@@ -1231,7 +1231,7 @@ const response = await emailjs.send(
         books: formattedBooks,
         notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
     },
-    'z6OeY42qSulJ-8EcS'
+    config.emailjs.publicKey
 );
 
         // Rimuovi il loading overlay prima di mostrare il popup di successo
