@@ -1105,6 +1105,7 @@ function isAuthorizedDomain() {
 document.getElementById('donationForm').addEventListener('submit', async function(event) {
     event.preventDefault();
     
+    
     // Check domain authorization first
     if (!isAuthorizedDomain()) {
         showGlobalErrorPopup('Questo modulo può essere utilizzato solo dai domini autorizzati.');
@@ -1228,22 +1229,39 @@ document.getElementById('donationForm').addEventListener('submit', async functio
         }
         
         showLoadingOverlay();
+
+
+	    
         
-        const response = await emailjs.send(
-            config.emailjs.serviceId,
-            config.emailjs.templateId,
-            {
-        to_email: 'bibliotecamorante@gmail.com',
-        from_name: `${nome} ${cognome}`,
-        from_email: email,
-        reply_to: email,
-        tessera: tessera || 'Non specificata',
-        telefono: telefono || 'Non specificato',
-        books: formattedBooks,
-        notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
-    },
+      const form = event.target;
+
+// Add hidden fields for additional data
+const hiddenFields = {
+    to_email: 'bibliotecamorante@gmail.com',
+    books: formattedBooks
+};
+
+for (const [key, value] of Object.entries(hiddenFields)) {
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = key;
+    input.value = value;
+    form.appendChild(input);
+}
+
+const response = await emailjs.sendForm(
+    config.emailjs.serviceId,
+    config.emailjs.templateId,
+    form,
     config.emailjs.publicKey
 );
+
+// Clean up hidden fields
+form.querySelectorAll('input[type="hidden"]').forEach(el => el.remove());
+
+
+
+	    
 
         // Rimuovi il loading overlay prima di mostrare il popup di successo
         removeLoadingOverlay();
