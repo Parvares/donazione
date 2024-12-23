@@ -657,31 +657,6 @@ function removeLoadingOverlay() {
 
         
 
-// Aggiungi questa nuova funzione subito dopo showGlobalErrorPopup
-function showSuccessPopup(message) {
-    // Rimuovi eventuali popup esistenti
-    const existingPopups = document.querySelectorAll('.success-popup');
-    existingPopups.forEach(popup => document.body.removeChild(popup));
-
-    // Crea il div del popup
-    const popup = document.createElement('div');
-    popup.className = 'success-popup fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded z-50 shadow-lg';
-    popup.innerHTML = `
-        <strong class="font-bold">Successo!</strong>
-        <span class="block sm:inline">${message}</span>
-    `;
-
-    // Rimuovi automaticamente dopo 5 secondi
-    setTimeout(() => {
-        if (document.body.contains(popup)) {
-            document.body.removeChild(popup);
-        }
-    }, 5000);
-
-    document.body.appendChild(popup);
-}
-
-
         
 
         let bookCount = 0;
@@ -963,7 +938,7 @@ function createBookEntry() {
 
 	    
 
-<!-- Modified selectBook function -->
+// Modified selectBook function
 function selectBook(element, bookData) {
     const bookEntry = element.closest('.book-entry');
     bookEntry.querySelector('.book-title').value = bookData.title;
