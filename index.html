@@ -570,14 +570,8 @@ footer i {
 
     <script>
         // Initialize EmailJS
-        // Carica le variabili d'ambiente
-        const EMAILJS_SERVICE_ID = process.env.EMAILJS_SERVICE_ID;
-        const EMAILJS_TEMPLATE_ID = process.env.EMAILJS_TEMPLATE_ID;
-        const EMAILJS_PUBLIC_KEY = process.env.EMAILJS_PUBLIC_KEY;
-
-        // Initialize EmailJS
         (function() {
-            emailjs.init(EMAILJS_PUBLIC_KEY);
+            emailjs.init("z6OeY42qSulJ-8EcS");
         })();
 
 
@@ -879,66 +873,52 @@ function createBookEntry() {
 
     let debounceTimer;
 
-    
-	
-	
-	
-// All'inizio del tuo JavaScript, dopo la dichiarazione delle altre variabili d'ambiente
-const GOOGLE_BOOKS_API_KEY = process.env.GOOGLE_BOOKS_API_KEY;
+    const performSearch = async () => {
+        const query = searchInput.value.trim();
+        if (!query) {
+            resultsDiv.classList.add('hidden');
+            return;
+        }
 
-// Modifica la funzione performSearch
-const performSearch = async () => {
-    const query = searchInput.value.trim();
-    if (!query) {
-        resultsDiv.classList.add('hidden');
-        return;
-    }
+        try {
+            const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&key=AIzaSyCHJzsPtp8CfKeUag-vvyTxobwR_DmYink&maxResults=5`);
+            const data = await response.json();
 
-    try {
-        const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&key=${GOOGLE_BOOKS_API_KEY}&maxResults=5`);
-        const data = await response.json();
-
-        if (data.items && data.items.length > 0) {
-            resultsDiv.innerHTML = data.items.map(book => {
-                const info = book.volumeInfo;
-                return `
-                    <div class="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 transition-colors duration-150" 
-                         onclick="selectBook(this, ${JSON.stringify({
-                            title: info.title || '',
-                            authors: info.authors ? info.authors.join(', ') : '',
-                            publisher: info.publisher || '',
-                            year: info.publishedDate ? info.publishedDate.substring(0, 4) : '',
-                            isbn: info.industryIdentifiers ? 
-                                info.industryIdentifiers.find(id => id.type === 'ISBN_13')?.identifier || 
-                                info.industryIdentifiers.find(id => id.type === 'ISBN_10')?.identifier || 
-                                '' : ''
-                         }).replace(/"/g, '&quot;')})">
-                        <div class="font-medium text-blue-600">${info.title || 'Titolo sconosciuto'}</div>
-                        <div class="text-sm text-gray-600">
-                            ${info.authors ? info.authors.join(', ') : 'Autore sconosciuto'} 
-                            ${info.publishedDate ? `(${info.publishedDate.substring(0, 4)})` : ''}
+            if (data.items && data.items.length > 0) {
+                resultsDiv.innerHTML = data.items.map(book => {
+                    const info = book.volumeInfo;
+                    return `
+                        <div class="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 transition-colors duration-150" 
+                             onclick="selectBook(this, ${JSON.stringify({
+                                title: info.title || '',
+                                authors: info.authors ? info.authors.join(', ') : '',
+                                publisher: info.publisher || '',
+                                year: info.publishedDate ? info.publishedDate.substring(0, 4) : '',
+                                isbn: info.industryIdentifiers ? 
+                                    info.industryIdentifiers.find(id => id.type === 'ISBN_13')?.identifier || 
+                                    info.industryIdentifiers.find(id => id.type === 'ISBN_10')?.identifier || 
+                                    '' : ''
+                             }).replace(/"/g, '&quot;')})">
+                            <div class="font-medium text-blue-600">${info.title || 'Titolo sconosciuto'}</div>
+                            <div class="text-sm text-gray-600">
+                                ${info.authors ? info.authors.join(', ') : 'Autore sconosciuto'} 
+                                ${info.publishedDate ? `(${info.publishedDate.substring(0, 4)})` : ''}
+                            </div>
                         </div>
-                    </div>
-                `;
-            }).join('');
-            resultsDiv.classList.remove('hidden');
-        } else {
-            resultsDiv.innerHTML = '<div class="p-3 text-gray-600">Nessun risultato trovato</div>';
+                    `;
+                }).join('');
+                resultsDiv.classList.remove('hidden');
+            } else {
+                resultsDiv.innerHTML = '<div class="p-3 text-gray-600">Nessun risultato trovato</div>';
+                resultsDiv.classList.remove('hidden');
+            }
+        } catch (error) {
+            console.error('Error searching Google Books:', error);
+            resultsDiv.innerHTML = '<div class="p-3 text-red-600">Errore durante la ricerca</div>';
             resultsDiv.classList.remove('hidden');
         }
-    } catch (error) {
-        console.error('Error searching Google Books:', error);
-        resultsDiv.innerHTML = '<div class="p-3 text-red-600">Errore durante la ricerca</div>';
-        resultsDiv.classList.remove('hidden');
-    }
-};
-	
+    };
 
-
-
-
-
-	
     // Add input event with debounce
     searchInput.addEventListener('input', () => {
         clearTimeout(debounceTimer);
@@ -1125,32 +1105,9 @@ function resetBookFields(button) {
 
 	    
 
-// Funzione per verificare se l'URL corrente è in un dominio autorizzato
-function isAuthorizedDomain() {
-    const authorizedDomains = [
-        'parvares.github.io',
-        'bibliotecamorante.github.io'
-    ];
-    
-    try {
-        const currentHost = window.location.hostname.toLowerCase();
-        return authorizedDomains.some(domain => currentHost === domain);
-    } catch (error) {
-        console.error('Errore durante la verifica del dominio:', error);
-        return false;
-    }
-}
 
-// Modifica dell'event listener del form per includere la validazione del dominio
-document.getElementById('donationForm').addEventListener('submit', async function(event) {
+        document.getElementById('donationForm').addEventListener('submit', async function(event) {
     event.preventDefault();
-    
-    // Verifica del dominio autorizzato
-    if (!isAuthorizedDomain()) {
-        showGlobalErrorPopup('Questo form può essere utilizzato solo dai domini autorizzati.');
-        console.error('Tentativo di invio da dominio non autorizzato:', window.location.hostname);
-        return;
-    }
     
     let isValid = true;
     const inputs = event.target.querySelectorAll('input');
@@ -1224,7 +1181,6 @@ document.getElementById('donationForm').addEventListener('submit', async functio
         return;
     }
 
-    // Formattazione dei libri per l'email
     const formattedBooks = books.map((book, index) => 
         `<br><em>Libro ${index + 1}:</em><br>` +
         `<table style="width:100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed;">
@@ -1250,25 +1206,27 @@ document.getElementById('donationForm').addEventListener('submit', async functio
             </tr>
         </table>`).join('');
 
-    showLoadingOverlay();
+    showLoadingOverlay(); // Mostra subito il loading overlay
 
     try {
-        const response = await emailjs.send(
-            EMAILJS_SERVICE_ID,
-            EMAILJS_TEMPLATE_ID, 
-            {
-                to_email: 'bibliotecamorante@gmail.com',
-                from_name: `${nome} ${cognome}`,
-                from_email: email,
-                reply_to: email,
-                tessera: tessera || 'Non specificata',
-                telefono: telefono || 'Non specificato',
-                books: formattedBooks,
-                notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
-            },
-            EMAILJS_PUBLIC_KEY
-        );
+  // Update the emailjs.send portion of the submit event listener
+const response = await emailjs.send(
+    'service_yepi8uu',
+    'template_s1jmd7r', 
+    {
+        to_email: 'bibliotecamorante@gmail.com',
+        from_name: `${nome} ${cognome}`,
+        from_email: email,
+        reply_to: email,
+        tessera: tessera || 'Non specificata',
+        telefono: telefono || 'Non specificato',
+        books: formattedBooks,
+        notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
+    },
+    'z6OeY42qSulJ-8EcS'
+);
 
+        // Rimuovi il loading overlay prima di mostrare il popup di successo
         removeLoadingOverlay();
         showSuccessPopup('La tua donazione è stata inviata con successo!');
         
@@ -1298,9 +1256,6 @@ document.getElementById('donationForm').addEventListener('submit', async functio
         submitButton.textContent = 'Invia Donazione';
     }
 });
-
-
-	    
         
     </script>
 
