@@ -569,11 +569,14 @@ footer i {
 
     
 
-    <script>
-        // Initialize EmailJS
-        (function() {
-            emailjs.init(config.emailjs.publicKey);
-        })();
+<!-- Nella sezione degli script del tuo HTML -->
+<script type="module">
+    import config from './scripts/config.js';
+    
+    // Initialize EmailJS
+    (function() {
+        emailjs.init(config.emailjs.publicKey);
+    })();
 
 
 
@@ -874,7 +877,11 @@ function createBookEntry() {
 
     let debounceTimer;
 
-    const performSearch = async () => {
+   
+	
+	
+	// Update the Google Books API call
+        const performSearch = async () => {
         const query = searchInput.value.trim();
         if (!query) {
             resultsDiv.classList.add('hidden');
