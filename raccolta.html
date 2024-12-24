@@ -450,16 +450,22 @@ document.getElementById('scrollToOrari').addEventListener('click', function(even
             var element = win.document.querySelector('section#where_infobib');
             if (element) {
                 var targetPosition = element.getBoundingClientRect().top + win.pageYOffset;
-                var interval = setInterval(function() {
-                    if (win.pageYOffset !== targetPosition) {
+                var currentPosition = -1;
+                var monitorScroll = function() {
+                    if (Math.abs(win.pageYOffset - targetPosition) > 5) {
                         win.scrollTo({
                             top: targetPosition,
                             behavior: 'auto'
-                        }); // Usa 'auto' per uno scorrimento istantaneo
-                    } else {
-                        clearInterval(interval); // Stop se raggiungiamo la posizione corretta
+                        });
                     }
-                }, 100); // Controlla e scrolla ogni 100ms
+                    requestAnimationFrame(monitorScroll); // Usa requestAnimationFrame per un controllo continuo senza sovraccaricare il browser
+                };
+                monitorScroll();  // Avvia il monitoraggio
+
+                // Opzione per fermare il monitoraggio dopo un certo tempo se necessario
+                setTimeout(function() {
+                    cancelAnimationFrame(monitorScroll);
+                }, 10000); // 10 secondi di monitoraggio
             }
         }
     }, 1000);
