@@ -432,7 +432,14 @@
                        <span>
 
                            
-<a href="#" onclick="A.a13m11('RMBO2',RENDERING.rBody);return false;">Altri orari</a>
+// Esegui lo scroll se il parametro URL "scrollTo" è presente
+window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const scrollTo = urlParams.get('scrollTo');
+    if (scrollTo && document.getElementById(scrollTo)) {
+        document.getElementById(scrollTo).scrollIntoView({ behavior: 'smooth' });
+    }
+};
 
 
                            
