@@ -432,14 +432,18 @@
                        <span>
 
                            
- <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" 
+<a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" 
   target="_blank"
-  onclick="window.addEventListener('load', function() {
-    window.scrollTo({
-      top: 800,
-      behavior: 'smooth'
+  onclick="setTimeout(function() {
+    const newWindow = window.open(this.href, '_blank');
+    newWindow.addEventListener('load', function() {
+      newWindow.scrollTo({
+        top: 800,
+        behavior: 'smooth'
+      });
     });
-  });">
+    return false;
+  }, 100);">
   Sabato 09:00-13:00
 </a>
 
