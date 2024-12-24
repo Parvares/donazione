@@ -39,17 +39,30 @@
            word-spacing: 0px;
        }
        
-       .top-banner {
-           background-color: white;
-           padding: 0.8rem 2rem; 
-           display: flex;
-           justify-content: space-between;
-           align-items: center;
-       }
+.top-banner {
+    background-color: white;
+    padding: 0.8rem 2rem; /* Ridotto da 1.2rem */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 60px; /* Ridotto da 80px */
+}
 
-       .roma-logo {
-           height: 40px;
-       }
+
+.top-banner a {
+    border-bottom: none;
+    display: flex;
+    align-items: center;
+}
+
+.top-banner a:hover {
+    border-bottom: none;
+}
+
+.roma-logo {
+    height: 40px;
+    display: block;
+}
 
        .social-icons {
            display: flex;
@@ -81,17 +94,18 @@
            text-align: center;
        }
 
-       .container-header {
-           max-width: 1200px;
-           margin: 0 auto;
-           padding: 0 2rem;
-           display: flex;
-           justify-content: center;
-           align-items: center;
-           text-align: center;
-           flex-wrap: wrap;
-           gap: 1rem;
-       }
+ .container-header {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0.8rem; /* Ridotto da 2rem */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    min-height: 70px; /* Ridotto da 120px */
+}
 
        .library-name {
            display: flex;
@@ -374,7 +388,9 @@ footer i {
 </head>
 <body>
    <div class="top-banner">
+        <a href="https://culture.roma.it/">
         <img src="roma.png" alt="Logo Roma" class="roma-logo">
+         </a>
         <div class="social-icons">
             <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook">
                 <i class="fab fa-facebook"></i>
