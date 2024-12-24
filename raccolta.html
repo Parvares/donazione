@@ -447,7 +447,7 @@ document.getElementById('scrollToOrari').addEventListener('click', function(even
     
     setTimeout(function() {
         if (win && win.document) {
-            var element = win.document.getElementById('where_infobib');
+            var element = win.document.querySelector('section#where_infobib');
             if (element) {
                 var targetPosition = element.getBoundingClientRect().top + win.pageYOffset;
                 var lastPosition = -1;
