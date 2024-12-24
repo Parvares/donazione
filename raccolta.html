@@ -402,7 +402,9 @@
     
 
 
-    <footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
+
+    
+<footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
     <div class="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
         <div class="mb-4 md:mb-0">
             <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" rel="noopener noreferrer">
@@ -428,20 +430,32 @@
                     <i class="fas fa-clock w-4"></i>
                     <span class="flex flex-col">
                         <span>Lunedì-Venerdì 09:00-18:30</span>
-                                              
-                       <span>
-
-                           
-<a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" onclick="scrollToElement('where_openings'); return false;">Vai agli orari</a>
-
-                           
+                        <span>
+                            <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_openings" id="scrollToOrari">Vai agli orari</a>
                         </span>
-                   
+                    </span>
                 </div>
             </div>
         </div>
     </div>
 </footer>
+
+<script>
+document.getElementById('scrollToOrari').addEventListener('click', function() {
+    setTimeout(function() {
+        if (window.location.hash === '#where_openings') {
+            var element = document.getElementById('where_openings');
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Se la pagina risale automaticamente, potresti aggiungere un altro scroll dopo un breve delay
+                setTimeout(function() {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100); // Ritardo di 100ms, regola secondo necessità
+            }
+        }
+    }, 200); // Ritardo iniziale di 200ms per permettere il caricamento della pagina
+});
+</script>
 
 
 
