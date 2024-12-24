@@ -449,13 +449,15 @@
 <script>
     document.getElementById('scrollLink').addEventListener('click', function(event) {
         event.preventDefault();  // Impedisce il comportamento predefinito del link
-        var newWindow = window.open(this.href, '_blank');  // Apre il link in una nuova finestra
-        newWindow.onload = function() {
-            // Dopo 1 secondo, esegui lo scroll
-            setTimeout(function() {
-                newWindow.scrollBy(0, 100); // Scorri di 100px verso il basso
-            }, 2000); // 1000 millisecondi = 1 secondo
-        };
+
+        // Apre il link in una nuova finestra o scheda
+        var newWindow = window.open(this.href, '_blank');
+        
+        // Aggiungi un piccolo ritardo per dare il tempo alla pagina di caricare
+        setTimeout(function() {
+            // Scorri di 100px verso il basso (aggiusta se necessario)
+            newWindow.scrollBy(0, 100); 
+        }, 1000);  // 1 secondo di ritardo prima di eseguire lo scroll
     });
 </script>
 
