@@ -451,16 +451,23 @@
         event.preventDefault();  // Impedisce il comportamento predefinito del link
 
         var link = this.href;
-        var targetPosition = 100;  // Definisci quanto vuoi scorrere, ad esempio 100px
+        var targetPosition = 100;  // La distanza in pixel da scrollare
 
-        // Apre il link in una nuova finestra
+        // Apre la pagina in una nuova finestra
         var newWindow = window.open(link, '_blank');
 
-        // Aspetta che la pagina si carichi completamente
+        // Dopo che la pagina si è caricata completamente
         newWindow.onload = function() {
+            // Scrolla verso il target desiderato dopo un ritardo di 1 secondo
             setTimeout(function() {
-                // Scorri la pagina di un certo numero di pixel (100px in questo caso)
+                // Scrolla di 100px verso il basso nella nuova finestra
                 newWindow.scrollTo(0, targetPosition);
+
+                // Evita che la pagina risalga automaticamente
+                setTimeout(function() {
+                    // Mantieni la posizione di scroll
+                    newWindow.scrollTo(0, targetPosition);
+                }, 500);  // Ritardo addizionale per garantire che la posizione venga mantenuta
             }, 1000);  // 1 secondo di ritardo
         };
     });
