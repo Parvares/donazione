@@ -402,7 +402,9 @@
     
 
 
-   <footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
+  
+
+<footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
     <div class="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
         <div class="mb-4 md:mb-0">
             <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" rel="noopener noreferrer">
@@ -429,21 +431,13 @@
                     <span class="flex flex-col">
                         <span>Lunedì-Venerdì 09:00-18:30</span>
                         <span>
-
-
-
-
-<a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_openings" 
-   target="_blank" 
-   rel="noopener noreferrer"
-   class="hover:underline">
-   Sabato 09:00-13:00
-</a>
-
-
-
-
-                            
+                            <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_openings" 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               class="hover:underline"
+                               id="scrollLink">
+                               Sabato 09:00-13:00
+                            </a>
                         </span>
                     </span>
                 </div>
@@ -452,10 +446,17 @@
     </div>
 </footer>
 
-
-
-
-    
+<script>
+    document.getElementById('scrollLink').addEventListener('click', function(event) {
+        event.preventDefault();  // Impedisce il comportamento predefinito del link
+        var newWindow = window.open(this.href, '_blank');  // Apre il link in una nuova finestra
+        newWindow.onload = function() {
+            // Attende che la pagina sia caricata prima di eseguire lo scroll
+            newWindow.scrollBy(0, 100); // Scorri di 100px verso il basso
+        };
+    });
+</script>
 
 </body>
 </html>
+    
