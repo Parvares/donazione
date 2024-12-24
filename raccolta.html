@@ -444,16 +444,34 @@
 document.getElementById('scrollToOrari').addEventListener('click', function(event) {
     event.preventDefault();
     var win = window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_openings', '_blank');
-    win.onload = function() {
-        var element = win.document.getElementById('where_openings');
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            // Se risale, ripeti lo scroll dopo un breve delay
-            setTimeout(function() {
-                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
+    
+    setTimeout(function() {
+        if (win && win.document) {
+            var element = win.document.getElementById('where_openings');
+            if (element) {
+                var targetPosition = element.getBoundingClientRect().top + win.pageYOffset;
+                var lastPosition = -1;
+                var checkCounter = 0;
+
+                function scrollAndCheck() {
+                    win.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                    
+                    var currentPosition = win.pageYOffset;
+                    if (currentPosition === lastPosition || checkCounter >= 10) { // Interrompe dopo 10 tentativi o se non cambia
+                        clearInterval(scrollInterval);
+                    } else {
+                        lastPosition = currentPosition;
+                    }
+                    checkCounter++;
+                }
+
+                var scrollInterval = setInterval(scrollAndCheck, 100);  // Verifica ogni 100ms
+            }
         }
-    };
+    }, 500); // Ritardo iniziale per permettere il caricamento della pagina
 });
 </script>
 
