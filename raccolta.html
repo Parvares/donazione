@@ -450,29 +450,32 @@ document.getElementById('scrollToOrari').addEventListener('click', function(even
             var element = win.document.querySelector('section#where_infobib');
             if (element) {
                 var targetPosition = element.getBoundingClientRect().top + win.pageYOffset;
-                var lastPosition = -1;
-                var checkCounter = 0;
-                var maxAttempts = 20; // Massimo numero di tentativi
-                var tolerance = 10; // Tolleranza in pixel per lo scorrimento
+                var currentPosition = -1;
+                var attempts = 0;
+                var maxAttempts = 30; // Aumento degli tentativi
+                var tolerance = 15; // Aumento della tolleranza per evitare scorrimenti eccessivi
 
-                function scrollAndCheck() {
-                    var currentPosition = win.pageYOffset;
-                    if (Math.abs(currentPosition - targetPosition) > tolerance) { // Se la differenza è significativa
+                function scrollToTarget() {
+                    if (Math.abs(win.pageYOffset - targetPosition) > tolerance) {
                         win.scrollTo({
                             top: targetPosition,
                             behavior: 'smooth'
                         });
-                        lastPosition = currentPosition;
-                    } else if (checkCounter >= maxAttempts || (currentPosition === lastPosition && checkCounter > 0)) {
-                        clearInterval(scrollInterval);
                     }
-                    checkCounter++;
+                    
+                    if (win.pageYOffset !== currentPosition || attempts < maxAttempts) {
+                        currentPosition = win.pageYOffset;
+                        attempts++;
+                        setTimeout(scrollToTarget, 200); // Ritardo tra i tentativi
+                    } else {
+                        console.log('Scrolling completed or max attempts reached');
+                    }
                 }
 
-                var scrollInterval = setInterval(scrollAndCheck, 50);  // Verifica ogni 50ms
+                scrollToTarget();
             }
         }
-    }, 500); // Ritardo iniziale per permettere il caricamento della pagina
+    }, 1000); // Aumento del tempo di attesa per il caricamento della pagina
 });
 </script>
 
