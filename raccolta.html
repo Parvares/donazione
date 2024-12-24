@@ -452,23 +452,23 @@ document.getElementById('scrollToOrari').addEventListener('click', function(even
                 var targetPosition = element.getBoundingClientRect().top + win.pageYOffset;
                 var lastPosition = -1;
                 var checkCounter = 0;
+                var maxAttempts = 20; // Massimo numero di tentativi
 
                 function scrollAndCheck() {
-                    win.scrollTo({
-                        top: targetPosition,
-                        behavior: 'smooth'
-                    });
-                    
                     var currentPosition = win.pageYOffset;
-                    if (currentPosition === lastPosition || checkCounter >= 10) { // Interrompe dopo 10 tentativi o se non cambia
-                        clearInterval(scrollInterval);
-                    } else {
+                    if (Math.abs(currentPosition - targetPosition) > 10) { // Se la differenza è significativa
+                        win.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
                         lastPosition = currentPosition;
+                    } else if (checkCounter >= maxAttempts || (currentPosition === lastPosition && checkCounter > 0)) {
+                        clearInterval(scrollInterval);
                     }
                     checkCounter++;
                 }
 
-                var scrollInterval = setInterval(scrollAndCheck, 100);  // Verifica ogni 100ms
+                var scrollInterval = setInterval(scrollAndCheck, 50);  // Verifica ogni 50ms
             }
         }
     }, 500); // Ritardo iniziale per permettere il caricamento della pagina
