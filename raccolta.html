@@ -450,16 +450,19 @@
     document.getElementById('scrollLink').addEventListener('click', function(event) {
         event.preventDefault();  // Impedisce il comportamento predefinito del link
 
-        // Apre il link in una nuova finestra o scheda
+        // Apre il link nella stessa finestra
         var newWindow = window.open(this.href, '_blank');
-        
-        // Aggiungi un piccolo ritardo per dare il tempo alla pagina di caricare
-        setTimeout(function() {
-            // Scorri di 100px verso il basso (aggiusta se necessario)
-            newWindow.scrollBy(0, 100); 
-        }, 1000);  // 1 secondo di ritardo prima di eseguire lo scroll
+
+        // Aspetta che la pagina sia completamente caricata
+        newWindow.onload = function() {
+            setTimeout(function() {
+                // Scorri di 100px verso il basso
+                newWindow.scrollBy(0, 100); 
+            }, 2000);  // Aumento del ritardo a 2 secondi per garantire che la pagina sia stabilizzata
+        };
     });
 </script>
 
 </body>
 </html>
+
