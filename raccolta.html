@@ -450,32 +450,19 @@ document.getElementById('scrollToOrari').addEventListener('click', function(even
             var element = win.document.querySelector('section#where_infobib');
             if (element) {
                 var targetPosition = element.getBoundingClientRect().top + win.pageYOffset;
-                var currentPosition = -1;
-                var attempts = 0;
-                var maxAttempts = 30; // Aumento degli tentativi
-                var tolerance = 15; // Aumento della tolleranza per evitare scorrimenti eccessivi
-
-                function scrollToTarget() {
-                    if (Math.abs(win.pageYOffset - targetPosition) > tolerance) {
+                var interval = setInterval(function() {
+                    if (win.pageYOffset !== targetPosition) {
                         win.scrollTo({
                             top: targetPosition,
-                            behavior: 'smooth'
-                        });
-                    }
-                    
-                    if (win.pageYOffset !== currentPosition || attempts < maxAttempts) {
-                        currentPosition = win.pageYOffset;
-                        attempts++;
-                        setTimeout(scrollToTarget, 200); // Ritardo tra i tentativi
+                            behavior: 'auto'
+                        }); // Usa 'auto' per uno scorrimento istantaneo
                     } else {
-                        console.log('Scrolling completed or max attempts reached');
+                        clearInterval(interval); // Stop se raggiungiamo la posizione corretta
                     }
-                }
-
-                scrollToTarget();
+                }, 100); // Controlla e scrolla ogni 100ms
             }
         }
-    }, 1000); // Aumento del tempo di attesa per il caricamento della pagina
+    }, 1000);
 });
 </script>
 
