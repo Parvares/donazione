@@ -23,7 +23,7 @@
 
         
 :root {
-    --primary: #970a2c;     /* amaranto */
+    --primary: #970a2c;    /* amaranto */
     --secondary: #540f26;  /* Even darker red */
     --accent: #700f0a;     /* Darker bordeaux */
 }
@@ -419,7 +419,11 @@ footer i {
 </head>
 <body>
     <div class="top-banner">
-        <img src="roma.png" alt="Logo Roma" class="roma-logo">
+	    
+          <a href="https://culture.roma.it/">
+         <img src="roma.png" alt="Logo Roma" class="roma-logo">
+         </a>
+	    
         <div class="social-icons">
             <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook">
                 <i class="fab fa-facebook"></i>
@@ -1246,7 +1250,7 @@ const response = await emailjs.send(
 
 
 
-<footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
+    <footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
     <div class="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
         <div class="mb-4 md:mb-0">
             <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" rel="noopener noreferrer">
@@ -1271,25 +1275,14 @@ const response = await emailjs.send(
                 <div class="flex items-center space-x-2">
                     <i class="fas fa-clock w-4"></i>
                     <span class="flex flex-col">
-                        <span>
-                            <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#:~:text=%7C%20%C2%A9%20OpenStreetMap%20contributors-,Orario,-Altri%20orari"
-                               target="_blank" rel="noopener noreferrer" class="hover:underline">
-                                Lunedì-Venerdì 09:00-18:30
-                            </a>
-                        </span>
-                        <span>
-                            <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#:~:text=%7C%20%C2%A9%20OpenStreetMap%20contributors-,Orario,-Altri%20orari"
-                               target="_blank" rel="noopener noreferrer" class="hover:underline">
-                                Sabato 09:00-13:00
-                            </a>
-                        </span>
+                        <span>Lunedì-Venerdì 09:00-18:30</span>
+                        <span>Sabato 09:00-13:00</span>
                     </span>
                 </div>
             </div>
         </div>
     </div>
 </footer>
-
 
 
 
