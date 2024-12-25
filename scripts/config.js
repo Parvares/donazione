@@ -12,4 +12,28 @@ const config = {
     }
 };
 
-export default config;
+// Step 1: Aggiungi queste funzioni al tuo file scripts/config.js
+// dopo la parte esistente del config
+
+const emailValidation = {
+    // Regex per la validazione base dell'email
+    emailRegex: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+    
+    // Domini email comuni e validi
+    commonDomains: [
+        'gmail.com', 'outlook.com', 'hotmail.com', 'yahoo.com', 
+        'libero.it', 'virgilio.it', 'tim.it', 'icloud.com'
+    ],
+    
+    // Domini temporanei da bloccare
+    temporaryDomains: [
+        'tempmail.com', 'throwawaymail.com', 'guerrillamail.com',
+        'mailinator.com', 'yopmail.com', 'tempmail.net'
+    ]
+};
+
+// Esporta la configurazione aggiornata
+export default {
+    ...config,
+    emailValidation
+};
