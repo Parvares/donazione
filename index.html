@@ -580,6 +580,10 @@ footer i {
 <script type="module">
     import config from './scripts/config.js';
     
+// Add this import at the top of your HTML file, after config.js
+import { validateEmail } from './scripts/emailValidator.js';
+	
+    
     // Initialize EmailJS
     (function() {
         emailjs.init(config.emailjs.publicKey);
@@ -1103,8 +1107,6 @@ window.resetBookFields = function(button) {
 	    
 
 
-// Add this import at the top of your HTML file, after config.js
-import { validateEmail } from './scripts/emailValidator.js';
 
 // Replace the existing form submission code with this updated version
 document.getElementById('donationForm').addEventListener('submit', async (event) => {
