@@ -54,25 +54,31 @@ function basicEmailValidation(email) {
 
 // Modificato per gestire errori di rete
 async function checkMXRecord(email) {
+    const domain = email.split('@')[1];
+
     try {
-        const domain = email.split('@')[1];
         const response = await fetch(`https://dns.google/resolve?name=${domain}&type=MX`);
-        
         if (!response.ok) {
-            console.warn('MX check failed, continuing with validation:', response.statusText);
-            return { isValid: true, error: null };
+            throw new Error('Network response was not ok');
         }
-        
+
         const data = await response.json();
         const hasMX = data.Answer && data.Answer.length > 0;
-        
+
+        if (!hasMX) {
+            console.warn('MX validation failed: Questo dominio email non ha un server di posta valido');
+        }
+
         return {
             isValid: hasMX,
             error: hasMX ? null : 'Questo dominio email non ha un server di posta valido'
         };
     } catch (error) {
-        console.warn('MX check error, continuing with validation:', error);
-        return { isValid: true, error: null };
+        console.error('Errore durante il controllo MX:', error);
+        return {
+            isValid: false,  // Cambiato da true a false
+            error: 'Impossibile verificare il server di posta. Controlla l\'indirizzo email.'
+        };
     }
 }
 
