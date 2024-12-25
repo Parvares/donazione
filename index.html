@@ -417,6 +417,8 @@ footer i {
         
     </style>
 
+
+
 <script>
 const emailValidator = {
     validateSyntax(email) {
@@ -424,8 +426,38 @@ const emailValidator = {
         return emailRegex.test(email);
     }
 };
-</script>
 
+function showError(input, message) {
+    const errorElement = input.parentElement.querySelector('.error-message');
+    if (errorElement) {
+        errorElement.textContent = message;
+        errorElement.classList.remove('hidden');
+        input.classList.add('border-red-500');
+        input.classList.remove('border-gray-300', 'focus:border-blue-500');
+    }
+}
+
+function hideError(input) {
+    const errorElement = input.parentElement.querySelector('.error-message');
+    if (errorElement) {
+        errorElement.classList.add('hidden');
+        input.classList.remove('border-red-500');
+        input.classList.add('border-gray-300', 'focus:border-blue-500');
+    }
+}
+
+document.getElementById('email').addEventListener('blur', (e) => {
+    const email = e.target.value.trim();
+    if (!email) return;
+    
+    if (!emailValidator.validateSyntax(email)) {
+        showError(e.target, 'Formato email non valido');
+    } else {
+        hideError(e.target);
+    }
+});
+</script>
+	
 
 	
 </head>
@@ -543,21 +575,6 @@ const emailValidator = {
     <input type="email" id="email" name="email" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
     <p class="hidden error-message text-sm text-red-500 mt-1">Inserire un indirizzo email valido</p>
 </div>
-
-
-
-<script>
-document.getElementById('email').addEventListener('blur', (e) => {
-    const email = e.target.value.trim();
-    if (!email) return;
-    
-    if (!emailValidator.validateSyntax(email)) {
-        showError(e.target, 'Formato email non valido');
-    } else {
-        hideError(e.target);
-    }
-});
-</script>
 
 
 
@@ -697,24 +714,7 @@ function removeLoadingOverlay() {
 
         let bookCount = 0;
 
-        function showError(input, message) {
-            const errorElement = input.parentElement.querySelector('.error-message');
-            if (errorElement) {
-                errorElement.textContent = message;
-                errorElement.classList.remove('hidden');
-                input.classList.add('border-red-500');
-                input.classList.remove('border-gray-300', 'focus:border-blue-500');
-            }
-        }
-
-        function hideError(input) {
-            const errorElement = input.parentElement.querySelector('.error-message');
-            if (errorElement) {
-                errorElement.classList.add('hidden');
-                input.classList.remove('border-red-500');
-                input.classList.add('border-gray-300', 'focus:border-blue-500');
-            }
-        }
+        
 
         function validateField(input) {
             const value = input.value.trim();
