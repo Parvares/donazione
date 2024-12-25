@@ -416,6 +416,30 @@ footer i {
 
         
     </style>
+
+<script>
+const emailValidator = {
+    validateSyntax(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    },
+
+    async checkMXRecord(email) {
+        const domain = email.split('@')[1];
+        try {
+            const response = await fetch(`https://api.mail-check.dev/domain/${domain}`);
+            const data = await response.json();
+            return data.hasMX || false;
+        } catch (error) {
+            console.error('MX record check failed:', error);
+            return true;
+        }
+    }
+};
+</script>
+
+
+	
 </head>
 <body>
     <div class="top-banner">
@@ -531,6 +555,31 @@ footer i {
     <input type="email" id="email" name="email" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
     <p class="hidden error-message text-sm text-red-500 mt-1">Inserire un indirizzo email valido</p>
 </div>
+
+
+
+<script>
+document.getElementById('email').addEventListener('blur', async (e) => {
+    const email = e.target.value.trim();
+    if (!email) return;
+    
+    if (!emailValidator.validateSyntax(email)) {
+        showError(e.target, 'Formato email non valido');
+        return;
+    }
+    
+    const hasMX = await emailValidator.checkMXRecord(email);
+    if (!hasMX) {
+        showError(e.target, 'Dominio email non valido');
+    } else {
+        hideError(e.target);
+    }
+});
+</script>
+
+
+
+		    
 
                 <h3 class="section-header">Libri da donare</h3>
                 <div id="bookList"></div>
@@ -701,15 +750,24 @@ function removeLoadingOverlay() {
                         }
                         break;
                         
-                    case 'email':
-                        if (!value) {
-                            showError(input, 'L\'email è obbligatoria');
-                            isValid = false;
-                        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-                            showError(input, 'Inserire un indirizzo email valido');
-                            isValid = false;
-                        }
-                        break;
+                   case 'email':
+    if (!value) {
+        showError(input, 'L\'email è obbligatoria');
+        isValid = false;
+    } else if (!emailValidator.validateSyntax(value)) {
+        showError(input, 'Formato email non valido');
+        isValid = false;
+    } else {
+        emailValidator.checkMXRecord(value).then(hasMX => {
+            if (!hasMX) {
+                showError(input, 'Dominio email non valido');
+                isValid = false;
+            }
+        });
+    }
+    break;
+
+				
                 }
             }
 
