@@ -13,14 +13,12 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-	
-   
-    
+
+    <script type="module" src="scripts/config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script type="module" src="scripts/config.js"></script>
-    <script type="module" src="scripts/emailValidator.js"></script>  
-<style>
+    
+    <style>
 
 
         
@@ -579,10 +577,8 @@ footer i {
 <!-- Nella sezione degli script del tuo HTML -->
 <script type="module">
     import config from './scripts/config.js';
-    
-// Add this import at the top of your HTML file, after config.js
-import { validateEmail } from './scripts/emailValidator.js';
-	
+    import { validateEmail } from './scripts/emailValidator.js';
+
     
     // Initialize EmailJS
     (function() {
@@ -691,49 +687,40 @@ function removeLoadingOverlay() {
             }
         }
 
+        function validateField(input) {
+            const value = input.value.trim();
+            let isValid = true;
 
-
-	
-
-async function validateField(input) {
-    const value = input.value.trim();
-    let isValid = true;
-
-    if (input.hasAttribute('required') && !value) {
-        showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
-        isValid = false;
-    } else {
-        switch (input.id) {
-            case 'email':
-                try {
-                    const { validateEmail } = await import('./scripts/emailValidator.js');
-                    const validation = await validateEmail(value);
-                    if (!validation.isValid) {
-                        showError(input, validation.errors[0]);
-                        isValid = false;
-                    }
-                } catch (error) {
-                    console.error('Errore durante la validazione email:', error);
-                    showError(input, 'Errore durante la validazione email');
-                    isValid = false;
+            if (input.hasAttribute('required') && !value) {
+                showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
+                isValid = false;
+            } else {
+                switch (input.id) {
+                    case 'telefono':
+                        if (value && !/^[0-9]{6,15}$/.test(value)) {
+                            showError(input, 'Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)');
+                            isValid = false;
+                        }
+                        break;
+                        
+                    case 'email':
+                        if (!value) {
+                            showError(input, 'L\'email è obbligatoria');
+                            isValid = false;
+                        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+                            showError(input, 'Inserire un indirizzo email valido');
+                            isValid = false;
+                        }
+                        break;
                 }
-                break;
-                
-            case 'telefono':
-                if (value && !/^[0-9]{6,15}$/.test(value)) {
-                    showError(input, 'Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)');
-                    isValid = false;
-                }
-                break;
+            }
+
+            if (isValid) {
+                hideError(input);
+            }
+
+            return isValid;
         }
-    }
-
-    if (isValid) {
-        hideError(input);
-    }
-
-    return isValid;
-}
 
 
         
@@ -782,7 +769,7 @@ async function validateField(input) {
 
 
         
-    function createBookEntry() {
+    window.createBookEntry = function() {
     const bookDiv = document.createElement('div');
     bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
     bookCount++;
@@ -1023,14 +1010,8 @@ window.resetBookFields = function(button) {
             });
         }
 
-       // Add this right after your form's submit handler
-     document.addEventListener('DOMContentLoaded', () => {
-    // Add initial book entry when page loads
-    const bookList = document.getElementById('bookList');
-    if (bookList && bookList.children.length === 0) {
-        createBookEntry();
-    }
-});
+        document.addEventListener('DOMContentLoaded', () => {
+            createBookEntry();
 
             const inputs = document.querySelectorAll('input');
             inputs.forEach(input => {
@@ -1039,7 +1020,7 @@ window.resetBookFields = function(button) {
                     input.addEventListener('blur', () => validateField(input));
                 }
             });
-        
+        });
 
 
 
@@ -1113,156 +1094,61 @@ window.resetBookFields = function(button) {
 	    
 
 
-
-// Replace the existing form submission code with this updated version
+   // Update the form submit handler
+// Form submission handler
 document.getElementById('donationForm').addEventListener('submit', async (event) => {
     event.preventDefault();
     
-    const email = document.getElementById('email').value.trim();
-    const emailInput = document.getElementById('email');
-    
+    const submitButton = event.target.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    submitButton.textContent = 'Invio in corso...';
+
     try {
-        const emailValidation = await validateEmail(email);
-        if (!emailValidation.isValid) {
-            showError(emailInput, emailValidation.errors[0]);
-            showGlobalErrorPopup('Verifica l\'indirizzo email inserito.');
-            return;
-        }
-        
-        // Rest of your existing form validation logic
-        const nome = document.getElementById('nome').value.trim();
-        const cognome = document.getElementById('cognome').value.trim();
-        const tessera = document.getElementById('tessera').value.trim();
-        const telefono = document.getElementById('telefono').value.trim();
+        // Reset any existing errors
+        const inputs = event.target.querySelectorAll('input, textarea');
+        inputs.forEach(input => hideError(input));
         
         // Validate required fields
         let isValid = true;
-        document.querySelectorAll('input[required]').forEach(input => {
+        inputs.forEach(input => {
             if (!validateField(input)) {
                 isValid = false;
             }
         });
+
+        // Get email field and validate
+        const emailInput = document.getElementById('email');
+        const email = emailInput.value.trim();
+        const emailValidation = await validateEmail(email);
         
-        if (!document.getElementById('accept').checked) {
-            showError(document.getElementById('accept'), 'Devi accettare i termini e condizioni');
+        if (!emailValidation.isValid) {
+            emailValidation.errors.forEach(error => {
+                showError(emailInput, error);
+            });
             isValid = false;
         }
-        
-        // Validate books
-        const bookEntries = document.querySelectorAll('.book-entry');
-        const books = [];
-        
-        bookEntries.forEach((entry, index) => {
-            const titleInput = entry.querySelector('.book-title');
-            if (!validateBookField(titleInput)) {
-                isValid = false;
-            }
-            
-            if (isValid) {
-                books.push({
-                    title: titleInput.value,
-                    author: entry.querySelector('.book-author').value || 'Non specificato',
-                    publisher: entry.querySelector('.book-publisher').value || 'Non specificato',
-                    year: entry.querySelector('.book-year').value || 'Non specificato',
-                    isbn: entry.querySelector('.book-isbn').value || 'Non specificato'
-                });
-            }
-        });
-        
+
+        // Check if validation failed
         if (!isValid) {
-            showGlobalErrorPopup('Verifica i campi evidenziati.');
+            showGlobalErrorPopup('Correggi gli errori nel modulo prima di inviare.');
             return;
         }
 
-        // Your existing email sending logic
-        const formattedBooks = books.map((book, index) => /* ... your existing books formatting ... */
-        
-        showLoadingOverlay();
-        
-        const response = await emailjs.send(
-            config.emailjs.serviceId,
-            config.emailjs.templateId,
-            {
-                to_email: config.library.email,
-                from_name: `${nome} ${cognome}`,
-                from_email: email,
-                reply_to: email,
-                tessera: tessera || 'Non specificata',
-                telefono: telefono || 'Non specificato',
-                books: formattedBooks,
-                notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
-            },
-            config.emailjs.publicKey
-        );
-        
-        removeLoadingOverlay();
-        showSuccessPopup('La tua donazione è stata inviata con successo!');
-        
-        // Reset form
-        event.target.reset();
-        document.getElementById('bookList').innerHTML = '';
-        bookCount = 0;
-        createBookEntry();
-        
-    } catch (error) {
-        console.error('Form submission error:', error);
-        removeLoadingOverlay();
-        showGlobalErrorPopup('Si è verificato un errore durante l\'invio. Riprova più tardi.');
-    }
-});
-// Add real-time validation for the email field
-document.getElementById('email').addEventListener('blur', async function() {
-    const emailValidation = await validateEmail(this.value.trim());
-    if (!emailValidation.isValid) {
-        showError(this, emailValidation.errors[0]);
-    } else {
-        hideError(this);
-    }
-});
+        // Collect form data
+        const nome = document.getElementById('nome').value.trim();
+        const cognome = document.getElementById('cognome').value.trim();
+        const tessera = document.getElementById('tessera').value.trim();
+        const telefono = document.getElementById('telefono').value.trim();
 
+        // Format books data
+        const books = Array.from(document.querySelectorAll('.book-entry')).map((entry, index) => ({
+            title: entry.querySelector('.book-title').value.trim(),
+            author: entry.querySelector('.book-author').value.trim() || 'Non specificato',
+            publisher: entry.querySelector('.book-publisher').value.trim() || 'Non specificato',
+            year: entry.querySelector('.book-year').value.trim() || 'Non specificato',
+            isbn: entry.querySelector('.book-isbn').value.trim() || 'Non specificato'
+        }));
 
-	    
-
-        // Verifica gli altri campi obbligatori
-        const requiredFields = document.querySelectorAll('[required]');
-        let allFieldsValid = true;
-
-        for (const field of requiredFields) {
-            if (!validateField(field)) {
-                allFieldsValid = false;
-            }
-        }
-
-        if (!allFieldsValid) {
-            removeLoadingOverlay();
-            return;
-        }
-
-        // Raccogli i dati dei libri
-        const books = [];
-        const bookEntries = document.querySelectorAll('.book-entry');
-        
-        bookEntries.forEach((entry, index) => {
-            const titleInput = entry.querySelector('.book-title');
-            if (titleInput && titleInput.value.trim()) {
-                books.push({
-                    title: entry.querySelector('.book-title').value.trim() || 'Non specificato',
-                    author: entry.querySelector('.book-author').value.trim() || 'Non specificato',
-                    publisher: entry.querySelector('.book-publisher').value.trim() || 'Non specificato',
-                    year: entry.querySelector('.book-year').value.trim() || 'Non specificato',
-                    isbn: entry.querySelector('.book-isbn').value.trim() || 'Non specificato'
-                });
-            }
-        });
-
-        // Verifica che ci sia almeno un libro
-        if (books.length === 0) {
-            showGlobalErrorPopup('Inserisci almeno un libro da donare');
-            removeLoadingOverlay();
-            return;
-        }
-
-        // Formatta i libri per l'email
         const formattedBooks = books.map((book, index) => 
             `<br><em>Libro ${index + 1}:</em><br>` +
             `<table style="width:100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed;">
@@ -1289,7 +1175,9 @@ document.getElementById('email').addEventListener('blur', async function() {
             </table>`
         ).join('');
 
-        // Invia l'email
+        showLoadingOverlay();
+
+        // Send email
         const response = await emailjs.send(
             config.emailjs.serviceId,
             config.emailjs.templateId,
@@ -1306,25 +1194,23 @@ document.getElementById('email').addEventListener('blur', async function() {
             config.emailjs.publicKey
         );
 
-        // Gestisci la risposta
-        if (response.status === 200) {
-            // Reset del form
-            event.target.reset();
-            document.getElementById('bookList').innerHTML = '';
-            bookCount = 0;
-            createBookEntry();
-            
-            // Mostra il messaggio di successo
-            showSuccessPopup('La tua donazione è stata inviata con successo!');
-        } else {
-            throw new Error('Errore nell\'invio dell\'email');
-        }
+        removeLoadingOverlay();
+        showSuccessPopup('La tua donazione è stata inviata con successo!');
+        
+        // Reset form
+        event.target.reset();
+        document.getElementById('bookList').innerHTML = '';
+        bookCount = 0;
+        createBookEntry();
 
     } catch (error) {
-        console.error('Errore durante l\'invio:', error);
-        showGlobalErrorPopup('Si è verificato un errore durante l\'invio. Riprova più tardi.');
-    } finally {
         removeLoadingOverlay();
+        showGlobalErrorPopup('Si è verificato un errore durante l\'invio. Riprova più tardi.');
+        console.error('Submission error:', error);
+    } finally {
+        const submitButton = event.target.querySelector('button[type="submit"]');
+        submitButton.disabled = false;
+        submitButton.textContent = 'Invia Donazione';
     }
 });
         
