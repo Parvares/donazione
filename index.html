@@ -590,67 +590,40 @@ footer i {
         
 // Prima aggiungi questa funzione accanto alle altre funzioni di utility (dopo showGlobalErrorPopup)
 function showGlobalErrorPopup(message) {
-    // Remove any existing error popups first
     const existingPopups = document.querySelectorAll('.error-popup');
-    existingPopups.forEach(popup => document.body.removeChild(popup));
+    existingPopups.forEach(popup => popup.remove());
 
-    // Create a popup div
     const popup = document.createElement('div');
-    popup.className = 'error-popup fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50 shadow-lg';
+    popup.className = 'error-popup fixed top-4 right-4 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-lg z-50';
     popup.innerHTML = `
         <strong class="font-bold">Errore!</strong>
         <span class="block sm:inline">${message}</span>
     `;
 
-    // Auto-remove after 5 seconds
-    setTimeout(() => {
-        if (document.body.contains(popup)) {
-            document.body.removeChild(popup);
-        }
-    }, 5000);
-
     document.body.appendChild(popup);
+    setTimeout(() => popup.remove(), 5000);
 }
 
-
-        
-
 function showSuccessPopup(message) {
-    // Rimuovi eventuali popup esistenti
-    const existingPopups = document.querySelectorAll('.success-popup');
-    existingPopups.forEach(popup => document.body.removeChild(popup));
-
-    // Crea il div del popup
     const popup = document.createElement('div');
-    popup.className = 'success-popup fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded z-50 shadow-lg';
+    popup.className = 'success-popup fixed top-4 right-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-lg z-50';
     popup.innerHTML = `
         <strong class="font-bold">Successo!</strong>
         <span class="block sm:inline">${message}</span>
     `;
 
-    // Rimuovi automaticamente dopo 5 secondi
-    setTimeout(() => {
-        if (document.body.contains(popup)) {
-            document.body.removeChild(popup);
-        }
-    }, 5000);
-
     document.body.appendChild(popup);
+    setTimeout(() => popup.remove(), 5000);
 }
 
 function showLoadingOverlay() {
     const overlay = document.createElement('div');
-    overlay.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
     overlay.id = 'loadingOverlay';
-    
-    const spinner = document.createElement('div');
-    spinner.className = 'bg-white p-5 rounded-lg flex flex-col items-center';
-    spinner.innerHTML = `
+    overlay.className = 'fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50';
+    overlay.innerHTML = `
         <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500 mb-3"></div>
         <div class="text-white font-medium">Invio donazione in corso...</div>
     `;
-    
-    overlay.appendChild(spinner);
     document.body.appendChild(overlay);
 }
 
@@ -660,7 +633,6 @@ function removeLoadingOverlay() {
         overlay.remove();
     }
 }
-
 
         
 
