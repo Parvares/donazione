@@ -691,7 +691,7 @@ function removeLoadingOverlay() {
 
 	
 
-	async function validateField(input) {
+async function validateField(input) {
     const value = input.value.trim();
     let isValid = true;
 
@@ -701,9 +701,16 @@ function removeLoadingOverlay() {
     } else {
         switch (input.id) {
             case 'email':
-                const validation = await validateEmail(value);
-                if (!validation.isValid) {
-                    showError(input, validation.errors[0]); // Mostra il primo errore
+                try {
+                    const { validateEmail } = await import('./scripts/emailValidator.js');
+                    const validation = await validateEmail(value);
+                    if (!validation.isValid) {
+                        showError(input, validation.errors[0]);
+                        isValid = false;
+                    }
+                } catch (error) {
+                    console.error('Errore durante la validazione email:', error);
+                    showError(input, 'Errore durante la validazione email');
                     isValid = false;
                 }
                 break;
