@@ -446,21 +446,28 @@ function hideError(input) {
     }
 }
 
-document.getElementById('email').addEventListener('blur', (e) => {
-    const email = e.target.value.trim();
-    if (!email) return;
-    
-    if (!emailValidator.validateSyntax(email)) {
-        showError(e.target, 'Formato email non valido');
-    } else {
-        hideError(e.target);
-    }
-});
+
 </script>
 	
 
 	
 </head>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('email').addEventListener('blur', (e) => {
+        const email = e.target.value.trim();
+        if (!email) return;
+        
+        if (!emailValidator.validateSyntax(email)) {
+            showError(e.target, 'Formato email non valido');
+        } else {
+            hideError(e.target);
+        }
+    });
+});
+</script>
+	
 <body>
     <div class="top-banner">
 	    
