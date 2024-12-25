@@ -686,40 +686,42 @@ function removeLoadingOverlay() {
             }
         }
 
-        function validateField(input) {
-            const value = input.value.trim();
-            let isValid = true;
 
-            if (input.hasAttribute('required') && !value) {
-                showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
-                isValid = false;
-            } else {
-                switch (input.id) {
-                    case 'telefono':
-                        if (value && !/^[0-9]{6,15}$/.test(value)) {
-                            showError(input, 'Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)');
-                            isValid = false;
-                        }
-                        break;
-                        
-                    case 'email':
-                        if (!value) {
-                            showError(input, 'L\'email è obbligatoria');
-                            isValid = false;
-                        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-                            showError(input, 'Inserire un indirizzo email valido');
-                            isValid = false;
-                        }
-                        break;
+
+	
+
+	async function validateField(input) {
+    const value = input.value.trim();
+    let isValid = true;
+
+    if (input.hasAttribute('required') && !value) {
+        showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
+        isValid = false;
+    } else {
+        switch (input.id) {
+            case 'email':
+                const validation = await validateEmail(value);
+                if (!validation.isValid) {
+                    showError(input, validation.errors[0]); // Mostra il primo errore
+                    isValid = false;
                 }
-            }
-
-            if (isValid) {
-                hideError(input);
-            }
-
-            return isValid;
+                break;
+                
+            case 'telefono':
+                if (value && !/^[0-9]{6,15}$/.test(value)) {
+                    showError(input, 'Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)');
+                    isValid = false;
+                }
+                break;
         }
+    }
+
+    if (isValid) {
+        hideError(input);
+    }
+
+    return isValid;
+}
 
 
         
