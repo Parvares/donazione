@@ -13,12 +13,13 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-
+	
+   
     <script type="module" src="scripts/config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <style>
+    <script type="module" src="scripts/emailValidator.js"></script>  
+<style>
 
 
         
@@ -1092,154 +1093,132 @@ window.resetBookFields = function(button) {
 	    
 
 
-        document.getElementById('donationForm').addEventListener('submit', async function(event) {
+document.getElementById('donationForm').addEventListener('submit', async function(event) {
     event.preventDefault();
     
-    let isValid = true;
-    const inputs = event.target.querySelectorAll('input');
+    // Mostra l'overlay di caricamento
+    showLoadingOverlay();
     
-    // Reset global error message
-    const existingPopups = document.querySelectorAll('.error-popup');
-    existingPopups.forEach(popup => document.body.removeChild(popup));
-    
-    // Validate all form fields
-    inputs.forEach(input => {
-        if (input.id) {
-            if (!validateField(input)) {
-                isValid = false;
-            }
-        }
-    });
+    try {
+        // Recupera tutti i campi obbligatori
+        const nome = document.getElementById('nome').value.trim();
+        const cognome = document.getElementById('cognome').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const tessera = document.getElementById('tessera').value.trim();
+        const telefono = document.getElementById('telefono').value.trim();
+        const accept = document.getElementById('accept').checked;
 
-    // Validate book fields
-    const bookEntries = document.querySelectorAll('.book-entry');
-    bookEntries.forEach(entry => {
-        const bookInputs = entry.querySelectorAll('input');
-        bookInputs.forEach(input => {
-            if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
-                if (!validateBookField(input)) {
-                    isValid = false;
-                }
-            }
-        });
-    });
-
-    // Validate checkbox
-    const acceptCheckbox = document.getElementById('accept');
-    if (!acceptCheckbox.checked) {
-        showError(acceptCheckbox, 'Devi accettare i termini e condizioni');
-        isValid = false;
-    } else {
-        hideError(acceptCheckbox);
-    }
-
-    if (!isValid) {
-        showGlobalErrorPopup('Per favore, compila correttamente tutti i campi obbligatori.');
-        return;
-    }
-
-    const nome = document.getElementById('nome').value.trim();
-    const cognome = document.getElementById('cognome').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const tessera = document.getElementById('tessera').value.trim();
-    const telefono = document.getElementById('telefono').value.trim();
-
-    const books = [];
-    
-    for (const bookDiv of bookEntries) {
-        const title = bookDiv.querySelector('.book-title').value.trim();
-        if (!title) {
-            showError(bookDiv.querySelector('.book-title'), 'Il titolo è obbligatorio');
+        // Verifica l'email
+        const emailInput = document.getElementById('email');
+        const emailIsValid = await validateField(emailInput);
+        
+        if (!emailIsValid) {
+            removeLoadingOverlay();
             return;
         }
+
+        // Verifica gli altri campi obbligatori
+        const requiredFields = document.querySelectorAll('[required]');
+        let allFieldsValid = true;
+
+        for (const field of requiredFields) {
+            if (!validateField(field)) {
+                allFieldsValid = false;
+            }
+        }
+
+        if (!allFieldsValid) {
+            removeLoadingOverlay();
+            return;
+        }
+
+        // Raccogli i dati dei libri
+        const books = [];
+        const bookEntries = document.querySelectorAll('.book-entry');
         
-        books.push({
-            title: title,
-            author: bookDiv.querySelector('.book-author').value.trim() || 'Non specificato',
-            publisher: bookDiv.querySelector('.book-publisher').value.trim() || 'Non specificato',
-            year: bookDiv.querySelector('.book-year').value.trim() || 'Non specificato',
-            isbn: bookDiv.querySelector('.book-isbn').value.trim() || 'Non specificato'
+        bookEntries.forEach((entry, index) => {
+            const titleInput = entry.querySelector('.book-title');
+            if (titleInput && titleInput.value.trim()) {
+                books.push({
+                    title: entry.querySelector('.book-title').value.trim() || 'Non specificato',
+                    author: entry.querySelector('.book-author').value.trim() || 'Non specificato',
+                    publisher: entry.querySelector('.book-publisher').value.trim() || 'Non specificato',
+                    year: entry.querySelector('.book-year').value.trim() || 'Non specificato',
+                    isbn: entry.querySelector('.book-isbn').value.trim() || 'Non specificato'
+                });
+            }
         });
-    }
 
-    if (books.length === 0) {
-        showGlobalErrorPopup('Aggiungi almeno un libro alla donazione.');
-        return;
-    }
+        // Verifica che ci sia almeno un libro
+        if (books.length === 0) {
+            showGlobalErrorPopup('Inserisci almeno un libro da donare');
+            removeLoadingOverlay();
+            return;
+        }
 
-    const formattedBooks = books.map((book, index) => 
-        `<br><em>Libro ${index + 1}:</em><br>` +
-        `<table style="width:100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed;">
-            <colgroup>
-                <col style="width: 100px;">
-                <col style="width: auto;">
-            </colgroup>
-            <tr>
-                <td style="padding:5px; border:1px solid #ddd;"><strong>Titolo:</strong></td>
-                <td style="padding:5px; border:1px solid #ddd;">${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}</td>
-            </tr>
-            <tr>
-                <td style="padding:5px; border:1px solid #ddd;"><strong>Editore:</strong></td>
-                <td style="padding:5px; border:1px solid #ddd;">${book.publisher}</td>
-            </tr>
-            <tr>
-                <td style="padding:5px; border:1px solid #ddd;"><strong>Anno:</strong></td>
-                <td style="padding:5px; border:1px solid #ddd;">${book.year}</td>
-            </tr>
-            <tr>
-                <td style="padding:5px; border:1px solid #ddd;"><strong>ISBN:</strong></td>
-                <td style="padding:5px; border:1px solid #ddd;">${book.isbn}</td>
-            </tr>
-        </table>`).join('');
+        // Formatta i libri per l'email
+        const formattedBooks = books.map((book, index) => 
+            `<br><em>Libro ${index + 1}:</em><br>` +
+            `<table style="width:100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed;">
+                <colgroup>
+                    <col style="width: 100px;">
+                    <col style="width: auto;">
+                </colgroup>
+                <tr>
+                    <td style="padding:5px; border:1px solid #ddd;"><strong>Titolo:</strong></td>
+                    <td style="padding:5px; border:1px solid #ddd;">${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}</td>
+                </tr>
+                <tr>
+                    <td style="padding:5px; border:1px solid #ddd;"><strong>Editore:</strong></td>
+                    <td style="padding:5px; border:1px solid #ddd;">${book.publisher}</td>
+                </tr>
+                <tr>
+                    <td style="padding:5px; border:1px solid #ddd;"><strong>Anno:</strong></td>
+                    <td style="padding:5px; border:1px solid #ddd;">${book.year}</td>
+                </tr>
+                <tr>
+                    <td style="padding:5px; border:1px solid #ddd;"><strong>ISBN:</strong></td>
+                    <td style="padding:5px; border:1px solid #ddd;">${book.isbn}</td>
+                </tr>
+            </table>`
+        ).join('');
 
-    showLoadingOverlay(); // Mostra subito il loading overlay
+        // Invia l'email
+        const response = await emailjs.send(
+            config.emailjs.serviceId,
+            config.emailjs.templateId,
+            {
+                to_email: config.library.email,
+                from_name: `${nome} ${cognome}`,
+                from_email: email,
+                reply_to: email,
+                tessera: tessera || 'Non specificata',
+                telefono: telefono || 'Non specificato',
+                books: formattedBooks,
+                notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
+            },
+            config.emailjs.publicKey
+        );
 
-    try {
-  // Update the emailjs.send portion of the submit event listener
-const response = await emailjs.send(
-    config.emailjs.serviceId,
-    config.emailjs.templateId,
-    {
-        to_email: config.library.email,
-        from_name: `${nome} ${cognome}`,
-        from_email: email,
-        reply_to: email,
-        tessera: tessera || 'Non specificata',
-        telefono: telefono || 'Non specificato',
-        books: formattedBooks,
-        notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
-    },
-    config.emailjs.publicKey
-);
-
-        // Rimuovi il loading overlay prima di mostrare il popup di successo
-        removeLoadingOverlay();
-        showSuccessPopup('La tua donazione è stata inviata con successo!');
-        
-        // Reset del form
-        event.target.reset();
-        document.getElementById('bookList').innerHTML = '';
-        bookCount = 0;
-        createBookEntry();
-
-        // Reset degli errori
-        const errorMessages = document.querySelectorAll('.error-message');
-        errorMessages.forEach(msg => msg.classList.add('hidden'));
-        const inputFields = document.querySelectorAll('input');
-        inputFields.forEach(input => {
-            input.classList.remove('border-red-500');
-            input.classList.add('border-gray-300', 'focus:border-blue-500');
-        });
+        // Gestisci la risposta
+        if (response.status === 200) {
+            // Reset del form
+            event.target.reset();
+            document.getElementById('bookList').innerHTML = '';
+            bookCount = 0;
+            createBookEntry();
+            
+            // Mostra il messaggio di successo
+            showSuccessPopup('La tua donazione è stata inviata con successo!');
+        } else {
+            throw new Error('Errore nell\'invio dell\'email');
+        }
 
     } catch (error) {
-        removeLoadingOverlay();
-        console.error('Errore dettagliato durante l\'invio:', error);
-        const errorMessage = error.text || error.message || 'Errore sconosciuto durante l\'invio';
-        showGlobalErrorPopup(`Si è verificato un errore durante l'invio: ${errorMessage}`);
+        console.error('Errore durante l\'invio:', error);
+        showGlobalErrorPopup('Si è verificato un errore durante l\'invio. Riprova più tardi.');
     } finally {
-        const submitButton = event.target.querySelector('button[type="submit"]');
-        submitButton.disabled = false;
-        submitButton.textContent = 'Invia Donazione';
+        removeLoadingOverlay();
     }
 });
         
