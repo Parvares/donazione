@@ -1008,17 +1008,7 @@ window.resetBookFields = function(button) {
             });
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            createBookEntry();
-
-            const inputs = document.querySelectorAll('input');
-            inputs.forEach(input => {
-                if (input.id) {
-                    input.addEventListener('input', () => validateField(input));
-                    input.addEventListener('blur', () => validateField(input));
-                }
-            });
-        });
+       
 
 
 
@@ -1293,6 +1283,17 @@ document.getElementById('email').addEventListener('blur', async function() {
     }
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    window.createBookEntry = function() {
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            if (input.id) {
+                input.addEventListener('input', () => validateField(input));
+                input.addEventListener('blur', () => validateField(input));
+            }
+        });
+    };
+});
 
 	
     </script>
