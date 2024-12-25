@@ -1,10 +1,9 @@
 // scripts/emailValidator.js
 import config from './config.js';
 
-// Funzione per la validazione base dell'email
 function basicEmailValidation(email) {
     const errors = [];
-    
+
     if (!email) {
         errors.push('L\'indirizzo email è obbligatorio');
         return { isValid: false, errors };
@@ -13,11 +12,11 @@ function basicEmailValidation(email) {
     if (email.length < 5) {
         errors.push('L\'indirizzo email è troppo corto');
     }
+    
     if (email.length > 254) {
         errors.push('L\'indirizzo email è troppo lungo');
     }
 
-    // Verifica che config.emailValidation.emailRegex esista prima di usarlo
     const emailRegex = config?.emailValidation?.emailRegex || /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     
     if (!emailRegex.test(email)) {
@@ -26,9 +25,8 @@ function basicEmailValidation(email) {
     }
 
     const domain = email.split('@')[1].toLowerCase();
-    
-    // Verifica che config.emailValidation.temporaryDomains esista prima di usarlo
     const temporaryDomains = config?.emailValidation?.temporaryDomains || [];
+    
     if (temporaryDomains.includes(domain)) {
         errors.push('Gli indirizzi email temporanei non sono ammessi');
     }
@@ -52,23 +50,16 @@ function basicEmailValidation(email) {
     };
 }
 
-// Modificato per gestire errori di rete
 async function checkMXRecord(email) {
     const domain = email.split('@')[1];
-
     try {
         const response = await fetch(`https://dns.google/resolve?name=${domain}&type=MX`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-
         const data = await response.json();
         const hasMX = data.Answer && data.Answer.length > 0;
-
-        if (!hasMX) {
-            console.warn('MX validation failed: Questo dominio email non ha un server di posta valido');
-        }
-
+        
         return {
             isValid: hasMX,
             error: hasMX ? null : 'Questo dominio email non ha un server di posta valido'
@@ -76,13 +67,12 @@ async function checkMXRecord(email) {
     } catch (error) {
         console.error('Errore durante il controllo MX:', error);
         return {
-            isValid: false,  // Cambiato da true a false
+            isValid: false,
             error: 'Impossibile verificare il server di posta. Controlla l\'indirizzo email.'
         };
     }
 }
 
-// Funzione principale di validazione
 async function validateEmail(email) {
     try {
         const basicValidation = basicEmailValidation(email);
@@ -90,18 +80,14 @@ async function validateEmail(email) {
             return basicValidation;
         }
 
-        // MX check is now optional - if it fails, we still allow the email
         const mxCheck = await checkMXRecord(email);
         if (!mxCheck.isValid && mxCheck.error) {
             console.warn('MX validation failed:', mxCheck.error);
-            // We still return valid=true to allow the form submission
             return { isValid: true, errors: [] };
         }
-
         return { isValid: true, errors: [] };
     } catch (error) {
         console.error('Email validation error:', error);
-        // In case of unexpected errors, we allow the form to submit
         return { isValid: true, errors: [] };
     }
 }
