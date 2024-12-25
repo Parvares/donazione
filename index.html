@@ -659,42 +659,47 @@ function removeLoadingOverlay() {
             }
         }
 
-        function validateField(input) {
-            const value = input.value.trim();
-            let isValid = true;
+async function validateField(input) {
+    const value = input.value.trim();
+    let isValid = true;
 
-            if (input.hasAttribute('required') && !value) {
-                showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
-                isValid = false;
-            } else {
-                switch (input.id) {
-                    case 'telefono':
-                        if (value && !/^[0-9]{6,15}$/.test(value)) {
-                            showError(input, 'Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)');
-                            isValid = false;
-                        }
-                        break;
-                        
-                    case 'email':
-                        if (!value) {
-                            showError(input, 'L\'email è obbligatoria');
-                            isValid = false;
-                        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-                            showError(input, 'Inserire un indirizzo email valido');
-                            isValid = false;
-                        }
-                        break;
+    if (input.hasAttribute('required') && !value) {
+        showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
+        isValid = false;
+    } else {
+        switch (input.id) {
+            case 'telefono':
+                if (value && !/^[0-9]{6,15}$/.test(value)) {
+                    showError(input, 'Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)');
+                    isValid = false;
                 }
-            }
-
-            if (isValid) {
-                hideError(input);
-            }
-
-            return isValid;
+                break;
+                
+            case 'email':
+                if (value) {
+                    const emailValidation = await validateEmail(value);
+                    if (!emailValidation.isValid) {
+                        showError(input, emailValidation.errors[0] || 'Indirizzo email non valido');
+                        isValid = false;
+                    }
+                } else {
+                    showError(input, 'L\'email è obbligatoria');
+                    isValid = false;
+                }
+                break;
         }
+    }
 
+    if (isValid) {
+        hideError(input);
+    }
 
+    return isValid;
+}
+// 3. AGGIUNGI QUESTO CODICE DOPO LA FUNZIONE validateField
+document.getElementById('email').addEventListener('blur', async function() {
+    await validateField(this);
+});
         
 
        function validateBookField(input) {
@@ -1068,49 +1073,35 @@ window.resetBookFields = function(button) {
 
    // Update the form submit handler
 // Form submission handler
-document.getElementById('donationForm').addEventListener('submit', async (event) => {
+document.getElementById('donationForm').addEventListener('submit', async function(event) {
     event.preventDefault();
     
     const submitButton = event.target.querySelector('button[type="submit"]');
     submitButton.disabled = true;
-    submitButton.textContent = 'Invio in corso...';
+    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Verifica in corso...';
 
+    const inputs = event.target.querySelectorAll('input[required], textarea[required]');
+    const validationPromises = Array.from(inputs).map(input => validateField(input));
+    
     try {
-        // Reset any existing errors
-        const inputs = event.target.querySelectorAll('input, textarea');
-        inputs.forEach(input => hideError(input));
+        const validationResults = await Promise.all(validationPromises);
+        const isValid = validationResults.every(result => result === true);
         
-        // Validate required fields
-        let isValid = true;
-        inputs.forEach(input => {
-            if (!validateField(input)) {
-                isValid = false;
-            }
-        });
-
-        // Get email field and validate
-        const emailInput = document.getElementById('email');
-        const email = emailInput.value.trim();
-        const emailValidation = await validateEmail(email);
-        
-        if (!emailValidation.isValid) {
-            emailValidation.errors.forEach(error => {
-                showError(emailInput, error);
-            });
-            isValid = false;
-        }
-
-        // Check if validation failed
         if (!isValid) {
-            showGlobalErrorPopup('Correggi gli errori nel modulo prima di inviare.');
+            submitButton.disabled = false;
+            submitButton.textContent = 'Invia Donazione';
             return;
         }
 
-        // Collect form data
-        const nome = document.getElementById('nome').value.trim();
-        const cognome = document.getElementById('cognome').value.trim();
-        const tessera = document.getElementById('tessera').value.trim();
-        const telefono = document.getElementById('telefono').value.trim();
+        const formData = {
+            nome: document.getElementById('nome').value.trim(),
+            cognome: document.getElementById('cognome').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            tessera: document.getElementById('tessera').value.trim(),
+            telefono: document.getElementById('telefono').value.trim()
+        };
+
+	    
 
         // Format books data
         const books = Array.from(document.querySelectorAll('.book-entry')).map((entry, index) => ({
@@ -1175,12 +1166,9 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
         bookCount = 0;
         createBookEntry();
 
-    } catch (error) {
-        removeLoadingOverlay();
-        showGlobalErrorPopup('Si è verificato un errore durante l\'invio. Riprova più tardi.');
-        console.error('Submission error:', error);
-    } finally {
-        const submitButton = event.target.querySelector('button[type="submit"]');
+   } catch (error) {
+        console.error('Validation error:', error);
+        showGlobalErrorPopup('Si è verificato un errore durante la validazione. Riprova.');
         submitButton.disabled = false;
         submitButton.textContent = 'Invia Donazione';
     }
