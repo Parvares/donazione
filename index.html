@@ -420,20 +420,8 @@ footer i {
 <script>
 const emailValidator = {
     validateSyntax(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
         return emailRegex.test(email);
-    },
-
-    async checkMXRecord(email) {
-        const domain = email.split('@')[1];
-        try {
-            const response = await fetch(`https://api.mail-check.dev/domain/${domain}`);
-            const data = await response.json();
-            return data.hasMX || false;
-        } catch (error) {
-            console.error('MX record check failed:', error);
-            return true;
-        }
     }
 };
 </script>
@@ -559,18 +547,12 @@ const emailValidator = {
 
 
 <script>
-document.getElementById('email').addEventListener('blur', async (e) => {
+document.getElementById('email').addEventListener('blur', (e) => {
     const email = e.target.value.trim();
     if (!email) return;
     
     if (!emailValidator.validateSyntax(email)) {
         showError(e.target, 'Formato email non valido');
-        return;
-    }
-    
-    const hasMX = await emailValidator.checkMXRecord(email);
-    if (!hasMX) {
-        showError(e.target, 'Dominio email non valido');
     } else {
         hideError(e.target);
     }
@@ -750,20 +732,13 @@ function removeLoadingOverlay() {
                         }
                         break;
                         
-                   case 'email':
+           case 'email':
     if (!value) {
         showError(input, 'L\'email è obbligatoria');
         isValid = false;
     } else if (!emailValidator.validateSyntax(value)) {
         showError(input, 'Formato email non valido');
         isValid = false;
-    } else {
-        emailValidator.checkMXRecord(value).then(hasMX => {
-            if (!hasMX) {
-                showError(input, 'Dominio email non valido');
-                isValid = false;
-            }
-        });
     }
     break;
 
