@@ -1110,22 +1110,42 @@ document.getElementById('donationForm').addEventListener('submit', async functio
     showLoadingOverlay();
     
     try {
-        // Recupera tutti i campi obbligatori
-        const nome = document.getElementById('nome').value.trim();
-        const cognome = document.getElementById('cognome').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const tessera = document.getElementById('tessera').value.trim();
-        const telefono = document.getElementById('telefono').value.trim();
-        const accept = document.getElementById('accept').checked;
-
-        // Verifica l'email
-        const emailInput = document.getElementById('email');
-        const emailIsValid = await validateField(emailInput);
+        // Valida tutti i campi richiesti
+        const inputs = this.querySelectorAll('input[required], textarea[required]');
+        let isValid = true;
         
-        if (!emailIsValid) {
+        // Esegui tutte le validazioni e attendi i risultati
+        const validationResults = await Promise.all(
+            Array.from(inputs).map(input => validateField(input))
+        );
+        
+        // Se qualsiasi validazione fallisce, imposta isValid a false
+        if (validationResults.includes(false)) {
+            isValid = false;
+        }
+        
+        // Controlla se i libri sono stati aggiunti
+        const bookEntries = document.querySelectorAll('.book-entry');
+        if (bookEntries.length === 0) {
+            showGlobalErrorPopup('Aggiungi almeno un libro alla donazione');
+            isValid = false;
+        }
+        
+        // Verifica l'accettazione dei termini
+        const acceptCheckbox = document.getElementById('accept');
+        if (!acceptCheckbox.checked) {
+            showError(acceptCheckbox, 'Devi accettare i termini e condizioni');
+            isValid = false;
+        }
+        
+        if (!isValid) {
             removeLoadingOverlay();
             return;
         }
+
+
+
+	    
 
         // Verifica gli altri campi obbligatori
         const requiredFields = document.querySelectorAll('[required]');
