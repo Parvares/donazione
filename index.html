@@ -1023,8 +1023,14 @@ window.resetBookFields = function(button) {
             });
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            createBookEntry();
+       // Add this right after your form's submit handler
+     document.addEventListener('DOMContentLoaded', () => {
+    // Add initial book entry when page loads
+    const bookList = document.getElementById('bookList');
+    if (bookList && bookList.children.length === 0) {
+        createBookEntry();
+    }
+});
 
             const inputs = document.querySelectorAll('input');
             inputs.forEach(input => {
