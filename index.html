@@ -412,41 +412,39 @@ footer i {
 }
 
 
-/* Stili per la checkbox con errore */
-.checkbox-error input[type="checkbox"] {
-    border: 2px solid #ef4444 !important;
-}
-.checkbox-error {
-    color: #ef4444;
-}
-
-/* Stile per il contenitore della checkbox */
+/* Stile base per il contenitore della checkbox */
 .checkbox-container {
-    position: relative;
     display: flex;
     align-items: flex-start;
-    gap: 3px;
-    padding: 2px;
-    border-radius: 4px;
+    gap: 0.5rem;
+    position: relative;
 }
 
-/* Stile per la checkbox stessa */
+/* Stile base per la checkbox */
 .checkbox-container input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    margin-top: 4px;
-    border: 2px solid #d1d5db;
-    border-radius: 4px;
+    border: 2px solid #e5e7eb;
+    border-radius: 0.25rem;
     transition: all 0.2s ease-in-out;
 }
 
-/* Stile per lo stato di errore */
-.checkbox-container.checkbox-error {
-    background-color: #fef2f2;
-}
-
+/* Stile per la checkbox quando c'è un errore */
 .checkbox-container.checkbox-error input[type="checkbox"] {
     border-color: #ef4444;
+}
+
+/* Mantiene il colore del testo normale anche in caso di errore */
+.checkbox-container span {
+    color: inherit;
+}
+
+/* Mantiene il colore del link invariato */
+.checkbox-container span a {
+    color: #3b82f6;
+    text-decoration: none;
+}
+
+.checkbox-container span a:hover {
+    text-decoration: underline;
 }
 
 	    
@@ -866,17 +864,16 @@ function validateCheckbox(checkbox) {
     const errorElement = container.nextElementSibling;
     
     if (!checkbox.checked) {
-        // Aggiungi classe per il bordo rosso
+        // Aggiungi solo la classe per il bordo rosso della checkbox
         container.classList.add('checkbox-error');
         
         // Mostra il messaggio di errore
         if (errorElement && errorElement.classList.contains('error-message')) {
-            errorElement.textContent = 'Devi accettare i termini e condizioni';
             errorElement.classList.remove('hidden');
         }
         return false;
     } else {
-        // Rimuovi classe per il bordo rosso
+        // Rimuovi la classe per il bordo rosso
         container.classList.remove('checkbox-error');
         
         // Nascondi il messaggio di errore
@@ -885,13 +882,18 @@ function validateCheckbox(checkbox) {
         }
         return true;
     }
-}
 
 
-// Aggiungi questo event listener dopo la definizione della funzione validateCheckbox
+// Aggiorna il markup della checkbox nel form esistente
 document.addEventListener('DOMContentLoaded', function() {
     const checkbox = document.getElementById('accept');
     if (checkbox) {
+        // Assicurati che il container abbia la classe corretta
+        const container = checkbox.closest('label');
+        if (container) {
+            container.className = 'checkbox-container';
+        }
+        
         checkbox.addEventListener('change', function() {
             validateCheckbox(this);
         });
