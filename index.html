@@ -420,6 +420,36 @@ footer i {
     color: #ef4444;
 }
 
+/* Stile per il contenitore della checkbox */
+.checkbox-container {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 3px;
+    padding: 2px;
+    border-radius: 4px;
+}
+
+/* Stile per la checkbox stessa */
+.checkbox-container input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-top: 4px;
+    border: 2px solid #d1d5db;
+    border-radius: 4px;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Stile per lo stato di errore */
+.checkbox-container.checkbox-error {
+    background-color: #fef2f2;
+}
+
+.checkbox-container.checkbox-error input[type="checkbox"] {
+    border-color: #ef4444;
+}
+
+	    
 /* Fine stili checkbox */
 </style>
 
@@ -633,12 +663,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		    
                 <div class="bg-gray-50 p-4 rounded mb-5">
-                    <label class="flex items-start gap-3">
-                        <input type="checkbox" id="accept" name="accept" required class="w-5 h-5 mt-1">
-                        <span>Ho letto e accetto <a href="termini.html" target="_blank" class="text-blue-500 hover:underline">termini e condizioni</a></span>
-                    </label>
-                    <p class="hidden error-message text-sm text-red-500 mt-1">Devi accettare i termini e condizioni</p>
-                </div>
+    <label class="checkbox-container">
+        <input type="checkbox" id="accept" name="accept" required class="w-5 h-5 mt-1">
+        <span>Ho letto e accetto <a href="termini.html" target="_blank" class="text-blue-500 hover:underline">termini e condizioni</a></span>
+    </label>
+    <p class="hidden error-message text-sm text-red-500 mt-1">Devi accettare i termini e condizioni</p>
+</div>
                 
                 <button type="submit" class="w-full max-w-sm mx-auto block px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors font-medium text-base">
                     Invia Donazione
@@ -832,12 +862,14 @@ function removeLoadingOverlay() {
 
 // Cerca questa funzione nel codice e sostituiscila completamente
 function validateCheckbox(checkbox) {
+    const container = checkbox.closest('.checkbox-container');
+    const errorElement = container.nextElementSibling;
+    
     if (!checkbox.checked) {
         // Aggiungi classe per il bordo rosso
-        checkbox.parentElement.classList.add('checkbox-error');
+        container.classList.add('checkbox-error');
         
         // Mostra il messaggio di errore
-        const errorElement = checkbox.parentElement.nextElementSibling;
         if (errorElement && errorElement.classList.contains('error-message')) {
             errorElement.textContent = 'Devi accettare i termini e condizioni';
             errorElement.classList.remove('hidden');
@@ -845,17 +877,26 @@ function validateCheckbox(checkbox) {
         return false;
     } else {
         // Rimuovi classe per il bordo rosso
-        checkbox.parentElement.classList.remove('checkbox-error');
+        container.classList.remove('checkbox-error');
         
         // Nascondi il messaggio di errore
-        const errorElement = checkbox.parentElement.nextElementSibling;
         if (errorElement && errorElement.classList.contains('error-message')) {
             errorElement.classList.add('hidden');
         }
         return true;
     }
 }
-	
+
+
+// Aggiungi questo event listener dopo la definizione della funzione validateCheckbox
+document.addEventListener('DOMContentLoaded', function() {
+    const checkbox = document.getElementById('accept');
+    if (checkbox) {
+        checkbox.addEventListener('change', function() {
+            validateCheckbox(this);
+        });
+    }
+});
 
         
     window.createBookEntry = function() {
