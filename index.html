@@ -454,7 +454,8 @@ input[type="checkbox"]:checked::before {
     animation: fadeInOut 5s ease-in-out;
     display: flex;
     align-items: center;
-    max-width: calc(100% - 2rem);
+    max-width: 90vw;
+    min-width: 600px;
     white-space: nowrap;
 }
 
@@ -706,22 +707,30 @@ document.addEventListener('DOMContentLoaded', () => {
 function showGlobalErrorPopup(message) {
     // Remove any existing error popups first
     const existingPopups = document.querySelectorAll('.error-popup');
-    existingPopups.forEach(popup => document.body.removeChild(popup));
+    existingPopups.forEach(popup => popup.remove());
 
-    // Create a popup div
+    // Create new popup with adjusted width and padding
     const popup = document.createElement('div');
-    popup.className = 'error-popup fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50 shadow-lg';
+    popup.className = 'error-popup fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-4 rounded shadow-lg flex items-center space-x-3 z-50';
+    popup.style.minWidth = '600px'; // Increased minimum width
+    popup.style.maxWidth = '90vw';  // Prevent overflow on mobile
+    popup.setAttribute('role', 'alert');
+    
     popup.innerHTML = `
-        <strong class="font-bold">Ops!</strong>
-        <span class="block sm:inline">${message}</span>
+        <strong class="font-bold text-xl">Ops!</strong>
+        <span class="inline-block text-xl">${message}</span>
     `;
+
+    document.body.appendChild(popup);
 
     // Auto-remove after 5 seconds
     setTimeout(() => {
-        if (document.body.contains(popup)) {
-            document.body.removeChild(popup);
+        if (popup.parentElement) {
+            popup.remove();
         }
     }, 5000);
+}
+
 
     document.body.appendChild(popup);
 }
@@ -1249,13 +1258,7 @@ if (!validateCheckbox(acceptCheckbox)) {
 }
 
 if (!isValid) {
-    const errorMessage = `
-<div class="error-popup fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-8 py-4 rounded shadow-lg flex items-center space-x-3 min-w-[500px] z-50" role="alert">
-  <strong class="font-bold text-xl">Ops!</strong>
-  <span class="inline-block text-xl">Per favore, compila correttamente tutti i campi obbligatori</span>
-</div>
-
-    `;
+    const errorMessage = 'Per favore, compila correttamente tutti i campi obbligatori';
     showGlobalErrorPopup(errorMessage);
     return;
 }
