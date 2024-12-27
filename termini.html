@@ -416,65 +416,14 @@ footer i {
         }
 
 
-.text-controls {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin: 1rem 0;
-}
 
-.audio-control {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: none;
-    background-color: var(--primary);
-    color: white;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
 
-.audio-control:hover {
-    transform: scale(1.1);
-}
 
-.text-size-widget {
-    display: flex;
-    list-style: none;
-    gap: 0.5rem;
-    margin: 0;
-    padding: 0;
-}
 
-.text-size-widget li {
-    padding: 0;
-}
 
-.text-size-widget li::before {
-    content: none;
-}
 
-.text-size-widget span {
-    cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-}
 
-.text-size-widget .small {
-    font-size: 14px;
-}
 
-.text-size-widget .medium {
-    font-size: 18px;
-}
-
-.text-size-widget .large {
-    font-size: 22px;
-}
 
 .text-size-widget span:hover,
 .text-size-widget span.active {
@@ -482,286 +431,55 @@ footer i {
     color: white;
 }
 
-.reading {
-    background-color: rgba(151, 10, 44, 0.1);
-}
-
-.waveform-container {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  height: 40px;
-  margin: 10px 0;
-  padding: 0 10px;
-}
-
-.waveform-bar {
-  flex: 1;
-  height: 100%;
-  background-color: #e5e7eb;
-  transition: background-color 0.3s ease;
-}
-
-.waveform-bar.played {
-  background-color: var(--primary);
-}
-
-.audio-control-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.audio-control-container {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.audio-control {
-    background: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s ease;
-}
-
-.audio-control:hover {
-    transform: scale(1.1);
-}
-
-.waveform-container {
-    display: none;
-    height: 60px;
+.text-controls {
+    margin: 20px 0;
+    padding: 10px;
     background: #f5f5f5;
     border-radius: 8px;
-    padding: 10px;
-    gap: 3px;
-    align-items: center;
-    margin-bottom: 2rem;
-}
-
-.waveform-container.active {
-    display: flex;
-}
-
-.waveform-bar {
-    flex: 1;
-    background: #e0e0e0;
-    height: 100%;
-    border-radius: 2px;
-    transition: background-color 0.3s ease;
-}
-
-.waveform-bar.played {
-    background: var(--primary);
-}
-
-.reading {
-    background: rgba(151, 10, 44, 0.1);
-    border-radius: 4px;
-    padding: 2px 6px;
-}
-
-      .text-controls {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
 }
 
 .audio-control-container {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 10px;
+    margin-bottom: 10px;
 }
 
 .audio-control {
-    background: var(--primary);
-    color: white;
+    background: none;
     border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.2s;
-}
-
-.audio-control:hover {
-    transform: scale(1.1);
+    font-size: 1.2rem;
+    color: #970a2c;
 }
 
 .waveform-container {
-    height: 40px;
-    background: transparent;
+    height: 60px;
     display: flex;
     align-items: center;
     gap: 2px;
-    flex-grow: 1;
-    position: relative;
-}
-
-.waveform-container::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: #ccc;
-    z-index: 0;
+    margin: 10px 0;
+    background: #fff;
+    padding: 10px;
+    border-radius: 4px;
 }
 
 .waveform-bar {
     width: 3px;
-    background: #e0e0e0;
-    height: 70%;
-    position: relative;
-    z-index: 1;
-    transition: background-color 0.3s;
-}
-
-.waveform-bar.played {
-    background: var(--primary);
-}
-      
-.text-controls {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
-}
-
-.audio-control-container {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.audio-control {
-    background: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.2s;
-}
-
-.audio-control:hover {
-    transform: scale(1.1);
-}
-
-.waveform-container {
-    display: none;
-    height: 60px;
-    background: white;
-    align-items: center;
-    gap: 1px;
-    flex-grow: 1;
-    padding: 0 10px;
-}
-
-.waveform-container.active {
-    display: flex;
-}
-
-.waveform-bar {
-    width: 2px;
-    background: #e0e0e0;
-    height: 100%;
-    transform-origin: bottom;
-    transition: background-color 0.3s;
-}
-
-.waveform-bar.played {
-    background: var(--primary);
-}
-
-      .text-controls {
-    margin: 2rem 0;
-    padding: 1rem;
-    background: #f5f5f5;
-    border-radius: 8px;
-}
-
-.audio-control-container {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.audio-control {
-    background: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.3s;
-}
-
-.audio-control:hover {
-    background-color: #7a0824;
-}
-
-.waveform-container {
-    height: 60px;
-    background: #fff;
-    border-radius: 4px;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    position: relative;
-}
-
-.waveform-bar {
-    flex: 1;
     height: 20px;
     background: #ddd;
-    transition: height 0.2s, background-color 0.2s;
+    transition: height 0.2s ease;
 }
 
 .waveform-bar.played {
-    background: var(--primary);
+    background: #970a2c;
 }
 
 .time-display {
     display: flex;
     justify-content: space-between;
-    margin-top: 0.5rem;
     font-size: 0.9rem;
     color: #666;
-}
-
-.waveform-container.active .waveform-bar {
-    animation: pulse 1s infinite;
-}
-
-@keyframes pulse {
-    0% { height: 20px; }
-    50% { height: 40px; }
-    100% { height: 20px; }
 }
       
    </style>
@@ -826,7 +544,7 @@ footer i {
            
 <div class="text-controls">
     <div class="audio-control-container">
-        <button class="audio-control" id="audioControl" title="Ascolta il testo">
+        <button class="audio-control" id="audioControl">
             <i class="fas fa-headphones"></i>
         </button>
         <span>Ascolta l'audio</span>
@@ -837,7 +555,6 @@ footer i {
         <span id="totalTime">0:00</span>
     </div>
 </div>
-
            
 
             <h1>Donazione di libri</h1>
@@ -977,34 +694,28 @@ const waveformContainer = document.getElementById('waveform');
 const currentTimeDisplay = document.getElementById('currentTime');
 const totalTimeDisplay = document.getElementById('totalTime');
 
-// Calculate total duration based on text length
-function calculateTotalDuration() {
-    let totalText = '';
-    textElements.forEach(el => {
-        totalText += el.textContent + ' ';
-    });
-    // Estimate: average speaking rate is about 150 words per minute
-    const wordCount = totalText.split(' ').length;
-    totalDuration = Math.ceil(wordCount / 150 * 60);
-    totalTimeDisplay.textContent = formatTime(totalDuration);
-}
-
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
 }
 
-// Generate bars for waveform
-function generateBars() {
-    waveformContainer.innerHTML = '';
-    const totalBars = 100;
+function calculateTotalDuration() {
+    let totalText = '';
+    textElements.forEach(el => {
+        totalText += el.textContent + ' ';
+    });
+    // Stima: 100 caratteri = 5 secondi
+    totalDuration = (totalText.length / 100) * 5;
+    totalTimeDisplay.textContent = formatTime(totalDuration);
     
-    for (let i = 0; i < totalBars; i++) {
+    // Crea 50 barre per la waveform
+    waveformContainer.innerHTML = '';
+    for (let i = 0; i < 50; i++) {
         const bar = document.createElement('div');
         bar.className = 'waveform-bar';
-        // Random height between 20px and 40px
-        const height = 20 + Math.random() * 20;
+        // Altezza casuale tra 10px e 40px
+        const height = 10 + Math.random() * 30;
         bar.style.height = `${height}px`;
         waveformContainer.appendChild(bar);
     }
@@ -1012,22 +723,26 @@ function generateBars() {
 
 function updateWaveform() {
     const bars = waveformContainer.querySelectorAll('.waveform-bar');
-    const progress = (currentIndex / textElements.length) * bars.length;
+    const elapsedTime = (Date.now() - startTime) / 1000;
+    const progress = Math.min(elapsedTime / totalDuration, 1);
+    const barsToPlay = Math.floor(progress * bars.length);
     
     bars.forEach((bar, index) => {
-        if (index < progress) {
+        if (index < barsToPlay) {
             bar.classList.add('played');
         } else {
             bar.classList.remove('played');
         }
     });
-
-    // Update current time
-    const currentTime = (currentIndex / textElements.length) * totalDuration;
-    currentTimeDisplay.textContent = formatTime(currentTime);
+    
+    currentTimeDisplay.textContent = formatTime(elapsedTime);
+    
+    if (isPlaying) {
+        requestAnimationFrame(updateWaveform);
+    }
 }
 
-const setupSpeech = () => {
+function setupSpeech() {
     speech = new SpeechSynthesisUtterance();
     speech.lang = 'it-IT';
     speech.rate = 0.9;
@@ -1037,51 +752,46 @@ const setupSpeech = () => {
         currentIndex++;
         if (currentIndex < textElements.length) {
             readNextElement();
-            updateWaveform();
         } else {
             stopReading();
         }
     };
 }
 
-const readNextElement = () => {
+function readNextElement() {
     if (textElements[currentIndex]) {
         speech.text = textElements[currentIndex].textContent;
         window.speechSynthesis.speak(speech);
-        updateWaveform();
     }
 }
 
-const stopReading = () => {
+function stopReading() {
     isPlaying = false;
     currentIndex = 0;
     audioControl.innerHTML = '<i class="fas fa-headphones"></i>';
-    waveformContainer.classList.remove('active');
+    window.speechSynthesis.cancel();
     currentTimeDisplay.textContent = '0:00';
     const bars = waveformContainer.querySelectorAll('.waveform-bar');
     bars.forEach(bar => bar.classList.remove('played'));
 }
 
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-    setupSpeech();
-    generateBars();
-    calculateTotalDuration();
-});
-
 audioControl.addEventListener('click', () => {
+    if (!speech) setupSpeech();
+    
     if (!isPlaying) {
         isPlaying = true;
+        startTime = Date.now();
+        calculateTotalDuration();
         audioControl.innerHTML = '<i class="fas fa-pause"></i>';
-        waveformContainer.classList.add('active');
-        if (currentIndex < textElements.length) {
-            readNextElement();
-        }
+        readNextElement();
+        updateWaveform();
     } else {
         stopReading();
-        window.speechSynthesis.cancel();
     }
 });
+
+// Inizializza la waveform al caricamento
+document.addEventListener('DOMContentLoaded', calculateTotalDuration);
       
 </script>
 
