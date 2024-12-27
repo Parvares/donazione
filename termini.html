@@ -430,7 +430,67 @@ footer i {
 
 
 
+      .accessibility-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
 
+        .audio-button {
+            background: var(--primary);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+
+        .audio-button:hover {
+            transform: scale(1.1);
+        }
+
+        .text-size-widget {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            gap: 10px;
+        }
+
+        .text-size-widget li {
+            padding: 0;
+        }
+
+        .text-size-widget li::before {
+            content: none;
+        }
+
+        .text-size-widget span {
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 4px;
+            background: #f0f0f0;
+            transition: background-color 0.2s;
+        }
+
+        .text-size-widget .small { font-size: 14px; }
+        .text-size-widget .medium { font-size: 18px; }
+        .text-size-widget .large { font-size: 22px; }
+        .text-size-widget span.active { background: var(--primary); color: white; }
+
+        .reading {
+            background: #e0e0e0;
+        }
+
+        body.text-small { font-size: 16px; }
+        body.text-medium { font-size: 20px; }
+        body.text-large { font-size: 24px; }
 
 
       
@@ -492,7 +552,19 @@ footer i {
     </a>
 </div>
            
+<div class="accessibility-controls">
+            <button class="audio-button" id="audioButton" title="Lettura vocale">
+                <i class="fas fa-headphones"></i>
+            </button>
+            <ul class="text-size-widget">
+                <li><span class="small">a</span></li>
+                <li><span class="medium active">a</span></li>
+                <li><span class="large">a</span></li>
+            </ul>
+        </div>
 
+
+           
             <h1>Donazione di libri</h1>
             <section>
                 <h2>Criteri di Accettazione</h2>
@@ -682,7 +754,70 @@ footer i {
         });
     </script>
 
+  <script>
+        let speech = null;
+        let isPlaying = false;
+        let currentIndex = 0;
+        const textElements = document.querySelectorAll('p, li');
+        const audioButton = document.getElementById('audioButton');
+        
+        function setupSpeech() {
+            speech = new SpeechSynthesisUtterance();
+            speech.lang = 'it-IT';
+            speech.rate = 1;
+            speech.pitch = 1;
+            
+            speech.onend = () => {
+                currentIndex++;
+                if (currentIndex < textElements.length) {
+                    readNextElement();
+                } else {
+                    stopReading();
+                }
+            };
+        }
+        
+        function readNextElement() {
+            textElements.forEach(el => el.classList.remove('reading'));
+            const currentElement = textElements[currentIndex];
+            currentElement.classList.add('reading');
+            speech.text = currentElement.textContent;
+            speechSynthesis.speak(speech);
+        }
+        
+        function stopReading() {
+            speechSynthesis.cancel();
+            textElements.forEach(el => el.classList.remove('reading'));
+            currentIndex = 0;
+            isPlaying = false;
+            audioButton.innerHTML = '<i class="fas fa-headphones"></i>';
+        }
+        
+        audioButton.addEventListener('click', () => {
+            if (!speech) setupSpeech();
+            
+            if (isPlaying) {
+                stopReading();
+            } else {
+                isPlaying = true;
+                audioButton.innerHTML = '<i class="fas fa-pause"></i>';
+                readNextElement();
+            }
+        });
 
+        // Text size controls
+        document.querySelectorAll('.text-size-widget span').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.text-size-widget span').forEach(b => b.classList.remove('active'));
+                button.classList.add('active');
+                
+                const size = button.classList.contains('small') ? 'text-small' :
+                            button.classList.contains('medium') ? 'text-medium' : 'text-large';
+                
+                document.body.className = size;
+            });
+        });
+    </script>
 
    
 </body>
