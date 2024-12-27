@@ -390,78 +390,47 @@ footer i {
       
 
             
- /* Audio player container */
 .text-controls {
-  margin: 2rem 0;
-  width: 100%;
-}
-
-/* Audio control button */
-.audio-control-container {
-  text-align: right;
-  margin-bottom: 1rem;
+    margin: 20px 0;
 }
 
 .audio-control {
-  background-color: var(--primary);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.3s ease;
+    background: none;
+    border: none;
+    color: var(--primary);
+    cursor: pointer;
+    font-size: 1.5rem;
+    padding: 10px;
 }
 
-.audio-control:hover {
-  transform: scale(1.1);
-}
-
-.audio-control i {
-  font-size: 18px;
-}
-
-/* Waveform container and bars */
 .waveform-container {
-  width: 100%;
-  height: 60px;
-  background: #f5f5f5;
-  border-radius: 8px;
-  padding: 10px;
-  position: relative;
-  cursor: pointer;
-  display: none;
+    position: relative;
+    height: 50px;
+    width: 100%;
+    margin: 10px 0;
 }
 
 .waveform-bar {
-  width: 2px;
-  background: #ddd;
-  position: absolute;
-  bottom: 10px;
-  transition: background-color 0.2s;
+    position: absolute;
+    bottom: 0;
+    width: 2px;
+    background-color: var(--primary);
+    opacity: 0.3;
+    transition: opacity 0.2s;
 }
 
 .waveform-bar.played {
-  background: var(--primary);
+    opacity: 1;
 }
 
-/* Time display */
 .time-display {
-  display: flex;
-  justify-content: space-between;
-  padding: 5px 10px;
-  font-size: 14px;
-  color: #666;
-  font-family: 'Space Grotesk', sans-serif;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--primary);
+    margin-top: 5px;
 }
-
-/* State styles */
-.reading .audio-control {
-  background-color: #e0e0e0;
-}
+      
    </style>
 </head>
 <body>
@@ -522,20 +491,19 @@ footer i {
 
 
            
-<!-- Add this right after the library-name div in your HTML -->
+<!-- Add this HTML structure after your h1 tag -->
 <div class="text-controls">
-  <div class="audio-control-container">
-    <button class="audio-control" id="audioControl">
-      <i class="fas fa-headphones"></i>
-    </button>
-  </div>
-  <div class="waveform-container" id="waveform" style="display: none;">
-    <div class="time-display">
-      <span id="currentTime">0:00</span>
-      <span id="totalTime">0:00</span>
+    <div class="audio-control-container">
+        <button class="audio-control" id="audioControl">
+            <i class="fas fa-headphones"></i>
+        </button>
     </div>
-  </div>
-</div>
+    <div class="waveform-container" id="waveform" style="display: none;">
+        <div class="time-display">
+            <span id="currentTime">0:00</span>
+            <span id="totalTime">0:00</span>
+        </div>
+    </div>
 
             <h1>Donazione di libri</h1>
             <section>
@@ -663,6 +631,67 @@ footer i {
    
 
    <script>
+<!-- Add this CSS in your style tag, removing previous waveform styles -->
+<style>
+.text-controls {
+    margin: 20px 0;
+}
+
+.audio-control {
+    background: none;
+    border: none;
+    color: var(--primary);
+    cursor: pointer;
+    font-size: 1.5rem;
+    padding: 10px;
+}
+
+.waveform-container {
+    position: relative;
+    height: 50px;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.waveform-bar {
+    position: absolute;
+    bottom: 0;
+    width: 2px;
+    background-color: var(--primary);
+    opacity: 0.3;
+    transition: opacity 0.2s;
+}
+
+.waveform-bar.played {
+    opacity: 1;
+}
+
+.time-display {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--primary);
+    margin-top: 5px;
+}
+</style>
+
+<!-- Add this HTML structure after your h1 tag -->
+<div class="text-controls">
+    <div class="audio-control-container">
+        <button class="audio-control" id="audioControl">
+            <i class="fas fa-headphones"></i>
+        </button>
+    </div>
+    <div class="waveform-container" id="waveform" style="display: none;">
+        <div class="time-display">
+            <span id="currentTime">0:00</span>
+            <span id="totalTime">0:00</span>
+        </div>
+    </div>
+</div>
+
+<!-- Replace the entire JavaScript section with this updated code -->
+<script>
 let speech = null;
 let isPlaying = false;
 let currentIndex = 0;
@@ -688,19 +717,19 @@ function calculateTotalDuration() {
     textElements.forEach(el => {
         totalText += el.textContent + ' ';
     });
-    // Rough estimation: 100 characters per 3 seconds
-    totalDuration = (totalText.length / 100) * 3;
+    // Estimate duration based on average reading speed (150 words per minute)
+    const wordCount = totalText.split(' ').length;
+    totalDuration = (wordCount / 150) * 60;
     totalTimeDisplay.textContent = formatTime(totalDuration);
 }
 
 function createWaveform() {
-    waveformContainer.innerHTML = '';
-    const numberOfBars = 200; // More bars for denser visualization
+    waveformContainer.innerHTML = '<div class="time-display"><span id="currentTime">0:00</span><span id="totalTime">0:00</span></div>';
+    const numberOfBars = 100;
     
     for (let i = 0; i < numberOfBars; i++) {
         const bar = document.createElement('div');
         bar.className = 'waveform-bar';
-        // Random height between 15 and 45 pixels
         const height = 15 + Math.random() * 30;
         bar.style.height = `${height}px`;
         bar.style.left = `${(i / numberOfBars) * 100}%`;
@@ -760,6 +789,7 @@ function stopReading() {
     isPlaying = false;
     window.speechSynthesis.cancel();
     audioControl.innerHTML = '<i class="fas fa-headphones"></i>';
+    waveformContainer.style.display = 'none';
     if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
     }
@@ -785,13 +815,11 @@ function resumeReading() {
     updateWaveform();
 }
 
-// Add click handler for waveform seeking
 waveformContainer.addEventListener('click', (e) => {
     const rect = waveformContainer.getBoundingClientRect();
     const clickPosition = (e.clientX - rect.left) / rect.width;
     pausedTime = clickPosition * totalDuration;
     
-    // Update visual state
     const bars = waveformContainer.querySelectorAll('.waveform-bar');
     const barsToPlay = Math.floor(clickPosition * bars.length);
     
@@ -803,7 +831,6 @@ waveformContainer.addEventListener('click', (e) => {
         }
     });
     
-    // Reset speech synthesis and start from new position
     window.speechSynthesis.cancel();
     currentIndex = Math.floor(clickPosition * textElements.length);
     
@@ -842,9 +869,11 @@ audioControl.addEventListener('click', () => {
     }
 });
 
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', () => {
-    setupSpeech();
+// Cleanup on page unload
+window.addEventListener('unload', () => {
+    if (speech) {
+        window.speechSynthesis.cancel();
+    }
 });
 </script>
 
