@@ -787,7 +787,7 @@ function removeLoadingOverlay() {
 
         
 
-       const validateField = (input) => {
+     const validateField = (input) => {
     const value = input.value.trim();
     let isValid = true;
 
@@ -813,11 +813,9 @@ function removeLoadingOverlay() {
                 break;
         }
     }
-
     if (isValid) {
         hideError(input);
     }
-
     return isValid;
 };
 
@@ -828,53 +826,58 @@ function validateBookField(input) {
     if (input.hasAttribute('required') && !value) {
         if (input.classList.contains('book-title')) {
             showError(input, 'Il campo Titolo* è obbligatorio');
-        } else {
-            showError(input, 'Questo campo è obbligatorio');
         }
         isValid = false;
-    } else if (input.classList.contains('book-year')) {
-        const currentYear = new Date().getFullYear();
-        
-        // Validazione anno solo su blur
-        if (value && (value.length !== 4 || !Number.isInteger(Number(value)) || Number(value) < 1900 || Number(value) > currentYear)) {
-            showError(input, `L'anno deve essere un numero di 4 cifre compreso tra 1900 e ${currentYear}`);
-            isValid = false;
-        }
     } else if (input.classList.contains('book-isbn')) {
         if (value && !/^(?:\d{10}|\d{13})$/.test(value)) {
             showError(input, 'ISBN deve essere di 10 o 13 cifre');
             isValid = false;
         }
     }
-
+    
     if (isValid) {
         hideError(input);
     }
-
     return isValid;
 }
 
-// Aggiungi gli event listener
-document.addEventListener('DOMContentLoaded', () => {
-    // Validazione su evento blur per campi con classe book-year
-    document.addEventListener('blur', (e) => {
-        if (e.target.classList.contains('book-year')) {
-            validateBookField(e.target);
-        }
-    }, true);
+function validateYear(input) {
+    const value = input.value.trim();
+    const currentYear = new Date().getFullYear();
+    
+    if (value && (value.length !== 4 || !Number.isInteger(Number(value)) || Number(value) < 1900 || Number(value) > currentYear)) {
+        showError(input, `L'anno deve essere un numero di 4 cifre compreso tra 1900 e ${currentYear}`);
+        return false;
+    }
+    hideError(input);
+    return true;
+}
 
-    // Gestione input per evitare validazioni premature sui campi book-year
-    document.addEventListener('input', (e) => {
-        if (e.target.classList.contains('book-year')) {
-            hideError(e.target);
-        } else if (e.target.classList.contains('book-title') || 
-                   e.target.classList.contains('book-isbn')) {
-            validateBookField(e.target);
-        }
-    }, true);
-});
+function attachValidationHandlers(bookEntry) {
+    const yearInput = bookEntry.querySelector('.book-year');
+    const titleInput = bookEntry.querySelector('.book-title');
+    const isbnInput = bookEntry.querySelector('.book-isbn');
 
-// Rimuovi le frecce dai campi numerici book-year
+    yearInput.addEventListener('blur', () => validateYear(yearInput));
+    yearInput.addEventListener('input', () => hideError(yearInput));
+    
+    titleInput.addEventListener('input', () => validateBookField(titleInput));
+    isbnInput.addEventListener('input', () => validateBookField(isbnInput));
+}
+
+function createBookEntry() {
+    // Existing book entry creation code...
+    
+    const bookDiv = document.createElement('div');
+    // ... (rest of creation code)
+    
+    attachValidationHandlers(bookDiv);
+    
+    document.getElementById('bookList').appendChild(bookDiv);
+    return bookDiv;
+}
+
+// Style for removing number input arrows
 const style = document.createElement('style');
 style.textContent = `
     input[type="number"].book-year::-webkit-inner-spin-button,
