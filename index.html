@@ -787,47 +787,40 @@ function removeLoadingOverlay() {
 
         
 
-        function validateField(input) {
-            const value = input.value.trim();
-            let isValid = true;
+       const validateField = (input) => {
+    const value = input.value.trim();
+    let isValid = true;
 
-            if (input.hasAttribute('required') && !value) {
-                showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
-                isValid = false;
-            } else {
-                switch (input.id) {
-                    case 'telefono':
-                        if (value && !/^[0-9]{6,15}$/.test(value)) {
-                            showError(input, 'Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)');
-                            isValid = false;
-                        }
-                        break;
-                        
-           case 'email':
-    if (!value) {
-        showError(input, 'L\'email è obbligatoria');
+    if (input.hasAttribute('required') && !value) {
+        showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
         isValid = false;
-    } else if (!emailValidator.validateSyntax(value)) {
-        showError(input, 'Formato email non valido');
-        isValid = false;
-    }
-    break;
-
-				
+    } else {
+        switch (input.id) {
+            case 'telefono':
+                if (value && !/^[0-9]{6,15}$/.test(value)) {
+                    showError(input, 'Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)');
+                    isValid = false;
                 }
-            }
-
-            if (isValid) {
-                hideError(input);
-            }
-
-            return isValid;
+                break;
+            case 'email':
+                if (!value) {
+                    showError(input, 'L\'email è obbligatoria');
+                    isValid = false;
+                } else if (!emailValidator.validateSyntax(value)) {
+                    showError(input, 'Formato email non valido');
+                    isValid = false;
+                }
+                break;
         }
+    }
 
+    if (isValid) {
+        hideError(input);
+    }
 
-        
+    return isValid;
+};
 
-// Funzione per validare i campi del libro
 function validateBookField(input) {
     const value = input.value.trim();
     let isValid = true;
@@ -841,12 +834,11 @@ function validateBookField(input) {
         isValid = false;
     } else if (input.classList.contains('book-year')) {
         const currentYear = new Date().getFullYear();
-
-        if (value) {
-            if (value.length !== 4 || !Number.isInteger(Number(value)) || Number(value) < 1900 || Number(value) > currentYear) {
-                showError(input, `L'anno deve essere un numero di 4 cifre compreso tra 1900 e ${currentYear}`);
-                isValid = false;
-            }
+        
+        // Validazione anno solo su blur
+        if (value && (value.length !== 4 || !Number.isInteger(Number(value)) || Number(value) < 1900 || Number(value) > currentYear)) {
+            showError(input, `L'anno deve essere un numero di 4 cifre compreso tra 1900 e ${currentYear}`);
+            isValid = false;
         }
     } else if (input.classList.contains('book-isbn')) {
         if (value && !/^(?:\d{10}|\d{13})$/.test(value)) {
@@ -862,12 +854,27 @@ function validateBookField(input) {
     return isValid;
 }
 
-// Aggiunta dell'evento blur ai campi con classe .book-year
-document.querySelectorAll('.book-year').forEach(input => {
-    input.addEventListener('blur', () => validateBookField(input));
+// Aggiungi gli event listener
+document.addEventListener('DOMContentLoaded', () => {
+    // Validazione su evento blur per campi con classe book-year
+    document.addEventListener('blur', (e) => {
+        if (e.target.classList.contains('book-year')) {
+            validateBookField(e.target);
+        }
+    }, true);
+
+    // Gestione input per evitare validazioni premature sui campi book-year
+    document.addEventListener('input', (e) => {
+        if (e.target.classList.contains('book-year')) {
+            hideError(e.target);
+        } else if (e.target.classList.contains('book-title') || 
+                   e.target.classList.contains('book-isbn')) {
+            validateBookField(e.target);
+        }
+    }, true);
 });
 
-// Aggiunta dello stile per rimuovere le frecce dai campi di tipo number
+// Rimuovi le frecce dai campi numerici book-year
 const style = document.createElement('style');
 style.textContent = `
     input[type="number"].book-year::-webkit-inner-spin-button,
@@ -880,7 +887,11 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
-        
+
+
+
+
+	
 
 function validateCheckbox(checkbox) {
     const errorElement = checkbox.parentElement.nextElementSibling;
