@@ -54,8 +54,12 @@ footer .info { display: flex; flex-wrap: wrap; justify-content: space-between; a
 .accessibility-controls { display: flex; align-items: center; gap: 20px; margin-bottom: 20px; }
 .audio-button { background: var(--primary); border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; color: white; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
 .audio-button:hover { transform: scale(1.1); }
-.audio-button i.fa-headphones:hover::before {
-    content: "\f04b"; /* FontAwesome play icon */
+.audio-button i.fa-headphones {
+    transition: content 0.2s;
+}
+
+.audio-button:hover i.fa-headphones::before {
+    content: "\f04b";
 }
 .text-size-widget { display: flex; list-style: none; padding: 0; margin: 0; gap: 10px; }
 .text-size-widget li { padding: 0; }
@@ -176,24 +180,26 @@ let currentIndex = 0;
 const textElements = document.querySelectorAll('p, li');
 const audioButton = document.getElementById('audioButton');
 
-   
-
 function setupSpeech() {
     speech = new SpeechSynthesisUtterance();
     speech.lang = 'it-IT';
     speech.rate = 1;
     speech.pitch = 1;
     
-    // Get available voices and select female Italian voice
+    // Get available voices and select Italian female voice
     let voices = speechSynthesis.getVoices();
-    speech.voice = voices.find(voice => 
-        voice.lang === 'it-IT' && voice.name.includes('female'));
+    let italianVoice = voices.find(voice => 
+        voice.lang.includes('it-IT') && voice.name.toLowerCase().includes('female'));
     
-    // Fallback to first Italian voice if female not found
-    if (!speech.voice) {
-        speech.voice = voices.find(voice => voice.lang === 'it-IT');
+    // Fallback to any Italian voice if female not found
+    if (!italianVoice) {
+        italianVoice = voices.find(voice => voice.lang.includes('it-IT'));
     }
     
+    if (italianVoice) {
+        speech.voice = italianVoice;
+    }
+
     speech.onend = () => {
         currentIndex++;
         if (currentIndex < textElements.length) {
@@ -205,11 +211,8 @@ function setupSpeech() {
 }
 
 // Wait for voices to load
-speechSynthesis.onvoiceschanged = setupSpeech;
+window.speechSynthesis.onvoiceschanged = setupSpeech;
 
-
-
-   
 function readNextElement() {
     textElements.forEach(el => el.classList.remove('reading'));
     const currentElement = textElements[currentIndex];
@@ -221,14 +224,12 @@ function readNextElement() {
 function stopReading() {
     speechSynthesis.cancel();
     textElements.forEach(el => el.classList.remove('reading'));
-    currentIndex = 0;
     isPlaying = false;
+    currentIndex = 0;
     audioButton.innerHTML = '<i class="fas fa-headphones"></i>';
 }
 
 audioButton.addEventListener('click', () => {
-    if (!speech) setupSpeech();
-    
     if (isPlaying) {
         stopReading();
     } else {
@@ -236,28 +237,6 @@ audioButton.addEventListener('click', () => {
         audioButton.innerHTML = '<i class="fas fa-pause"></i>';
         readNextElement();
     }
-});
-
-// Text size controls
-document.querySelectorAll('.text-size-widget span').forEach(button => {
-    button.addEventListener('click', () => {
-        // Remove active class from all buttons
-        document.querySelectorAll('.text-size-widget span').forEach(b => 
-            b.classList.remove('active'));
-        
-        // Add active class to clicked button
-        button.classList.add('active');
-        
-        // Update body class based on selected size
-        document.body.classList.remove('text-small', 'text-medium', 'text-large');
-        if (button.classList.contains('small')) {
-            document.body.classList.add('text-small');
-        } else if (button.classList.contains('medium')) {
-            document.body.classList.add('text-medium');
-        } else if (button.classList.contains('large')) {
-            document.body.classList.add('text-large');
-        }
-    });
 });
 </script>
 
