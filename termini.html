@@ -389,20 +389,7 @@ footer i {
 
       
 
-    /* Previous styles remain the same */
-        .tts-controls {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--primary);
-            padding: 10px;
-            border-radius: 8px;
-            display: flex;
-            gap: 10px;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-        
+            
         .tts-button {
             background: white;
             border: none;
@@ -697,26 +684,14 @@ footer i {
 
 
 
-    <div class="tts-controls">
-        <button class="tts-button" id="playButton" title="Riproduci">
-            <i class="fas fa-play"></i>
-        </button>
-        <button class="tts-button" id="pauseButton" title="Pausa">
-            <i class="fas fa-pause"></i>
-        </button>
-        <button class="tts-button" id="stopButton" title="Stop">
-            <i class="fas fa-stop"></i>
-        </button>
-    </div>
-
-
+   
    
 
    <script>
 let speech = null;
 let isPlaying = false;
 let currentIndex = 0;
-const textElements = document.querySelectorAll('p, li');
+const textElements = document.querySelectorAll('h1, h2, p, li');
 const audioControl = document.getElementById('audioControl');
 const textSizeButtons = document.querySelectorAll('.text-size-widget span');
 
