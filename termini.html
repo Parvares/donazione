@@ -691,55 +691,6 @@ footer i {
 .waveform-bar.played {
     background: var(--primary);
 }
-
-.waveform-container {
-  position: relative;
-  width: 100%;
-  height: 60px;
-  background: transparent;
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  padding: 10px 0;
-}
-
-.waveform-bar {
-  flex: 1;
-  height: 100%;
-  background: #ddd;
-  transform-origin: bottom;
-  transition: height 0.2s ease;
-}
-
-.waveform-bar.played {
-  background: #970a2c;
-}
-
-.waveform-timestamps {
-  position: absolute;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 10px;
-  color: #666;
-  font-size: 12px;
-}
-
-.waveform-timestamps span {
-  background: white;
-  padding: 0 4px;
-}
-
-.waveform-baseline {
-  position: absolute;
-  width: 100%;
-  height: 1px;
-  background: #970a2c;
-  bottom: 50%;
-  z-index: 0;
-}
-
-
       
    </style>
 </head>
@@ -808,13 +759,7 @@ footer i {
         </button>
         <span>Ascolta l'audio</span>
     </div>
-<div class="waveform-container">
-  <div class="waveform-baseline"></div>
-  <div class="waveform-timestamps">
-    <span id="current-time">00:00</span>
-    <span id="total-time">00:00</span>
-  </div>
-</div>
+    <div class="waveform-container" id="waveform"></div>
 </div>
 
            
@@ -945,80 +890,63 @@ footer i {
    
 
    <script>
-const totalBars = 100;
-let audioContext;
-let analyser;
-let dataArray;
-let animationId;
-let startTime;
-let duration = 0;
+let speech = null;
 let isPlaying = false;
+let currentIndex = 0;
+const textElements = document.querySelectorAll('h1, h2, p, li');
+const audioControl = document.getElementById('audioControl');
+const waveformContainer = document.getElementById('waveform');
 
-function initAudio(audioElement) {
-  audioContext = new (window.AudioContext || window.webkitAudioContext)();
-  analyser = audioContext.createAnalyser();
-  const source = audioContext.createMediaElementSource(audioElement);
-  source.connect(analyser);
-  analyser.connect(audioContext.destination);
-  
-  analyser.fftSize = 256;
-  const bufferLength = analyser.frequencyBinCount;
-  dataArray = new Uint8Array(bufferLength);
-  
-  // Create waveform bars
-  const container = document.querySelector('.waveform-container');
-  for (let i = 0; i < totalBars; i++) {
-    const bar = document.createElement('div');
-    bar.className = 'waveform-bar';
-    container.appendChild(bar);
-  }
-}
-
-function formatTime(seconds) {
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
-  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-}
-
-function updateWaveform() {
-  if (!isPlaying) return;
-  
-  analyser.getByteFrequencyData(dataArray);
-  const bars = document.querySelectorAll('.waveform-bar');
-  const step = Math.ceil(dataArray.length / totalBars);
-  
-  const currentTime = (Date.now() - startTime) / 1000;
-  const progress = currentTime / duration;
-  
-  for (let i = 0; i < totalBars; i++) {
-    const offset = Math.floor(i * step);
-    const value = dataArray[offset] / 255;
-    const height = 10 + (value * 40);
-    bars[i].style.height = `${height}px`;
-    
-    if (i / totalBars <= progress) {
-      bars[i].classList.add('played');
-    } else {
-      bars[i].classList.remove('played');
+// Genera le barre del waveform
+const totalBars = 100; // Aumentato il numero di barre
+function generateBars() {
+    waveformContainer.innerHTML = ''; // Pulisce il contenitore
+    for (let i = 0; i < totalBars; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'waveform-bar';
+        // Crea un'altezza casuale ma più naturale usando una funzione sinusoidale
+        const height = 20 + Math.abs(Math.sin(i * 0.2) * 30) + (Math.random() * 20);
+        bar.style.height = `${height}%`;
+        waveformContainer.appendChild(bar);
     }
-  }
-  
-  document.getElementById('current-time').textContent = formatTime(currentTime);
-  document.getElementById('total-time').textContent = formatTime(duration);
-  
-  animationId = requestAnimationFrame(updateWaveform);
 }
 
-function startVisualizer(audioElement) {
-  isPlaying = true;
-  startTime = Date.now();
-  duration = audioElement.duration;
-  updateWaveform();
+const setupSpeech = () => {
+    speech = new SpeechSynthesisUtterance();
+    speech.lang = 'it-IT';
+    speech.rate = 0.9;
+    speech.pitch = 1;
+    
+    speech.onend = () => {
+        currentIndex++;
+        if (currentIndex < textElements.length) {
+            readNextElement();
+            updateWaveform();
+        } else {
+            stopReading();
+        }
+    };
 }
 
-function stopVisualizer() {
-  isPlaying = false;
-  cancelAnimationFrame(animationId);
+const readNextElement = () => {
+    textElements.forEach(el => el.classList.remove('reading'));
+    const currentElement = textElements[currentIndex];
+    currentElement.classList.add('reading');
+    speech.text = currentElement.textContent;
+    window.speechSynthesis.speak(speech);
+    updateWaveform();
+}
+
+const updateWaveform = () => {
+    const progress = (currentIndex / textElements.length) * totalBars;
+    const bars = document.querySelectorAll('.waveform-bar');
+    bars.forEach((bar, index) => {
+        if (index <= progress) {
+            bar.classList.add('played');
+        } else {
+            bar.classList.remove('played');
+        }
+    });
 }
 
 const stopReading = () => {
@@ -1026,10 +954,25 @@ const stopReading = () => {
     currentIndex = 0;
     audioControl.innerHTML = '<i class="fas fa-headphones"></i>';
     waveformContainer.classList.remove('active');
-    textElements.forEach(el => {
-        el.classList.remove('reading');
-    });
+    textElements.forEach(el => el.classList.remove('reading'));
+    window.speechSynthesis.cancel();
 }
+
+audioControl.addEventListener('click', () => {
+    if (!speech) setupSpeech();
+    
+    if (!isPlaying) {
+        isPlaying = true;
+        audioControl.innerHTML = '<i class="fas fa-pause"></i>';
+        waveformContainer.classList.add('active');
+        generateBars(); // Genera le barre solo quando si attiva
+        if (currentIndex < textElements.length) {
+            readNextElement();
+        }
+    } else {
+        stopReading();
+    }
+});
       
 </script>
 
