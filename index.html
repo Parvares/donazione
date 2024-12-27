@@ -1258,7 +1258,12 @@ if (!validateCheckbox(acceptCheckbox)) {
 }
 
 if (!isValid) {
-    const errorMessage = 'Per favore, compila correttamente tutti i campi obbligatori';
+    const errorMessage = 
+<div class="error-popup fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-8 py-4 rounded shadow-lg flex items-center space-x-3 min-w-[500px] z-50" role="alert">
+  <strong class="font-bold text-xl">Ops!</strong>
+  <span class="inline-block text-xl">Per favore, compila correttamente tutti i campi obbligatori</span>
+</div>
+    ;
     showGlobalErrorPopup(errorMessage);
     return;
 }
