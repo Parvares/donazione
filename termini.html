@@ -431,55 +431,68 @@ footer i {
     color: white;
 }
 
+/* Add these styles to your style tag, removing any conflicting audio-related styles */
+
 .text-controls {
-    margin: 20px 0;
-    padding: 10px;
-    background: #f5f5f5;
-    border-radius: 8px;
+  margin: 2rem 0;
+  width: 100%;
 }
 
 .audio-control-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
+  text-align: right;
+  margin-bottom: 1rem;
 }
 
 .audio-control {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.2rem;
-    color: #970a2c;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.audio-control:hover {
+  transform: scale(1.1);
 }
 
 .waveform-container {
-    height: 60px;
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    margin: 10px 0;
-    background: #fff;
-    padding: 10px;
-    border-radius: 4px;
+  width: 100%;
+  height: 60px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2px;
 }
 
 .waveform-bar {
-    width: 3px;
-    height: 20px;
-    background: #ddd;
-    transition: height 0.2s ease;
+  flex: 1;
+  background-color: #ddd;
+  transition: background-color 0.3s ease;
 }
 
 .waveform-bar.played {
-    background: #970a2c;
+  background-color: var(--primary);
 }
 
 .time-display {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.9rem;
-    color: #666;
+  position: absolute;
+  bottom: -25px;
+  right: 10px;
+  font-size: 14px;
+  color: #666;
+}
+
+.time-display span {
+  margin: 0 5px;
 }
       
    </style>
@@ -542,20 +555,20 @@ footer i {
 
 
            
+<!-- Add this right after the library-name div in your HTML -->
 <div class="text-controls">
-    <div class="audio-control-container">
-        <button class="audio-control" id="audioControl">
-            <i class="fas fa-headphones"></i>
-        </button>
-        <span>Ascolta l'audio</span>
-    </div>
-    <div class="waveform-container" id="waveform"></div>
+  <div class="audio-control-container">
+    <button class="audio-control" id="audioControl">
+      <i class="fas fa-headphones"></i>
+    </button>
+  </div>
+  <div class="waveform-container" id="waveform" style="display: none;">
     <div class="time-display">
-        <span id="currentTime">0:00</span>
-        <span id="totalTime">0:00</span>
+      <span id="currentTime">0:00</span>
+      <span id="totalTime">0:00</span>
     </div>
+  </div>
 </div>
-           
 
             <h1>Donazione di libri</h1>
             <section>
@@ -683,6 +696,7 @@ footer i {
    
 
    <script>
+// Replace your existing audio-related JavaScript with this
 let speech = null;
 let isPlaying = false;
 let currentIndex = 0;
@@ -705,16 +719,17 @@ function calculateTotalDuration() {
     textElements.forEach(el => {
         totalText += el.textContent + ' ';
     });
-    // Stima: 100 caratteri = 5 secondi
-    totalDuration = (totalText.length / 100) * 5;
+    // Estimate duration based on word count (assuming average speaking rate)
+    totalDuration = (totalText.split(' ').length * 0.4);
     totalTimeDisplay.textContent = formatTime(totalDuration);
     
-    // Crea 50 barre per la waveform
-    waveformContainer.innerHTML = '';
-    for (let i = 0; i < 50; i++) {
+    // Create waveform bars
+    waveformContainer.innerHTML = ''; // Clear existing bars
+    const numberOfBars = 100; // Increased number of bars
+    
+    for (let i = 0; i < numberOfBars; i++) {
         const bar = document.createElement('div');
         bar.className = 'waveform-bar';
-        // Altezza casuale tra 10px e 40px
         const height = 10 + Math.random() * 30;
         bar.style.height = `${height}px`;
         waveformContainer.appendChild(bar);
@@ -769,20 +784,22 @@ function stopReading() {
     isPlaying = false;
     currentIndex = 0;
     audioControl.innerHTML = '<i class="fas fa-headphones"></i>';
+    waveformContainer.style.display = 'none';
     window.speechSynthesis.cancel();
     currentTimeDisplay.textContent = '0:00';
     const bars = waveformContainer.querySelectorAll('.waveform-bar');
     bars.forEach(bar => bar.classList.remove('played'));
 }
 
+// Event Listeners
 audioControl.addEventListener('click', () => {
-    if (!speech) setupSpeech();
-    
     if (!isPlaying) {
         isPlaying = true;
         startTime = Date.now();
-        calculateTotalDuration();
+        if (!speech) setupSpeech();
+        waveformContainer.style.display = 'flex';
         audioControl.innerHTML = '<i class="fas fa-pause"></i>';
+        calculateTotalDuration();
         readNextElement();
         updateWaveform();
     } else {
@@ -790,8 +807,10 @@ audioControl.addEventListener('click', () => {
     }
 });
 
-// Inizializza la waveform al caricamento
-document.addEventListener('DOMContentLoaded', calculateTotalDuration);
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+    waveformContainer.style.display = 'none';
+});
       
 </script>
 
