@@ -827,6 +827,7 @@ function removeLoadingOverlay() {
 
         
 
+// Funzione per validare i campi del libro
 function validateBookField(input) {
     const value = input.value.trim();
     let isValid = true;
@@ -840,7 +841,7 @@ function validateBookField(input) {
         isValid = false;
     } else if (input.classList.contains('book-year')) {
         const currentYear = new Date().getFullYear();
-        
+
         if (value) {
             if (value.length !== 4 || !Number.isInteger(Number(value)) || Number(value) < 1900 || Number(value) > currentYear) {
                 showError(input, `L'anno deve essere un numero di 4 cifre compreso tra 1900 e ${currentYear}`);
@@ -861,24 +862,12 @@ function validateBookField(input) {
     return isValid;
 }
 
-// Event listener per la validazione SOLO al blur
-document.addEventListener('DOMContentLoaded', function () {
-    document.body.addEventListener(
-        'blur',
-        function (e) {
-            if (
-                e.target.classList.contains('book-year') || 
-                e.target.classList.contains('book-title') || 
-                e.target.classList.contains('book-isbn')
-            ) {
-                validateBookField(e.target);
-            }
-        },
-        true // Usa il capturing per intercettare eventi sui figli
-    );
+// Aggiunta dell'evento blur ai campi con classe .book-year
+document.querySelectorAll('.book-year').forEach(input => {
+    input.addEventListener('blur', () => validateBookField(input));
 });
 
-// Rimuove le frecce di incremento/decremento sugli input di tipo "number"
+// Aggiunta dello stile per rimuovere le frecce dai campi di tipo number
 const style = document.createElement('style');
 style.textContent = `
     input[type="number"].book-year::-webkit-inner-spin-button,
@@ -891,8 +880,6 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
-
-
         
 
 function validateCheckbox(checkbox) {
@@ -1009,11 +996,7 @@ function validateCheckbox(checkbox) {
 
     let debounceTimer;
 
-    // Add blur event listener to year field
-    const yearInput = bookDiv.querySelector('.book-year');
-    yearInput.addEventListener('blur', function() {
-        validateBookField(this);
-    });
+   
 	
 	
 	// Update the Google Books API call
