@@ -1185,11 +1185,12 @@ window.resetBookFields = function(button) {
     if (!validateCheckbox(acceptCheckbox)) {
         isValid = false;
     }
-    
-    if (!isValid) {
+
+	       if (!isValid) {
+        showGlobalErrorPopup('Per favore, compila correttamente tutti i campi obbligatori.');
         return;
     }
-
+ 
     // Get form data
     const nome = document.getElementById('nome').value.trim();
     const cognome = document.getElementById('cognome').value.trim();
