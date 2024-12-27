@@ -384,6 +384,56 @@ footer i {
                margin: 0;
            }
        }
+
+
+
+      
+
+    /* Previous styles remain the same */
+        .tts-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .tts-button {
+            background: white;
+            border: none;
+            padding: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+        
+        .tts-button:hover {
+            transform: scale(1.1);
+        }
+        
+        .tts-button i {
+            font-size: 20px;
+        }
+        
+        .reading {
+            background: #e0e0e0;
+        }
+
+
+
+
+
+
+      
    </style>
 </head>
 <body>
@@ -565,7 +615,72 @@ footer i {
 
 
 
+    <div class="tts-controls">
+        <button class="tts-button" id="playButton" title="Riproduci">
+            <i class="fas fa-play"></i>
+        </button>
+        <button class="tts-button" id="pauseButton" title="Pausa">
+            <i class="fas fa-pause"></i>
+        </button>
+        <button class="tts-button" id="stopButton" title="Stop">
+            <i class="fas fa-stop"></i>
+        </button>
+    </div>
 
+    <script>
+        let speech = null;
+        let isPaused = false;
+        let currentIndex = 0;
+        const textElements = document.querySelectorAll('p, li');
+        
+        function setupSpeech() {
+            speech = new SpeechSynthesisUtterance();
+            speech.lang = 'it-IT';
+            speech.rate = 1;
+            speech.pitch = 1;
+            
+            speech.onend = () => {
+                currentIndex++;
+                if (currentIndex < textElements.length) {
+                    readNextElement();
+                } else {
+                    currentIndex = 0;
+                    textElements.forEach(el => el.classList.remove('reading'));
+                }
+            };
+        }
+        
+        function readNextElement() {
+            textElements.forEach(el => el.classList.remove('reading'));
+            const currentElement = textElements[currentIndex];
+            currentElement.classList.add('reading');
+            speech.text = currentElement.textContent;
+            speechSynthesis.speak(speech);
+        }
+        
+        document.getElementById('playButton').addEventListener('click', () => {
+            if (!speech) setupSpeech();
+            if (isPaused) {
+                speechSynthesis.resume();
+                isPaused = false;
+            } else {
+                speechSynthesis.cancel();
+                readNextElement();
+            }
+        });
+        
+        document.getElementById('pauseButton').addEventListener('click', () => {
+            speechSynthesis.pause();
+            isPaused = true;
+        });
+        
+        document.getElementById('stopButton').addEventListener('click', () => {
+            speechSynthesis.cancel();
+            textElements.forEach(el => el.classList.remove('reading'));
+            currentIndex = 0;
+            isPaused = false;
+        });
+    </script>
 
 
 
