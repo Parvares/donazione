@@ -54,6 +54,9 @@ footer .info { display: flex; flex-wrap: wrap; justify-content: space-between; a
 .accessibility-controls { display: flex; align-items: center; gap: 20px; margin-bottom: 20px; }
 .audio-button { background: var(--primary); border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; color: white; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
 .audio-button:hover { transform: scale(1.1); }
+.audio-button i.fa-headphones:hover::before {
+    content: "\f04b"; /* FontAwesome play icon */
+}
 .text-size-widget { display: flex; list-style: none; padding: 0; margin: 0; gap: 10px; }
 .text-size-widget li { padding: 0; }
 .text-size-widget li::before { content: none; }
@@ -173,11 +176,23 @@ let currentIndex = 0;
 const textElements = document.querySelectorAll('p, li');
 const audioButton = document.getElementById('audioButton');
 
+   
+
 function setupSpeech() {
     speech = new SpeechSynthesisUtterance();
     speech.lang = 'it-IT';
     speech.rate = 1;
     speech.pitch = 1;
+    
+    // Get available voices and select female Italian voice
+    let voices = speechSynthesis.getVoices();
+    speech.voice = voices.find(voice => 
+        voice.lang === 'it-IT' && voice.name.includes('female'));
+    
+    // Fallback to first Italian voice if female not found
+    if (!speech.voice) {
+        speech.voice = voices.find(voice => voice.lang === 'it-IT');
+    }
     
     speech.onend = () => {
         currentIndex++;
@@ -189,6 +204,12 @@ function setupSpeech() {
     };
 }
 
+// Wait for voices to load
+speechSynthesis.onvoiceschanged = setupSpeech;
+
+
+
+   
 function readNextElement() {
     textElements.forEach(el => el.classList.remove('reading'));
     const currentElement = textElements[currentIndex];
