@@ -861,7 +861,7 @@ function validateBookField(input) {
     return isValid;
 }
 
-// Add this style to remove spinner arrows
+// Add style to remove spinner arrows
 const style = document.createElement('style');
 style.textContent = `
     input[type="number"].book-year::-webkit-inner-spin-button,
@@ -990,7 +990,11 @@ function validateCheckbox(checkbox) {
 
     let debounceTimer;
 
-   
+    // Add blur event listener to year field
+    const yearInput = bookDiv.querySelector('.book-year');
+    yearInput.addEventListener('blur', function() {
+        validateBookField(this);
+    });
 	
 	
 	// Update the Google Books API call
