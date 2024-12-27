@@ -635,6 +635,62 @@ footer i {
     background: var(--primary);
 }
       
+.text-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.audio-control-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.audio-control {
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+.audio-control:hover {
+    transform: scale(1.1);
+}
+
+.waveform-container {
+    display: none;
+    height: 60px;
+    background: white;
+    align-items: center;
+    gap: 1px;
+    flex-grow: 1;
+    padding: 0 10px;
+}
+
+.waveform-container.active {
+    display: flex;
+}
+
+.waveform-bar {
+    width: 2px;
+    background: #e0e0e0;
+    height: 100%;
+    transform-origin: bottom;
+    transition: background-color 0.3s;
+}
+
+.waveform-bar.played {
+    background: var(--primary);
+}
       
    </style>
 </head>
@@ -697,15 +753,13 @@ footer i {
 
            
 <div class="text-controls">
-  <div class="audio-control-container">
-    <button class="audio-control" id="audioControl" title="Ascolta il testo">
-      <i class="fas fa-headphones"></i>
-    </button>
-    <span>Ascolta l'audio</span>
-  </div>
-  <div class="waveform-container" id="waveform">
-    <!-- Le barre verranno generate via JavaScript -->
-  </div>
+    <div class="audio-control-container">
+        <button class="audio-control" id="audioControl" title="Ascolta il testo">
+            <i class="fas fa-headphones"></i>
+        </button>
+        <span>Ascolta l'audio</span>
+    </div>
+    <div class="waveform-container" id="waveform"></div>
 </div>
 
            
@@ -844,17 +898,20 @@ const audioControl = document.getElementById('audioControl');
 const waveformContainer = document.getElementById('waveform');
 
 // Genera le barre del waveform
-const totalBars = 40;
-for (let i = 0; i < totalBars; i++) {
-    const bar = document.createElement('div');
-    bar.className = 'waveform-bar';
-    bar.style.height = `${Math.random() * 40 + 30}%`;
-    waveformContainer.appendChild(bar);
+const totalBars = 100; // Aumentato il numero di barre
+function generateBars() {
+    waveformContainer.innerHTML = ''; // Pulisce il contenitore
+    for (let i = 0; i < totalBars; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'waveform-bar';
+        // Crea un'altezza casuale ma più naturale usando una funzione sinusoidale
+        const height = 20 + Math.abs(Math.sin(i * 0.2) * 30) + (Math.random() * 20);
+        bar.style.height = `${height}%`;
+        waveformContainer.appendChild(bar);
+    }
 }
 
-const bars = document.querySelectorAll('.waveform-bar');
-
-function setupSpeech() {
+const setupSpeech = () => {
     speech = new SpeechSynthesisUtterance();
     speech.lang = 'it-IT';
     speech.rate = 0.9;
@@ -871,7 +928,7 @@ function setupSpeech() {
     };
 }
 
-function readNextElement() {
+const readNextElement = () => {
     textElements.forEach(el => el.classList.remove('reading'));
     const currentElement = textElements[currentIndex];
     currentElement.classList.add('reading');
@@ -880,8 +937,9 @@ function readNextElement() {
     updateWaveform();
 }
 
-function updateWaveform() {
+const updateWaveform = () => {
     const progress = (currentIndex / textElements.length) * totalBars;
+    const bars = document.querySelectorAll('.waveform-bar');
     bars.forEach((bar, index) => {
         if (index <= progress) {
             bar.classList.add('played');
@@ -891,12 +949,12 @@ function updateWaveform() {
     });
 }
 
-function stopReading() {
+const stopReading = () => {
     isPlaying = false;
     currentIndex = 0;
     audioControl.innerHTML = '<i class="fas fa-headphones"></i>';
+    waveformContainer.classList.remove('active');
     textElements.forEach(el => el.classList.remove('reading'));
-    bars.forEach(bar => bar.classList.remove('played'));
     window.speechSynthesis.cancel();
 }
 
@@ -906,6 +964,8 @@ audioControl.addEventListener('click', () => {
     if (!isPlaying) {
         isPlaying = true;
         audioControl.innerHTML = '<i class="fas fa-pause"></i>';
+        waveformContainer.classList.add('active');
+        generateBars(); // Genera le barre solo quando si attiva
         if (currentIndex < textElements.length) {
             readNextElement();
         }
@@ -913,6 +973,7 @@ audioControl.addEventListener('click', () => {
         stopReading();
     }
 });
+      
 </script>
 
 
