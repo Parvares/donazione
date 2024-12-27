@@ -412,6 +412,16 @@ footer i {
 }
 
 
+/* Stili per la checkbox con errore */
+.checkbox-error input[type="checkbox"] {
+    border: 2px solid #ef4444 !important;
+}
+.checkbox-error {
+    color: #ef4444;
+}
+
+/* Fine stili checkbox */
+</style>
 
 
         
@@ -446,7 +456,19 @@ function hideError(input) {
     }
 }
 
+// Event listener per la checkbox
+document.addEventListener('DOMContentLoaded', function() {
+    const acceptCheckbox = document.getElementById('accept');
+    if (acceptCheckbox) {
+        acceptCheckbox.addEventListener('change', function() {
+            validateCheckbox(this);
+        });
+    }
+});
 
+
+
+	
 </script>
 	
 
@@ -808,22 +830,25 @@ function removeLoadingOverlay() {
         
 
 
+// Cerca questa funzione nel codice e sostituiscila completamente
 function validateCheckbox(checkbox) {
-    const errorElement = checkbox.parentElement.nextElementSibling;
-    
     if (!checkbox.checked) {
-        checkbox.classList.add('border-red-500');
-        checkbox.classList.remove('border-gray-300');
+        // Aggiungi classe per il bordo rosso
+        checkbox.parentElement.classList.add('checkbox-error');
         
+        // Mostra il messaggio di errore
+        const errorElement = checkbox.parentElement.nextElementSibling;
         if (errorElement && errorElement.classList.contains('error-message')) {
-            errorElement.classList.remove('hidden');
             errorElement.textContent = 'Devi accettare i termini e condizioni';
+            errorElement.classList.remove('hidden');
         }
         return false;
     } else {
-        checkbox.classList.remove('border-red-500');
-        checkbox.classList.add('border-gray-300');
+        // Rimuovi classe per il bordo rosso
+        checkbox.parentElement.classList.remove('checkbox-error');
         
+        // Nascondi il messaggio di errore
+        const errorElement = checkbox.parentElement.nextElementSibling;
         if (errorElement && errorElement.classList.contains('error-message')) {
             errorElement.classList.add('hidden');
         }
