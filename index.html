@@ -861,13 +861,21 @@ function validateBookField(input) {
     return isValid;
 }
 
-// Assicurati che la validazione avvenga solo al blur
-document.addEventListener('DOMContentLoaded', function() {
-    document.body.addEventListener('blur', function(e) {
-        if (e.target.classList.contains('book-year') || e.target.classList.contains('book-title') || e.target.classList.contains('book-isbn')) {
-            validateBookField(e.target);
-        }
-    }, true);
+// Event listener per la validazione SOLO al blur
+document.addEventListener('DOMContentLoaded', function () {
+    document.body.addEventListener(
+        'blur',
+        function (e) {
+            if (
+                e.target.classList.contains('book-year') || 
+                e.target.classList.contains('book-title') || 
+                e.target.classList.contains('book-isbn')
+            ) {
+                validateBookField(e.target);
+            }
+        },
+        true // Usa il capturing per intercettare eventi sui figli
+    );
 });
 
 // Rimuove le frecce di incremento/decremento sugli input di tipo "number"
@@ -883,6 +891,7 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
 
         
 
