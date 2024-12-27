@@ -1227,27 +1227,33 @@ window.resetBookFields = function(button) {
         }
     });
     
-    // Validate books
-    const bookEntries = document.querySelectorAll('.book-entry');
-    bookEntries.forEach(entry => {
-        const inputs = entry.querySelectorAll('input');
-        inputs.forEach(input => {
-            if (!validateBookField(input)) {
-                isValid = false;
-            }
-        });
+// Validate books
+const bookEntries = document.querySelectorAll('.book-entry');
+bookEntries.forEach(entry => {
+    const inputs = entry.querySelectorAll('input');
+    inputs.forEach(input => {
+        if (!validateBookField(input)) {
+            isValid = false;
+        }
     });
-    
-    // Validate terms checkbox
-    const acceptCheckbox = document.getElementById('accept');
-    if (!validateCheckbox(acceptCheckbox)) {
-        isValid = false;
-    }
+});
 
-	       if (!isValid) {
-        showGlobalErrorPopup('Per favore, compila correttamente tutti i campi obbligatori.');
-        return;
-    }
+// Validate terms checkbox
+const acceptCheckbox = document.getElementById('accept');
+if (!validateCheckbox(acceptCheckbox)) {
+    isValid = false;
+}
+
+if (!isValid) {
+    const errorMessage = `
+        <div class="error-popup bg-[#ff0000] text-white px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Ops!</strong>
+            <span class="block sm:inline">Per favore, compila correttamente tutti i campi obbligatori</span>
+        </div>
+    `;
+    showGlobalErrorPopup(errorMessage);
+    return;
+}
  
     // Get form data
     const nome = document.getElementById('nome').value.trim();
