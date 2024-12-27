@@ -417,35 +417,37 @@ footer i {
 
 
 .text-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     margin: 1rem 0;
 }
 
 .audio-control {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background-color: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 50%;
     width: 40px;
     height: 40px;
-    justify-content: center;
+    border-radius: 50%;
+    border: none;
+    background-color: var(--primary);
+    color: white;
     cursor: pointer;
-    margin-right: 0.5rem;
-}
-
-.audio-control span {
-    color: var(--primary);
-    margin-left: 50px;
-    white-space: nowrap;
-    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
 }
 
 .audio-control:hover {
-    opacity: 0.8;
+    transform: scale(1.1);
 }
 
+.text-size-widget {
+    display: flex;
+    list-style: none;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+}
 
 .text-size-widget li {
     padding: 0;
@@ -462,6 +464,17 @@ footer i {
     transition: all 0.3s ease;
 }
 
+.text-size-widget .small {
+    font-size: 14px;
+}
+
+.text-size-widget .medium {
+    font-size: 18px;
+}
+
+.text-size-widget .large {
+    font-size: 22px;
+}
 
 .text-size-widget span:hover,
 .text-size-widget span.active {
@@ -474,25 +487,7 @@ footer i {
 }
 
 
-.text-controls {
-    margin: 1rem 0;
-}
 
-.audio-control {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: none;
-    border: none;
-    color: var(--primary);
-    cursor: pointer;
-    padding: 0.5rem;
-    font-size: 1rem;
-}
-
-.audio-control:hover {
-    opacity: 0.8;
-}
       
    </style>
 </head>
@@ -554,12 +549,17 @@ footer i {
 
 
            
-<div class="text-controls">
+           <div class="text-controls">
     <button class="audio-control" id="audioControl" title="Ascolta il testo">
         <i class="fas fa-headphones"></i>
-        <span>Ascolta l'audio</span>
     </button>
+    <ul class="text-size-widget">
+        <li><span class="small active">A</span></li>
+        <li><span class="medium">A</span></li>
+        <li><span class="large">A</span></li>
+    </ul>
 </div>
+
            
 
             <h1>Donazione di libri</h1>
