@@ -417,30 +417,34 @@ footer i {
 
 
 .text-controls {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
     margin: 1rem 0;
 }
 
 .audio-control {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: none;
-    background-color: var(--primary);
-    color: white;
-    cursor: pointer;
     display: flex;
     align-items: center;
+    gap: 0.5rem;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
     justify-content: center;
-    transition: all 0.3s ease;
+    cursor: pointer;
+    margin-right: 0.5rem;
+}
+
+.audio-control span {
+    color: var(--primary);
+    margin-left: 50px;
+    white-space: nowrap;
+    position: absolute;
 }
 
 .audio-control:hover {
-    transform: scale(1.1);
+    opacity: 0.8;
 }
-
 
 
 .text-size-widget li {
@@ -556,7 +560,6 @@ footer i {
         <span>Ascolta l'audio</span>
     </button>
 </div>
-
            
 
             <h1>Donazione di libri</h1>
