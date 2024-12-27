@@ -429,7 +429,75 @@ footer i {
         }
 
 
+.text-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1rem 0;
+}
 
+.audio-control {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background-color: var(--primary);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.audio-control:hover {
+    transform: scale(1.1);
+}
+
+.text-size-widget {
+    display: flex;
+    list-style: none;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+}
+
+.text-size-widget li {
+    padding: 0;
+}
+
+.text-size-widget li::before {
+    content: none;
+}
+
+.text-size-widget span {
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.text-size-widget .small {
+    font-size: 14px;
+}
+
+.text-size-widget .medium {
+    font-size: 18px;
+}
+
+.text-size-widget .large {
+    font-size: 22px;
+}
+
+.text-size-widget span:hover,
+.text-size-widget span.active {
+    background-color: var(--primary);
+    color: white;
+}
+
+.reading {
+    background-color: rgba(151, 10, 44, 0.1);
+}
 
 
 
@@ -491,6 +559,20 @@ footer i {
         Biblioteca Elsa Morante
     </a>
 </div>
+
+
+           
+           <div class="text-controls">
+    <button class="audio-control" id="audioControl" title="Ascolta il testo">
+        <i class="fas fa-headphones"></i>
+    </button>
+    <ul class="text-size-widget">
+        <li><span class="small active">A</span></li>
+        <li><span class="medium">A</span></li>
+        <li><span class="large">A</span></li>
+    </ul>
+</div>
+
            
 
             <h1>Donazione di libri</h1>
@@ -627,61 +709,86 @@ footer i {
         </button>
     </div>
 
-    <script>
-        let speech = null;
-        let isPaused = false;
-        let currentIndex = 0;
-        const textElements = document.querySelectorAll('p, li');
-        
-        function setupSpeech() {
-            speech = new SpeechSynthesisUtterance();
-            speech.lang = 'it-IT';
-            speech.rate = 1;
-            speech.pitch = 1;
-            
-            speech.onend = () => {
-                currentIndex++;
-                if (currentIndex < textElements.length) {
-                    readNextElement();
-                } else {
-                    currentIndex = 0;
-                    textElements.forEach(el => el.classList.remove('reading'));
-                }
-            };
-        }
-        
-        function readNextElement() {
-            textElements.forEach(el => el.classList.remove('reading'));
-            const currentElement = textElements[currentIndex];
-            currentElement.classList.add('reading');
-            speech.text = currentElement.textContent;
-            speechSynthesis.speak(speech);
-        }
-        
-        document.getElementById('playButton').addEventListener('click', () => {
-            if (!speech) setupSpeech();
-            if (isPaused) {
-                speechSynthesis.resume();
-                isPaused = false;
-            } else {
-                speechSynthesis.cancel();
-                readNextElement();
-            }
-        });
-        
-        document.getElementById('pauseButton').addEventListener('click', () => {
-            speechSynthesis.pause();
-            isPaused = true;
-        });
-        
-        document.getElementById('stopButton').addEventListener('click', () => {
-            speechSynthesis.cancel();
-            textElements.forEach(el => el.classList.remove('reading'));
-            currentIndex = 0;
-            isPaused = false;
-        });
-    </script>
 
+   
+
+   <script>
+let speech = null;
+let isPlaying = false;
+let currentIndex = 0;
+const textElements = document.querySelectorAll('p, li');
+const audioControl = document.getElementById('audioControl');
+const textSizeButtons = document.querySelectorAll('.text-size-widget span');
+
+// Text size control
+textSizeButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        textSizeButtons.forEach(b => b.classList.remove('active'));
+        button.classList.add('active');
+        
+        let size = '20px';
+        if (button.classList.contains('small')) size = '16px';
+        if (button.classList.contains('large')) size = '24px';
+        
+        document.querySelector('main').style.fontSize = size;
+    });
+});
+
+// Speech control
+function setupSpeech() {
+    speech = new SpeechSynthesisUtterance();
+    speech.lang = 'it-IT';
+    speech.rate = 1;
+    speech.pitch = 1;
+    
+    speech.onend = () => {
+        currentIndex++;
+        if (currentIndex < textElements.length) {
+            readNextElement();
+        } else {
+            stopReading();
+        }
+    };
+}
+
+function readNextElement() {
+    textElements.forEach(el => el.classList.remove('reading'));
+    const currentElement = textElements[currentIndex];
+    currentElement.classList.add('reading');
+    speech.text = currentElement.textContent;
+    window.speechSynthesis.speak(speech);
+}
+
+function toggleReading() {
+    if (!speech) setupSpeech();
+    
+    if (!isPlaying) {
+        isPlaying = true;
+        audioControl.innerHTML = '<i class="fas fa-pause"></i>';
+        if (currentIndex >= textElements.length) currentIndex = 0;
+        readNextElement();
+    } else {
+        isPlaying = false;
+        audioControl.innerHTML = '<i class="fas fa-headphones"></i>';
+        window.speechSynthesis.cancel();
+        textElements.forEach(el => el.classList.remove('reading'));
+    }
+}
+
+function stopReading() {
+    isPlaying = false;
+    currentIndex = 0;
+    audioControl.innerHTML = '<i class="fas fa-headphones"></i>';
+    textElements.forEach(el => el.classList.remove('reading'));
+}
+
+audioControl.addEventListener('click', toggleReading);
+
+// Clean up on page unload
+window.addEventListener('beforeunload', () => {
+    window.speechSynthesis.cancel();
+});
+</script>
 
 
    
