@@ -440,6 +440,15 @@ input[type="checkbox"]:checked::before {
     clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
 }
 
+/* Updated error popup style with more vivid red */
+.error-popup {
+    @apply fixed top-4 left-1/2 transform -translate-x-1/2 px-6 py-4 rounded shadow-lg;
+    background-color: #ff3333; /* More vivid red */
+    color: white;
+    z-index: 50;
+    animation: slideDown 0.5s ease-out;
+}
+	    
         
     </style>
 
@@ -792,12 +801,16 @@ function removeLoadingOverlay() {
 
         
 
-       function validateBookField(input) {
+function validateBookField(input) {
     const value = input.value.trim();
     let isValid = true;
 
     if (input.hasAttribute('required') && !value) {
-        showError(input, 'Questo campo è obbligatorio');
+        if (input.classList.contains('book-title')) {
+            showError(input, 'Il campo Titolo* è obbligatorio');
+        } else {
+            showError(input, 'Questo campo è obbligatorio');
+        }
         isValid = false;
     } else if (input.classList.contains('book-year')) {
         const currentYear = new Date().getFullYear();
