@@ -449,7 +449,22 @@ input[type="checkbox"]:checked::before {
     animation: slideDown 0.5s ease-out;
 }
 	    
-        
+
+// Add CSS to remove spinners from number input
+const style = document.createElement('style');
+style.textContent = `
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+`;
+document.head.appendChild(style);
+
+	    
     </style>
 
 
@@ -812,19 +827,14 @@ function validateBookField(input) {
     } else if (input.classList.contains('book-year')) {
         const currentYear = new Date().getFullYear();
         
-        // Allow partial input without showing error
-        if (value) {
-            // Check if input is currently being typed (less than 4 digits)
-            if (value.length < 4) {
-                return true; // Don't validate while typing
-            }
-
+        // Show error for any input less than 4 digits
+        if (value && value.length !== 4) {
+            showError(input, `L'anno deve essere un numero di 4 cifre compreso tra 1900 e ${currentYear}`);
+            isValid = false;
+        } else if (value) {
             const year = parseInt(value);
-            
-            // Validate fully entered year
             if (!Number.isInteger(year) || year < 1900 || year > currentYear) {
                 showError(input, `L'anno deve essere un numero di 4 cifre compreso tra 1900 e ${currentYear}`);
-                input.value = value.slice(0, 4); // Tronca a 4 cifre
                 isValid = false;
             }
         }
