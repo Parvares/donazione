@@ -631,67 +631,8 @@ footer i {
    
 
    <script>
-<!-- Add this CSS in your style tag, removing previous waveform styles -->
-<style>
-.text-controls {
-    margin: 20px 0;
-}
+// Rimuovere i tag <script> e <style> esterni e mantenere solo il JavaScript puro
 
-.audio-control {
-    background: none;
-    border: none;
-    color: var(--primary);
-    cursor: pointer;
-    font-size: 1.5rem;
-    padding: 10px;
-}
-
-.waveform-container {
-    position: relative;
-    height: 50px;
-    width: 100%;
-    margin: 10px 0;
-}
-
-.waveform-bar {
-    position: absolute;
-    bottom: 0;
-    width: 2px;
-    background-color: var(--primary);
-    opacity: 0.3;
-    transition: opacity 0.2s;
-}
-
-.waveform-bar.played {
-    opacity: 1;
-}
-
-.time-display {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.8rem;
-    color: var(--primary);
-    margin-top: 5px;
-}
-</style>
-
-<!-- Add this HTML structure after your h1 tag -->
-<div class="text-controls">
-    <div class="audio-control-container">
-        <button class="audio-control" id="audioControl">
-            <i class="fas fa-headphones"></i>
-        </button>
-    </div>
-    <div class="waveform-container" id="waveform" style="display: none;">
-        <div class="time-display">
-            <span id="currentTime">0:00</span>
-            <span id="totalTime">0:00</span>
-        </div>
-    </div>
-</div>
-
-<!-- Replace the entire JavaScript section with this updated code -->
-<script>
 let speech = null;
 let isPlaying = false;
 let currentIndex = 0;
@@ -717,7 +658,6 @@ function calculateTotalDuration() {
     textElements.forEach(el => {
         totalText += el.textContent + ' ';
     });
-    // Estimate duration based on average reading speed (150 words per minute)
     const wordCount = totalText.split(' ').length;
     totalDuration = (wordCount / 150) * 60;
     totalTimeDisplay.textContent = formatTime(totalDuration);
@@ -869,13 +809,12 @@ audioControl.addEventListener('click', () => {
     }
 });
 
-// Cleanup on page unload
 window.addEventListener('unload', () => {
     if (speech) {
         window.speechSynthesis.cancel();
     }
 });
-</script>
+   </script>
 
 
    
