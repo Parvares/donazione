@@ -412,6 +412,76 @@ footer i {
 }
 
 
+ /* Nuovi stili per l'animazione di slideOut */
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+const styleSheet = document.createElement('style');
+        styleSheet.textContent = slideOutKeyframes;
+        document.head.appendChild(styleSheet);
+	    
+/* Stili per la checkbox */
+input[type="checkbox"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid #d1d5db;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease-in-out;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #2563eb;
+    border-color: #2563eb;
+}
+
+input[type="checkbox"].error {
+    border-color: #ef4444;
+    border-width: 2px;
+}
+
+/* Stili per il popup di errore */
+.error-popup {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    max-width: 28rem;
+    background-color: #fee2e2;
+    border-left: 4px solid #ef4444;
+    padding: 1rem;
+    border-radius: 0.375rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    z-index: 50;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.error-popup strong {
+    color: #b91c1c;
+    font-weight: 700;
+    margin-right: 0.5rem;
+}
+
+.error-popup span {
+    color: #dc2626;
+}
 
 
         
@@ -611,12 +681,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		    
                 <div class="bg-gray-50 p-4 rounded mb-5">
-                    <label class="flex items-start gap-3">
-                        <input type="checkbox" id="accept" name="accept" required class="w-5 h-5 mt-1">
-                        <span>Ho letto e accetto <a href="termini.html" target="_blank" class="text-blue-500 hover:underline">termini e condizioni</a></span>
-                    </label>
-                    <p class="hidden error-message text-sm text-red-500 mt-1">Devi accettare i termini e condizioni</p>
-                </div>
+    <label class="flex items-start gap-3">
+        <input 
+            type="checkbox" 
+            id="accept" 
+            name="accept" 
+            required 
+            class="w-5 h-5 mt-1"
+        >
+        <span>Ho letto e accetto <a href="termini.html" target="_blank" class="text-blue-500 hover:underline">termini e condizioni</a></span>
+    </label>
+    <p class="hidden error-message text-sm text-red-500 mt-1">Devi accettare i termini e condizioni</p>
+</div>
+		    
                 
                 <button type="submit" class="w-full max-w-sm mx-auto block px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors font-medium text-base">
                     Invia Donazione
@@ -645,20 +722,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
         
 // Prima aggiungi questa funzione accanto alle altre funzioni di utility (dopo showGlobalErrorPopup)
-// Modifica dello stile del messaggio di errore globale
 function showGlobalErrorPopup(message) {
+    // Rimuovi eventuali popup esistenti
     const existingPopups = document.querySelectorAll('.error-popup');
     existingPopups.forEach(popup => popup.remove());
 
+    // Crea il nuovo popup
     const popup = document.createElement('div');
-    popup.className = 'error-popup fixed top-4 right-4 max-w-sm bg-red-100 border-l-4 border-red-500 p-4 rounded shadow-lg';
+    popup.className = 'error-popup';
     popup.innerHTML = `
-        <strong class="font-bold text-red-700">Ops!</strong>
-        <span class="block sm:inline text-red-600">${message}</span>
+        <strong>Ops!</strong>
+        <span>${message}</span>
     `;
 
+    // Aggiungi il popup al documento
     document.body.appendChild(popup);
-    setTimeout(() => popup.remove(), 5000);
+
+    // Rimuovi il popup dopo 5 secondi
+    setTimeout(() => {
+        popup.style.animation = 'slideOut 0.3s ease-in';
+        setTimeout(() => popup.remove(), 300);
+    }, 5000);
+
+    document.body.appendChild(popup);
 }
 
 
@@ -804,9 +890,8 @@ function validateCheckbox(checkbox) {
     const errorElement = checkbox.parentElement.nextElementSibling;
     
     if (!checkbox.checked) {
-        // Modifica: aggiunto stile rosso al bordo della checkbox
-        checkbox.style.borderColor = '#ef4444';
-        checkbox.style.borderWidth = '2px';
+        // Aggiungi classe di errore
+        checkbox.classList.add('error');
         
         if (errorElement && errorElement.classList.contains('error-message')) {
             errorElement.classList.remove('hidden');
@@ -814,9 +899,8 @@ function validateCheckbox(checkbox) {
         }
         return false;
     } else {
-        // Ripristina lo stile originale
-        checkbox.style.borderColor = '';
-        checkbox.style.borderWidth = '';
+        // Rimuovi classe di errore
+        checkbox.classList.remove('error');
         
         if (errorElement && errorElement.classList.contains('error-message')) {
             errorElement.classList.add('hidden');
