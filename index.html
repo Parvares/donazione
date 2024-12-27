@@ -787,37 +787,45 @@ function removeLoadingOverlay() {
 
         
 
-     const validateField = (input) => {
-    const value = input.value.trim();
-    let isValid = true;
+        function validateField(input) {
+            const value = input.value.trim();
+            let isValid = true;
 
-    if (input.hasAttribute('required') && !value) {
-        showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
+            if (input.hasAttribute('required') && !value) {
+                showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
+                isValid = false;
+            } else {
+                switch (input.id) {
+                    case 'telefono':
+                        if (value && !/^[0-9]{6,15}$/.test(value)) {
+                            showError(input, 'Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)');
+                            isValid = false;
+                        }
+                        break;
+                        
+           case 'email':
+    if (!value) {
+        showError(input, 'L\'email è obbligatoria');
         isValid = false;
-    } else {
-        switch (input.id) {
-            case 'telefono':
-                if (value && !/^[0-9]{6,15}$/.test(value)) {
-                    showError(input, 'Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)');
-                    isValid = false;
+    } else if (!emailValidator.validateSyntax(value)) {
+        showError(input, 'Formato email non valido');
+        isValid = false;
+    }
+    break;
+
+				
                 }
-                break;
-            case 'email':
-                if (!value) {
-                    showError(input, 'L\'email è obbligatoria');
-                    isValid = false;
-                } else if (!emailValidator.validateSyntax(value)) {
-                    showError(input, 'Formato email non valido');
-                    isValid = false;
-                }
-                break;
+            }
+
+            if (isValid) {
+                hideError(input);
+            }
+
+            return isValid;
         }
-    }
-    if (isValid) {
-        hideError(input);
-    }
-    return isValid;
-};
+
+
+        
 
 function validateBookField(input) {
     const value = input.value.trim();
@@ -826,58 +834,34 @@ function validateBookField(input) {
     if (input.hasAttribute('required') && !value) {
         if (input.classList.contains('book-title')) {
             showError(input, 'Il campo Titolo* è obbligatorio');
+        } else {
+            showError(input, 'Questo campo è obbligatorio');
         }
         isValid = false;
+    } else if (input.classList.contains('book-year')) {
+        const currentYear = new Date().getFullYear();
+        
+        if (value) {
+            if (value.length !== 4 || !Number.isInteger(Number(value)) || Number(value) < 1900 || Number(value) > currentYear) {
+                showError(input, `L'anno deve essere un numero di 4 cifre compreso tra 1900 e ${currentYear}`);
+                isValid = false;
+            }
+        }
     } else if (input.classList.contains('book-isbn')) {
         if (value && !/^(?:\d{10}|\d{13})$/.test(value)) {
             showError(input, 'ISBN deve essere di 10 o 13 cifre');
             isValid = false;
         }
     }
-    
+
     if (isValid) {
         hideError(input);
     }
+
     return isValid;
 }
 
-function validateYear(input) {
-    const value = input.value.trim();
-    const currentYear = new Date().getFullYear();
-    
-    if (value && (value.length !== 4 || !Number.isInteger(Number(value)) || Number(value) < 1900 || Number(value) > currentYear)) {
-        showError(input, `L'anno deve essere un numero di 4 cifre compreso tra 1900 e ${currentYear}`);
-        return false;
-    }
-    hideError(input);
-    return true;
-}
-
-function attachValidationHandlers(bookEntry) {
-    const yearInput = bookEntry.querySelector('.book-year');
-    const titleInput = bookEntry.querySelector('.book-title');
-    const isbnInput = bookEntry.querySelector('.book-isbn');
-
-    yearInput.addEventListener('blur', () => validateYear(yearInput));
-    yearInput.addEventListener('input', () => hideError(yearInput));
-    
-    titleInput.addEventListener('input', () => validateBookField(titleInput));
-    isbnInput.addEventListener('input', () => validateBookField(isbnInput));
-}
-
-function createBookEntry() {
-    // Existing book entry creation code...
-    
-    const bookDiv = document.createElement('div');
-    // ... (rest of creation code)
-    
-    attachValidationHandlers(bookDiv);
-    
-    document.getElementById('bookList').appendChild(bookDiv);
-    return bookDiv;
-}
-
-// Style for removing number input arrows
+// Add this style to remove spinner arrows
 const style = document.createElement('style');
 style.textContent = `
     input[type="number"].book-year::-webkit-inner-spin-button,
@@ -890,11 +874,7 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
-
-
-
-
-	
+        
 
 function validateCheckbox(checkbox) {
     const errorElement = checkbox.parentElement.nextElementSibling;
