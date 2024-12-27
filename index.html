@@ -811,8 +811,9 @@ function validateCheckbox(checkbox) {
     const errorElement = checkbox.parentElement.nextElementSibling;
     
     if (!checkbox.checked) {
-        checkbox.classList.add('border-red-500');
-        checkbox.classList.remove('border-gray-300');
+        // Aggiungiamo la classe per il bordo rosso alla checkbox
+        checkbox.style.outline = '2px solid #ef4444';
+        checkbox.style.outlineOffset = '2px';
         
         if (errorElement && errorElement.classList.contains('error-message')) {
             errorElement.classList.remove('hidden');
@@ -820,8 +821,9 @@ function validateCheckbox(checkbox) {
         }
         return false;
     } else {
-        checkbox.classList.remove('border-red-500');
-        checkbox.classList.add('border-gray-300');
+        // Rimuoviamo lo stile del bordo rosso quando la checkbox è selezionata
+        checkbox.style.outline = '';
+        checkbox.style.outlineOffset = '';
         
         if (errorElement && errorElement.classList.contains('error-message')) {
             errorElement.classList.add('hidden');
