@@ -390,45 +390,81 @@ footer i {
       
 
             
+       /* Audio control button styles */
 .text-controls {
-    margin: 20px 0;
+  margin: 2rem 0;
+  width: 100%;
+}
+
+.audio-control-container {
+  text-align: right;
+  margin-bottom: 1rem;
 }
 
 .audio-control {
-    background: none;
-    border: none;
-    color: var(--primary);
-    cursor: pointer;
-    font-size: 1.5rem;
-    padding: 10px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
 }
 
+.audio-control:hover {
+  transform: scale(1.1);
+}
+
+.audio-control i {
+  font-size: 18px;
+}
+
+/* Waveform container and bars */
 .waveform-container {
-    position: relative;
-    height: 50px;
-    width: 100%;
-    margin: 10px 0;
+  width: 100%;
+  height: 50px;
+  background-color: transparent;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 0 10px;
+  margin-top: 20px;
 }
 
 .waveform-bar {
-    position: absolute;
-    bottom: 0;
-    width: 2px;
-    background-color: var(--primary);
-    opacity: 0.3;
-    transition: opacity 0.2s;
+  flex: 1;
+  min-width: 3px;
+  background-color: #e0e0e0;
+  border-radius: 2px;
+  transition: all 0.2s ease;
 }
 
 .waveform-bar.played {
-    opacity: 1;
+  background-color: var(--primary);
 }
 
+/* Time display */
 .time-display {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.8rem;
-    color: var(--primary);
-    margin-top: 5px;
+  position: absolute;
+  bottom: -25px;
+  right: 10px;
+  font-size: 14px;
+  color: #666;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.time-display span {
+  margin: 0 5px;
+}
+
+/* State styles */
+.reading .audio-control {
+  background-color: #e0e0e0;
 }
       
    </style>
@@ -491,19 +527,20 @@ footer i {
 
 
            
-<!-- Add this HTML structure after your h1 tag -->
+<!-- Add this right after the library-name div in your HTML -->
 <div class="text-controls">
-    <div class="audio-control-container">
-        <button class="audio-control" id="audioControl">
-            <i class="fas fa-headphones"></i>
-        </button>
+  <div class="audio-control-container">
+    <button class="audio-control" id="audioControl">
+      <i class="fas fa-headphones"></i>
+    </button>
+  </div>
+  <div class="waveform-container" id="waveform" style="display: none;">
+    <div class="time-display">
+      <span id="currentTime">0:00</span>
+      <span id="totalTime">0:00</span>
     </div>
-    <div class="waveform-container" id="waveform" style="display: none;">
-        <div class="time-display">
-            <span id="currentTime">0:00</span>
-            <span id="totalTime">0:00</span>
-        </div>
-    </div>
+  </div>
+</div>
 
             <h1>Donazione di libri</h1>
             <section>
@@ -631,16 +668,12 @@ footer i {
    
 
    <script>
-// Rimuovere i tag <script> e <style> esterni e mantenere solo il JavaScript puro
-
+// Replace your existing audio-related JavaScript with this
 let speech = null;
 let isPlaying = false;
 let currentIndex = 0;
 let startTime = 0;
 let totalDuration = 0;
-let pausedTime = 0;
-let animationFrameId = null;
-
 const textElements = document.querySelectorAll('h1, h2, p, li');
 const audioControl = document.getElementById('audioControl');
 const waveformContainer = document.getElementById('waveform');
@@ -658,31 +691,27 @@ function calculateTotalDuration() {
     textElements.forEach(el => {
         totalText += el.textContent + ' ';
     });
-    const wordCount = totalText.split(' ').length;
-    totalDuration = (wordCount / 150) * 60;
+    // Estimate duration based on word count (assuming average speaking rate)
+    totalDuration = (totalText.split(' ').length * 0.4);
     totalTimeDisplay.textContent = formatTime(totalDuration);
-}
-
-function createWaveform() {
-    waveformContainer.innerHTML = '<div class="time-display"><span id="currentTime">0:00</span><span id="totalTime">0:00</span></div>';
-    const numberOfBars = 100;
+    
+    // Create waveform bars
+    waveformContainer.innerHTML = ''; // Clear existing bars
+    const numberOfBars = 100; // Increased number of bars
     
     for (let i = 0; i < numberOfBars; i++) {
         const bar = document.createElement('div');
         bar.className = 'waveform-bar';
-        const height = 15 + Math.random() * 30;
+        const height = 10 + Math.random() * 30;
         bar.style.height = `${height}px`;
-        bar.style.left = `${(i / numberOfBars) * 100}%`;
         waveformContainer.appendChild(bar);
     }
 }
 
 function updateWaveform() {
-    if (!isPlaying) return;
-    
     const bars = waveformContainer.querySelectorAll('.waveform-bar');
-    const currentTime = pausedTime + (Date.now() - startTime) / 1000;
-    const progress = Math.min(currentTime / totalDuration, 1);
+    const elapsedTime = (Date.now() - startTime) / 1000;
+    const progress = Math.min(elapsedTime / totalDuration, 1);
     const barsToPlay = Math.floor(progress * bars.length);
     
     bars.forEach((bar, index) => {
@@ -693,12 +722,10 @@ function updateWaveform() {
         }
     });
     
-    currentTimeDisplay.textContent = formatTime(currentTime);
+    currentTimeDisplay.textContent = formatTime(elapsedTime);
     
-    if (currentTime < totalDuration) {
-        animationFrameId = requestAnimationFrame(updateWaveform);
-    } else {
-        stopReading();
+    if (isPlaying) {
+        requestAnimationFrame(updateWaveform);
     }
 }
 
@@ -710,7 +737,7 @@ function setupSpeech() {
     
     speech.onend = () => {
         currentIndex++;
-        if (currentIndex < textElements.length && isPlaying) {
+        if (currentIndex < textElements.length) {
             readNextElement();
         } else {
             stopReading();
@@ -727,94 +754,37 @@ function readNextElement() {
 
 function stopReading() {
     isPlaying = false;
-    window.speechSynthesis.cancel();
+    currentIndex = 0;
     audioControl.innerHTML = '<i class="fas fa-headphones"></i>';
     waveformContainer.style.display = 'none';
-    if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-    }
-    pausedTime = 0;
-    currentIndex = 0;
-}
-
-function pauseReading() {
-    isPlaying = false;
-    window.speechSynthesis.pause();
-    audioControl.innerHTML = '<i class="fas fa-play"></i>';
-    if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-    }
-    pausedTime += (Date.now() - startTime) / 1000;
-}
-
-function resumeReading() {
-    isPlaying = true;
-    window.speechSynthesis.resume();
-    startTime = Date.now();
-    audioControl.innerHTML = '<i class="fas fa-pause"></i>';
-    updateWaveform();
-}
-
-waveformContainer.addEventListener('click', (e) => {
-    const rect = waveformContainer.getBoundingClientRect();
-    const clickPosition = (e.clientX - rect.left) / rect.width;
-    pausedTime = clickPosition * totalDuration;
-    
-    const bars = waveformContainer.querySelectorAll('.waveform-bar');
-    const barsToPlay = Math.floor(clickPosition * bars.length);
-    
-    bars.forEach((bar, index) => {
-        if (index < barsToPlay) {
-            bar.classList.add('played');
-        } else {
-            bar.classList.remove('played');
-        }
-    });
-    
     window.speechSynthesis.cancel();
-    currentIndex = Math.floor(clickPosition * textElements.length);
-    
-    if (isPlaying) {
-        startTime = Date.now();
-        readNextElement();
-    }
-    
-    currentTimeDisplay.textContent = formatTime(pausedTime);
-});
+    currentTimeDisplay.textContent = '0:00';
+    const bars = waveformContainer.querySelectorAll('.waveform-bar');
+    bars.forEach(bar => bar.classList.remove('played'));
+}
 
+// Event Listeners
 audioControl.addEventListener('click', () => {
-    if (!speech) {
-        setupSpeech();
-    }
-    
     if (!isPlaying) {
         isPlaying = true;
-        waveformContainer.style.display = 'block';
-        audioControl.innerHTML = '<i class="fas fa-pause"></i>';
-        
-        if (pausedTime === 0) {
-            createWaveform();
-            calculateTotalDuration();
-        }
-        
         startTime = Date.now();
-        if (window.speechSynthesis.paused) {
-            resumeReading();
-        } else {
-            readNextElement();
-        }
+        if (!speech) setupSpeech();
+        waveformContainer.style.display = 'flex';
+        audioControl.innerHTML = '<i class="fas fa-pause"></i>';
+        calculateTotalDuration();
+        readNextElement();
         updateWaveform();
     } else {
-        pauseReading();
+        stopReading();
     }
 });
 
-window.addEventListener('unload', () => {
-    if (speech) {
-        window.speechSynthesis.cancel();
-    }
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+    waveformContainer.style.display = 'none';
 });
-   </script>
+      
+</script>
 
 
    
