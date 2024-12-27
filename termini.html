@@ -570,6 +570,70 @@ footer i {
     padding: 2px 6px;
 }
 
+      .text-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.audio-control-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.audio-control {
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+.audio-control:hover {
+    transform: scale(1.1);
+}
+
+.waveform-container {
+    height: 40px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-grow: 1;
+    position: relative;
+}
+
+.waveform-container::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #ccc;
+    z-index: 0;
+}
+
+.waveform-bar {
+    width: 3px;
+    background: #e0e0e0;
+    height: 70%;
+    position: relative;
+    z-index: 1;
+    transition: background-color 0.3s;
+}
+
+.waveform-bar.played {
+    background: var(--primary);
+}
       
       
    </style>
@@ -784,7 +848,7 @@ const totalBars = 40;
 for (let i = 0; i < totalBars; i++) {
     const bar = document.createElement('div');
     bar.className = 'waveform-bar';
-    bar.style.height = `${Math.random() * 70 + 30}%`;
+    bar.style.height = `${Math.random() * 40 + 30}%`;
     waveformContainer.appendChild(bar);
 }
 
@@ -831,9 +895,9 @@ function stopReading() {
     isPlaying = false;
     currentIndex = 0;
     audioControl.innerHTML = '<i class="fas fa-headphones"></i>';
-    waveformContainer.classList.remove('active');
-    window.speechSynthesis.cancel();
     textElements.forEach(el => el.classList.remove('reading'));
+    bars.forEach(bar => bar.classList.remove('played'));
+    window.speechSynthesis.cancel();
 }
 
 audioControl.addEventListener('click', () => {
@@ -841,7 +905,6 @@ audioControl.addEventListener('click', () => {
     
     if (!isPlaying) {
         isPlaying = true;
-        waveformContainer.classList.add('active');
         audioControl.innerHTML = '<i class="fas fa-pause"></i>';
         if (currentIndex < textElements.length) {
             readNextElement();
