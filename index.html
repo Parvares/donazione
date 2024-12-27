@@ -807,22 +807,26 @@ function removeLoadingOverlay() {
 }
         
 
+// Sostituisci la funzione validateCheckbox esistente con questa versione aggiornata
 function validateCheckbox(checkbox) {
-    const errorElement = checkbox.parentElement.nextElementSibling;
-    
     if (!checkbox.checked) {
-        checkbox.classList.add('border-red-500');
-        checkbox.classList.remove('border-gray-300');
+        // Aggiungi il bordo rosso alla checkbox
+        checkbox.style.outline = '2px solid #ef4444';
+        checkbox.style.outlineOffset = '2px';
         
+        // Mostra il messaggio di errore
+        const errorElement = checkbox.parentElement.nextElementSibling;
         if (errorElement && errorElement.classList.contains('error-message')) {
             errorElement.classList.remove('hidden');
             errorElement.textContent = 'Devi accettare i termini e condizioni';
         }
         return false;
     } else {
-        checkbox.classList.remove('border-red-500');
-        checkbox.classList.add('border-gray-300');
+        // Rimuovi il bordo rosso
+        checkbox.style.outline = 'none';
         
+        // Nascondi il messaggio di errore
+        const errorElement = checkbox.parentElement.nextElementSibling;
         if (errorElement && errorElement.classList.contains('error-message')) {
             errorElement.classList.add('hidden');
         }
