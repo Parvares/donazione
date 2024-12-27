@@ -453,23 +453,26 @@ input[type="checkbox"]:checked::before {
     z-index: 50;
     animation: fadeInOut 5s ease-in-out;
     display: flex;
-    align-items: center;
+    justify-content: center; /* Centra orizzontalmente il contenuto */
+    align-items: center; /* Centra verticalmente il contenuto */
     max-width: calc(100% - 2rem);
     white-space: nowrap;
+    border: none; /* Assicurati che non ci siano bordi indesiderati */
 }
 
-/* Remove any possible pseudo-elements or additional backgrounds */
+/* Rimuovi qualsiasi pseudo-elemento o sfondo aggiuntivo */
 .error-popup::before,
 .error-popup::after {
-  display: none !important;
+    display: none !important;
 }
 
 @keyframes fadeInOut {
-  0% { opacity: 0; transform: translate(-50%, -20px); }
-  5% { opacity: 1; transform: translate(-50%, 0); }
-  95% { opacity: 1; transform: translate(-50%, 0); }
-  100% { opacity: 0; transform: translate(-50%, -20px); }
+    0% { opacity: 0; transform: translate(-50%, -20px); }
+    5% { opacity: 1; transform: translate(-50%, 0); }
+    95% { opacity: 1; transform: translate(-50%, 0); }
+    100% { opacity: 0; transform: translate(-50%, -20px); }
 }
+
     
         
     </style>
@@ -1249,10 +1252,11 @@ if (!validateCheckbox(acceptCheckbox)) {
 
 if (!isValid) {
     const errorMessage = `
- <div class="error-popup fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-8 py-4 rounded shadow-lg flex items-center space-x-3 min-w-[500px] z-50" role="alert">
+<div class="error-popup" role="alert">
   <strong class="font-bold text-xl">Ops!</strong>
   <span class="inline-block text-xl">Per favore, compila correttamente tutti i campi obbligatori</span>
 </div>
+
     `;
     showGlobalErrorPopup(errorMessage);
     return;
