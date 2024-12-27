@@ -861,16 +861,16 @@ function validateBookField(input) {
     return isValid;
 }
 
-// Add blur event listener to year fields
+// Assicurati che la validazione avvenga solo al blur
 document.addEventListener('DOMContentLoaded', function() {
     document.body.addEventListener('blur', function(e) {
-        if (e.target.classList.contains('book-year')) {
+        if (e.target.classList.contains('book-year') || e.target.classList.contains('book-title') || e.target.classList.contains('book-isbn')) {
             validateBookField(e.target);
         }
     }, true);
 });
 
-// Add style to remove spinner arrows
+// Rimuove le frecce di incremento/decremento sugli input di tipo "number"
 const style = document.createElement('style');
 style.textContent = `
     input[type="number"].book-year::-webkit-inner-spin-button,
@@ -883,6 +883,7 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
         
 
 function validateCheckbox(checkbox) {
