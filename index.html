@@ -828,54 +828,59 @@ function removeLoadingOverlay() {
         
 
 function validateBookField(input) {
-   const value = input.value.trim();
-   let isValid = true;
+    const value = input.value.trim();
+    let isValid = true;
 
-   if (input.hasAttribute('required') && !value) {
-       if (input.classList.contains('book-title')) {
-           showError(input, 'Il campo Titolo* è obbligatorio');
-       } else {
-           showError(input, 'Questo campo è obbligatorio');
-       }
-       isValid = false;
-   } else if (input.classList.contains('book-year')) {
-       const currentYear = new Date().getFullYear();
-       
-       if (value) {
-           if (value.length !== 4 || !Number.isInteger(Number(value)) || Number(value) < 1900 || Number(value) > currentYear) {
-               showError(input, `L'anno deve essere un numero di 4 cifre compreso tra 1900 e ${currentYear}`);
-               isValid = false;
-           }
-       }
-       // Add blur event listener
-       input.addEventListener('blur', () => {
-           validateBookField(input);
-       });
-   } else if (input.classList.contains('book-isbn')) {
-       if (value && !/^(?:\d{10}|\d{13})$/.test(value)) {
-           showError(input, 'ISBN deve essere di 10 o 13 cifre');
-           isValid = false;
-       }
-   }
+    if (input.hasAttribute('required') && !value) {
+        if (input.classList.contains('book-title')) {
+            showError(input, 'Il campo Titolo* è obbligatorio');
+        } else {
+            showError(input, 'Questo campo è obbligatorio');
+        }
+        isValid = false;
+    } else if (input.classList.contains('book-year')) {
+        const currentYear = new Date().getFullYear();
+        
+        if (value) {
+            if (value.length !== 4 || !Number.isInteger(Number(value)) || Number(value) < 1900 || Number(value) > currentYear) {
+                showError(input, `L'anno deve essere un numero di 4 cifre compreso tra 1900 e ${currentYear}`);
+                isValid = false;
+            }
+        }
+    } else if (input.classList.contains('book-isbn')) {
+        if (value && !/^(?:\d{10}|\d{13})$/.test(value)) {
+            showError(input, 'ISBN deve essere di 10 o 13 cifre');
+            isValid = false;
+        }
+    }
 
-   if (isValid) {
-       hideError(input);
-   }
+    if (isValid) {
+        hideError(input);
+    }
 
-   return isValid;
+    return isValid;
 }
+
+// Add blur event listener to year fields
+document.addEventListener('DOMContentLoaded', function() {
+    document.body.addEventListener('blur', function(e) {
+        if (e.target.classList.contains('book-year')) {
+            validateBookField(e.target);
+        }
+    }, true);
+});
 
 // Add style to remove spinner arrows
 const style = document.createElement('style');
 style.textContent = `
-   input[type="number"].book-year::-webkit-inner-spin-button,
-   input[type="number"].book-year::-webkit-outer-spin-button {
-       -webkit-appearance: none;
-       margin: 0;
-   }
-   input[type="number"].book-year {
-       -moz-appearance: textfield;
-   }
+    input[type="number"].book-year::-webkit-inner-spin-button,
+    input[type="number"].book-year::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type="number"].book-year {
+        -moz-appearance: textfield;
+    }
 `;
 document.head.appendChild(style);
         
