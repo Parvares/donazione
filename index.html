@@ -587,6 +587,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             
             <form id="donationForm" novalidate>
+		    <div id="error-root"></div>
                 <!-- Rest of the form remains the same as in the original document -->
                 <h3 class="section-header">Dati Personali</h3>
                 
@@ -1368,7 +1369,12 @@ window.resetBookFields = function(button) {
 
     
 
-
+<script type="module">
+  import ErrorNotification from './ErrorNotification.js';
+  
+  const root = ReactDOM.createRoot(document.getElementById('error-root'));
+  root.render(React.createElement(ErrorNotification));
+</script>
 
     
 </body>
