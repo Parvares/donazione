@@ -161,6 +161,11 @@ Sezione Ragazzi: <a href="mailto:f.ferri@bibliotechediroma.it">f.ferri@bibliotec
 </div>
 </div>
 </footer>
+
+
+
+
+<!-- Replace the entire script section at the bottom of the file with: -->
 <script>
 let speech = null;
 let isPlaying = false;
@@ -184,104 +189,58 @@ function setupSpeech() {
     };
 }
 
+function readNextElement() {
+    textElements.forEach(el => el.classList.remove('reading'));
+    const currentElement = textElements[currentIndex];
+    currentElement.classList.add('reading');
+    speech.text = currentElement.textContent;
+    speechSynthesis.speak(speech);
+}
+
+function stopReading() {
+    speechSynthesis.cancel();
+    textElements.forEach(el => el.classList.remove('reading'));
+    currentIndex = 0;
+    isPlaying = false;
+    audioButton.innerHTML = '<i class="fas fa-headphones"></i>';
+}
+
+audioButton.addEventListener('click', () => {
+    if (!speech) setupSpeech();
+    
+    if (isPlaying) {
+        stopReading();
+    } else {
+        isPlaying = true;
+        audioButton.innerHTML = '<i class="fas fa-pause"></i>';
+        readNextElement();
+    }
+});
+
+// Text size controls
+document.querySelectorAll('.text-size-widget span').forEach(button => {
+    button.addEventListener('click', () => {
+        // Remove active class from all buttons
+        document.querySelectorAll('.text-size-widget span').forEach(b => 
+            b.classList.remove('active'));
+        
+        // Add active class to clicked button
+        button.classList.add('active');
+        
+        // Update body class based on selected size
+        document.body.classList.remove('text-small', 'text-medium', 'text-large');
+        if (button.classList.contains('small')) {
+            document.body.classList.add('text-small');
+        } else if (button.classList.contains('medium')) {
+            document.body.classList.add('text-medium');
+        } else if (button.classList.contains('large')) {
+            document.body.classList.add('text-large');
+        }
+    });
+});
+</script>
+
    
-        
-        function readNextElement() {
-            textElements.forEach(el => el.classList.remove('reading'));
-            const currentElement = textElements[currentIndex];
-            currentElement.classList.add('reading');
-            speech.text = currentElement.textContent;
-            speechSynthesis.speak(speech);
-        }
-        
-        document.getElementById('playButton').addEventListener('click', () => {
-            if (!speech) setupSpeech();
-            if (isPaused) {
-                speechSynthesis.resume();
-                isPaused = false;
-            } else {
-                speechSynthesis.cancel();
-                readNextElement();
-            }
-        });
-        
-        document.getElementById('pauseButton').addEventListener('click', () => {
-            speechSynthesis.pause();
-            isPaused = true;
-        });
-        
-        document.getElementById('stopButton').addEventListener('click', () => {
-            speechSynthesis.cancel();
-            textElements.forEach(el => el.classList.remove('reading'));
-            currentIndex = 0;
-            isPaused = false;
-        });
-    </script>
-
-  <script>
-        let speech = null;
-        let isPlaying = false;
-        let currentIndex = 0;
-        const textElements = document.querySelectorAll('p, li');
-        const audioButton = document.getElementById('audioButton');
-        
-        function setupSpeech() {
-            speech = new SpeechSynthesisUtterance();
-            speech.lang = 'it-IT';
-            speech.rate = 1;
-            speech.pitch = 1;
-            
-            speech.onend = () => {
-                currentIndex++;
-                if (currentIndex < textElements.length) {
-                    readNextElement();
-                } else {
-                    stopReading();
-                }
-            };
-        }
-        
-        function readNextElement() {
-            textElements.forEach(el => el.classList.remove('reading'));
-            const currentElement = textElements[currentIndex];
-            currentElement.classList.add('reading');
-            speech.text = currentElement.textContent;
-            speechSynthesis.speak(speech);
-        }
-        
-        function stopReading() {
-            speechSynthesis.cancel();
-            textElements.forEach(el => el.classList.remove('reading'));
-            currentIndex = 0;
-            isPlaying = false;
-            audioButton.innerHTML = '<i class="fas fa-headphones"></i>';
-        }
-        
-        audioButton.addEventListener('click', () => {
-            if (!speech) setupSpeech();
-            
-            if (isPlaying) {
-                stopReading();
-            } else {
-                isPlaying = true;
-                audioButton.innerHTML = '<i class="fas fa-pause"></i>';
-                readNextElement();
-            }
-        });
-
-        // Text size controls
-        document.querySelectorAll('.text-size-widget span').forEach(button => {
-            button.addEventListener('click', () => {
-                document.querySelectorAll('.text-size-widget span').forEach(b => b.classList.remove('active'));
-                button.classList.add('active');
-                
-                const size = button.classList.contains('small') ? 'text-small' :
-                            button.classList.contains('medium') ? 'text-medium' : 'text-large';
-                
-                document.body.className = size;
-            });
-        });
-    </script>
 
    
 </body>
