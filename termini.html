@@ -486,7 +486,31 @@ footer i {
     background-color: rgba(151, 10, 44, 0.1);
 }
 
+.waveform-container {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 40px;
+  margin: 10px 0;
+  padding: 0 10px;
+}
 
+.waveform-bar {
+  flex: 1;
+  height: 100%;
+  background-color: #e5e7eb;
+  transition: background-color 0.3s ease;
+}
+
+.waveform-bar.played {
+  background-color: var(--primary);
+}
+
+.audio-control-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
       
    </style>
@@ -550,10 +574,15 @@ footer i {
 
            
 <div class="text-controls">
+  <div class="audio-control-container">
     <button class="audio-control" id="audioControl" title="Ascolta il testo">
-        <i class="fas fa-headphones"></i>
+      <i class="fas fa-headphones"></i>
     </button>
     <span>Ascolta l'audio</span>
+  </div>
+  <div class="waveform-container" id="waveform">
+    <!-- Le barre verranno generate via JavaScript -->
+  </div>
 </div>
 
            
@@ -689,76 +718,83 @@ let isPlaying = false;
 let currentIndex = 0;
 const textElements = document.querySelectorAll('h1, h2, p, li');
 const audioControl = document.getElementById('audioControl');
-const textSizeButtons = document.querySelectorAll('.text-size-widget span');
+const waveformContainer = document.getElementById('waveform');
 
-// Text size control
-textSizeButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        textSizeButtons.forEach(b => b.classList.remove('active'));
-        button.classList.add('active');
-        
-        let size = '20px';
-        if (button.classList.contains('small')) size = '16px';
-        if (button.classList.contains('large')) size = '24px';
-        
-        document.querySelector('main').style.fontSize = size;
-    });
-});
+// Genera le barre del waveform
+const totalBars = 40;
+for (let i = 0; i < totalBars; i++) {
+  const bar = document.createElement('div');
+  bar.className = 'waveform-bar';
+  bar.style.height = `${Math.random() * 70 + 30}%`; // Altezza casuale tra 30% e 100%
+  waveformContainer.appendChild(bar);
+}
 
-// Speech control
+const bars = document.querySelectorAll('.waveform-bar');
+
 function setupSpeech() {
-    speech = new SpeechSynthesisUtterance();
-    speech.lang = 'it-IT';
-    speech.rate = 1;
-    speech.pitch = 1;
-    
-    speech.onend = () => {
-        currentIndex++;
-        if (currentIndex < textElements.length) {
-            readNextElement();
-        } else {
-            stopReading();
-        }
-    };
+  speech = new SpeechSynthesisUtterance();
+  speech.lang = 'it-IT';
+  speech.rate = 0.9;
+  speech.pitch = 1;
+  
+  speech.onend = () => {
+    currentIndex++;
+    if (currentIndex < textElements.length) {
+      readNextElement();
+      updateWaveform();
+    } else {
+      stopReading();
+    }
+  };
 }
 
 function readNextElement() {
-    textElements.forEach(el => el.classList.remove('reading'));
-    const currentElement = textElements[currentIndex];
-    currentElement.classList.add('reading');
-    speech.text = currentElement.textContent;
-    window.speechSynthesis.speak(speech);
+  textElements.forEach(el => el.classList.remove('reading'));
+  const currentElement = textElements[currentIndex];
+  currentElement.classList.add('reading');
+  speech.text = currentElement.textContent;
+  window.speechSynthesis.speak(speech);
+  updateWaveform();
 }
 
-function toggleReading() {
-    if (!speech) setupSpeech();
-    
-    if (!isPlaying) {
-        isPlaying = true;
-        audioControl.innerHTML = '<i class="fas fa-pause"></i>';
-        if (currentIndex >= textElements.length) currentIndex = 0;
-        readNextElement();
+function updateWaveform() {
+  const progress = (currentIndex / textElements.length) * totalBars;
+  bars.forEach((bar, index) => {
+    if (index <= progress) {
+      bar.classList.add('played');
     } else {
-        isPlaying = false;
-        audioControl.innerHTML = '<i class="fas fa-headphones"></i>';
-        window.speechSynthesis.cancel();
-        textElements.forEach(el => el.classList.remove('reading'));
+      bar.classList.remove('played');
     }
+  });
 }
 
 function stopReading() {
+  isPlaying = false;
+  currentIndex = 0;
+  audioControl.innerHTML = '<i class="fas fa-headphones"></i>';
+  window.speechSynthesis.cancel();
+  textElements.forEach(el => el.classList.remove('reading'));
+  bars.forEach(bar => bar.classList.remove('played'));
+}
+
+function toggleReading() {
+  if (!speech) setupSpeech();
+  
+  if (!isPlaying) {
+    isPlaying = true;
+    audioControl.innerHTML = '<i class="fas fa-pause"></i>';
+    if (currentIndex < textElements.length) {
+      readNextElement();
+    }
+  } else {
     isPlaying = false;
-    currentIndex = 0;
     audioControl.innerHTML = '<i class="fas fa-headphones"></i>';
+    window.speechSynthesis.cancel();
     textElements.forEach(el => el.classList.remove('reading'));
+  }
 }
 
 audioControl.addEventListener('click', toggleReading);
-
-// Clean up on page unload
-window.addEventListener('beforeunload', () => {
-    window.speechSynthesis.cancel();
-});
 </script>
 
 
