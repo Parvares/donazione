@@ -494,6 +494,84 @@ footer i {
            
 
             <h1>Donazione di libri</h1>
+
+
+           <div class="tts-controls">
+    <button class="tts-button" id="playButton" title="Riproduci">
+        <i class="fas fa-play"></i>
+    </button>
+    <button class="tts-button" id="pauseButton" title="Pausa">
+        <i class="fas fa-pause"></i>
+    </button>
+    <button class="tts-button" id="stopButton" title="Stop">
+        <i class="fas fa-stop"></i>
+    </button>
+</div>
+
+           
+
+<style>
+.accessibility-controls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.tts-button {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: var(--primary);
+    border: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.tts-button:hover {
+    transform: scale(1.1);
+}
+
+.text-size-controls {
+    display: flex;
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.text-size-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: transform 0.2s;
+}
+
+.text-size-button:hover {
+    transform: scale(1.1);
+}
+
+.text-size-button.active {
+    color: var(--primary);
+    font-weight: bold;
+}
+
+.text-size-small { font-size: 0.8rem; }
+.text-size-normal { font-size: 1rem; }
+.text-size-large { font-size: 1.2rem; }
+</style>
+
+
+
+
+
+
+           
             <section>
                 <h2>Criteri di Accettazione</h2>
                 <p>
@@ -627,60 +705,73 @@ footer i {
         </button>
     </div>
 
-    <script>
-        let speech = null;
-        let isPaused = false;
-        let currentIndex = 0;
-        const textElements = document.querySelectorAll('p, li');
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    let speech = null;
+    let isPlaying = false;
+    let currentIndex = 0;
+    
+    const setupSpeech = () => {
+        speech = new SpeechSynthesisUtterance();
+        speech.lang = 'it-IT';
+        speech.rate = 1;
+        speech.pitch = 1;
         
-        function setupSpeech() {
-            speech = new SpeechSynthesisUtterance();
-            speech.lang = 'it-IT';
-            speech.rate = 1;
-            speech.pitch = 1;
-            
-            speech.onend = () => {
-                currentIndex++;
-                if (currentIndex < textElements.length) {
-                    readNextElement();
-                } else {
-                    currentIndex = 0;
-                    textElements.forEach(el => el.classList.remove('reading'));
-                }
-            };
-        }
+        speech.onend = () => {
+            currentIndex++;
+            const textElements = document.querySelectorAll('main p, main li');
+            if (currentIndex < textElements.length) {
+                speech.text = textElements[currentIndex].textContent;
+                speechSynthesis.speak(speech);
+            } else {
+                currentIndex = 0;
+                isPlaying = false;
+                updateTtsButton();
+            }
+        };
+    };
+    
+    const updateTtsButton = () => {
+        const icon = document.querySelector('.tts-button i');
+        icon.className = isPlaying ? 
+            'fas fa-pause' : 
+            'fas fa-headphones';
+    };
+    
+    document.querySelector('.tts-button').addEventListener('click', () => {
+        if (!speech) setupSpeech();
         
-        function readNextElement() {
-            textElements.forEach(el => el.classList.remove('reading'));
-            const currentElement = textElements[currentIndex];
-            currentElement.classList.add('reading');
-            speech.text = currentElement.textContent;
+        if (isPlaying) {
+            speechSynthesis.cancel();
+        } else {
+            const textElements = document.querySelectorAll('main p, main li');
+            speech.text = textElements[currentIndex].textContent;
             speechSynthesis.speak(speech);
         }
         
-        document.getElementById('playButton').addEventListener('click', () => {
-            if (!speech) setupSpeech();
-            if (isPaused) {
-                speechSynthesis.resume();
-                isPaused = false;
-            } else {
-                speechSynthesis.cancel();
-                readNextElement();
+        isPlaying = !isPlaying;
+        updateTtsButton();
+    });
+    
+    // Text size controls
+    const textSizeButtons = document.querySelectorAll('.text-size-button');
+    textSizeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const size = button.dataset.size;
+            const mainElement = document.querySelector('main');
+            
+            textSizeButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            
+            switch(size) {
+                case 'small': mainElement.style.fontSize = '16px'; break;
+                case 'normal': mainElement.style.fontSize = '20px'; break;
+                case 'large': mainElement.style.fontSize = '24px'; break;
             }
         });
-        
-        document.getElementById('pauseButton').addEventListener('click', () => {
-            speechSynthesis.pause();
-            isPaused = true;
-        });
-        
-        document.getElementById('stopButton').addEventListener('click', () => {
-            speechSynthesis.cancel();
-            textElements.forEach(el => el.classList.remove('reading'));
-            currentIndex = 0;
-            isPaused = false;
-        });
-    </script>
+    });
+});
+</script>
 
 
 
