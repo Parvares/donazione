@@ -705,74 +705,82 @@ footer i {
         </button>
     </div>
 
+
+   
+<!-- Replace the entire script section at the bottom of the file with: -->
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    let speech = null;
-    let isPlaying = false;
-    let currentIndex = 0;
+let speech = null;
+let isPlaying = false;
+let currentIndex = 0;
+const textElements = document.querySelectorAll('p, li');
+const audioButton = document.getElementById('audioButton');
+
+function setupSpeech() {
+    speech = new SpeechSynthesisUtterance();
+    speech.lang = 'it-IT';
+    speech.rate = 1;
+    speech.pitch = 1;
     
-    const setupSpeech = () => {
-        speech = new SpeechSynthesisUtterance();
-        speech.lang = 'it-IT';
-        speech.rate = 1;
-        speech.pitch = 1;
-        
-        speech.onend = () => {
-            currentIndex++;
-            const textElements = document.querySelectorAll('main p, main li');
-            if (currentIndex < textElements.length) {
-                speech.text = textElements[currentIndex].textContent;
-                speechSynthesis.speak(speech);
-            } else {
-                currentIndex = 0;
-                isPlaying = false;
-                updateTtsButton();
-            }
-        };
-    };
-    
-    const updateTtsButton = () => {
-        const icon = document.querySelector('.tts-button i');
-        icon.className = isPlaying ? 
-            'fas fa-pause' : 
-            'fas fa-headphones';
-    };
-    
-    document.querySelector('.tts-button').addEventListener('click', () => {
-        if (!speech) setupSpeech();
-        
-        if (isPlaying) {
-            speechSynthesis.cancel();
+    speech.onend = () => {
+        currentIndex++;
+        if (currentIndex < textElements.length) {
+            readNextElement();
         } else {
-            const textElements = document.querySelectorAll('main p, main li');
-            speech.text = textElements[currentIndex].textContent;
-            speechSynthesis.speak(speech);
+            stopReading();
         }
-        
-        isPlaying = !isPlaying;
-        updateTtsButton();
-    });
+    };
+}
+
+function readNextElement() {
+    textElements.forEach(el => el.classList.remove('reading'));
+    const currentElement = textElements[currentIndex];
+    currentElement.classList.add('reading');
+    speech.text = currentElement.textContent;
+    speechSynthesis.speak(speech);
+}
+
+function stopReading() {
+    speechSynthesis.cancel();
+    textElements.forEach(el => el.classList.remove('reading'));
+    currentIndex = 0;
+    isPlaying = false;
+    audioButton.innerHTML = '<i class="fas fa-headphones"></i>';
+}
+
+audioButton.addEventListener('click', () => {
+    if (!speech) setupSpeech();
     
-    // Text size controls
-    const textSizeButtons = document.querySelectorAll('.text-size-button');
-    textSizeButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const size = button.dataset.size;
-            const mainElement = document.querySelector('main');
-            
-            textSizeButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            
-            switch(size) {
-                case 'small': mainElement.style.fontSize = '16px'; break;
-                case 'normal': mainElement.style.fontSize = '20px'; break;
-                case 'large': mainElement.style.fontSize = '24px'; break;
-            }
-        });
+    if (isPlaying) {
+        stopReading();
+    } else {
+        isPlaying = true;
+        audioButton.innerHTML = '<i class="fas fa-pause"></i>';
+        readNextElement();
+    }
+});
+
+// Text size controls
+document.querySelectorAll('.text-size-widget span').forEach(button => {
+    button.addEventListener('click', () => {
+        // Remove active class from all buttons
+        document.querySelectorAll('.text-size-widget span').forEach(b => 
+            b.classList.remove('active'));
+        
+        // Add active class to clicked button
+        button.classList.add('active');
+        
+        // Update body class based on selected size
+        document.body.classList.remove('text-small', 'text-medium', 'text-large');
+        if (button.classList.contains('small')) {
+            document.body.classList.add('text-small');
+        } else if (button.classList.contains('medium')) {
+            document.body.classList.add('text-medium');
+        } else if (button.classList.contains('large')) {
+            document.body.classList.add('text-large');
+        }
     });
 });
 </script>
-
 
 
    
