@@ -553,11 +553,11 @@ footer i {
     <button class="audio-control" id="audioControl" title="Ascolta il testo">
         <i class="fas fa-headphones"></i>
     </button>
-   <ul class="text-size-widget">
-    <li><span class="small active">a</span></li>
-    <li><span class="medium">a</span></li>
-    <li><span class="large">a</span></li>
-</ul>
+    <ul class="text-size-widget">
+        <li><span class="small active">A</span></li>
+        <li><span class="medium">A</span></li>
+        <li><span class="large">A</span></li>
+    </ul>
 </div>
 
            
@@ -690,18 +690,33 @@ footer i {
    <script>
 let speech = null;
 let isPlaying = false;
-let currentIndex = -1;  // Start at -1 so first increment goes to 0
+let currentIndex = 0;
 const textElements = document.querySelectorAll('h1, h2, p, li');
 const audioControl = document.getElementById('audioControl');
+const textSizeButtons = document.querySelectorAll('.text-size-widget span');
 
+// Text size control
+textSizeButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        textSizeButtons.forEach(b => b.classList.remove('active'));
+        button.classList.add('active');
+        
+        let size = '20px';
+        if (button.classList.contains('small')) size = '16px';
+        if (button.classList.contains('large')) size = '24px';
+        
+        document.querySelector('main').style.fontSize = size;
+    });
+});
+
+// Speech control
 function setupSpeech() {
     speech = new SpeechSynthesisUtterance();
     speech.lang = 'it-IT';
     speech.rate = 1;
     speech.pitch = 1;
-    speech.volume = 1;
     
-    speech.onend = function() {
+    speech.onend = () => {
         currentIndex++;
         if (currentIndex < textElements.length) {
             readNextElement();
@@ -724,8 +739,8 @@ function toggleReading() {
     
     if (!isPlaying) {
         isPlaying = true;
-        currentIndex = 0;  // Start from first element
         audioControl.innerHTML = '<i class="fas fa-pause"></i>';
+        if (currentIndex >= textElements.length) currentIndex = 0;
         readNextElement();
     } else {
         isPlaying = false;
@@ -737,7 +752,7 @@ function toggleReading() {
 
 function stopReading() {
     isPlaying = false;
-    currentIndex = -1;
+    currentIndex = 0;
     audioControl.innerHTML = '<i class="fas fa-headphones"></i>';
     textElements.forEach(el => el.classList.remove('reading'));
 }
