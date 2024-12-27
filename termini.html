@@ -1020,6 +1020,16 @@ function stopVisualizer() {
   isPlaying = false;
   cancelAnimationFrame(animationId);
 }
+
+const stopReading = () => {
+    isPlaying = false;
+    currentIndex = 0;
+    audioControl.innerHTML = '<i class="fas fa-headphones"></i>';
+    waveformContainer.classList.remove('active');
+    textElements.forEach(el => {
+        el.classList.remove('reading');
+    });
+}
       
 </script>
 
