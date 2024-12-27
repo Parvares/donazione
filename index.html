@@ -707,19 +707,16 @@ function showGlobalErrorPopup(message) {
         
 
 function showSuccessPopup(message) {
-    // Rimuovi eventuali popup esistenti
     const existingPopups = document.querySelectorAll('.success-popup');
     existingPopups.forEach(popup => document.body.removeChild(popup));
 
-    // Crea il div del popup
     const popup = document.createElement('div');
-    popup.className = 'success-popup fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded z-50 shadow-lg';
-    popup.innerHTML = `
-        <strong class="font-bold">Successo!</strong>
-        <span class="block sm:inline">${message}</span>
-    `;
+    popup.className = 'success-popup fixed top-4 left-1/2 transform -translate-x-1/2 px-6 py-4 rounded shadow-lg';
+    popup.style.backgroundColor = '#22c55e';
+    popup.style.color = 'white';
+    popup.style.zIndex = '50';
+    popup.innerHTML = message;
 
-    // Rimuovi automaticamente dopo 5 secondi
     setTimeout(() => {
         if (document.body.contains(popup)) {
             document.body.removeChild(popup);
