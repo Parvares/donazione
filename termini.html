@@ -406,8 +406,6 @@ footer i {
     cursor: pointer;
     font-size: 24px;
     color: #970a2c;
-   padding: 5px;
-    margin: 0;
 }
 
 .audio-control:hover .fa-headphones {
@@ -428,7 +426,7 @@ footer i {
 }
 
 .waveform-container {
-    display: none;  /* Inizialmente nascosto */
+    display: none;
     position: relative;
     height: 60px;
     background: #f5f5f5;
@@ -535,25 +533,23 @@ footer i {
            
 <!-- Add this right after the library-name div in your HTML -->
 <div class="text-controls">
-    <div class="audio-control-container">
-        <button class="audio-control" id="audioControl">
-            <i class="fas fa-headphones"></i>
-            <i class="fas fa-play"></i>
-        </button>
-        <span class="audio-label">ascolta l'audio</span>
-    </div>
-    <div class="waveform-container">
-        <div class="waveform-bars"></div>
-        <div class="progress-line"></div>
-        <div class="time-display">
-            <span id="currentTime">0:00</span>
-            <span id="totalTime">0:00</span>
-        </div>
-    </div>
+<div class="audio-control-container">
+    <button class="audio-control" id="audioControl">
+        <i class="fas fa-headphones"></i>
+        <i class="fas fa-play"></i>
+    </button>
+    <span class="audio-label">ascolta l'audio</span>
 </div>
   
    
-
+<div class="waveform-container">
+    <div class="waveform-bars"></div>
+    <div class="progress-line"></div>
+    <div class="time-display">
+        <span id="currentTime">0:00</span>
+        <span id="totalTime">0:00</span>
+    </div>
+</div>
 
             <h1>Donazione di libri</h1>
             <section>
@@ -697,21 +693,24 @@ function formatTime(seconds) {
 
 function calculateTotalDuration() {
     let totalText = '';
-    // Includiamo tutti gli elementi di testo, inclusi quelli dentro section
-    document.querySelectorAll('h1, h2, p, li, section p').forEach(el => {
+    document.querySelectorAll('h1, h2, p, li').forEach(el => {
         totalText += el.textContent + ' ';
     });
-    // Aumentiamo leggermente il fattore moltiplicativo per dare più tempo
-    totalDuration = (totalText.split(' ').length * 0.45); // aumentato da 0.4 a 0.45
+    totalDuration = (totalText.split(' ').length * 0.4);
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
 
-function readNextElement() {
-    // Includiamo anche qui tutti gli elementi di testo
-    const textElements = document.querySelectorAll('h1, h2, p, li, section p');
-    if (textElements[currentIndex]) {
-        speech.text = textElements[currentIndex].textContent;
-        window.speechSynthesis.speak(speech);
+function createWaveform() {
+    const container = document.querySelector('.waveform-bars');
+    container.innerHTML = '';
+    const numberOfBars = 200;
+
+    for (let i = 0; i < numberOfBars; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'waveform-bar';
+        const height = 5 + Math.random() * 35;
+        bar.style.height = `${height}px`;
+        container.appendChild(bar);
     }
 }
 
@@ -783,11 +782,6 @@ function updateProgress() {
     
     if (progress < 1) {
         requestAnimationFrame(updateProgress);
-    } else {
-        // Assicuriamoci che venga letto l'ultimo elemento
-        if (currentIndex < document.querySelectorAll('h1, h2, p, li, section p').length) {
-            readNextElement();
-        }
     }
 }
 
@@ -820,25 +814,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const waveformContainer = document.querySelector('.waveform-container');
     waveformContainer.addEventListener('click', handleWaveformClick);
 
-    document.getElementById('audioControl').addEventListener('click', function(e) {
-        e.preventDefault(); // Previeni comportamenti di default
+    const audioControlContainer = document.querySelector('.audio-control-container');
+    const audioControl = document.getElementById('audioControl');
+    
+    audioControl.addEventListener('click', () => {
         const waveformContainer = document.querySelector('.waveform-container');
         
         if (!isPlaying) {
-            // Mostra il waveform
             waveformContainer.style.display = 'block';
-            // Cambia l'icona in pausa
-            this.innerHTML = '<i class="fas fa-pause"></i>';
-            // Inizia la riproduzione
+            audioControl.innerHTML = '<i class="fas fa-pause"></i>';
             resumeReading();
         } else {
-            // Mantieni il waveform visibile
-            this.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
-            // Ferma la riproduzione
+            audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
             stopReading();
         }
     });
 });
+      
 </script>
 
 
