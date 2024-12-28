@@ -738,20 +738,41 @@ function setupSpeech() {
     speech.pitch = 1;
     
     speech.onend = () => {
+        const totalElements = document.querySelectorAll('h1, h2, p, li').length;
         currentIndex++;
-        if (currentIndex < document.querySelectorAll('h1, h2, p, li').length) {
+        
+        // Controlla se ci sono ancora elementi da leggere
+        if (currentIndex < totalElements) {
             readNextElement();
         } else {
-            stopReading();
+            // Aspetta che l'ultimo elemento finisca di essere letto
+            setTimeout(() => {
+                isPlaying = false;
+                const audioControl = document.getElementById('audioControl');
+                audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
+                window.speechSynthesis.cancel();
+                currentIndex = 0;
+                updateWaveform(1); // Assicura che la waveform arrivi al 100%
+                document.getElementById('currentTime').textContent = formatTime(totalDuration);
+            }, 1000); // Delay per assicurare che l'ultimo elemento sia completamente letto
         }
     };
 }
 
 function readNextElement() {
     const textElements = document.querySelectorAll('h1, h2, p, li');
-    if (textElements[currentIndex]) {
+    const totalElements = textElements.length;
+    
+    if (currentIndex < totalElements) {
         speech.text = textElements[currentIndex].textContent;
         window.speechSynthesis.speak(speech);
+        
+        // Aggiorna il progresso per l'ultimo elemento
+        if (currentIndex === totalElements - 1) {
+            const progress = 1;
+            updateWaveform(progress);
+            document.getElementById('currentTime').textContent = formatTime(totalDuration);
+        }
     }
 }
 
@@ -796,12 +817,13 @@ function updateProgress() {
     const progress = Math.min(elapsedTime / totalDuration, 1);
     
     updateWaveform(progress);
-    document.getElementById('currentTime').textContent = formatTime(elapsedTime);
+    document.getElementById('currentTime').textContent = formatTime(Math.min(elapsedTime, totalDuration));
     
-    if (elapsedTime <= totalDuration) {
+    if (elapsedTime < totalDuration) {
         requestAnimationFrame(updateProgress);
-    } else {
-        stopReading();
+    } else if (currentIndex < document.querySelectorAll('h1, h2, p, li').length) {
+        // Continua ad aggiornare finché non viene letto l'ultimo elemento
+        requestAnimationFrame(updateProgress);
     }
 }
 
