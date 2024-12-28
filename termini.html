@@ -716,13 +716,14 @@ function createWaveform() {
 }
 
 function updateWaveform(targetProgress) {
-    // Interpolazione del progresso per rendere l'aggiornamento fluido
-    animationProgress += (targetProgress - animationProgress) * 0.05;
+    // Aggiungere interpolazione per rendere il progresso fluido
+    animationProgress += (targetProgress - animationProgress) * 0.05; // Usa un valore minore per un effetto più fluido
 
     const bars = document.querySelectorAll('.waveform-bar');
     const totalBars = bars.length;
     const barsToPlay = Math.floor(animationProgress * totalBars);
 
+    // Aggiorna le barre una per una
     bars.forEach((bar, index) => {
         if (index < barsToPlay && !bar.classList.contains('played')) {
             bar.classList.add('played');
@@ -731,11 +732,11 @@ function updateWaveform(targetProgress) {
         }
     });
 
-    // Aggiorna la linea di progresso
+    // Aggiorna la posizione della progress-line
     const progressLine = document.querySelector('.progress-line');
     progressLine.style.left = `${animationProgress * 100}%`;
 
-    // Continuiamo l'animazione solo se il progresso non è completo
+    // Continuare ad aggiornare solo se il progresso non è ancora completo
     if (Math.abs(targetProgress - animationProgress) > 0.001) {
         requestAnimationFrame(() => updateWaveform(targetProgress));
     }
