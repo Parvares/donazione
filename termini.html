@@ -693,24 +693,21 @@ function formatTime(seconds) {
 
 function calculateTotalDuration() {
     let totalText = '';
-    document.querySelectorAll('h1, h2, p, li').forEach(el => {
+    // Includiamo tutti gli elementi di testo, inclusi quelli dentro section
+    document.querySelectorAll('h1, h2, p, li, section p').forEach(el => {
         totalText += el.textContent + ' ';
     });
-    totalDuration = (totalText.split(' ').length * 0.4);
+    // Aumentiamo leggermente il fattore moltiplicativo per dare più tempo
+    totalDuration = (totalText.split(' ').length * 0.45); // aumentato da 0.4 a 0.45
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
 
-function createWaveform() {
-    const container = document.querySelector('.waveform-bars');
-    container.innerHTML = '';
-    const numberOfBars = 200;
-
-    for (let i = 0; i < numberOfBars; i++) {
-        const bar = document.createElement('div');
-        bar.className = 'waveform-bar';
-        const height = 5 + Math.random() * 35;
-        bar.style.height = `${height}px`;
-        container.appendChild(bar);
+function readNextElement() {
+    // Includiamo anche qui tutti gli elementi di testo
+    const textElements = document.querySelectorAll('h1, h2, p, li, section p');
+    if (textElements[currentIndex]) {
+        speech.text = textElements[currentIndex].textContent;
+        window.speechSynthesis.speak(speech);
     }
 }
 
@@ -782,6 +779,11 @@ function updateProgress() {
     
     if (progress < 1) {
         requestAnimationFrame(updateProgress);
+    } else {
+        // Assicuriamoci che venga letto l'ultimo elemento
+        if (currentIndex < document.querySelectorAll('h1, h2, p, li, section p').length) {
+            readNextElement();
+        }
     }
 }
 
