@@ -748,34 +748,19 @@ function setupSpeech() {
             const audioControl = document.getElementById('audioControl');
             audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
             window.speechSynthesis.cancel();
-            updateWaveform(1); // Assicura che la barra di progresso arrivi al 100%
+            // Assicuriamoci che la barra arrivi alla fine
+            updateWaveform(1);
+            document.getElementById('currentTime').textContent = formatTime(totalDuration);
         }
     };
 }
 
-function readNextElement() {
-    const textElements = document.querySelectorAll('h1, h2, p, li');
-    if (currentIndex < textElements.length) {
-        speech.text = textElements[currentIndex].textContent;
-        window.speechSynthesis.speak(speech);
-        
-        // Scroll all'elemento corrente
-        textElements[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
-    } else {
-        stopReading();
-    }
-}
-
 function stopReading() {
     isPlaying = false;
-    currentIndex = 0; // Reset dell'indice
     pauseTime = Date.now() - startTime;
     const audioControl = document.getElementById('audioControl');
     audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
     window.speechSynthesis.cancel();
-    // Reset del progresso
-    updateWaveform(0);
-    document.getElementById('currentTime').textContent = '0:00';
 }
 
 function resumeReading() {
@@ -796,7 +781,8 @@ function updateProgress() {
     updateWaveform(progress);
     document.getElementById('currentTime').textContent = formatTime(elapsedTime);
     
-    if (progress < 1 && isPlaying) {
+    // Continuiamo ad aggiornare finché non raggiungiamo effettivamente la fine
+    if (progress < 1 || window.speechSynthesis.speaking) {
         requestAnimationFrame(updateProgress);
     }
 }
