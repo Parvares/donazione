@@ -696,7 +696,12 @@ function calculateTotalDuration() {
     document.querySelectorAll('h1, h2, p, li').forEach(el => {
         totalText += el.textContent + ' ';
     });
-    totalDuration = (totalText.split(' ').length * 0.4);
+    
+    // Stima la durata basata sul numero di parole e velocità di lettura
+    const words = totalText.split(' ').length;
+    const wordsPerMinute = 150; // Considerando speech.rate = 0.9
+    totalDuration = (words / wordsPerMinute) * 60;
+    
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
 
@@ -737,13 +742,27 @@ function setupSpeech() {
     speech.pitch = 1;
     
     speech.onend = () => {
+        const textElements = document.querySelectorAll('h1, h2, p, li');
         currentIndex++;
-        if (currentIndex < document.querySelectorAll('h1, h2, p, li').length) {
+        
+        if (currentIndex < textElements.length) {
             readNextElement();
         } else {
+            // Assicurati che la barra arrivi alla fine
+            updateWaveform(1);
+            document.getElementById('currentTime').textContent = formatTime(totalDuration);
             stopReading();
         }
     };
+}
+
+// Aggiungi questa nuova funzione per gestire il reset
+function resetAudio() {
+    currentIndex = 0;
+    startTime = Date.now();
+    pauseTime = 0;
+    updateWaveform(0);
+    document.getElementById('currentTime').textContent = '0:00';
 }
 
 function readNextElement() {
@@ -775,7 +794,17 @@ function updateProgress() {
     if (!isPlaying) return;
 
     const elapsedTime = (Date.now() - startTime) / 1000;
-    const progress = Math.min(elapsedTime / totalDuration, 1);
+    
+    // Calcola il progresso effettivo basato sull'indice corrente
+    const textElements = document.querySelectorAll('h1, h2, p, li');
+    const totalElements = textElements.length;
+    const progressBasedOnIndex = currentIndex / totalElements;
+    
+    // Usa una combinazione di tempo trascorso e indice per un progresso più accurato
+    const progress = Math.min(
+        Math.max(progressBasedOnIndex, elapsedTime / totalDuration),
+        1
+    );
     
     updateWaveform(progress);
     document.getElementById('currentTime').textContent = formatTime(elapsedTime);
@@ -810,18 +839,18 @@ document.addEventListener('DOMContentLoaded', () => {
     setupSpeech();
     createWaveform();
     calculateTotalDuration();
+    resetAudio();
 
     const waveformContainer = document.querySelector('.waveform-container');
     waveformContainer.addEventListener('click', handleWaveformClick);
 
-    const audioControlContainer = document.querySelector('.audio-control-container');
     const audioControl = document.getElementById('audioControl');
     
     audioControl.addEventListener('click', () => {
-        const waveformContainer = document.querySelector('.waveform-container');
-        
         if (!isPlaying) {
-            waveformContainer.style.display = 'block';
+            if (currentIndex === document.querySelectorAll('h1, h2, p, li').length) {
+                resetAudio();
+            }
             audioControl.innerHTML = '<i class="fas fa-pause"></i>';
             resumeReading();
         } else {
