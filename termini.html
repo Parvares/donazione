@@ -696,7 +696,8 @@ function calculateTotalDuration() {
     document.querySelectorAll('h1, h2, p, li').forEach(el => {
         totalText += el.textContent + ' ';
     });
-    totalDuration = (totalText.split(' ').length * 0.4);
+    // Aumentato il moltiplicatore per parola per una durata più realistica
+    totalDuration = (totalText.split(' ').length * 0.55); // Modificato da 0.4 a 0.55
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
 
@@ -730,44 +731,6 @@ function updateWaveform(progress) {
     progressLine.style.left = `${progress * 100}%`;
 }
 
-
-function updateTimerAndWaveform(audioElement, timerElement) {
-    // Funzione che aggiorna il timer e il waveform
-    function update() {
-        const currentTime = audioElement.currentTime; // Tempo attuale dell'audio
-        const duration = audioElement.duration; // Durata totale dell'audio
-
-        // Aggiorna il timer sullo schermo
-        timerElement.textContent = formatTime(currentTime);
-
-        // Chiama l'update della waveform (lascia invariata la funzione)
-        updateWaveform(currentTime, duration);
-
-        // Se l'audio è terminato, fermati
-        if (currentTime >= duration) {
-            timerElement.textContent = formatTime(duration);
-            return; // Esci dal ciclo di aggiornamento
-        }
-
-        // Continua a chiamare questa funzione
-        requestAnimationFrame(update);
-    }
-
-    // Inizia l'aggiornamento
-    update();
-}
-
-      
-      function formatTime(seconds) {
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-}
-
-
-
-
-      
 function setupSpeech() {
     speech = new SpeechSynthesisUtterance();
     speech.lang = 'it-IT';
@@ -789,6 +752,10 @@ function readNextElement() {
     if (textElements[currentIndex]) {
         speech.text = textElements[currentIndex].textContent;
         window.speechSynthesis.speak(speech);
+        
+        // Aggiornamento del progresso basato sull'indice corrente
+        const progress = currentIndex / textElements.length;
+        updateWaveform(progress);
     }
 }
 
@@ -798,6 +765,10 @@ function stopReading() {
     const audioControl = document.getElementById('audioControl');
     audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
     window.speechSynthesis.cancel();
+    
+    // Reset completo della waveform
+    updateWaveform(0);
+    document.getElementById('currentTime').textContent = '0:00';
 }
 
 function resumeReading() {
@@ -813,10 +784,12 @@ function updateProgress() {
     if (!isPlaying) return;
 
     const elapsedTime = (Date.now() - startTime) / 1000;
-    const progress = Math.min(elapsedTime / totalDuration, 1);
+    const textElements = document.querySelectorAll('h1, h2, p, li');
+    const progress = Math.min(currentIndex / textElements.length, 1);
     
-    updateWaveform(progress);
-    document.getElementById('currentTime').textContent = formatTime(elapsedTime);
+    // Aggiornamento più preciso del tempo trascorso
+    const currentTimeDisplay = Math.min(elapsedTime, totalDuration);
+    document.getElementById('currentTime').textContent = formatTime(currentTimeDisplay);
     
     if (progress < 1) {
         requestAnimationFrame(updateProgress);
@@ -829,66 +802,46 @@ function handleWaveformClick(e) {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const progress = x / rect.width;
+    const textElements = document.querySelectorAll('h1, h2, p, li');
     
+    currentIndex = Math.floor(progress * textElements.length);
     startTime = Date.now() - (progress * totalDuration * 1000);
     pauseTime = Date.now() - startTime;
     
     updateWaveform(progress);
-    currentIndex = Math.floor(progress * document.querySelectorAll('h1, h2, p, li').length);
     
     if (isPlaying) {
         window.speechSynthesis.cancel();
         readNextElement();
-        updateProgress();
     }
+    
+    document.getElementById('currentTime').textContent = formatTime(progress * totalDuration);
 }
 
 // Initialize on page load
-// Inizializzazione degli elementi e dei listener
 document.addEventListener('DOMContentLoaded', () => {
-    // Recupera l'elemento audio e il timer dall'HTML
-    const audioElement = document.getElementById('audio');
-    const timerElement = document.getElementById('timer');
+    setupSpeech();
+    createWaveform();
+    calculateTotalDuration();
 
-    // Listener per avviare la sincronizzazione di timer e waveform
-    audioElement.addEventListener('play', () => {
-        updateTimerAndWaveform(audioElement, timerElement);
-    });
+    const waveformContainer = document.querySelector('.waveform-container');
+    waveformContainer.addEventListener('click', handleWaveformClick);
 
-    // Facoltativamente, puoi aggiungere altri listener per pause, stop, ecc.
-    audioElement.addEventListener('pause', () => {
-        console.log('Audio in pausa');
-        // Potresti gestire la pausa del timer o altre funzionalità qui
-    });
-
-    audioElement.addEventListener('ended', () => {
-        console.log('Riproduzione audio terminata');
-        // Eventuali azioni da eseguire al termine dell'audio
+    const audioControl = document.getElementById('audioControl');
+    
+    audioControl.addEventListener('click', () => {
+        const waveformContainer = document.querySelector('.waveform-container');
+        
+        if (!isPlaying) {
+            waveformContainer.style.display = 'block';
+            audioControl.innerHTML = '<i class="fas fa-pause"></i>';
+            resumeReading();
+        } else {
+            audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
+            stopReading();
+        }
     });
 });
-
-// Funzione per aggiornare il timer e la waveform
-function updateTimerAndWaveform(audioElement, timerElement) {
-    const update = () => {
-        if (!audioElement.paused && !audioElement.ended) {
-            // Aggiorna il timer con il tempo corrente dell'audio
-            const currentTime = Math.floor(audioElement.currentTime);
-            timerElement.textContent = formatTime(currentTime);
-
-            // Richiama la funzione di aggiornamento per sincronizzare la waveform
-            requestAnimationFrame(update);
-        }
-    };
-    update();
-}
-
-// Funzione di utilità per formattare il tempo in MM:SS
-function formatTime(seconds) {
-    const minutes = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
-}
-
       
 </script>
 
