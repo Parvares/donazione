@@ -696,7 +696,12 @@ function calculateTotalDuration() {
     document.querySelectorAll('h1, h2, p, li').forEach(el => {
         totalText += el.textContent + ' ';
     });
-    totalDuration = (totalText.split(' ').length * 0.4);
+    
+    // Stima della durata basata sul numero di parole
+    const wordsPerMinute = 150; // Velocità media di lettura in italiano
+    const wordCount = totalText.split(/\s+/).length;
+    totalDuration = (wordCount / wordsPerMinute) * 60;
+    
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
 
@@ -748,18 +753,25 @@ function setupSpeech() {
 
 function readNextElement() {
     const textElements = document.querySelectorAll('h1, h2, p, li');
-    if (textElements[currentIndex]) {
+    if (currentIndex < textElements.length) {
         speech.text = textElements[currentIndex].textContent;
         window.speechSynthesis.speak(speech);
+        
+        // Scroll all'elemento corrente
+        textElements[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+        stopReading();
     }
 }
 
 function stopReading() {
     isPlaying = false;
+    currentIndex = 0; // Reset dell'indice
     pauseTime = Date.now() - startTime;
     const audioControl = document.getElementById('audioControl');
     audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
     window.speechSynthesis.cancel();
+    updateWaveform(0); // Reset della barra di progresso
 }
 
 function resumeReading() {
@@ -780,7 +792,7 @@ function updateProgress() {
     updateWaveform(progress);
     document.getElementById('currentTime').textContent = formatTime(elapsedTime);
     
-    if (progress < 1) {
+    if (progress < 1 && isPlaying) {
         requestAnimationFrame(updateProgress);
     }
 }
