@@ -391,82 +391,84 @@ footer i {
 
             
 /* Audio control button styles */
+.audio-control-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.audio-control {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: #970a2c;
+}
+
+.audio-control:hover .fa-headphones {
+    display: none;
+}
+
+.audio-control:hover .fa-play {
+    display: inline;
+}
+
+.fa-play {
+    display: none;
+}
+
+.audio-label {
+    color: #970a2c;
+    cursor: pointer;
+}
+
 .waveform-container {
-    width: 100%;
-    height: 50px;
-    background-color: #f5f5f5;
+    display: none;
+    position: relative;
+    height: 60px;
+    background: #f5f5f5;
     border-radius: 4px;
     padding: 10px;
     margin: 10px 0;
-    position: relative;
     cursor: pointer;
 }
 
 .waveform-bars {
     display: flex;
-    align-items: center;
-    height: 100%;
-    gap: 2px;
+    align-items: flex-end;
+    height: 40px;
+    gap: 1px;
 }
 
 .waveform-bar {
     flex: 1;
-    background-color: #ddd;
-    transition: height 0.2s ease;
+    background: #ddd;
+    min-width: 2px;
+    transition: height 0.1s ease;
 }
 
 .waveform-bar.played {
-    background-color: var(--primary);
+    background: #970a2c;
+}
+
+.time-display {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin-top: 5px;
 }
 
 .progress-line {
     position: absolute;
     top: 0;
     left: 0;
-    width: 2px;
     height: 100%;
-    background-color: var(--primary);
-    transition: left 0.1s linear;
-}
-
-.time-display {
-    position: absolute;
-    bottom: -25px;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-    color: #666;
-}
-
-.audio-control-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.audio-control {
-    background: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.3s;
-}
-
-.audio-control:hover {
-    background-color: #7a0824;
-}
-
-.audio-label {
-    font-size: 0.9em;
-    color: #666;
+    width: 2px;
+    background: rgba(151, 10, 44, 0.5);
+    pointer-events: none;
 }
       
    </style>
@@ -531,20 +533,21 @@ footer i {
            
 <!-- Add this right after the library-name div in your HTML -->
 <div class="text-controls">
-    <div class="audio-control-container">
-        <button class="audio-control" id="audioControl">
-            <i class="fas fa-headphones"></i>
-            <i class="fas fa-play"></i>
-        </button>
-        <span class="audio-label">ascolta l'audio</span>
-    </div>
-    <div class="waveform-container">
-        <div class="waveform-bars"></div>
-        <div class="progress-line"></div>
-        <div class="time-display">
-            <span id="currentTime">0:00</span>
-            <span id="totalTime">0:00</span>
-        </div>
+<div class="audio-control-container">
+    <button class="audio-control" id="audioControl">
+        <i class="fas fa-headphones"></i>
+        <i class="fas fa-play"></i>
+    </button>
+    <span class="audio-label">ascolta l'audio</span>
+</div>
+  
+   
+<div class="waveform-container">
+    <div class="waveform-bars"></div>
+    <div class="progress-line"></div>
+    <div class="time-display">
+        <span id="currentTime">0:00</span>
+        <span id="totalTime">0:00</span>
     </div>
 </div>
 
@@ -681,7 +684,6 @@ let startTime = 0;
 let pauseTime = 0;
 let totalDuration = 0;
 let isDragging = false;
-let totalText = '';
 
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -690,25 +692,19 @@ function formatTime(seconds) {
 }
 
 function calculateTotalDuration() {
-    totalText = '';
+    let totalText = '';
     document.querySelectorAll('h1, h2, p, li').forEach(el => {
         totalText += el.textContent + ' ';
     });
-    
-    // Stima la durata basata sul numero di parole
-    // Media di 2.5 parole al secondo per l'italiano
-    const wordCount = totalText.split(/\s+/).length;
-    totalDuration = wordCount / 2.5;
-    
+    totalDuration = (totalText.split(' ').length * 0.4);
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
-    return totalDuration;
 }
 
 function createWaveform() {
     const container = document.querySelector('.waveform-bars');
     container.innerHTML = '';
-    const numberOfBars = 100;
-    
+    const numberOfBars = 200;
+
     for (let i = 0; i < numberOfBars; i++) {
         const bar = document.createElement('div');
         bar.className = 'waveform-bar';
@@ -746,9 +742,6 @@ function setupSpeech() {
             readNextElement();
         } else {
             stopReading();
-            // Assicurati che le barre e il timer arrivino al 100% alla fine
-            updateWaveform(1);
-            document.getElementById('currentTime').textContent = formatTime(totalDuration);
         }
     };
 }
@@ -758,11 +751,6 @@ function readNextElement() {
     if (textElements[currentIndex]) {
         speech.text = textElements[currentIndex].textContent;
         window.speechSynthesis.speak(speech);
-        
-        // Aggiorna la durata totale ogni volta che viene letto un nuovo elemento
-        const progress = currentIndex / textElements.length;
-        const elapsedTime = progress * totalDuration;
-        startTime = Date.now() - (elapsedTime * 1000);
     }
 }
 
@@ -775,11 +763,7 @@ function stopReading() {
 }
 
 function resumeReading() {
-    if (!startTime) {
-        startTime = Date.now();
-    } else {
-        startTime = Date.now() - pauseTime;
-    }
+    startTime = Date.now() - pauseTime;
     isPlaying = true;
     const audioControl = document.getElementById('audioControl');
     audioControl.innerHTML = '<i class="fas fa-pause"></i>';
@@ -791,12 +775,10 @@ function updateProgress() {
     if (!isPlaying) return;
 
     const elapsedTime = (Date.now() - startTime) / 1000;
-    const textElements = document.querySelectorAll('h1, h2, p, li');
-    const progress = Math.min(currentIndex / textElements.length + 
-        (elapsedTime % (totalDuration / textElements.length)) / (totalDuration / textElements.length), 1);
+    const progress = Math.min(elapsedTime / totalDuration, 1);
     
     updateWaveform(progress);
-    document.getElementById('currentTime').textContent = formatTime(Math.min(elapsedTime, totalDuration));
+    document.getElementById('currentTime').textContent = formatTime(elapsedTime);
     
     if (progress < 1) {
         requestAnimationFrame(updateProgress);
@@ -809,13 +791,12 @@ function handleWaveformClick(e) {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const progress = x / rect.width;
-    const textElements = document.querySelectorAll('h1, h2, p, li');
     
-    currentIndex = Math.floor(progress * textElements.length);
     startTime = Date.now() - (progress * totalDuration * 1000);
     pauseTime = Date.now() - startTime;
     
     updateWaveform(progress);
+    currentIndex = Math.floor(progress * document.querySelectorAll('h1, h2, p, li').length);
     
     if (isPlaying) {
         window.speechSynthesis.cancel();
@@ -833,10 +814,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const waveformContainer = document.querySelector('.waveform-container');
     waveformContainer.addEventListener('click', handleWaveformClick);
 
+    const audioControlContainer = document.querySelector('.audio-control-container');
     const audioControl = document.getElementById('audioControl');
     
     audioControl.addEventListener('click', () => {
+        const waveformContainer = document.querySelector('.waveform-container');
+        
         if (!isPlaying) {
+            waveformContainer.style.display = 'block';
             audioControl.innerHTML = '<i class="fas fa-pause"></i>';
             resumeReading();
         } else {
