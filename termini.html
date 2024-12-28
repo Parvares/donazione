@@ -677,7 +677,6 @@ footer i {
    
 
    <script>
-// Sostituisci queste variabili globali all'inizio del file
 let speech = null;
 let isPlaying = false;
 let currentIndex = 0;
@@ -704,6 +703,35 @@ function calculateTotalDuration() {
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
 
+function createWaveform() {
+    const container = document.querySelector('.waveform-bars');
+    const numberOfBars = 100; // Numero di barre desiderato
+    
+    for (let i = 0; i < numberOfBars; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'waveform-bar';
+        const height = 5 + Math.random() * 35;
+        bar.style.height = `${height}px`;
+        container.appendChild(bar);
+    }
+}
+
+function updateWaveform(progress) {
+    const bars = document.querySelectorAll('.waveform-bar');
+    const barsToPlay = Math.floor(progress * bars.length);
+    
+    bars.forEach((bar, index) => {
+        if (index < barsToPlay) {
+            bar.classList.add('played');
+        } else {
+            bar.classList.remove('played');
+        }
+    });
+
+    const progressLine = document.querySelector('.progress-line');
+    progressLine.style.left = `${progress * 100}%`;
+}
+
 function updateProgress() {
     if (!isPlaying) {
         cancelAnimationFrame(animationFrameId);
@@ -718,6 +746,16 @@ function updateProgress() {
 
     if (progress < 1) {
         animationFrameId = requestAnimationFrame(updateProgress);
+    }
+}
+
+function readNextElement() {
+    const textElements = document.querySelectorAll('h1, h2, p, li');
+    const totalElements = textElements.length;
+    
+    if (currentIndex < totalElements) {
+        speech.text = textElements[currentIndex].textContent;
+        window.speechSynthesis.speak(speech);
     }
 }
 
@@ -769,7 +807,6 @@ function setupSpeech() {
     };
 }
 
-// Modificare la funzione di click della waveform
 function handleWaveformClick(e) {
     if (isDragging) return;
     
@@ -793,7 +830,7 @@ function handleWaveformClick(e) {
     document.getElementById('currentTime').textContent = formatTime(progress * totalDuration);
 }
 
-// Modificare l'event listener del pulsante audio
+// Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
     setupSpeech();
     createWaveform();
