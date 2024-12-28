@@ -696,12 +696,7 @@ function calculateTotalDuration() {
     document.querySelectorAll('h1, h2, p, li').forEach(el => {
         totalText += el.textContent + ' ';
     });
-    
-    // Stima la durata basata sul numero di parole e velocità di lettura
-    const words = totalText.split(' ').length;
-    const wordsPerMinute = 150; // Considerando speech.rate = 0.9
-    totalDuration = (words / wordsPerMinute) * 60;
-    
+    totalDuration = (totalText.split(' ').length * 0.4);
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
 
@@ -741,29 +736,19 @@ function setupSpeech() {
     speech.rate = 0.9;
     speech.pitch = 1;
     
+    // Insert the block here
     speech.onend = () => {
-        if (currentIndex < document.querySelectorAll('h1, h2, p, li').length - 1) {
-            currentIndex++;
+        currentIndex++;
+        if (currentIndex < document.querySelectorAll('h1, h2, p, li').length) {
             readNextElement();
         } else {
-            // Completamento della lettura
-            updateWaveform(1);
-            document.getElementById('currentTime').textContent = formatTime(totalDuration);
             stopReading();
+            // Ensure waveform and timer go to 100%
+            updateWaveform(1);
+            document.getElementById('currentTime').textContent = document.getElementById('totalTime').textContent;
         }
     };
 }
-
-
-function resetAudioState() {
-    currentIndex = 0;
-    startTime = Date.now();
-    pauseTime = 0;
-    updateWaveform(0);
-    document.getElementById('currentTime').textContent = formatTime(0);
-}
-
-      
 
 function readNextElement() {
     const textElements = document.querySelectorAll('h1, h2, p, li');
@@ -794,17 +779,14 @@ function updateProgress() {
     if (!isPlaying) return;
 
     const elapsedTime = (Date.now() - startTime) / 1000;
+    const progress = Math.min(elapsedTime / totalDuration, 1);
     
-    // Verifica se la sintesi vocale è ancora attiva
-    if (window.speechSynthesis.speaking) {
-        const progress = Math.min(elapsedTime / totalDuration, 1);
-        updateWaveform(progress);
-        document.getElementById('currentTime').textContent = formatTime(elapsedTime);
+    updateWaveform(progress);
+    document.getElementById('currentTime').textContent = formatTime(elapsedTime);
+    
+    if (progress < 1) {
         requestAnimationFrame(updateProgress);
-    } else if (currentIndex >= document.querySelectorAll('h1, h2, p, li').length - 1) {
-        // Se siamo all'ultimo elemento, completiamo la visualizzazione
-        updateWaveform(1);
-        document.getElementById('currentTime').textContent = formatTime(totalDuration);
+    } else {
         stopReading();
     }
 }
@@ -841,17 +823,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const audioControlContainer = document.querySelector('.audio-control-container');
     const audioControl = document.getElementById('audioControl');
     
-audioControl.addEventListener('click', () => {
-    if (!isPlaying) {
-        if (currentIndex === 0 || currentIndex >= document.querySelectorAll('h1, h2, p, li').length) {
-            resetAudioState();
+    audioControl.addEventListener('click', () => {
+        const waveformContainer = document.querySelector('.waveform-container');
+        
+        if (!isPlaying) {
+            waveformContainer.style.display = 'block';
+            audioControl.innerHTML = '<i class="fas fa-pause"></i>';
+            resumeReading();
+        } else {
+            audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
+            stopReading();
         }
-        audioControl.innerHTML = '<i class="fas fa-pause"></i>';
-        resumeReading();
-    } else {
-        audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
-        stopReading();
-    }
+    });
 });
       
 </script>
