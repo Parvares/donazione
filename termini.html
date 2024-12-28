@@ -684,6 +684,7 @@ let startTime = 0;
 let pauseTime = 0;
 let totalDuration = 0;
 let isDragging = false;
+let textElements = null;
 
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -692,19 +693,25 @@ function formatTime(seconds) {
 }
 
 function calculateTotalDuration() {
+    textElements = document.querySelectorAll('h1, h2, p, li');
     let totalText = '';
-    document.querySelectorAll('h1, h2, p, li').forEach(el => {
+    textElements.forEach(el => {
         totalText += el.textContent + ' ';
     });
-    totalDuration = (totalText.split(' ').length * 0.4);
+    
+    // Stima la durata basata sul numero di parole
+    // Assumendo una velocità media di lettura di 150 parole al minuto
+    const wordCount = totalText.split(' ').length;
+    totalDuration = (wordCount / 150) * 60; // converti in secondi
+    
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
 
 function createWaveform() {
     const container = document.querySelector('.waveform-bars');
     container.innerHTML = '';
-    const numberOfBars = 200;
-
+    const numberOfBars = 100; // numero fisso di barre
+    
     for (let i = 0; i < numberOfBars; i++) {
         const bar = document.createElement('div');
         bar.className = 'waveform-bar';
@@ -736,22 +743,20 @@ function setupSpeech() {
     speech.rate = 0.9;
     speech.pitch = 1;
     
-    // Insert the block here
     speech.onend = () => {
         currentIndex++;
-        if (currentIndex < document.querySelectorAll('h1, h2, p, li').length) {
+        if (currentIndex < textElements.length) {
             readNextElement();
         } else {
             stopReading();
-            // Ensure waveform and timer go to 100%
+            // Assicurati che la waveform sia completata
             updateWaveform(1);
-            document.getElementById('currentTime').textContent = document.getElementById('totalTime').textContent;
+            document.getElementById('currentTime').textContent = formatTime(totalDuration);
         }
     };
 }
 
 function readNextElement() {
-    const textElements = document.querySelectorAll('h1, h2, p, li');
     if (textElements[currentIndex]) {
         speech.text = textElements[currentIndex].textContent;
         window.speechSynthesis.speak(speech);
@@ -779,15 +784,14 @@ function updateProgress() {
     if (!isPlaying) return;
 
     const elapsedTime = (Date.now() - startTime) / 1000;
-    const progress = Math.min(elapsedTime / totalDuration, 1);
+    // Calcola il progresso basato sull'indice corrente invece che sul tempo
+    const progress = Math.min(currentIndex / textElements.length, 1);
     
     updateWaveform(progress);
-    document.getElementById('currentTime').textContent = formatTime(elapsedTime);
+    document.getElementById('currentTime').textContent = formatTime(Math.min(elapsedTime, totalDuration));
     
     if (progress < 1) {
         requestAnimationFrame(updateProgress);
-    } else {
-        stopReading();
     }
 }
 
@@ -802,7 +806,7 @@ function handleWaveformClick(e) {
     pauseTime = Date.now() - startTime;
     
     updateWaveform(progress);
-    currentIndex = Math.floor(progress * document.querySelectorAll('h1, h2, p, li').length);
+    currentIndex = Math.floor(progress * textElements.length);
     
     if (isPlaying) {
         window.speechSynthesis.cancel();
@@ -820,14 +824,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const waveformContainer = document.querySelector('.waveform-container');
     waveformContainer.addEventListener('click', handleWaveformClick);
 
-    const audioControlContainer = document.querySelector('.audio-control-container');
     const audioControl = document.getElementById('audioControl');
     
     audioControl.addEventListener('click', () => {
-        const waveformContainer = document.querySelector('.waveform-container');
-        
         if (!isPlaying) {
-            waveformContainer.style.display = 'block';
             audioControl.innerHTML = '<i class="fas fa-pause"></i>';
             resumeReading();
         } else {
