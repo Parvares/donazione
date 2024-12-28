@@ -684,6 +684,7 @@ let startTime = 0;
 let pauseTime = 0;
 let totalDuration = 0;
 let isDragging = false;
+let totalText = '';
 
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -692,25 +693,25 @@ function formatTime(seconds) {
 }
 
 function calculateTotalDuration() {
-    let totalText = '';
+    totalText = '';
     document.querySelectorAll('h1, h2, p, li').forEach(el => {
         totalText += el.textContent + ' ';
     });
     
-    // Stima la durata basata sul numero di parole e una velocità media di lettura
-    const words = totalText.split(' ').length;
-    const wordsPerSecond = 2.5; // Considerando speech.rate = 0.9
-    totalDuration = Math.ceil(words / wordsPerSecond);
+    // Stima la durata basata sul numero di parole
+    // Media di 2.5 parole al secondo per l'italiano
+    const wordCount = totalText.split(/\s+/).length;
+    totalDuration = wordCount / 2.5;
     
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
+    return totalDuration;
 }
 
-// Aggiungi questa funzione createWaveform completa
 function createWaveform() {
     const container = document.querySelector('.waveform-bars');
-    container.innerHTML = ''; // Pulisce il contenitore esistente
+    container.innerHTML = '';
+    const numberOfBars = 100;
     
-    const numberOfBars = 100; // Numero di barre per mantenere l'aspetto fitto
     for (let i = 0; i < numberOfBars; i++) {
         const bar = document.createElement('div');
         bar.className = 'waveform-bar';
@@ -743,27 +744,16 @@ function setupSpeech() {
     speech.pitch = 1;
     
     speech.onend = () => {
-        const textElements = document.querySelectorAll('h1, h2, p, li');
         currentIndex++;
-        
-        if (currentIndex < textElements.length) {
+        if (currentIndex < document.querySelectorAll('h1, h2, p, li').length) {
             readNextElement();
         } else {
-            // Aggiorna il display finale
-            document.getElementById('currentTime').textContent = formatTime(totalDuration);
-            updateWaveform(1);
             stopReading();
+            // Assicurati che le barre e il timer arrivino al 100% alla fine
+            updateWaveform(1);
+            document.getElementById('currentTime').textContent = formatTime(totalDuration);
         }
     };
-}
-
-// Aggiungi questa nuova funzione per gestire il reset
-function resetAudio() {
-    currentIndex = 0;
-    startTime = Date.now();
-    pauseTime = 0;
-    updateWaveform(0);
-    document.getElementById('currentTime').textContent = '0:00';
 }
 
 function readNextElement() {
@@ -771,6 +761,11 @@ function readNextElement() {
     if (textElements[currentIndex]) {
         speech.text = textElements[currentIndex].textContent;
         window.speechSynthesis.speak(speech);
+        
+        // Aggiorna la durata totale ogni volta che viene letto un nuovo elemento
+        const progress = currentIndex / textElements.length;
+        const elapsedTime = progress * totalDuration;
+        startTime = Date.now() - (elapsedTime * 1000);
     }
 }
 
@@ -780,17 +775,14 @@ function stopReading() {
     const audioControl = document.getElementById('audioControl');
     audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
     window.speechSynthesis.cancel();
-    
-    // Aggiorna una ultima volta il progresso per assicurarsi che sia sincronizzato
-    const elapsedTime = (Date.now() - startTime) / 1000;
-    if (elapsedTime < totalDuration) {
-        document.getElementById('currentTime').textContent = formatTime(elapsedTime);
-        updateWaveform(elapsedTime / totalDuration);
-    }
 }
 
 function resumeReading() {
-    startTime = Date.now() - pauseTime;
+    if (!startTime) {
+        startTime = Date.now();
+    } else {
+        startTime = Date.now() - pauseTime;
+    }
     isPlaying = true;
     const audioControl = document.getElementById('audioControl');
     audioControl.innerHTML = '<i class="fas fa-pause"></i>';
@@ -803,21 +795,11 @@ function updateProgress() {
 
     const elapsedTime = (Date.now() - startTime) / 1000;
     const textElements = document.querySelectorAll('h1, h2, p, li');
-    const totalElements = textElements.length;
-    
-    // Calcola il progresso basato sull'indice corrente e il tempo trascorso per l'elemento attuale
-    const progressPerElement = 1 / totalElements;
-    const baseProgress = (currentIndex / totalElements);
-    
-    // Stima il progresso all'interno dell'elemento corrente
-    const currentElementText = textElements[currentIndex]?.textContent || '';
-    const currentElementDuration = (currentElementText.split(' ').length / 2.5); // wordsPerSecond = 2.5
-    const currentElementProgress = Math.min((elapsedTime % currentElementDuration) / currentElementDuration, 1);
-    
-    const progress = Math.min(baseProgress + (progressPerElement * currentElementProgress), 1);
+    const progress = Math.min(currentIndex / textElements.length + 
+        (elapsedTime % (totalDuration / textElements.length)) / (totalDuration / textElements.length), 1);
     
     updateWaveform(progress);
-    document.getElementById('currentTime').textContent = formatTime(elapsedTime);
+    document.getElementById('currentTime').textContent = formatTime(Math.min(elapsedTime, totalDuration));
     
     if (progress < 1) {
         requestAnimationFrame(updateProgress);
@@ -830,12 +812,13 @@ function handleWaveformClick(e) {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const progress = x / rect.width;
+    const textElements = document.querySelectorAll('h1, h2, p, li');
     
+    currentIndex = Math.floor(progress * textElements.length);
     startTime = Date.now() - (progress * totalDuration * 1000);
     pauseTime = Date.now() - startTime;
     
     updateWaveform(progress);
-    currentIndex = Math.floor(progress * document.querySelectorAll('h1, h2, p, li').length);
     
     if (isPlaying) {
         window.speechSynthesis.cancel();
@@ -846,16 +829,9 @@ function handleWaveformClick(e) {
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
-    // Aggiungi gli stili al documento
-    const styleSheet = document.createElement('style');
-    styleSheet.textContent = styles;
-    document.head.appendChild(styleSheet);
-    
-    // Il resto del codice DOMContentLoaded rimane lo stesso...
     setupSpeech();
     createWaveform();
     calculateTotalDuration();
-    resetAudio();
 
     const waveformContainer = document.querySelector('.waveform-container');
     waveformContainer.addEventListener('click', handleWaveformClick);
@@ -864,9 +840,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     audioControl.addEventListener('click', () => {
         if (!isPlaying) {
-            if (currentIndex === document.querySelectorAll('h1, h2, p, li').length) {
-                resetAudio();
-            }
             audioControl.innerHTML = '<i class="fas fa-pause"></i>';
             resumeReading();
         } else {
