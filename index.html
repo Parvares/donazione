@@ -929,22 +929,20 @@ function validateCheckbox(checkbox) {
  
 
         <div class="mb-5">
-           <label class="flex items-center gap-2 text-blue-600 font-medium mb-2">
-    <span class="relative group">
-        Search & click: 
-        <i class="fa-solid fa-circle-info text-gray-500 hover:text-gray-700 transition-colors text-sm"></i>
-        <div class="invisible group-hover:visible absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-white border border-gray-200 text-gray-700 text-sm rounded-lg w-64 shadow-lg z-10">
-            <div class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full w-0 h-0 border-8 border-transparent border-t-white"></div>
-            <div class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full w-0 h-0 border-[9px] border-transparent border-t-gray-200"></div>
-            Cerca, seleziona e... boom, la scheda si autocompila.
+	
+            <div class="flex items-center gap-2 mb-2">
+    <label class="flex items-center gap-2 text-blue-600 font-medium">
+        <i class="fas fa-book-open text-lg"></i>
+        Search & click
+    </label>
+    <div class="relative group">
+        <i class="fas fa-info-circle text-blue-400 hover:text-blue-600 cursor-help"></i>
+        <div class="invisible group-hover:visible absolute left-0 top-6 w-64 p-3 bg-white border border-gray-200 rounded-lg shadow-lg z-10 text-sm text-gray-700">
+            <div class="absolute -top-2 left-2 w-4 h-4 bg-white border-t border-l border-gray-200 transform rotate-45"></div>
+            Cerca, seleziona e... boom, la scheda si autocompila!
         </div>
-    </span>
-    <input type="text" 
-        class="quick-search w-full px-3 py-2 border-2 border-gray-300 rounded-l focus:border-blue-500 focus:outline-none text-base" 
-        placeholder="Cerca per titolo, autore o ISBN...">
-    <button type="button" 
-        class="search-btn bg-blue-500 text-white px-4 rounded-r hover:bg-blue-600 transition-colors"><i class="fas fa-search"></i></button>
-</label>
+    </div>
+</div>
 
 
             <div class="flex gap-2">
