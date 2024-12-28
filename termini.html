@@ -716,23 +716,31 @@ function createWaveform() {
 }
 
 function updateWaveform(targetProgress) {
-    // Interpola l'animazione verso il target
+    // Aggiorna il progresso di animazione in modo fluido
     animationProgress += (targetProgress - animationProgress) * 0.1;
-    
+
     const bars = document.querySelectorAll('.waveform-bar');
-    const barsToPlay = Math.floor(animationProgress * bars.length);
-    
+    const totalBars = bars.length;
+    const barsToPlay = Math.floor(animationProgress * totalBars);
+
     bars.forEach((bar, index) => {
-        if (index <= barsToPlay) {
+        if (index < barsToPlay) {
             bar.classList.add('played');
         } else {
             bar.classList.remove('played');
         }
     });
 
+    // Aggiorna la posizione della linea di progresso
     const progressLine = document.querySelector('.progress-line');
     progressLine.style.left = `${animationProgress * 100}%`;
+
+    // Chiedi il prossimo frame di animazione solo se necessario
+    if (animationProgress < targetProgress - 0.01 || animationProgress > targetProgress + 0.01) {
+        requestAnimationFrame(() => updateWaveform(targetProgress));
+    }
 }
+
 
 function setupSpeech() {
     speech = new SpeechSynthesisUtterance();
