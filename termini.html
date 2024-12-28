@@ -684,7 +684,6 @@ let startTime = 0;
 let pauseTime = 0;
 let totalDuration = 0;
 let isDragging = false;
-let progressInterval = null;
 
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -698,8 +697,10 @@ function calculateTotalDuration() {
         totalText += el.textContent + ' ';
     });
     
-    const wordCount = totalText.split(/\s+/).length;
-    totalDuration = (wordCount / 150) * 60;
+    // Stima la durata basata sul numero di parole e velocità di lettura
+    const words = totalText.split(' ').length;
+    const wordsPerMinute = 150; // Considerando speech.rate = 0.9
+    totalDuration = (words / wordsPerMinute) * 60;
     
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
@@ -707,8 +708,8 @@ function calculateTotalDuration() {
 function createWaveform() {
     const container = document.querySelector('.waveform-bars');
     container.innerHTML = '';
-    const numberOfBars = 100;
-    
+    const numberOfBars = 200;
+
     for (let i = 0; i < numberOfBars; i++) {
         const bar = document.createElement('div');
         bar.className = 'waveform-bar';
@@ -745,16 +746,28 @@ function setupSpeech() {
             currentIndex++;
             readNextElement();
         } else {
-            stopReading();
+            // Completamento della lettura
             updateWaveform(1);
             document.getElementById('currentTime').textContent = formatTime(totalDuration);
+            stopReading();
         }
     };
 }
 
+
+function resetAudioState() {
+    currentIndex = 0;
+    startTime = Date.now();
+    pauseTime = 0;
+    updateWaveform(0);
+    document.getElementById('currentTime').textContent = formatTime(0);
+}
+
+      
+
 function readNextElement() {
     const textElements = document.querySelectorAll('h1, h2, p, li');
-    if (currentIndex < textElements.length) {
+    if (textElements[currentIndex]) {
         speech.text = textElements[currentIndex].textContent;
         window.speechSynthesis.speak(speech);
     }
@@ -762,48 +775,38 @@ function readNextElement() {
 
 function stopReading() {
     isPlaying = false;
-    if (progressInterval) {
-        clearInterval(progressInterval);
-        progressInterval = null;
-    }
-    window.speechSynthesis.cancel();
+    pauseTime = Date.now() - startTime;
     const audioControl = document.getElementById('audioControl');
     audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
-}
-
-function startProgress() {
-    if (progressInterval) {
-        clearInterval(progressInterval);
-    }
-    
-    const totalElements = document.querySelectorAll('h1, h2, p, li').length;
-    startTime = Date.now();
-    
-    progressInterval = setInterval(() => {
-        const elapsedTime = (Date.now() - startTime) / 1000;
-        document.getElementById('currentTime').textContent = formatTime(elapsedTime);
-        
-        const progress = Math.min(currentIndex / totalElements, 1);
-        updateWaveform(progress);
-    }, 50); // Update every 50ms for smooth animation
-}
-
-function startReading() {
-    isPlaying = true;
-    currentIndex = 0;
-    const audioControl = document.getElementById('audioControl');
-    audioControl.innerHTML = '<i class="fas fa-pause"></i>';
-    readNextElement();
-    startProgress();
+    window.speechSynthesis.cancel();
 }
 
 function resumeReading() {
-    isPlaying = true;
     startTime = Date.now() - pauseTime;
+    isPlaying = true;
     const audioControl = document.getElementById('audioControl');
     audioControl.innerHTML = '<i class="fas fa-pause"></i>';
+    updateProgress();
     readNextElement();
-    startProgress();
+}
+
+function updateProgress() {
+    if (!isPlaying) return;
+
+    const elapsedTime = (Date.now() - startTime) / 1000;
+    
+    // Verifica se la sintesi vocale è ancora attiva
+    if (window.speechSynthesis.speaking) {
+        const progress = Math.min(elapsedTime / totalDuration, 1);
+        updateWaveform(progress);
+        document.getElementById('currentTime').textContent = formatTime(elapsedTime);
+        requestAnimationFrame(updateProgress);
+    } else if (currentIndex >= document.querySelectorAll('h1, h2, p, li').length - 1) {
+        // Se siamo all'ultimo elemento, completiamo la visualizzazione
+        updateWaveform(1);
+        document.getElementById('currentTime').textContent = formatTime(totalDuration);
+        stopReading();
+    }
 }
 
 function handleWaveformClick(e) {
@@ -813,43 +816,42 @@ function handleWaveformClick(e) {
     const x = e.clientX - rect.left;
     const progress = x / rect.width;
     
-    const textElements = document.querySelectorAll('h1, h2, p, li');
-    currentIndex = Math.floor(progress * textElements.length);
-    
     startTime = Date.now() - (progress * totalDuration * 1000);
     pauseTime = Date.now() - startTime;
     
     updateWaveform(progress);
+    currentIndex = Math.floor(progress * document.querySelectorAll('h1, h2, p, li').length);
     
     if (isPlaying) {
         window.speechSynthesis.cancel();
         readNextElement();
-        startProgress();
+        updateProgress();
     }
 }
 
+// Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
     setupSpeech();
     createWaveform();
     calculateTotalDuration();
-    updateWaveform(0);
 
     const waveformContainer = document.querySelector('.waveform-container');
     waveformContainer.addEventListener('click', handleWaveformClick);
 
+    const audioControlContainer = document.querySelector('.audio-control-container');
     const audioControl = document.getElementById('audioControl');
-    audioControl.addEventListener('click', () => {
-        if (!isPlaying) {
-            if (currentIndex === 0 || currentIndex >= document.querySelectorAll('h1, h2, p, li').length) {
-                startReading();
-            } else {
-                resumeReading();
-            }
-        } else {
-            stopReading();
-            pauseTime = Date.now() - startTime;
+    
+audioControl.addEventListener('click', () => {
+    if (!isPlaying) {
+        if (currentIndex === 0 || currentIndex >= document.querySelectorAll('h1, h2, p, li').length) {
+            resetAudioState();
         }
-    });
+        audioControl.innerHTML = '<i class="fas fa-pause"></i>';
+        resumeReading();
+    } else {
+        audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
+        stopReading();
+    }
 });
       
 </script>
