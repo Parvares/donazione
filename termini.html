@@ -684,7 +684,7 @@ let startTime = 0;
 let pauseTime = 0;
 let totalDuration = 0;
 let isDragging = false;
-let animationFrameId = null;
+let progressInterval = null;
 
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -762,25 +762,39 @@ function readNextElement() {
 
 function stopReading() {
     isPlaying = false;
-    if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-        animationFrameId = null;
+    if (progressInterval) {
+        clearInterval(progressInterval);
+        progressInterval = null;
     }
     window.speechSynthesis.cancel();
     const audioControl = document.getElementById('audioControl');
     audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
 }
 
+function startProgress() {
+    if (progressInterval) {
+        clearInterval(progressInterval);
+    }
+    
+    const totalElements = document.querySelectorAll('h1, h2, p, li').length;
+    startTime = Date.now();
+    
+    progressInterval = setInterval(() => {
+        const elapsedTime = (Date.now() - startTime) / 1000;
+        document.getElementById('currentTime').textContent = formatTime(elapsedTime);
+        
+        const progress = Math.min(currentIndex / totalElements, 1);
+        updateWaveform(progress);
+    }, 50); // Update every 50ms for smooth animation
+}
+
 function startReading() {
     isPlaying = true;
-    startTime = Date.now();
     currentIndex = 0;
     const audioControl = document.getElementById('audioControl');
     audioControl.innerHTML = '<i class="fas fa-pause"></i>';
     readNextElement();
-    if (!animationFrameId) {
-        updateProgress();
-    }
+    startProgress();
 }
 
 function resumeReading() {
@@ -789,27 +803,7 @@ function resumeReading() {
     const audioControl = document.getElementById('audioControl');
     audioControl.innerHTML = '<i class="fas fa-pause"></i>';
     readNextElement();
-    if (!animationFrameId) {
-        updateProgress();
-    }
-}
-
-function updateProgress() {
-    if (!isPlaying) return;
-
-    const elapsedTime = (Date.now() - startTime) / 1000;
-    document.getElementById('currentTime').textContent = formatTime(elapsedTime);
-
-    const textElements = document.querySelectorAll('h1, h2, p, li');
-    const totalElements = textElements.length;
-    const currentProgress = currentIndex / totalElements;
-    const elementProgress = speech && speech.text ? 
-        (elapsedTime % (speech.text.length * 0.05)) / (speech.text.length * 0.05) : 0;
-    
-    const progress = Math.min(currentProgress + (elementProgress / totalElements), 1);
-    updateWaveform(progress);
-
-    animationFrameId = requestAnimationFrame(updateProgress);
+    startProgress();
 }
 
 function handleWaveformClick(e) {
@@ -830,6 +824,7 @@ function handleWaveformClick(e) {
     if (isPlaying) {
         window.speechSynthesis.cancel();
         readNextElement();
+        startProgress();
     }
 }
 
