@@ -684,6 +684,7 @@ let startTime = 0;
 let pauseTime = 0;
 let totalDuration = 0;
 let isDragging = false;
+let animationFrameId = null;
 
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -734,23 +735,21 @@ function updateWaveform(progress) {
 }
 
 function setupSpeech() {
-    if (!speech) {
-        speech = new SpeechSynthesisUtterance();
-        speech.lang = 'it-IT';
-        speech.rate = 0.9;
-        speech.pitch = 1;
-        
-        speech.onend = () => {
-            if (currentIndex < document.querySelectorAll('h1, h2, p, li').length - 1) {
-                currentIndex++;
-                readNextElement();
-            } else {
-                stopReading();
-                updateWaveform(1);
-                document.getElementById('currentTime').textContent = formatTime(totalDuration);
-            }
-        };
-    }
+    speech = new SpeechSynthesisUtterance();
+    speech.lang = 'it-IT';
+    speech.rate = 0.9;
+    speech.pitch = 1;
+    
+    speech.onend = () => {
+        if (currentIndex < document.querySelectorAll('h1, h2, p, li').length - 1) {
+            currentIndex++;
+            readNextElement();
+        } else {
+            stopReading();
+            updateWaveform(1);
+            document.getElementById('currentTime').textContent = formatTime(totalDuration);
+        }
+    };
 }
 
 function readNextElement() {
@@ -758,15 +757,15 @@ function readNextElement() {
     if (currentIndex < textElements.length) {
         speech.text = textElements[currentIndex].textContent;
         window.speechSynthesis.speak(speech);
-        
-        // Calculate progress based on current element
-        const progress = currentIndex / textElements.length;
-        updateWaveform(progress);
     }
 }
 
 function stopReading() {
     isPlaying = false;
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+    }
     window.speechSynthesis.cancel();
     const audioControl = document.getElementById('audioControl');
     audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
@@ -779,7 +778,9 @@ function startReading() {
     const audioControl = document.getElementById('audioControl');
     audioControl.innerHTML = '<i class="fas fa-pause"></i>';
     readNextElement();
-    updateProgress();
+    if (!animationFrameId) {
+        updateProgress();
+    }
 }
 
 function resumeReading() {
@@ -788,7 +789,9 @@ function resumeReading() {
     const audioControl = document.getElementById('audioControl');
     audioControl.innerHTML = '<i class="fas fa-pause"></i>';
     readNextElement();
-    updateProgress();
+    if (!animationFrameId) {
+        updateProgress();
+    }
 }
 
 function updateProgress() {
@@ -798,12 +801,15 @@ function updateProgress() {
     document.getElementById('currentTime').textContent = formatTime(elapsedTime);
 
     const textElements = document.querySelectorAll('h1, h2, p, li');
-    const progress = Math.min(currentIndex / textElements.length, 1);
+    const totalElements = textElements.length;
+    const currentProgress = currentIndex / totalElements;
+    const elementProgress = speech && speech.text ? 
+        (elapsedTime % (speech.text.length * 0.05)) / (speech.text.length * 0.05) : 0;
+    
+    const progress = Math.min(currentProgress + (elementProgress / totalElements), 1);
     updateWaveform(progress);
 
-    if (progress < 1) {
-        requestAnimationFrame(updateProgress);
-    }
+    animationFrameId = requestAnimationFrame(updateProgress);
 }
 
 function handleWaveformClick(e) {
@@ -824,7 +830,6 @@ function handleWaveformClick(e) {
     if (isPlaying) {
         window.speechSynthesis.cancel();
         readNextElement();
-        updateProgress();
     }
 }
 
@@ -832,7 +837,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupSpeech();
     createWaveform();
     calculateTotalDuration();
-    updateWaveform(0); // Initialize waveform at 0
+    updateWaveform(0);
 
     const waveformContainer = document.querySelector('.waveform-container');
     waveformContainer.addEventListener('click', handleWaveformClick);
