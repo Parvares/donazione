@@ -696,8 +696,8 @@ function calculateTotalDuration() {
     document.querySelectorAll('h1, h2, p, li').forEach(element => {
         totalText += element.textContent + ' ';
     });
-    // Stima approssimativa: 100 caratteri = 4.5 secondi
-    totalDuration = (totalText.length / 100) * 4.5;
+    // Aumentiamo la stima: 100 caratteri = 6 secondi per una lettura più realistica
+    totalDuration = (totalText.length / 100) * 6;
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
 
@@ -739,22 +739,21 @@ function setupSpeech() {
     
     speech.onend = () => {
         const totalElements = document.querySelectorAll('h1, h2, p, li').length;
-        currentIndex++;
         
-        // Controlla se ci sono ancora elementi da leggere
-        if (currentIndex < totalElements) {
+        if (currentIndex < totalElements - 1) {
+            currentIndex++;
             readNextElement();
         } else {
-            // Aspetta che l'ultimo elemento finisca di essere letto
+            // Aspetta che l'ultimo elemento finisca
             setTimeout(() => {
                 isPlaying = false;
                 const audioControl = document.getElementById('audioControl');
                 audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
                 window.speechSynthesis.cancel();
                 currentIndex = 0;
-                updateWaveform(1); // Assicura che la waveform arrivi al 100%
+                updateWaveform(1);
                 document.getElementById('currentTime').textContent = formatTime(totalDuration);
-            }, 1000); // Delay per assicurare che l'ultimo elemento sia completamente letto
+            }, speech.text.length * 50); // Delay proporzionale alla lunghezza del testo
         }
     };
 }
@@ -765,14 +764,16 @@ function readNextElement() {
     
     if (currentIndex < totalElements) {
         speech.text = textElements[currentIndex].textContent;
-        window.speechSynthesis.speak(speech);
         
-        // Aggiorna il progresso per l'ultimo elemento
+        // Aggiusta il tempo totale basato sulla lunghezza del testo rimanente
         if (currentIndex === totalElements - 1) {
-            const progress = 1;
-            updateWaveform(progress);
-            document.getElementById('currentTime').textContent = formatTime(totalDuration);
+            const remainingText = speech.text;
+            const remainingDuration = (remainingText.length / 100) * 6;
+            totalDuration = Math.max(totalDuration, (Date.now() - startTime) / 1000 + remainingDuration);
+            document.getElementById('totalTime').textContent = formatTime(totalDuration);
         }
+        
+        window.speechSynthesis.speak(speech);
     }
 }
 
@@ -814,15 +815,18 @@ function updateProgress() {
     if (!isPlaying) return;
 
     const elapsedTime = (Date.now() - startTime) / 1000;
-    const progress = Math.min(elapsedTime / totalDuration, 1);
+    let progress = Math.min(elapsedTime / totalDuration, 1);
+    
+    // Se stiamo leggendo l'ultimo elemento, rallentiamo il progresso
+    const totalElements = document.querySelectorAll('h1, h2, p, li').length;
+    if (currentIndex === totalElements - 1) {
+        progress = Math.min((currentIndex + (elapsedTime / totalDuration)) / totalElements, 1);
+    }
     
     updateWaveform(progress);
     document.getElementById('currentTime').textContent = formatTime(Math.min(elapsedTime, totalDuration));
     
-    if (elapsedTime < totalDuration) {
-        requestAnimationFrame(updateProgress);
-    } else if (currentIndex < document.querySelectorAll('h1, h2, p, li').length) {
-        // Continua ad aggiornare finché non viene letto l'ultimo elemento
+    if (window.speechSynthesis.speaking || progress < 1) {
         requestAnimationFrame(updateProgress);
     }
 }
