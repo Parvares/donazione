@@ -391,7 +391,6 @@ footer i {
 
             
 /* Audio control button styles */
-/* Audio control button styles */
 .audio-control-container {
     display: flex;
     align-items: center;
@@ -406,7 +405,15 @@ footer i {
     border: none;
     cursor: pointer;
     font-size: 24px;
-    color: var(--text); /* Cambiato al colore del testo normale */
+    color: #970a2c;
+}
+
+.audio-control:hover .fa-headphones {
+    display: none;
+}
+
+.audio-control:hover .fa-play {
+    display: inline;
 }
 
 .fa-play {
@@ -414,11 +421,12 @@ footer i {
 }
 
 .audio-label {
-    color: var(--text); /* Cambiato al colore del testo normale */
+    color: #970a2c;
     cursor: pointer;
 }
 
 .waveform-container {
+    display: none;
     position: relative;
     height: 60px;
     background: #f5f5f5;
@@ -443,7 +451,7 @@ footer i {
 }
 
 .waveform-bar.played {
-    background: var(--primary);
+    background: #970a2c;
 }
 
 .time-display {
@@ -685,23 +693,18 @@ function formatTime(seconds) {
 
 function calculateTotalDuration() {
     let totalText = '';
-    // Aggiungi tutti gli elementi di testo, inclusa l'informativa sulla privacy
-    document.querySelectorAll('h1, h2, p, li, .privacy-info').forEach(el => {
+    document.querySelectorAll('h1, h2, p, li').forEach(el => {
         totalText += el.textContent + ' ';
     });
-    
-    // Stima la durata basata sul numero di parole
-    const words = totalText.split(' ').length;
-    const wordsPerMinute = 150; // Velocità media di lettura
-    totalDuration = (words / wordsPerMinute) * 60;
-    
+    totalDuration = (totalText.split(' ').length * 0.4);
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
 
 function createWaveform() {
     const container = document.querySelector('.waveform-bars');
-    const numberOfBars = 100;
-    
+    container.innerHTML = '';
+    const numberOfBars = 200;
+
     for (let i = 0; i < numberOfBars; i++) {
         const bar = document.createElement('div');
         bar.className = 'waveform-bar';
@@ -743,9 +746,8 @@ function setupSpeech() {
     };
 }
 
-// Modifica anche la funzione readNextElement per includere tutti gli elementi
 function readNextElement() {
-    const textElements = document.querySelectorAll('h1, h2, p, li, .privacy-info');
+    const textElements = document.querySelectorAll('h1, h2, p, li');
     if (textElements[currentIndex]) {
         speech.text = textElements[currentIndex].textContent;
         window.speechSynthesis.speak(speech);
@@ -812,10 +814,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const waveformContainer = document.querySelector('.waveform-container');
     waveformContainer.addEventListener('click', handleWaveformClick);
 
+    const audioControlContainer = document.querySelector('.audio-control-container');
     const audioControl = document.getElementById('audioControl');
     
     audioControl.addEventListener('click', () => {
+        const waveformContainer = document.querySelector('.waveform-container');
+        
         if (!isPlaying) {
+            waveformContainer.style.display = 'block';
             audioControl.innerHTML = '<i class="fas fa-pause"></i>';
             resumeReading();
         } else {
