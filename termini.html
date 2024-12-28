@@ -448,7 +448,7 @@ footer i {
     flex: 1;
     background: #ddd;
     min-width: 2px;
-    transition: height 0.1s ease;
+    transition: background 0.05s ease-in-out;
 }
 
 .waveform-bar.played {
@@ -470,7 +470,7 @@ footer i {
     width: 2px;
     background: rgba(151, 10, 44, 0.5);
     pointer-events: none;
-}   
+}
    </style>
 </head>
 <body>
@@ -715,12 +715,13 @@ function createWaveform() {
     }
 }
 
-function updateWaveform(targetProgress) {
+function updateWaveform() {
     const bars = document.querySelectorAll('.waveform-bar');
-    const barsToPlay = Math.floor(targetProgress * bars.length);
+    const barsToPlay = Math.floor(animationProgress * bars.length);
 
+    // Colora le barre una per volta
     bars.forEach((bar, index) => {
-        if (index <= barsToPlay) {
+        if (index < barsToPlay) {
             bar.classList.add('played');
         } else {
             bar.classList.remove('played');
@@ -728,33 +729,7 @@ function updateWaveform(targetProgress) {
     });
 
     const progressLine = document.querySelector('.progress-line');
-    progressLine.style.left = `${targetProgress * 100}%`;
-}
-
-function updateWaveformSmoothly() {
-    let lastProgress = 0;
-    const update = () => {
-        const bars = document.querySelectorAll('.waveform-bar');
-        const barsToPlay = Math.floor(animationProgress * bars.length);
-
-        bars.forEach((bar, index) => {
-            if (index <= barsToPlay) {
-                bar.classList.add('played');
-            } else {
-                bar.classList.remove('played');
-            }
-        });
-
-        const progressLine = document.querySelector('.progress-line');
-        progressLine.style.left = `${animationProgress * 100}%`;
-
-        // Continuare l'animazione
-        if (animationProgress < 1) {
-            requestAnimationFrame(update);
-        }
-    };
-
-    update();
+    progressLine.style.left = `${animationProgress * 100}%`;
 }
 
 function setupSpeech() {
@@ -789,7 +764,7 @@ function stopReading() {
     window.speechSynthesis.cancel();
 
     animationProgress = 0;
-    updateWaveform(0);
+    updateWaveform();
     document.getElementById('currentTime').textContent = '0:00';
 }
 
@@ -812,9 +787,9 @@ function updateProgress() {
     const currentTimeDisplay = Math.min(elapsedTime, totalDuration);
     document.getElementById('currentTime').textContent = formatTime(currentTimeDisplay);
 
-    // Esegui un aggiornamento continuo della waveform
+    // Aggiorna la progressione
     animationProgress = progress;
-    updateWaveformSmoothly();
+    updateWaveform();
 
     if (progress < 1) {
         requestAnimationFrame(updateProgress);
@@ -834,7 +809,7 @@ function handleWaveformClick(e) {
     pauseTime = Date.now() - startTime;
 
     animationProgress = progress;
-    updateWaveform(progress);
+    updateWaveform();
 
     if (isPlaying) {
         window.speechSynthesis.cancel();
@@ -869,7 +844,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-      
 </script>
 
 
