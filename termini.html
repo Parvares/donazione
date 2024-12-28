@@ -705,11 +705,12 @@ function calculateTotalDuration() {
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
 
+// Aggiungi questa funzione createWaveform completa
 function createWaveform() {
     const container = document.querySelector('.waveform-bars');
-    container.innerHTML = '';
-    const numberOfBars = 200;
-
+    container.innerHTML = ''; // Pulisce il contenitore esistente
+    
+    const numberOfBars = 100; // Numero di barre per mantenere l'aspetto fitto
     for (let i = 0; i < numberOfBars; i++) {
         const bar = document.createElement('div');
         bar.className = 'waveform-bar';
@@ -836,6 +837,12 @@ function handleWaveformClick(e) {
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
+    // Aggiungi gli stili al documento
+    const styleSheet = document.createElement('style');
+    styleSheet.textContent = styles;
+    document.head.appendChild(styleSheet);
+    
+    // Il resto del codice DOMContentLoaded rimane lo stesso...
     setupSpeech();
     createWaveform();
     calculateTotalDuration();
