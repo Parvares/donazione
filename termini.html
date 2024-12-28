@@ -693,10 +693,11 @@ function formatTime(seconds) {
 
 function calculateTotalDuration() {
     let totalText = '';
-    document.querySelectorAll('h1, h2, p, li').forEach(el => {
-        totalText += el.textContent + ' ';
+    document.querySelectorAll('h1, h2, p, li').forEach(element => {
+        totalText += element.textContent + ' ';
     });
-    totalDuration = (totalText.split(' ').length * 0.4);
+    // Stima approssimativa: 100 caratteri = 4.5 secondi
+    totalDuration = (totalText.length / 100) * 4.5;
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
 
@@ -760,6 +761,15 @@ function stopReading() {
     const audioControl = document.getElementById('audioControl');
     audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
     window.speechSynthesis.cancel();
+    
+    // Aggiunta: resetta lo stato se siamo alla fine
+    if (currentIndex >= document.querySelectorAll('h1, h2, p, li').length) {
+        currentIndex = 0;
+        startTime = Date.now();
+        pauseTime = 0;
+        updateWaveform(0);
+        document.getElementById('currentTime').textContent = '0:00';
+    }
 }
 
 function resumeReading() {
@@ -767,6 +777,14 @@ function resumeReading() {
     isPlaying = true;
     const audioControl = document.getElementById('audioControl');
     audioControl.innerHTML = '<i class="fas fa-pause"></i>';
+    
+    // Aggiungiamo un controllo per ricominciare se siamo alla fine
+    if (currentIndex >= document.querySelectorAll('h1, h2, p, li').length) {
+        currentIndex = 0;
+        startTime = Date.now();
+        pauseTime = 0;
+    }
+    
     updateProgress();
     readNextElement();
 }
@@ -780,8 +798,10 @@ function updateProgress() {
     updateWaveform(progress);
     document.getElementById('currentTime').textContent = formatTime(elapsedTime);
     
-    if (progress < 1) {
+    if (elapsedTime <= totalDuration) {
         requestAnimationFrame(updateProgress);
+    } else {
+        stopReading();
     }
 }
 
