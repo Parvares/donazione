@@ -685,12 +685,14 @@ function formatTime(seconds) {
 
 function calculateTotalDuration() {
     let totalText = '';
-    document.querySelectorAll('h1, h2, p, li').forEach(el => {
+    // Aggiungi tutti gli elementi di testo, inclusa l'informativa sulla privacy
+    document.querySelectorAll('h1, h2, p, li, .privacy-info').forEach(el => {
         totalText += el.textContent + ' ';
     });
     
+    // Stima la durata basata sul numero di parole
     const words = totalText.split(' ').length;
-    const wordsPerMinute = 150;
+    const wordsPerMinute = 150; // Velocità media di lettura
     totalDuration = (words / wordsPerMinute) * 60;
     
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
@@ -741,8 +743,9 @@ function setupSpeech() {
     };
 }
 
+// Modifica anche la funzione readNextElement per includere tutti gli elementi
 function readNextElement() {
-    const textElements = document.querySelectorAll('h1, h2, p, li');
+    const textElements = document.querySelectorAll('h1, h2, p, li, .privacy-info');
     if (textElements[currentIndex]) {
         speech.text = textElements[currentIndex].textContent;
         window.speechSynthesis.speak(speech);
