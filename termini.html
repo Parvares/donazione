@@ -391,6 +391,7 @@ footer i {
 
             
 /* Audio control button styles */
+/* Audio control button styles */
 .audio-control-container {
     display: flex;
     align-items: center;
@@ -405,15 +406,7 @@ footer i {
     border: none;
     cursor: pointer;
     font-size: 24px;
-    color: #970a2c;
-}
-
-.audio-control:hover .fa-headphones {
-    display: none;
-}
-
-.audio-control:hover .fa-play {
-    display: inline;
+    color: var(--text); /* Cambiato al colore del testo normale */
 }
 
 .fa-play {
@@ -421,12 +414,11 @@ footer i {
 }
 
 .audio-label {
-    color: #970a2c;
+    color: var(--text); /* Cambiato al colore del testo normale */
     cursor: pointer;
 }
 
 .waveform-container {
-    display: none;
     position: relative;
     height: 60px;
     background: #f5f5f5;
@@ -451,7 +443,7 @@ footer i {
 }
 
 .waveform-bar.played {
-    background: #970a2c;
+    background: var(--primary);
 }
 
 .time-display {
@@ -696,15 +688,18 @@ function calculateTotalDuration() {
     document.querySelectorAll('h1, h2, p, li').forEach(el => {
         totalText += el.textContent + ' ';
     });
-    totalDuration = (totalText.split(' ').length * 0.4);
+    
+    const words = totalText.split(' ').length;
+    const wordsPerMinute = 150;
+    totalDuration = (words / wordsPerMinute) * 60;
+    
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
 
 function createWaveform() {
     const container = document.querySelector('.waveform-bars');
-    container.innerHTML = '';
-    const numberOfBars = 200;
-
+    const numberOfBars = 100;
+    
     for (let i = 0; i < numberOfBars; i++) {
         const bar = document.createElement('div');
         bar.className = 'waveform-bar';
@@ -814,14 +809,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const waveformContainer = document.querySelector('.waveform-container');
     waveformContainer.addEventListener('click', handleWaveformClick);
 
-    const audioControlContainer = document.querySelector('.audio-control-container');
     const audioControl = document.getElementById('audioControl');
     
     audioControl.addEventListener('click', () => {
-        const waveformContainer = document.querySelector('.waveform-container');
-        
         if (!isPlaying) {
-            waveformContainer.style.display = 'block';
             audioControl.innerHTML = '<i class="fas fa-pause"></i>';
             resumeReading();
         } else {
