@@ -696,10 +696,9 @@ function calculateTotalDuration() {
     document.querySelectorAll('h1, h2, p, li').forEach(el => {
         totalText += el.textContent + ' ';
     });
-    // Stima della durata basata sul numero di parole
-    // Assumendo una media di 2.5 secondi per 10 parole
+    // Aumentiamo la stima della durata per parola
     const words = totalText.split(' ').length;
-    totalDuration = (words / 10) * 2.5;
+    totalDuration = (words / 10) * 3.5; // Aumentato a 3.5 secondi per ogni 10 parole
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
 
