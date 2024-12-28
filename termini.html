@@ -696,12 +696,11 @@ function calculateTotalDuration() {
     document.querySelectorAll('h1, h2, p, li').forEach(el => {
         totalText += el.textContent + ' ';
     });
-    // Aumentiamo la stima della durata per parola
+    // Aumentiamo significativamente la stima per coprire tutto il testo
     const words = totalText.split(' ').length;
-    totalDuration = (words / 10) * 3.5; // Aumentato a 3.5 secondi per ogni 10 parole
+    totalDuration = (words / 10) * 4.5; // Aumentato a 4.5 secondi per ogni 10 parole
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
-
 function createWaveform() {
     const container = document.querySelector('.waveform-bars');
     container.innerHTML = '';
@@ -733,34 +732,65 @@ function updateWaveform(progress) {
 }
 
 function setupSpeech() {
-    speech = new SpeechSynthesisUtterance();
-    speech.lang = 'it-IT';
-    speech.rate = 0.9;
-    speech.pitch = 1;
-    
-    speech.onend = () => {
-        currentIndex++;
-        const textElements = document.querySelectorAll('h1, h2, p, li');
-        if (currentIndex < textElements.length) {
-            readNextElement();
-        } else {
-            isPlaying = false;
-            const audioControl = document.getElementById('audioControl');
-            audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
-            window.speechSynthesis.cancel();
-            // Assicuriamoci che la barra arrivi alla fine
-            updateWaveform(1);
-            document.getElementById('currentTime').textContent = formatTime(totalDuration);
-        }
-    };
+    if ('speechSynthesis' in window) {
+        speech = new SpeechSynthesisUtterance();
+        speech.lang = 'it-IT';
+        speech.rate = 0.9;
+        speech.pitch = 1;
+        speech.volume = 1;
+        
+        speech.onend = () => {
+            currentIndex++;
+            const textElements = document.querySelectorAll('h1, h2, p, li');
+            if (currentIndex < textElements.length) {
+                setTimeout(() => readNextElement(), 100); // Aggiungiamo un piccolo delay
+            } else {
+                isPlaying = false;
+                const audioControl = document.getElementById('audioControl');
+                audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
+                window.speechSynthesis.cancel();
+                updateWaveform(1);
+                document.getElementById('currentTime').textContent = formatTime(totalDuration);
+            }
+        };
+
+        // Aggiungiamo gestione errori
+        speech.onerror = (event) => {
+            console.error('Errore nella sintesi vocale:', event);
+            stopReading();
+        };
+    }
 }
 
+
+      function readNextElement() {
+    const textElements = document.querySelectorAll('h1, h2, p, li');
+    if (textElements[currentIndex]) {
+        window.speechSynthesis.cancel();
+        
+        setTimeout(() => {
+            speech.text = textElements[currentIndex].textContent;
+            try {
+                window.speechSynthesis.speak(speech);
+            } catch (error) {
+                console.error('Errore nella riproduzione:', error);
+                stopReading();
+            }
+        }, 50);
+    }
+}
+      
 function stopReading() {
     isPlaying = false;
     pauseTime = Date.now() - startTime;
     const audioControl = document.getElementById('audioControl');
     audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
     window.speechSynthesis.cancel();
+    
+    // Aggiungiamo un reset del sintetizzatore vocale
+    setTimeout(() => {
+        window.speechSynthesis.resume();
+    }, 100);
 }
 
 function resumeReading() {
