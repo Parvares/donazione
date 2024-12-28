@@ -684,6 +684,7 @@ let startTime = 0;
 let pauseTime = 0;
 let totalDuration = 0;
 let isDragging = false;
+let totalText = '';
 
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -692,19 +693,23 @@ function formatTime(seconds) {
 }
 
 function calculateTotalDuration() {
-    let totalText = '';
+    totalText = '';
     document.querySelectorAll('h1, h2, p, li').forEach(el => {
         totalText += el.textContent + ' ';
     });
-    totalDuration = (totalText.split(' ').length * 0.4);
+    
+    // Estimate duration based on average reading speed (150 words per minute)
+    const wordCount = totalText.split(/\s+/).length;
+    totalDuration = (wordCount / 150) * 60;
+    
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
 
 function createWaveform() {
     const container = document.querySelector('.waveform-bars');
     container.innerHTML = '';
-    const numberOfBars = 200;
-
+    const numberOfBars = 100;
+    
     for (let i = 0; i < numberOfBars; i++) {
         const bar = document.createElement('div');
         bar.className = 'waveform-bar';
@@ -737,11 +742,14 @@ function setupSpeech() {
     speech.pitch = 1;
     
     speech.onend = () => {
-        currentIndex++;
-        if (currentIndex < document.querySelectorAll('h1, h2, p, li').length) {
+        if (currentIndex < document.querySelectorAll('h1, h2, p, li').length - 1) {
+            currentIndex++;
             readNextElement();
         } else {
             stopReading();
+            // Reset progress to 100% at the end
+            updateWaveform(1);
+            document.getElementById('currentTime').textContent = formatTime(totalDuration);
         }
     };
 }
@@ -775,7 +783,10 @@ function updateProgress() {
     if (!isPlaying) return;
 
     const elapsedTime = (Date.now() - startTime) / 1000;
-    const progress = Math.min(elapsedTime / totalDuration, 1);
+    
+    // Calculate progress based on current element index and total elements
+    const textElements = document.querySelectorAll('h1, h2, p, li');
+    const progress = Math.min((currentIndex + (elapsedTime % 1)) / textElements.length, 1);
     
     updateWaveform(progress);
     document.getElementById('currentTime').textContent = formatTime(elapsedTime);
@@ -792,11 +803,13 @@ function handleWaveformClick(e) {
     const x = e.clientX - rect.left;
     const progress = x / rect.width;
     
+    const textElements = document.querySelectorAll('h1, h2, p, li');
+    currentIndex = Math.floor(progress * textElements.length);
+    
     startTime = Date.now() - (progress * totalDuration * 1000);
     pauseTime = Date.now() - startTime;
     
     updateWaveform(progress);
-    currentIndex = Math.floor(progress * document.querySelectorAll('h1, h2, p, li').length);
     
     if (isPlaying) {
         window.speechSynthesis.cancel();
@@ -814,14 +827,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const waveformContainer = document.querySelector('.waveform-container');
     waveformContainer.addEventListener('click', handleWaveformClick);
 
-    const audioControlContainer = document.querySelector('.audio-control-container');
     const audioControl = document.getElementById('audioControl');
     
     audioControl.addEventListener('click', () => {
-        const waveformContainer = document.querySelector('.waveform-container');
-        
         if (!isPlaying) {
-            waveformContainer.style.display = 'block';
             audioControl.innerHTML = '<i class="fas fa-pause"></i>';
             resumeReading();
         } else {
