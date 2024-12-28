@@ -696,9 +696,10 @@ function calculateTotalDuration() {
     document.querySelectorAll('h1, h2, p, li').forEach(el => {
         totalText += el.textContent + ' ';
     });
-    // Stima la durata in base al numero di parole (in media 2.5 parole al secondo)
+    // Stima della durata basata sul numero di parole
+    // Assumendo una media di 2.5 secondi per 10 parole
     const words = totalText.split(' ').length;
-    totalDuration = words / 2.5;
+    totalDuration = (words / 10) * 2.5;
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
 
@@ -740,10 +741,15 @@ function setupSpeech() {
     
     speech.onend = () => {
         currentIndex++;
-        if (currentIndex < document.querySelectorAll('h1, h2, p, li').length) {
+        const textElements = document.querySelectorAll('h1, h2, p, li');
+        if (currentIndex < textElements.length) {
             readNextElement();
         } else {
-            stopReading();
+            isPlaying = false;
+            const audioControl = document.getElementById('audioControl');
+            audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
+            window.speechSynthesis.cancel();
+            updateWaveform(1); // Assicura che la barra di progresso arrivi al 100%
         }
     };
 }
