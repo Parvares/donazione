@@ -406,6 +406,8 @@ footer i {
     cursor: pointer;
     font-size: 24px;
     color: #970a2c;
+   padding: 5px;
+    margin: 0;
 }
 
 .audio-control:hover .fa-headphones {
@@ -426,7 +428,7 @@ footer i {
 }
 
 .waveform-container {
-    display: none;
+    display: none;  /* Inizialmente nascosto */
     position: relative;
     height: 60px;
     background: #f5f5f5;
@@ -533,23 +535,25 @@ footer i {
            
 <!-- Add this right after the library-name div in your HTML -->
 <div class="text-controls">
-<div class="audio-control-container">
-    <button class="audio-control" id="audioControl">
-        <i class="fas fa-headphones"></i>
-        <i class="fas fa-play"></i>
-    </button>
-    <span class="audio-label">ascolta l'audio</span>
+    <div class="audio-control-container">
+        <button class="audio-control" id="audioControl">
+            <i class="fas fa-headphones"></i>
+            <i class="fas fa-play"></i>
+        </button>
+        <span class="audio-label">ascolta l'audio</span>
+    </div>
+    <div class="waveform-container">
+        <div class="waveform-bars"></div>
+        <div class="progress-line"></div>
+        <div class="time-display">
+            <span id="currentTime">0:00</span>
+            <span id="totalTime">0:00</span>
+        </div>
+    </div>
 </div>
   
    
-<div class="waveform-container">
-    <div class="waveform-bars"></div>
-    <div class="progress-line"></div>
-    <div class="time-display">
-        <span id="currentTime">0:00</span>
-        <span id="totalTime">0:00</span>
-    </div>
-</div>
+
 
             <h1>Donazione di libri</h1>
             <section>
@@ -816,23 +820,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const waveformContainer = document.querySelector('.waveform-container');
     waveformContainer.addEventListener('click', handleWaveformClick);
 
-    const audioControlContainer = document.querySelector('.audio-control-container');
-    const audioControl = document.getElementById('audioControl');
-    
-    audioControl.addEventListener('click', () => {
+    document.getElementById('audioControl').addEventListener('click', function(e) {
+        e.preventDefault(); // Previeni comportamenti di default
         const waveformContainer = document.querySelector('.waveform-container');
         
         if (!isPlaying) {
+            // Mostra il waveform
             waveformContainer.style.display = 'block';
-            audioControl.innerHTML = '<i class="fas fa-pause"></i>';
+            // Cambia l'icona in pausa
+            this.innerHTML = '<i class="fas fa-pause"></i>';
+            // Inizia la riproduzione
             resumeReading();
         } else {
-            audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
+            // Mantieni il waveform visibile
+            this.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
+            // Ferma la riproduzione
             stopReading();
         }
     });
 });
-      
 </script>
 
 
