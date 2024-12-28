@@ -696,12 +696,9 @@ function calculateTotalDuration() {
     document.querySelectorAll('h1, h2, p, li').forEach(el => {
         totalText += el.textContent + ' ';
     });
-    
-    // Stima della durata basata sul numero di parole
-    const wordsPerMinute = 150; // Velocità media di lettura in italiano
-    const wordCount = totalText.split(/\s+/).length;
-    totalDuration = (wordCount / wordsPerMinute) * 60;
-    
+    // Stima la durata in base al numero di parole (in media 2.5 parole al secondo)
+    const words = totalText.split(' ').length;
+    totalDuration = words / 2.5;
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
 
@@ -771,7 +768,9 @@ function stopReading() {
     const audioControl = document.getElementById('audioControl');
     audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
     window.speechSynthesis.cancel();
-    updateWaveform(0); // Reset della barra di progresso
+    // Reset del progresso
+    updateWaveform(0);
+    document.getElementById('currentTime').textContent = '0:00';
 }
 
 function resumeReading() {
