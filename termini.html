@@ -391,7 +391,6 @@ footer i {
 
             
 /* Audio control button styles */
-/* Audio control button styles */
 .audio-control-container {
     display: flex;
     align-items: center;
@@ -448,7 +447,7 @@ footer i {
     flex: 1;
     background: #ddd;
     min-width: 2px;
-    transition: background 0.05s ease-in-out;
+    transition: height 0.1s ease;
 }
 
 .waveform-bar.played {
@@ -471,6 +470,7 @@ footer i {
     background: rgba(151, 10, 44, 0.5);
     pointer-events: none;
 }
+      
    </style>
 </head>
 <body>
@@ -715,13 +715,15 @@ function createWaveform() {
     }
 }
 
-function updateWaveform() {
+function updateWaveform(targetProgress) {
+    // Interpola l'animazione verso il target
+    animationProgress += (targetProgress - animationProgress) * 0.1;
+    
     const bars = document.querySelectorAll('.waveform-bar');
     const barsToPlay = Math.floor(animationProgress * bars.length);
-
-    // Colora le barre una per volta
+    
     bars.forEach((bar, index) => {
-        if (index < barsToPlay) {
+        if (index <= barsToPlay) {
             bar.classList.add('played');
         } else {
             bar.classList.remove('played');
@@ -737,7 +739,7 @@ function setupSpeech() {
     speech.lang = 'it-IT';
     speech.rate = 0.9;
     speech.pitch = 1;
-
+    
     speech.onend = () => {
         currentIndex++;
         if (currentIndex < document.querySelectorAll('h1, h2, p, li').length) {
@@ -762,9 +764,9 @@ function stopReading() {
     const audioControl = document.getElementById('audioControl');
     audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
     window.speechSynthesis.cancel();
-
+    
     animationProgress = 0;
-    updateWaveform();
+    updateWaveform(0);
     document.getElementById('currentTime').textContent = '0:00';
 }
 
@@ -783,14 +785,13 @@ function updateProgress() {
     const elapsedTime = (Date.now() - startTime) / 1000;
     const textElements = document.querySelectorAll('h1, h2, p, li');
     const progress = Math.min(currentIndex / textElements.length, 1);
-
+    
     const currentTimeDisplay = Math.min(elapsedTime, totalDuration);
     document.getElementById('currentTime').textContent = formatTime(currentTimeDisplay);
-
-    // Aggiorna la progressione
-    animationProgress = progress;
-    updateWaveform();
-
+    
+    // Aggiorna la waveform con una transizione fluida
+    updateWaveform(progress);
+    
     if (progress < 1) {
         requestAnimationFrame(updateProgress);
     }
@@ -798,24 +799,24 @@ function updateProgress() {
 
 function handleWaveformClick(e) {
     if (isDragging) return;
-
+    
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const progress = x / rect.width;
     const textElements = document.querySelectorAll('h1, h2, p, li');
-
+    
     currentIndex = Math.floor(progress * textElements.length);
     startTime = Date.now() - (progress * totalDuration * 1000);
     pauseTime = Date.now() - startTime;
-
+    
     animationProgress = progress;
-    updateWaveform();
-
+    updateWaveform(progress);
+    
     if (isPlaying) {
         window.speechSynthesis.cancel();
         readNextElement();
     }
-
+    
     document.getElementById('currentTime').textContent = formatTime(progress * totalDuration);
 }
 
@@ -829,7 +830,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const audioControl = document.getElementById('audioControl');
     const waveformContainerElement = document.querySelector('.waveform-container');
-
+    
     audioControl.addEventListener('click', () => {
         if (!isPlaying) {
             waveformContainerElement.style.display = 'block';
@@ -844,6 +845,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+      
 </script>
 
 
