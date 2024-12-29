@@ -863,27 +863,56 @@ function handleISBNInput(input) {
     
     const errorElement = input.nextElementSibling;
     
-    // Se il campo è focalizzato, mostra sempre il messaggio in grigio
-    if (input.matches(':focus')) {
-        if (input.value.length > 0) {
-            errorElement.textContent = 'ISBN deve essere di 10 o 13 cifre';
-            errorElement.classList.remove('hidden', 'text-red-500');
-            errorElement.classList.add('text-gray-500');
-        } else {
-            errorElement.classList.add('hidden');
-        }
-    } 
-    // Se il campo non è focalizzato, valida e mostra errore in rosso se necessario
-    else {
-        if (input.value.length > 0 && !/^(?:\d{10}|\d{13})$/.test(input.value)) {
-            errorElement.textContent = 'ISBN deve essere di 10 o 13 cifre';
-            errorElement.classList.remove('hidden', 'text-gray-500');
-            errorElement.classList.add('text-red-500');
-        } else {
-            errorElement.classList.add('hidden');
-        }
+    // Se il campo è focalizzato o contiene testo, mostra il messaggio in grigio
+    if (input.matches(':focus') || input.value.length > 0) {
+        errorElement.textContent = 'ISBN deve essere di 10 o 13 cifre';
+        errorElement.classList.remove('hidden', 'text-red-500');
+        errorElement.classList.add('text-gray-500');
+    } else {
+        errorElement.classList.add('hidden');
+    }
+    
+    // Se il campo non è focalizzato e ha un valore non valido, mostra l'errore in rosso
+    if (!input.matches(':focus') && input.value.length > 0 && !/^(?:\d{10}|\d{13})$/.test(input.value)) {
+        errorElement.classList.remove('text-gray-500');
+        errorElement.classList.add('text-red-500');
     }
 }
+
+// Aggiorniamo gli event listener
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('book-isbn')) {
+        const input = e.target;
+        
+        // Rimuoviamo eventuali listener esistenti per evitare duplicati
+        input.removeEventListener('input', handleISBNInput);
+        input.removeEventListener('keydown', handleISBNInput);
+        input.removeEventListener('keyup', handleISBNInput);
+        input.removeEventListener('blur', handleISBNInput);
+        input.removeEventListener('focus', handleISBNInput);
+        
+        // Aggiungiamo tutti i listener necessari
+        input.addEventListener('keydown', function(e) {
+            handleISBNInput(this);
+        });
+        
+        input.addEventListener('keyup', function(e) {
+            handleISBNInput(this);
+        });
+        
+        input.addEventListener('input', function(e) {
+            handleISBNInput(this);
+        });
+        
+        input.addEventListener('blur', function() {
+            handleISBNInput(this);
+        });
+        
+        input.addEventListener('focus', function() {
+            handleISBNInput(this);
+        });
+    }
+});
         
 
 // Aggiorna la funzione validateBookField
