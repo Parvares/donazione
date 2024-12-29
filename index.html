@@ -900,14 +900,21 @@ function validateBookField(input) {
 // Aggiungi questi event listener dopo la funzione validateBookField:
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('book-isbn')) {
-        // Quando il campo ISBN riceve il focus, nascondi l'errore
+        // Mostra il testo di aiuto e nascondi eventuali errori quando il campo riceve il focus
+        const helpText = e.target.parentElement.querySelector('.isbn-help-text');
+        const errorMessage = e.target.parentElement.querySelector('.error-message');
+        helpText.classList.remove('hidden');
+        errorMessage.classList.add('hidden');
         hideError(e.target);
     }
 });
 
 document.addEventListener('blur', function(e) {
     if (e.target.classList.contains('book-isbn')) {
-        // Valida il campo quando perde il focus
+        // Nascondi il testo di aiuto quando il campo perde il focus
+        const helpText = e.target.parentElement.querySelector('.isbn-help-text');
+        helpText.classList.add('hidden');
+        // Valida il campo
         validateBookField(e.target);
     }
 });
@@ -1044,28 +1051,6 @@ function validateCheckbox(checkbox) {
     <p class="hidden isbn-help-text text-sm text-gray-500 mt-1">ISBN deve essere di 10 o 13 cifre senza trattini</p>
     <p class="hidden error-message text-sm text-red-500 mt-1">ISBN non valido</p>
 </div>
-
-// Aggiungi questi event listener dopo gli altri già esistenti:
-document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('book-isbn')) {
-        // Mostra il testo di aiuto e nascondi eventuali errori quando il campo riceve il focus
-        const helpText = e.target.parentElement.querySelector('.isbn-help-text');
-        const errorMessage = e.target.parentElement.querySelector('.error-message');
-        helpText.classList.remove('hidden');
-        errorMessage.classList.add('hidden');
-        hideError(e.target);
-    }
-});
-
-document.addEventListener('blur', function(e) {
-    if (e.target.classList.contains('book-isbn')) {
-        // Nascondi il testo di aiuto quando il campo perde il focus
-        const helpText = e.target.parentElement.querySelector('.isbn-help-text');
-        helpText.classList.add('hidden');
-        // Valida il campo
-        validateBookField(e.target);
-    }
-});
 
 
 
