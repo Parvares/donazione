@@ -763,12 +763,20 @@ function stopReading() {
 
 function resumeReading() {
     if (!isPlaying) {
-        startTime = Date.now() - pauseTime;
+        if (pauseTime > 0) {
+            // Se c'è un tempo di pausa, riprendere dal punto esatto.
+            startTime = Date.now() - pauseTime;
+        } else {
+            // Se non c'è un tempo di pausa (all'inizio della lettura), impostare startTime.
+            startTime = Date.now();
+        }
+
         isPlaying = true;
         updateProgress();
         readNextElement();
     }
 }
+
 
 function updateProgress() {
     if (!isPlaying) return;
