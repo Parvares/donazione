@@ -677,20 +677,23 @@ let totalDuration = 0;
 let isDragging = false;
 let animationProgress = 0;
 
+// Funzione per formattare il tempo in minuti e secondi
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
 }
 
+// Calcola la durata totale della lettura in base al contenuto della pagina
 function calculateTotalDuration() {
     let totalText = '';
     document.querySelectorAll('h1, h2, p, li').forEach(el => {
         totalText += el.textContent;
     });
-    totalDuration = totalText.split(' ').length * 0.5;  // Calcola la durata in base al testo
+    totalDuration = totalText.split(' ').length * 0.5;  // Calcola la durata stimata in base al numero di parole
 }
 
+// Aggiorna la waveform visuale in base al progresso della lettura
 function updateWaveform(targetProgress) {
     animationProgress += (targetProgress - animationProgress) * 0.1;
 
@@ -709,6 +712,7 @@ function updateWaveform(targetProgress) {
     progressLine.style.left = `${animationProgress * 100}%`;
 }
 
+// Imposta la sintesi vocale
 function setupSpeech() {
     speech = new SpeechSynthesisUtterance();
     speech.lang = 'it-IT';
@@ -725,6 +729,7 @@ function setupSpeech() {
     };
 }
 
+// Legge l'elemento successivo
 function readNextElement() {
     const textElements = document.querySelectorAll('h1, h2, p, li');
     if (currentIndex < textElements.length) {
@@ -733,6 +738,7 @@ function readNextElement() {
     }
 }
 
+// Ferma la lettura
 function stopReading() {
     isPlaying = false;
     pauseTime = Date.now() - startTime;
@@ -745,15 +751,17 @@ function stopReading() {
     document.getElementById('currentTime').textContent = '0:00';
 }
 
+// Riprende la lettura
 function resumeReading() {
     if (!isPlaying) {
-        startTime = Date.now() - pauseTime; // Ripristina il tempo di inizio in base al tempo di pausa
+        startTime = Date.now() - pauseTime;
         isPlaying = true;
         updateProgress();
         readNextElement();
     }
 }
 
+// Aggiorna il progresso della lettura
 function updateProgress() {
     if (!isPlaying) return;
 
@@ -771,6 +779,7 @@ function updateProgress() {
     }
 }
 
+// Gestisce il click sulla waveform per navigare al punto desiderato
 function handleWaveformClick(e) {
     if (isDragging) return;
 
@@ -780,7 +789,7 @@ function handleWaveformClick(e) {
     const textElements = document.querySelectorAll('h1, h2, p, li');
 
     currentIndex = Math.floor(progress * textElements.length);
-    startTime = Date.now() - (progress * totalDuration * 1000); // Imposta il tempo di inizio in base al progresso
+    startTime = Date.now() - (progress * totalDuration * 1000);
     pauseTime = Date.now() - startTime;
 
     animationProgress = progress;
@@ -794,6 +803,7 @@ function handleWaveformClick(e) {
     document.getElementById('currentTime').textContent = formatTime(progress * totalDuration);
 }
 
+// Inizializza la pagina
 document.addEventListener('DOMContentLoaded', () => {
     setupSpeech();
     createWaveform();
@@ -815,6 +825,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// Crea la waveform visiva
 function createWaveform() {
     const waveformContainer = document.querySelector('.waveform-container');
     const numBars = 100; // Numero di barre nella waveform
@@ -826,6 +837,7 @@ function createWaveform() {
         waveformContainer.appendChild(bar);
     }
 }
+
 
 
       
