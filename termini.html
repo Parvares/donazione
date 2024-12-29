@@ -716,24 +716,24 @@ function createWaveform() {
 }
 
 function updateWaveform(targetProgress) {
-    // Interpolazione verso il target
+    // Interpola l'animazione verso il target
     animationProgress += (targetProgress - animationProgress) * 0.1;
 
     const bars = document.querySelectorAll('.waveform-bar');
-    const totalBars = bars.length;
-    const activeBarIndex = Math.floor(animationProgress * totalBars);
+    const barsToPlay = Math.floor(animationProgress * bars.length);
 
     bars.forEach((bar, index) => {
-        if (index === activeBarIndex) {
-            bar.classList.add('played');
+        if (index < barsToPlay) {
+            bar.classList.add('played'); // Aggiunge la classe per colorare la barra
         } else {
-            bar.classList.remove('played');
+            bar.classList.remove('played'); // Rimuove la colorazione per le barre successive
         }
     });
 
     const progressLine = document.querySelector('.progress-line');
-    progressLine.style.left = `${animationProgress * 100}%`;
+    progressLine.style.left = `${animationProgress * 100}%`; // Aggiorna la linea di avanzamento
 }
+
 
 function setupSpeech() {
     speech = new SpeechSynthesisUtterance();
