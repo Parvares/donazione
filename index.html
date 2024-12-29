@@ -862,15 +862,29 @@ function handleISBNInput(input) {
     }
     
     const errorElement = input.nextElementSibling;
+    const isValidISBN = /^(?:\d{10}|\d{13})$/.test(input.value);
     
-    // Se il campo è focalizzato o contiene testo, mostra il messaggio in grigio
+    // Se il campo è focalizzato o contiene testo
     if (input.matches(':focus') || input.value.length > 0) {
-        errorElement.textContent = 'ISBN deve essere di 10 o 13 cifre';
-        errorElement.classList.remove('hidden', 'text-red-500');
-        errorElement.classList.add('text-gray-500');
+        if (isValidISBN) {
+            // Se l'ISBN è valido, nascondi il messaggio
+            errorElement.classList.add('hidden');
+        } else {
+            // Se l'ISBN non è valido, mostra il messaggio in grigio durante la digitazione
+            errorElement.textContent = 'ISBN deve essere di 10 o 13 cifre';
+            errorElement.classList.remove('hidden', 'text-red-500');
+            errorElement.classList.add('text-gray-500');
+            
+            // Se il campo non è focalizzato, mostra l'errore in rosso
+            if (!input.matches(':focus') && input.value.length > 0) {
+                errorElement.classList.remove('text-gray-500');
+                errorElement.classList.add('text-red-500');
+            }
+        }
     } else {
         errorElement.classList.add('hidden');
     }
+}
     
     // Se il campo non è focalizzato e ha un valore non valido, mostra l'errore in rosso
     if (!input.matches(':focus') && input.value.length > 0 && !/^(?:\d{10}|\d{13})$/.test(input.value)) {
