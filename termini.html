@@ -676,30 +676,43 @@ let pauseTime = 0;
 let totalDuration = 0;
 let isDragging = false;
 let animationProgress = 0;
+let lastPlayedIndex = 0; // New variable to track last played position
 
-// Funzione per formattare il tempo in minuti e secondi
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
 }
 
-// Calcola la durata totale della lettura in base al contenuto della pagina
 function calculateTotalDuration() {
     let totalText = '';
     document.querySelectorAll('h1, h2, p, li').forEach(el => {
-        totalText += el.textContent;
+        totalText += el.textContent + ' ';
     });
-    totalDuration = totalText.split(' ').length * 0.5;  // Calcola la durata stimata in base al numero di parole
+    // Estimate duration based on average reading speed (150 words per minute)
+    const wordCount = totalText.split(' ').length;
+    totalDuration = (wordCount / 150) * 60;
+    document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
 
-// Aggiorna la waveform visuale in base al progresso della lettura
+function createWaveform() {
+    const container = document.querySelector('.waveform-bars');
+    const numberOfBars = 50;
+    for (let i = 0; i < numberOfBars; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'waveform-bar';
+        const height = 5 + Math.random() * 35;
+        bar.style.height = `${height}px`;
+        container.appendChild(bar);
+    }
+}
+
 function updateWaveform(targetProgress) {
     animationProgress += (targetProgress - animationProgress) * 0.1;
-
+    
     const bars = document.querySelectorAll('.waveform-bar');
     const barsToPlay = Math.floor(animationProgress * bars.length);
-
+    
     bars.forEach((bar, index) => {
         if (index <= barsToPlay) {
             bar.classList.add('played');
@@ -712,14 +725,14 @@ function updateWaveform(targetProgress) {
     progressLine.style.left = `${animationProgress * 100}%`;
 }
 
-// Imposta la sintesi vocale
 function setupSpeech() {
     speech = new SpeechSynthesisUtterance();
     speech.lang = 'it-IT';
     speech.rate = 0.9;
     speech.pitch = 1;
-
+    
     speech.onend = () => {
+        lastPlayedIndex = currentIndex; // Update last played position
         currentIndex++;
         if (currentIndex < document.querySelectorAll('h1, h2, p, li').length) {
             readNextElement();
@@ -729,7 +742,6 @@ function setupSpeech() {
     };
 }
 
-// Legge l'elemento successivo
 function readNextElement() {
     const textElements = document.querySelectorAll('h1, h2, p, li');
     if (currentIndex < textElements.length) {
@@ -738,72 +750,69 @@ function readNextElement() {
     }
 }
 
-// Ferma la lettura
 function stopReading() {
     isPlaying = false;
     pauseTime = Date.now() - startTime;
+    lastPlayedIndex = currentIndex; // Save the current position
     const audioControl = document.getElementById('audioControl');
     audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
     window.speechSynthesis.cancel();
-
-    animationProgress = 0;
-    updateWaveform(0);
-    document.getElementById('currentTime').textContent = '0:00';
+    
+    // Don't reset animation progress when stopping
+    updateWaveform(currentIndex / document.querySelectorAll('h1, h2, p, li').length);
 }
 
-// Riprende la lettura
 function resumeReading() {
     if (!isPlaying) {
         startTime = Date.now() - pauseTime;
         isPlaying = true;
+        currentIndex = lastPlayedIndex; // Resume from last played position
         updateProgress();
         readNextElement();
     }
 }
 
-// Aggiorna il progresso della lettura
 function updateProgress() {
     if (!isPlaying) return;
 
     const elapsedTime = (Date.now() - startTime) / 1000;
     const textElements = document.querySelectorAll('h1, h2, p, li');
     const progress = Math.min(currentIndex / textElements.length, 1);
-
+    
     const currentTimeDisplay = Math.min(elapsedTime, totalDuration);
     document.getElementById('currentTime').textContent = formatTime(currentTimeDisplay);
-
+    
     updateWaveform(progress);
-
+    
     if (progress < 1) {
         requestAnimationFrame(updateProgress);
     }
 }
 
-// Gestisce il click sulla waveform per navigare al punto desiderato
 function handleWaveformClick(e) {
     if (isDragging) return;
-
+    
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const progress = x / rect.width;
     const textElements = document.querySelectorAll('h1, h2, p, li');
-
+    
     currentIndex = Math.floor(progress * textElements.length);
+    lastPlayedIndex = currentIndex; // Update last played position
     startTime = Date.now() - (progress * totalDuration * 1000);
     pauseTime = Date.now() - startTime;
-
+    
     animationProgress = progress;
     updateWaveform(progress);
-
+    
     if (isPlaying) {
         window.speechSynthesis.cancel();
         readNextElement();
     }
-
+    
     document.getElementById('currentTime').textContent = formatTime(progress * totalDuration);
 }
 
-// Inizializza la pagina
 document.addEventListener('DOMContentLoaded', () => {
     setupSpeech();
     createWaveform();
@@ -813,33 +822,17 @@ document.addEventListener('DOMContentLoaded', () => {
     waveformContainer.addEventListener('click', handleWaveformClick);
 
     const audioControl = document.getElementById('audioControl');
-    const waveformContainerElement = document.querySelector('.waveform-container');
-
+    
     audioControl.addEventListener('click', () => {
+        isPlaying = !isPlaying;
         if (isPlaying) {
-            stopReading();
-        } else {
-            resumeReading();
             audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-pause"></i>';
+            resumeReading();
+        } else {
+            stopReading();
         }
     });
 });
-
-// Crea la waveform visiva
-function createWaveform() {
-    const waveformContainer = document.querySelector('.waveform-container');
-    const numBars = 100; // Numero di barre nella waveform
-    const barWidth = 2; // Larghezza di ogni barra
-
-    for (let i = 0; i < numBars; i++) {
-        const bar = document.createElement('div');
-        bar.classList.add('waveform-bar');
-        waveformContainer.appendChild(bar);
-    }
-}
-
-
-
       
 </script>
 
