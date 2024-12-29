@@ -737,30 +737,30 @@ function createWaveform() {
 }
 
 function updateWaveform(targetProgress) {
-    // Interpola l'animazione verso il target
+    // Interpola l'animazione verso il target progressivo in modo graduale
     animationProgress += (targetProgress - animationProgress) * 0.1;
 
     const bars = document.querySelectorAll('.waveform-bar');
     const barsToPlay = Math.floor(animationProgress * bars.length);
 
-    // Modifica l'animazione per essere progressiva e fluida
     bars.forEach((bar, index) => {
         if (index < barsToPlay) {
-            // Usa una transizione fluida per colorare le barre una alla volta
-            bar.classList.add('played'); 
+            bar.classList.add('played'); // Aggiunge la classe per colorare la barra
         } else {
-            bar.classList.remove('played');
+            bar.classList.remove('played'); // Rimuove la colorazione per le barre successive
         }
     });
 
-    // Aggiorna la progress line
+    // Calcola e aggiorna la linea di progresso
     const progressLine = document.querySelector('.progress-line');
-    progressLine.style.width = `${animationProgress * 100}%`;
+    progressLine.style.left = `${animationProgress * 100}%`; // Aggiorna la linea di avanzamento
 
-    // Mantieni il tempo corrente aggiornato
-    const currentTimeDisplay = document.getElementById('currentTime');
-    currentTimeDisplay.textContent = formatTime(animationProgress * totalDuration);
+    // Se il progresso è inferiore a 1, continua l'animazione in modo fluido
+    if (animationProgress < 1) {
+        requestAnimationFrame(() => updateWaveform(targetProgress)); // Continuazione graduale dell'aggiornamento
+    }
 }
+
 
 
 function setupSpeech() {
