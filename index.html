@@ -900,10 +900,10 @@ function validateBookField(input) {
 // Aggiungi questi event listener dopo la funzione validateBookField:
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('book-isbn')) {
-        // Mostra il testo di aiuto e nascondi eventuali errori quando il campo riceve il focus
+        // Nascondi sia il testo di aiuto che l'errore quando il campo riceve il focus
         const helpText = e.target.parentElement.querySelector('.isbn-help-text');
         const errorMessage = e.target.parentElement.querySelector('.error-message');
-        helpText.classList.remove('hidden');
+        helpText.classList.add('hidden');
         errorMessage.classList.add('hidden');
         hideError(e.target);
     }
@@ -911,13 +911,39 @@ document.addEventListener('click', function(e) {
 
 document.addEventListener('blur', function(e) {
     if (e.target.classList.contains('book-isbn')) {
-        // Nascondi il testo di aiuto quando il campo perde il focus
+        const value = e.target.value.trim();
         const helpText = e.target.parentElement.querySelector('.isbn-help-text');
-        helpText.classList.add('hidden');
-        // Valida il campo
-        validateBookField(e.target);
+        
+        // Mostra il testo di aiuto solo se c'è un valore
+        if (value) {
+            if (!/^(?:\d{10}|\d{13})$/.test(value)) {
+                // Se il valore non è valido, mostra l'errore
+                validateBookField(e.target);
+                helpText.classList.add('hidden');
+            } else {
+                // Se il valore è valido, mostra il testo di aiuto
+                hideError(e.target);
+                helpText.classList.remove('hidden');
+            }
+        } else {
+            // Se il campo è vuoto, nascondi sia l'aiuto che l'errore
+            helpText.classList.add('hidden');
+            hideError(e.target);
+        }
     }
 });
+
+
+// Aggiungi anche un listener per input per gestire i cambiamenti durante la digitazione
+document.addEventListener('input', function(e) {
+    if (e.target.classList.contains('book-isbn') && e.target.matches(':focus')) {
+        // Nascondi sia il testo di aiuto che l'errore durante la digitazione quando il campo è focalizzato
+        const helpText = e.target.parentElement.querySelector('.isbn-help-text');
+        const errorMessage = e.target.parentElement.querySelector('.error-message');
+        helpText.classList.add('hidden');
+        errorMessage.classList.add('hidden');
+    }
+});	
 
 	// Add this style to remove spinner arrows
 const style = document.createElement('style');
