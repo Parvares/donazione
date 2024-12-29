@@ -426,14 +426,14 @@ footer i {
 }
 
 .waveform-container {
-    display: none;
-    position: relative;
-    height: 60px;
-    background: #f5f5f5;
-    border-radius: 4px;
-    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    height: 40px;
+    padding: 0;
     margin: 10px 0;
-    cursor: pointer;
+    background: none;
+    border: none;
 }
 
 .waveform-bars {
@@ -444,14 +444,13 @@ footer i {
 }
 
 .waveform-bar {
-    flex: 1;
-    background: #ddd;
-    min-width: 2px;
-    transition: height 0.1s ease;
+    width: 3px;
+    background-color: #ddd;
+    transition: background-color 0.3s ease;
 }
 
 .waveform-bar.played {
-    background: #970a2c;
+    background-color: #970a2c;
 }
 
 .time-display {
@@ -460,15 +459,14 @@ footer i {
     font-size: 12px;
     margin-top: 5px;
 }
-
+      
 .progress-line {
     position: absolute;
     top: 0;
-    left: 0;
-    height: 100%;
+    bottom: 0;
     width: 2px;
-    background: rgba(151, 10, 44, 0.5);
-    pointer-events: none;
+    background-color: #970a2c;
+    transition: left 0.1s ease;
 }
       
    </style>
