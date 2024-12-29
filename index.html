@@ -1276,69 +1276,44 @@ window.resetBookFields = function(button) {
 
 
 
-// Add this to your existing JavaScript
-    document.addEventListener('DOMContentLoaded', () => {
-    const textarea = document.getElementById('notes');
-    const charCount = document.getElementById('charCount');
-    const maxLength = textarea.getAttribute('maxlength');
-    let manualHeight = null; // Track manual height
+// Get the textarea element
+const textarea = document.getElementById('notes');
+const charCount = document.getElementById('charCount');
 
-    // Function to auto-resize textarea
-    const autoResize = () => {
-        // If user has manually resized, respect that height as minimum
-        if (manualHeight) {
-            textarea.style.height = `${Math.max(manualHeight, textarea.scrollHeight)}px`;
-        } else {
-            textarea.style.height = 'auto';
-            textarea.style.height = `${Math.max(75, textarea.scrollHeight)}px`;
-        }
-    };
-
-    const updateCharCount = () => {
-        const remaining = maxLength - textarea.value.length;
-        
-        if (textarea.value.length > 0) {
-            charCount.textContent = `${remaining} caratteri rimanenti`;
-            
-            if (remaining <= 50) {
-                charCount.classList.remove('text-gray-500');
-                charCount.classList.add('text-amber-600');
-            } else {
-                charCount.classList.remove('text-amber-600');
-                charCount.classList.add('text-gray-500');
-            }
-            charCount.style.display = 'block';
-        } else {
-            charCount.style.display = 'none';
-        }
-    };
-
-    // Initial setup
-    textarea.style.minHeight = '75px';
-    textarea.style.resize = 'vertical';
-
-    // Track manual resize
-    textarea.addEventListener('mouseup', () => {
-        manualHeight = textarea.offsetHeight;
-    });
-
-    // Handle input without losing manual height
-    textarea.addEventListener('input', () => {
-        updateCharCount();
-        if (textarea.scrollHeight > manualHeight) {
-            autoResize();
-        }
-    });
-
-    // Initial state
-    charCount.style.display = 'none';
+// Function to adjust textarea height smoothly
+function autoResizeTextarea() {
+    // Reset height to auto to get correct scrollHeight
+    textarea.style.height = 'auto';
     
-    // Set initial height if there's content
-    if (textarea.value.length > 0) {
-        autoResize();
-        updateCharCount();
+    // Set new height based on scrollHeight
+    const newHeight = Math.max(75, Math.min(textarea.scrollHeight, 300));
+    textarea.style.height = newHeight + 'px';
+    
+    // Update character count
+    const remainingChars = 500 - textarea.value.length;
+    charCount.textContent = `${remainingChars} caratteri rimanenti`;
+    
+    // Update character count color
+    if (remainingChars <= 50) {
+        charCount.classList.remove('text-gray-500');
+        charCount.classList.add('text-amber-600');
+    } else {
+        charCount.classList.remove('text-amber-600');
+        charCount.classList.add('text-gray-500');
     }
-});
+}
+
+// Set initial styles
+textarea.style.resize = 'none';
+textarea.style.minHeight = '75px';
+textarea.style.transition = 'height 0.2s ease';
+
+// Add event listeners
+textarea.addEventListener('input', autoResizeTextarea);
+textarea.addEventListener('focus', autoResizeTextarea);
+
+// Initial call to set proper height
+autoResizeTextarea();
 
 	    
 
