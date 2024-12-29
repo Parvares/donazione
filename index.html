@@ -861,18 +861,27 @@ function handleISBNInput(input) {
         input.value = input.value.slice(0, 13);
     }
     
-    // Mostra messaggio grigio durante la digitazione
     const errorElement = input.nextElementSibling;
-    if (input.value.length > 0 && input.value.length < 10) {
-        errorElement.textContent = 'ISBN deve essere di 10 o 13 cifre';
-        errorElement.classList.remove('hidden', 'text-red-500');
-        errorElement.classList.add('text-gray-500');
-    } else if (input.value.length > 0 && input.value.length !== 10 && input.value.length !== 13) {
-        errorElement.textContent = 'ISBN deve essere di 10 o 13 cifre';
-        errorElement.classList.remove('hidden', 'text-red-500');
-        errorElement.classList.add('text-gray-500');
-    } else {
-        errorElement.classList.add('hidden');
+    
+    // Se il campo è focalizzato, mostra sempre il messaggio in grigio
+    if (input.matches(':focus')) {
+        if (input.value.length > 0) {
+            errorElement.textContent = 'ISBN deve essere di 10 o 13 cifre';
+            errorElement.classList.remove('hidden', 'text-red-500');
+            errorElement.classList.add('text-gray-500');
+        } else {
+            errorElement.classList.add('hidden');
+        }
+    } 
+    // Se il campo non è focalizzato, valida e mostra errore in rosso se necessario
+    else {
+        if (input.value.length > 0 && !/^(?:\d{10}|\d{13})$/.test(input.value)) {
+            errorElement.textContent = 'ISBN deve essere di 10 o 13 cifre';
+            errorElement.classList.remove('hidden', 'text-gray-500');
+            errorElement.classList.add('text-red-500');
+        } else {
+            errorElement.classList.add('hidden');
+        }
     }
 }
         
@@ -937,11 +946,11 @@ document.addEventListener('click', function(e) {
         });
         
         e.target.addEventListener('blur', function() {
-            validateBookField(this);
+            handleISBNInput(this);
         });
         
         e.target.addEventListener('focus', function() {
-            hideError(this);
+            handleISBNInput(this);
             if (this.value.length > 0 && this.value.length !== 10 && this.value.length !== 13) {
                 const errorElement = this.nextElementSibling;
                 errorElement.textContent = 'ISBN deve essere di 10 o 13 cifre';
