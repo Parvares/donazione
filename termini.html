@@ -686,28 +686,12 @@ function formatTime(seconds) {
 function calculateTotalDuration() {
     let totalText = '';
     document.querySelectorAll('h1, h2, p, li').forEach(el => {
-        totalText += el.textContent + ' ';
+        totalText += el.textContent;
     });
-    totalDuration = (totalText.split(' ').length * 0.25);
-    document.getElementById('totalTime').textContent = formatTime(totalDuration);
-}
-
-function createWaveform() {
-    const container = document.querySelector('.waveform-bars');
-    container.innerHTML = '';
-    const numberOfBars = 200;
-
-    for (let i = 0; i < numberOfBars; i++) {
-        const bar = document.createElement('div');
-        bar.className = 'waveform-bar';
-        const height = 5 + Math.random() * 35;
-        bar.style.height = `${height}px`;
-        container.appendChild(bar);
-    }
+    totalDuration = totalText.length / 10; // Un'approssimazione della durata totale
 }
 
 function updateWaveform(targetProgress) {
-    // Interpola l'animazione verso il target
     animationProgress += (targetProgress - animationProgress) * 0.1;
     
     const bars = document.querySelectorAll('.waveform-bar');
@@ -780,7 +764,6 @@ function updateProgress() {
     const currentTimeDisplay = Math.min(elapsedTime, totalDuration);
     document.getElementById('currentTime').textContent = formatTime(currentTimeDisplay);
     
-    // Aggiorna la waveform con una transizione fluida
     updateWaveform(progress);
     
     if (progress < 1) {
@@ -813,7 +796,6 @@ function handleWaveformClick(e) {
 
 document.addEventListener('DOMContentLoaded', () => {
     setupSpeech();
-    createWaveform();
     calculateTotalDuration();
 
     const waveformContainer = document.querySelector('.waveform-container');
@@ -823,19 +805,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const waveformContainerElement = document.querySelector('.waveform-container');
     
     audioControl.addEventListener('click', () => {
-        if (!isPlaying) {
-            waveformContainerElement.style.display = 'block';
-            audioControl.innerHTML = '<i class="fas fa-pause"></i>';
-            currentIndex = 0;
-            startTime = Date.now();
-            pauseTime = 0;
-            animationProgress = 0;
-            resumeReading();
-        } else {
+        if (isPlaying) {
             stopReading();
+        } else {
+            resumeReading();
         }
     });
 });
+
       
 </script>
 
