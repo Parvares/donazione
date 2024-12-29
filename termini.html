@@ -667,154 +667,89 @@ footer i {
    
    
 
-   <script>
+<script>
 let speech = null;
+let audio = new Audio();
+let audioSource = null;
+let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+let analyser = audioContext.createAnalyser();
+let waveformCanvas = null;
+let waveformContext = null;
 let isPlaying = false;
-let currentIndex = 0;
-let startTime = 0;
 let pauseTime = 0;
-let totalDuration = 0;
-let isDragging = false;
-let animationProgress = 0;
+let lastTime = 0;
 
-function formatTime(seconds) {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = Math.floor(seconds % 60);
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-}
+// Funzione per creare la waveform
+function drawWaveform(buffer) {
+    const data = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(data);
 
-function calculateTotalDuration() {
-    let totalText = '';
-    document.querySelectorAll('h1, h2, p, li').forEach(el => {
-        totalText += el.textContent;
-    });
-    totalDuration = totalText.length / 10; // Un'approssimazione della durata totale
-}
-
-function updateWaveform(targetProgress) {
-    animationProgress += (targetProgress - animationProgress) * 0.1;
-    
-    const bars = document.querySelectorAll('.waveform-bar');
-    const barsToPlay = Math.floor(animationProgress * bars.length);
-    
-    bars.forEach((bar, index) => {
-        if (index <= barsToPlay) {
-            bar.classList.add('played');
-        } else {
-            bar.classList.remove('played');
-        }
-    });
-
-    const progressLine = document.querySelector('.progress-line');
-    progressLine.style.left = `${animationProgress * 100}%`;
-}
-
-function setupSpeech() {
-    speech = new SpeechSynthesisUtterance();
-    speech.lang = 'it-IT';
-    speech.rate = 0.9;
-    speech.pitch = 1;
-    
-    speech.onend = () => {
-        currentIndex++;
-        if (currentIndex < document.querySelectorAll('h1, h2, p, li').length) {
-            readNextElement();
-        } else {
-            stopReading();
-        }
-    };
-}
-
-function readNextElement() {
-    const textElements = document.querySelectorAll('h1, h2, p, li');
-    if (currentIndex < textElements.length) {
-        speech.text = textElements[currentIndex].textContent;
-        window.speechSynthesis.speak(speech);
+    waveformContext.clearRect(0, 0, waveformCanvas.width, waveformCanvas.height);
+    let barWidth = waveformCanvas.width / data.length;
+    for (let i = 0; i < data.length; i++) {
+        const barHeight = data[i] / 2;
+        waveformContext.fillStyle = '#970a2c';
+        waveformContext.fillRect(i * barWidth, waveformCanvas.height - barHeight, barWidth, barHeight);
     }
 }
 
-function stopReading() {
-    isPlaying = false;
-    pauseTime = Date.now() - startTime;
-    const audioControl = document.getElementById('audioControl');
-    audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
-    window.speechSynthesis.cancel();
-    
-    animationProgress = 0;
-    updateWaveform(0);
-    document.getElementById('currentTime').textContent = '0:00';
-}
-
-function resumeReading() {
-    if (!isPlaying) {
-        startTime = Date.now() - pauseTime;
-        isPlaying = true;
-        updateProgress();
-        readNextElement();
+// Funzione per inizializzare l'audio e la waveform
+function initAudio(fileUrl) {
+    if (audioSource) {
+        audioSource.disconnect();
     }
+
+    fetch(fileUrl)
+        .then(response => response.arrayBuffer())
+        .then(data => {
+            audioContext.decodeAudioData(data, (buffer) => {
+                audioSource = audioContext.createBufferSource();
+                audioSource.buffer = buffer;
+                audioSource.connect(analyser);
+                analyser.connect(audioContext.destination);
+
+                waveformCanvas = document.getElementById("waveform");
+                waveformContext = waveformCanvas.getContext("2d");
+
+                drawWaveform(buffer);
+
+                audioSource.start(0, pauseTime); // Continua dalla pausa se è stato interrotto
+            });
+        });
 }
 
-function updateProgress() {
-    if (!isPlaying) return;
-
-    const elapsedTime = (Date.now() - startTime) / 1000;
-    const textElements = document.querySelectorAll('h1, h2, p, li');
-    const progress = Math.min(currentIndex / textElements.length, 1);
-    
-    const currentTimeDisplay = Math.min(elapsedTime, totalDuration);
-    document.getElementById('currentTime').textContent = formatTime(currentTimeDisplay);
-    
-    updateWaveform(progress);
-    
-    if (progress < 1) {
-        requestAnimationFrame(updateProgress);
-    }
-}
-
-function handleWaveformClick(e) {
-    if (isDragging) return;
-    
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const progress = x / rect.width;
-    const textElements = document.querySelectorAll('h1, h2, p, li');
-    
-    currentIndex = Math.floor(progress * textElements.length);
-    startTime = Date.now() - (progress * totalDuration * 1000);
-    pauseTime = Date.now() - startTime;
-    
-    animationProgress = progress;
-    updateWaveform(progress);
-    
+// Funzione per gestire il play/pause
+function togglePlayPause(fileUrl) {
     if (isPlaying) {
-        window.speechSynthesis.cancel();
-        readNextElement();
+        // Pausa
+        pauseTime = audioContext.currentTime;
+        audioSource.stop();
+        isPlaying = false;
+    } else {
+        // Play
+        if (audio.paused || audio.currentTime === 0) {
+            initAudio(fileUrl);
+            isPlaying = true;
+        }
     }
-    
-    document.getElementById('currentTime').textContent = formatTime(progress * totalDuration);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    setupSpeech();
-    calculateTotalDuration();
+// Gestione clic sul canvas della waveform per saltare la posizione
+function seekTo(event) {
+    const rect = waveformCanvas.getBoundingClientRect();
+    const offsetX = event.clientX - rect.left;
+    const newTime = offsetX / waveformCanvas.width * audio.duration;
+    audio.currentTime = newTime;
+}
 
-    const waveformContainer = document.querySelector('.waveform-container');
-    waveformContainer.addEventListener('click', handleWaveformClick);
+document.getElementById("waveform").addEventListener("click", seekTo);
 
-    const audioControl = document.getElementById('audioControl');
-    const waveformContainerElement = document.querySelector('.waveform-container');
-    
-    audioControl.addEventListener('click', () => {
-        if (isPlaying) {
-            stopReading();
-        } else {
-            resumeReading();
-        }
-    });
+document.getElementById("playButton").addEventListener("click", () => {
+    const fileUrl = 'audio_file.mp3'; // Inserisci il tuo file audio qui
+    togglePlayPause(fileUrl);
 });
-
-      
 </script>
+
 
 
    
