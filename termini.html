@@ -697,16 +697,14 @@ function calculateTotalDuration() {
     document.querySelectorAll('h1, h2, p, li').forEach(el => {
         totalText += el.textContent + ' ';
     });
-    totalDuration = (totalText.split(' ').length * 0.3);
+    totalDuration = (totalText.split(' ').length * 0.25);
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
 
 function createWaveform() {
     const container = document.querySelector('.waveform-bars');
-    if (!container) return; // Verifica che il container esista
-    
     container.innerHTML = '';
-    const numberOfBars = 100;
+    const numberOfBars = 200;
 
     for (let i = 0; i < numberOfBars; i++) {
         const bar = document.createElement('div');
@@ -718,6 +716,7 @@ function createWaveform() {
 }
 
 function updateWaveform(targetProgress) {
+    // Interpola l'animazione verso il target
     animationProgress += (targetProgress - animationProgress) * 0.1;
     
     const bars = document.querySelectorAll('.waveform-bar');
@@ -732,32 +731,28 @@ function updateWaveform(targetProgress) {
     });
 
     const progressLine = document.querySelector('.progress-line');
-    if (progressLine) {
-        progressLine.style.left = `${animationProgress * 100}%`;
-    }
+    progressLine.style.left = `${animationProgress * 100}%`;
 }
 
 function setupSpeech() {
-    if ('speechSynthesis' in window) {
-        speech = new SpeechSynthesisUtterance();
-        speech.lang = 'it-IT';
-        speech.rate = 0.9;
-        speech.pitch = 1;
-        
-        speech.onend = () => {
-            currentIndex++;
-            if (currentIndex < document.querySelectorAll('h1, h2, p, li').length) {
-                readNextElement();
-            } else {
-                stopReading();
-            }
-        };
-    }
+    speech = new SpeechSynthesisUtterance();
+    speech.lang = 'it-IT';
+    speech.rate = 0.9;
+    speech.pitch = 1;
+    
+    speech.onend = () => {
+        currentIndex++;
+        if (currentIndex < document.querySelectorAll('h1, h2, p, li').length) {
+            readNextElement();
+        } else {
+            stopReading();
+        }
+    };
 }
 
 function readNextElement() {
     const textElements = document.querySelectorAll('h1, h2, p, li');
-    if (currentIndex < textElements.length && speech) {
+    if (currentIndex < textElements.length) {
         speech.text = textElements[currentIndex].textContent;
         window.speechSynthesis.speak(speech);
     }
@@ -767,14 +762,21 @@ function stopReading() {
     isPlaying = false;
     pauseTime = Date.now() - startTime;
     const audioControl = document.getElementById('audioControl');
-    if (audioControl) {
-        audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
-    }
+    audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
     window.speechSynthesis.cancel();
     
     animationProgress = 0;
     updateWaveform(0);
     document.getElementById('currentTime').textContent = '0:00';
+}
+
+function resumeReading() {
+    if (!isPlaying) {
+        startTime = Date.now() - pauseTime;
+        isPlaying = true;
+        updateProgress();
+        readNextElement();
+    }
 }
 
 function updateProgress() {
@@ -787,19 +789,11 @@ function updateProgress() {
     const currentTimeDisplay = Math.min(elapsedTime, totalDuration);
     document.getElementById('currentTime').textContent = formatTime(currentTimeDisplay);
     
+    // Aggiorna la waveform con una transizione fluida
     updateWaveform(progress);
     
     if (progress < 1) {
         requestAnimationFrame(updateProgress);
-    }
-}
-
-function resumeReading() {
-    if (!isPlaying) {
-        startTime = Date.now() - pauseTime;
-        isPlaying = true;
-        updateProgress();
-        readNextElement();
     }
 }
 
@@ -832,28 +826,26 @@ document.addEventListener('DOMContentLoaded', () => {
     calculateTotalDuration();
 
     const waveformContainer = document.querySelector('.waveform-container');
-    if (waveformContainer) {
-        waveformContainer.addEventListener('click', handleWaveformClick);
-    }
+    waveformContainer.addEventListener('click', handleWaveformClick);
 
     const audioControl = document.getElementById('audioControl');
-    if (audioControl) {
-        audioControl.addEventListener('click', () => {
-            isPlaying = !isPlaying;
-            
-            if (isPlaying) {
-                audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-pause"></i>';
-                currentIndex = 0;
-                startTime = Date.now();
-                pauseTime = 0;
-                animationProgress = 0;
-                resumeReading();
-            } else {
-                stopReading();
-            }
-        });
-    }
+    const waveformContainerElement = document.querySelector('.waveform-container');
+    
+    audioControl.addEventListener('click', () => {
+        if (!isPlaying) {
+            waveformContainerElement.style.display = 'block';
+            audioControl.innerHTML = '<i class="fas fa-pause"></i>';
+            currentIndex = 0;
+            startTime = Date.now();
+            pauseTime = 0;
+            animationProgress = 0;
+            resumeReading();
+        } else {
+            stopReading();
+        }
+    });
 });
+      
 </script>
 
 
