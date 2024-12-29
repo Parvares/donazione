@@ -841,6 +841,7 @@ document.addEventListener('DOMContentLoaded', () => {
     calculateTotalDuration();
 
     const waveformContainer = document.querySelector('.waveform-container');
+    const waveformContainerElement = document.querySelector('.waveform-container');
     waveformContainer.addEventListener('click', handleWaveformClick);
 
     const audioControl = document.getElementById('audioControl');
@@ -849,12 +850,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isPlaying) {
             isPlaying = true;
             audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-pause"></i>';
+            waveformContainerElement.style.display = 'block'; // Mostra la waveform
             currentIndex = 0;
             startTime = Date.now();
             pauseTime = 0;
             resumeReading();
         } else {
             stopReading();
+            // Non nascondiamo la waveform quando si ferma l'audio
         }
     });
 });
