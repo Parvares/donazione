@@ -704,8 +704,10 @@ function calculateTotalDuration() {
 
 function createWaveform() {
     const container = document.querySelector('.waveform-bars');
-    const numberOfBars = 100; // Manteniamo lo stesso numero di barre
+    // Pulisci il contenitore prima di aggiungere nuove barre
+    container.innerHTML = '';
     
+    const numberOfBars = 100;
     for (let i = 0; i < numberOfBars; i++) {
         const bar = document.createElement('div');
         bar.className = 'waveform-bar';
@@ -713,6 +715,11 @@ function createWaveform() {
         bar.style.height = `${height}px`;
         container.appendChild(bar);
     }
+
+    // Aggiungi la linea di progresso dopo le barre
+    const progressLine = document.createElement('div');
+    progressLine.className = 'progress-line';
+    container.parentElement.appendChild(progressLine);
 }
 
 function updateWaveform(progress) {
@@ -728,7 +735,9 @@ function updateWaveform(progress) {
     });
 
     const progressLine = document.querySelector('.progress-line');
-    progressLine.style.left = `${progress * 100}%`;
+    if (progressLine) {
+        progressLine.style.left = `${progress * 100}%`;
+    }
 }
 
 function setupSpeech() {
@@ -746,7 +755,6 @@ function setupSpeech() {
             const audioControl = document.getElementById('audioControl');
             audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
             window.speechSynthesis.cancel();
-            // Assicuriamoci che la waveform sia completata
             updateWaveform(1);
         }
     };
@@ -814,8 +822,7 @@ function handleWaveformClick(e) {
     }
 }
 
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', () => {
+function initializeAudioPlayer() {
     setupSpeech();
     createWaveform();
     calculateTotalDuration();
@@ -834,7 +841,10 @@ document.addEventListener('DOMContentLoaded', () => {
             stopReading();
         }
     });
-});
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', initializeAudioPlayer);
       
 </script>
 
