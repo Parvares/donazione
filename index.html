@@ -1277,17 +1277,19 @@ window.resetBookFields = function(button) {
 
 
 // Get the textarea element
+// Get the textarea element
 const textarea = document.getElementById('notes');
 const charCount = document.getElementById('charCount');
+let manualHeight = null; // Track manual resize height
 
 // Function to adjust textarea height smoothly
 function autoResizeTextarea() {
-    // Reset height to auto to get correct scrollHeight
-    textarea.style.height = 'auto';
-    
-    // Set new height based on scrollHeight
-    const newHeight = Math.max(75, Math.min(textarea.scrollHeight, 300));
-    textarea.style.height = newHeight + 'px';
+    // Only auto-resize if no manual height is set or content exceeds manual height
+    if (!manualHeight || textarea.scrollHeight > manualHeight) {
+        textarea.style.height = 'auto';
+        const newHeight = Math.max(75, textarea.scrollHeight);
+        textarea.style.height = newHeight + 'px';
+    }
     
     // Update character count
     const remainingChars = 500 - textarea.value.length;
@@ -1304,9 +1306,14 @@ function autoResizeTextarea() {
 }
 
 // Set initial styles
-textarea.style.resize = 'none';
+textarea.style.resize = 'vertical'; // Enable manual vertical resize
 textarea.style.minHeight = '75px';
 textarea.style.transition = 'height 0.2s ease';
+
+// Track manual resize
+textarea.addEventListener('mouseup', () => {
+    manualHeight = textarea.offsetHeight;
+});
 
 // Add event listeners
 textarea.addEventListener('input', autoResizeTextarea);
@@ -1314,7 +1321,6 @@ textarea.addEventListener('focus', autoResizeTextarea);
 
 // Initial call to set proper height
 autoResizeTextarea();
-
 	    
 
 	    
