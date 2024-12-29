@@ -801,8 +801,6 @@ function updateProgress() {
 }
 
 function handleWaveformClick(e) {
-    if (isDragging) return;
-    
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const progress = x / rect.width;
@@ -844,18 +842,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const audioControl = document.getElementById('audioControl');
     
     audioControl.addEventListener('click', () => {
-        isPlaying = !isPlaying;
-        if (isPlaying) {
+        if (!isPlaying) {
+            // Starting playback
             audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-pause"></i>';
-            currentIndex = 0;
-            startTime = Date.now();
-            pauseTime = 0;
-            lastBarIndex = -1;
-            // Reset all bars
-            const bars = document.querySelectorAll('.waveform-bar');
-            bars.forEach(bar => bar.classList.remove('played'));
+            if (currentIndex === 0 || currentIndex >= document.querySelectorAll('h1, h2, p, li').length) {
+                // Reset if at start or end
+                currentIndex = 0;
+                const bars = document.querySelectorAll('.waveform-bar');
+                bars.forEach(bar => bar.classList.remove('played'));
+                lastBarIndex = -1;
+            }
+            startTime = Date.now() - pauseTime;
+            isPlaying = true;
             resumeReading();
         } else {
+            // Stopping playback
             stopReading();
         }
     });
