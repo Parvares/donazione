@@ -1027,22 +1027,50 @@ function validateCheckbox(checkbox) {
             <input type="number" min="1400" max="2024" class="book-year w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
             <p class="hidden error-message text-sm text-red-500 mt-1">Anno non valido</p>
         </div>
+
+
+ 
 <div class="mb-5">
-        <div class="flex items-center gap-1">
-            <label class="block text-slate-700 font-medium">ISBN:</label>
-            <div class="relative group -mt-1">
-                <i class="fa-solid fa-circle-info text-gray-500 hover:text-gray-700 transition-colors text-sm"></i>
-                <div class="invisible group-hover:visible absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-white border border-gray-200 text-gray-500 text-sm rounded-lg w-64 shadow-lg z-10">
-                    <div class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full w-0 h-0 border-8 border-transparent border-t-white"></div>
-                    <div class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full w-0 h-0 border-[9px] border-transparent border-t-gray-200"></div>
-                    ISBN deve essere di 10 o 13 cifre senza trattini
-                </div>
+    <div class="flex items-center gap-1">
+        <label class="block text-slate-700 font-medium">ISBN:</label>
+        <div class="relative group -mt-1">
+            <i class="fa-solid fa-circle-info text-gray-500 hover:text-gray-700 transition-colors text-sm"></i>
+            <div class="invisible group-hover:visible absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-white border border-gray-200 text-gray-500 text-sm rounded-lg w-64 shadow-lg z-10">
+                L'ISBN (International Standard Book Number) è un codice numerico di 10 o 13 cifre che identifica univocamente un libro. Lo trovi sul retro del libro sopra al codice a barre o nella pagina del copyright.
             </div>
         </div>
-        <input type="tel" inputmode="numeric" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" maxlength="13">
-        <p class="hidden error-message text-sm text-red-500 mt-1">ISBN non valido</p>
     </div>
-        
+    <input type="tel" inputmode="numeric" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" maxlength="13">
+    <p class="hidden isbn-help-text text-sm text-gray-500 mt-1">ISBN deve essere di 10 o 13 cifre senza trattini</p>
+    <p class="hidden error-message text-sm text-red-500 mt-1">ISBN non valido</p>
+</div>
+
+// Aggiungi questi event listener dopo gli altri già esistenti:
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('book-isbn')) {
+        // Mostra il testo di aiuto e nascondi eventuali errori quando il campo riceve il focus
+        const helpText = e.target.parentElement.querySelector('.isbn-help-text');
+        const errorMessage = e.target.parentElement.querySelector('.error-message');
+        helpText.classList.remove('hidden');
+        errorMessage.classList.add('hidden');
+        hideError(e.target);
+    }
+});
+
+document.addEventListener('blur', function(e) {
+    if (e.target.classList.contains('book-isbn')) {
+        // Nascondi il testo di aiuto quando il campo perde il focus
+        const helpText = e.target.parentElement.querySelector('.isbn-help-text');
+        helpText.classList.add('hidden');
+        // Valida il campo
+        validateBookField(e.target);
+    }
+});
+
+
+
+
+ 
         <button type="button" class="add-book-btn" onclick="createBookEntry()">+ Aggiungi Libro</button>
     `;
 
