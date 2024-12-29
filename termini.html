@@ -394,82 +394,75 @@ footer i {
 .audio-control-container {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin: 20px 0;
+    gap: 1rem;
+    margin-bottom: 1rem;
 }
 
 .audio-control {
-    display: flex;
-    align-items: center;
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 24px;
-    color: #970a2c;
-}
-
-.audio-control:hover .fa-headphones {
-    display: none;
-}
-
-.audio-control:hover .fa-play {
-    display: inline;
-}
-
-.fa-play {
-    display: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary);
+    font-size: 1.2rem;
 }
 
 .audio-label {
-    color: #970a2c;
-    cursor: pointer;
+    color: var(--text);
+    font-size: 0.9rem;
 }
 
 .waveform-container {
-    display: none;
     position: relative;
-    height: 60px;
-    background: #f5f5f5;
-    border-radius: 4px;
+    width: 100%;
+    height: 50px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
     padding: 10px;
-    margin: 10px 0;
+    margin-bottom: 2rem;
     cursor: pointer;
 }
 
 .waveform-bars {
     display: flex;
-    align-items: flex-end;
-    height: 40px;
-    gap: 1px;
+    align-items: center;
+    gap: 2px;
+    height: 100%;
 }
 
 .waveform-bar {
     flex: 1;
-    background: #ddd;
-    min-width: 2px;
-    transition: height 0.1s ease;
+    background-color: #ddd;
+    transition: background-color 0.2s ease;
 }
 
 .waveform-bar.played {
-    background: #970a2c;
-}
-
-.time-display {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    margin-top: 5px;
+    background-color: var(--primary);
 }
 
 .progress-line {
     position: absolute;
     top: 0;
     left: 0;
-    height: 100%;
     width: 2px;
-    background: rgba(151, 10, 44, 0.5);
-    pointer-events: none;
+    height: 100%;
+    background-color: var(--primary);
+    transition: left 0.1s linear;
 }
+
+.time-display {
+    position: absolute;
+    bottom: -25px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--text);
+}
+
       
    </style>
 </head>
@@ -677,6 +670,7 @@ footer i {
    
 
    <script>
+// Variabili globali
 let speech = null;
 let isPlaying = false;
 let currentIndex = 0;
@@ -684,7 +678,8 @@ let startTime = 0;
 let pauseTime = 0;
 let totalDuration = 0;
 let isDragging = false;
-let animationProgress = 0;
+let currentBarIndex = 0;
+let animationFrameId = null;
 
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -697,14 +692,15 @@ function calculateTotalDuration() {
     document.querySelectorAll('h1, h2, p, li').forEach(el => {
         totalText += el.textContent + ' ';
     });
-    totalDuration = (totalText.split(' ').length * 0.25);
+    // Stima approssimativa: 0.3 secondi per parola
+    totalDuration = (totalText.split(' ').length * 0.3);
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
 
 function createWaveform() {
     const container = document.querySelector('.waveform-bars');
     container.innerHTML = '';
-    const numberOfBars = 200;
+    const numberOfBars = 100; // Numero fisso di barre
 
     for (let i = 0; i < numberOfBars; i++) {
         const bar = document.createElement('div');
@@ -715,23 +711,30 @@ function createWaveform() {
     }
 }
 
-function updateWaveform(targetProgress) {
-    // Interpola l'animazione verso il target
-    animationProgress += (targetProgress - animationProgress) * 0.1;
-    
+function updateWaveform() {
+    if (!isPlaying) return;
+
     const bars = document.querySelectorAll('.waveform-bar');
-    const barsToPlay = Math.floor(animationProgress * bars.length);
-    
-    bars.forEach((bar, index) => {
-        if (index <= barsToPlay) {
-            bar.classList.add('played');
-        } else {
-            bar.classList.remove('played');
+    const elapsedTime = (Date.now() - startTime) / 1000;
+    const progress = Math.min(elapsedTime / totalDuration, 1);
+    const targetBarIndex = Math.floor(progress * bars.length);
+
+    // Anima solo una barra alla volta
+    if (currentBarIndex < targetBarIndex) {
+        if (currentBarIndex < bars.length) {
+            bars[currentBarIndex].classList.add('played');
         }
-    });
+        currentBarIndex++;
+    }
 
     const progressLine = document.querySelector('.progress-line');
-    progressLine.style.left = `${animationProgress * 100}%`;
+    progressLine.style.left = `${progress * 100}%`;
+    
+    document.getElementById('currentTime').textContent = formatTime(elapsedTime);
+
+    if (progress < 1) {
+        animationFrameId = requestAnimationFrame(updateWaveform);
+    }
 }
 
 function setupSpeech() {
@@ -765,8 +768,17 @@ function stopReading() {
     audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
     window.speechSynthesis.cancel();
     
-    animationProgress = 0;
-    updateWaveform(0);
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+    }
+    
+    // Reset della waveform
+    const bars = document.querySelectorAll('.waveform-bar');
+    bars.forEach(bar => bar.classList.remove('played'));
+    currentBarIndex = 0;
+    
+    const progressLine = document.querySelector('.progress-line');
+    progressLine.style.left = '0%';
     document.getElementById('currentTime').textContent = '0:00';
 }
 
@@ -774,26 +786,8 @@ function resumeReading() {
     if (!isPlaying) {
         startTime = Date.now() - pauseTime;
         isPlaying = true;
-        updateProgress();
+        updateWaveform();
         readNextElement();
-    }
-}
-
-function updateProgress() {
-    if (!isPlaying) return;
-
-    const elapsedTime = (Date.now() - startTime) / 1000;
-    const textElements = document.querySelectorAll('h1, h2, p, li');
-    const progress = Math.min(currentIndex / textElements.length, 1);
-    
-    const currentTimeDisplay = Math.min(elapsedTime, totalDuration);
-    document.getElementById('currentTime').textContent = formatTime(currentTimeDisplay);
-    
-    // Aggiorna la waveform con una transizione fluida
-    updateWaveform(progress);
-    
-    if (progress < 1) {
-        requestAnimationFrame(updateProgress);
     }
 }
 
@@ -809,8 +803,18 @@ function handleWaveformClick(e) {
     startTime = Date.now() - (progress * totalDuration * 1000);
     pauseTime = Date.now() - startTime;
     
-    animationProgress = progress;
-    updateWaveform(progress);
+    const bars = document.querySelectorAll('.waveform-bar');
+    bars.forEach((bar, index) => {
+        if (index <= Math.floor(progress * bars.length)) {
+            bar.classList.add('played');
+        } else {
+            bar.classList.remove('played');
+        }
+    });
+    currentBarIndex = Math.floor(progress * bars.length);
+    
+    const progressLine = document.querySelector('.progress-line');
+    progressLine.style.left = `${progress * 100}%`;
     
     if (isPlaying) {
         window.speechSynthesis.cancel();
@@ -820,6 +824,7 @@ function handleWaveformClick(e) {
     document.getElementById('currentTime').textContent = formatTime(progress * totalDuration);
 }
 
+// Inizializzazione quando il DOM è caricato
 document.addEventListener('DOMContentLoaded', () => {
     setupSpeech();
     createWaveform();
@@ -829,16 +834,14 @@ document.addEventListener('DOMContentLoaded', () => {
     waveformContainer.addEventListener('click', handleWaveformClick);
 
     const audioControl = document.getElementById('audioControl');
-    const waveformContainerElement = document.querySelector('.waveform-container');
-    
     audioControl.addEventListener('click', () => {
-        if (!isPlaying) {
-            waveformContainerElement.style.display = 'block';
-            audioControl.innerHTML = '<i class="fas fa-pause"></i>';
+        isPlaying = !isPlaying;
+        
+        if (isPlaying) {
+            audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-pause"></i>';
             currentIndex = 0;
             startTime = Date.now();
             pauseTime = 0;
-            animationProgress = 0;
             resumeReading();
         } else {
             stopReading();
