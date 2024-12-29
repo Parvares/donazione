@@ -426,49 +426,40 @@ footer i {
 }
 
 .waveform-container {
-    width: 100%;
-    height: 60px;
-    background: #f5f5f5;
-    border-radius: 8px;
-    padding: 10px;
-    position: relative;
-    margin-top: 10px;
+    display: none; /* Inizialmente nascosto */
+    padding: 0;
+    background: none; /* Se ci fosse un background da rimuovere */
 }
+
 
 .waveform-bars {
     display: flex;
-    align-items: center;
-    gap: 2px;
-    height: 100%;
+    align-items: flex-end;
+    height: 40px;
+    gap: 1px;
 }
 
 .waveform-bar {
     flex: 1;
     background: #ddd;
-    transition: background-color 0.3s;
+    min-width: 2px;
+    transition: height 0.1s ease;
 }
 
 .waveform-bar.played {
-    background: var(--primary);
-}
-
-.progress-line {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 2px;
-    height: 100%;
-    background: var(--primary);
-    transition: left 0.1s;
+    background: #970a2c;
 }
 
 .time-display {
-    position: absolute;
-    bottom: -25px;
-    width: 100%;
     display: flex;
     justify-content: space-between;
-    font-size: 14px;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.progress-line {
+    /* Rimosso tutto il codice relativo alla progress line */
+    display: none; /* Nascondi la progress line */
 }
       
    </style>
@@ -533,20 +524,21 @@ footer i {
            
 <!-- Add this right after the library-name div in your HTML -->
 <div class="text-controls">
-    <div class="audio-control-container">
-        <button class="audio-control" id="audioControl">
-            <i class="fas fa-headphones"></i>
-            <i class="fas fa-play"></i>
-        </button>
-        <span class="audio-label">ascolta l'audio</span>
-    </div>
-    <div class="waveform-container" style="display: none;">
-        <div class="waveform-bars"></div>
-        <div class="progress-line"></div>
-        <div class="time-display">
-            <span id="currentTime">0:00</span>
-            <span id="totalTime">0:00</span>
-        </div>
+<div class="audio-control-container">
+    <button class="audio-control" id="audioControl">
+        <i class="fas fa-headphones"></i>
+        <i class="fas fa-play"></i>
+    </button>
+    <span class="audio-label">ascolta l'audio</span>
+</div>
+  
+   
+<div class="waveform-container">
+    <div class="waveform-bars"></div>
+    <div class="progress-line"></div>
+    <div class="time-display">
+        <span id="currentTime">0:00</span>
+        <span id="totalTime">0:00</span>
     </div>
 </div>
 
@@ -684,24 +676,6 @@ let pauseTime = 0;
 let totalDuration = 0;
 let isDragging = false;
 let animationProgress = 0;
-let lastPlayedIndex = 0;
-
-// Struttura HTML necessaria che deve essere presente nel tuo documento
-`<div class="audio-control-container">
-    <button class="audio-control" id="audioControl">
-        <i class="fas fa-headphones"></i>
-        <i class="fas fa-play"></i>
-    </button>
-    <span class="audio-label">ascolta l'audio</span>
-</div>
-<div class="waveform-container" style="display: none;">
-    <div class="waveform-bars"></div>
-    <div class="progress-line"></div>
-    <div class="time-display">
-        <span id="currentTime">0:00</span>
-        <span id="totalTime">0:00</span>
-    </div>
-</div>`
 
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -714,16 +688,15 @@ function calculateTotalDuration() {
     document.querySelectorAll('h1, h2, p, li').forEach(el => {
         totalText += el.textContent + ' ';
     });
-    const wordCount = totalText.split(/\s+/).length;
-    totalDuration = wordCount / 150 * 60;
+    totalDuration = (totalText.split(' ').length * 0.25);
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
 
 function createWaveform() {
     const container = document.querySelector('.waveform-bars');
-    container.innerHTML = ''; // Pulisce eventuali barre esistenti
-    const numberOfBars = 50;
-    
+    container.innerHTML = '';
+    const numberOfBars = 200;
+
     for (let i = 0; i < numberOfBars; i++) {
         const bar = document.createElement('div');
         bar.className = 'waveform-bar';
@@ -734,6 +707,7 @@ function createWaveform() {
 }
 
 function updateWaveform(targetProgress) {
+    // Interpola l'animazione verso il target
     animationProgress += (targetProgress - animationProgress) * 0.1;
     
     const bars = document.querySelectorAll('.waveform-bar');
@@ -748,9 +722,7 @@ function updateWaveform(targetProgress) {
     });
 
     const progressLine = document.querySelector('.progress-line');
-    if (progressLine) {
-        progressLine.style.left = `${animationProgress * 100}%`;
-    }
+    progressLine.style.left = `${animationProgress * 100}%`;
 }
 
 function setupSpeech() {
@@ -761,7 +733,6 @@ function setupSpeech() {
     
     speech.onend = () => {
         currentIndex++;
-        lastPlayedIndex = currentIndex;
         if (currentIndex < document.querySelectorAll('h1, h2, p, li').length) {
             readNextElement();
         } else {
@@ -780,18 +751,18 @@ function readNextElement() {
 
 function stopReading() {
     isPlaying = false;
-    lastPlayedIndex = currentIndex;
     pauseTime = Date.now() - startTime;
     const audioControl = document.getElementById('audioControl');
     audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
     window.speechSynthesis.cancel();
     
-    updateWaveform(currentIndex / document.querySelectorAll('h1, h2, p, li').length);
+    animationProgress = 0;
+    updateWaveform(0);
+    document.getElementById('currentTime').textContent = '0:00';
 }
 
 function resumeReading() {
     if (!isPlaying) {
-        currentIndex = lastPlayedIndex;
         startTime = Date.now() - pauseTime;
         isPlaying = true;
         updateProgress();
@@ -809,6 +780,7 @@ function updateProgress() {
     const currentTimeDisplay = Math.min(elapsedTime, totalDuration);
     document.getElementById('currentTime').textContent = formatTime(currentTimeDisplay);
     
+    // Aggiorna la waveform con una transizione fluida
     updateWaveform(progress);
     
     if (progress < 1) {
@@ -825,7 +797,6 @@ function handleWaveformClick(e) {
     const textElements = document.querySelectorAll('h1, h2, p, li');
     
     currentIndex = Math.floor(progress * textElements.length);
-    lastPlayedIndex = currentIndex;
     startTime = Date.now() - (progress * totalDuration * 1000);
     pauseTime = Date.now() - startTime;
     
@@ -840,41 +811,32 @@ function handleWaveformClick(e) {
     document.getElementById('currentTime').textContent = formatTime(progress * totalDuration);
 }
 
-function toggleWaveform() {
-    const waveformContainer = document.querySelector('.waveform-container');
-    if (waveformContainer) {
-        if (waveformContainer.style.display === 'none') {
-            waveformContainer.style.display = 'block';
-            createWaveform(); // Ricrea la waveform
-            console.log('Waveform displayed'); // Per debug
-        } else {
-            waveformContainer.style.display = 'none';
-            console.log('Waveform hidden'); // Per debug
-        }
-    } else {
-        console.log('Waveform container not found'); // Per debug
-    }
-}
-
 document.addEventListener('DOMContentLoaded', () => {
     setupSpeech();
+    createWaveform();
     calculateTotalDuration();
 
     const waveformContainer = document.querySelector('.waveform-container');
     waveformContainer.addEventListener('click', handleWaveformClick);
 
     const audioControl = document.getElementById('audioControl');
+    const waveformContainerElement = document.querySelector('.waveform-container');
     
-audioControl.addEventListener('click', () => {
-    if (!isPlaying) {
-        audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-pause"></i>';
-        toggleWaveform(); // Mostra la waveform
-        resumeReading();
-    } else {
-        stopReading();
-        // Non nascondere la waveform quando si mette in pausa
-    }
+    audioControl.addEventListener('click', () => {
+        if (!isPlaying) {
+            waveformContainerElement.style.display = 'block';
+            audioControl.innerHTML = '<i class="fas fa-pause"></i>';
+            currentIndex = 0;
+            startTime = Date.now();
+            pauseTime = 0;
+            animationProgress = 0;
+            resumeReading();
+        } else {
+            stopReading();
+        }
+    });
 });
+      
 </script>
 
 
