@@ -449,7 +449,7 @@ footer i {
     background: #ddd;
     min-width: 2px;
     transition: background-color 0.3s ease; /* Cambiato da height a background-color */
-    margin: 0 1px; /* Aggiunto per dare un po' di spazio tra le barre */
+    margin: 0; /* Aggiunto per dare un po' di spazio tra le barre */
 }
 
 .waveform-bar.played {
@@ -707,7 +707,8 @@ function calculateTotalDuration() {
 
 function createWaveform() {
     const container = document.querySelector('.waveform-bars');
-    const numberOfBars = 100;
+    // Aumentato significativamente il numero di barre
+    const numberOfBars = 200; // Puoi aumentare o diminuire questo numero per regolare la densità
     
     for (let i = 0; i < numberOfBars; i++) {
         const bar = document.createElement('div');
@@ -784,13 +785,8 @@ function stopReading() {
 function resumeReading() {
     if (!isPlaying) return;
     
-    if (currentIndex === 0) {
-        startTime = Date.now();
-        readNextElement();
-    } else {
-        startTime = Date.now() - pauseTime;
-        readNextElement();
-    }
+    startTime = Date.now() - pauseTime;
+    readNextElement();
     updateProgress();
 }
 
@@ -851,20 +847,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const audioControl = document.getElementById('audioControl');
     
-    audioControl.addEventListener('click', () => {
-        if (!isPlaying) {
-            isPlaying = true;
-            audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-pause"></i>';
-            waveformContainerElement.style.display = 'block'; // Mostra la waveform
-            currentIndex = 0;
-            startTime = Date.now();
-            pauseTime = 0;
-            resumeReading();
-        } else {
-            stopReading();
-            // Non nascondiamo la waveform quando si ferma l'audio
-        }
-    });
+ audioControl.addEventListener('click', () => {
+    if (!isPlaying) {
+        isPlaying = true;
+        audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-pause"></i>';
+        waveformContainerElement.style.display = 'block';
+        currentIndex = 0;
+        startTime = Date.now();
+        pauseTime = 0;
+        
+        // Start reading immediately
+        readNextElement();
+        updateProgress();
+    } else {
+        stopReading();
+    }
 });
       
 </script>
