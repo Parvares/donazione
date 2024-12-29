@@ -392,83 +392,73 @@ footer i {
             
 /* Audio control button styles */
 .audio-control-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 20px 0;
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 .audio-control {
-    display: flex;
-    align-items: center;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 24px;
-    color: #970a2c;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #970a2c;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px;
 }
 
-.audio-control:hover .fa-headphones {
-    display: none;
-}
-
-.audio-control:hover .fa-play {
-    display: inline;
-}
-
-.fa-play {
-    display: none;
+.audio-control:hover {
+  opacity: 0.8;
 }
 
 .audio-label {
-    color: #970a2c;
-    cursor: pointer;
+  color: #666;
+  font-size: 14px;
 }
 
-.waveform-container {
-    display: none;
-    position: relative;
-    height: 60px;
-    background: #f5f5f5;
-    border-radius: 4px;
-    padding: 10px;
-    margin: 10px 0;
-    cursor: pointer;
+.progress-container {
+  width: 100%;
+  max-width: 600px;
+  height: 4px;
+  background: #eee;
+  border-radius: 2px;
+  position: relative;
+  margin: 20px 0;
+  cursor: pointer;
 }
 
-.waveform-bars {
-    display: flex;
-    align-items: flex-end;
-    height: 40px;
-    gap: 1px;
+.progress-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: #970a2c;
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.1s linear;
 }
 
-.waveform-bar {
-    flex: 1;
-    background: #ddd;
-    min-width: 2px;
-    transition: height 0.1s ease;
-}
-
-.waveform-bar.played {
-    background: #970a2c;
+.progress-handle {
+  width: 12px;
+  height: 12px;
+  background: #970a2c;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
 }
 
 .time-display {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    margin-top: 5px;
-}
-
-.progress-line {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 2px;
-    background: rgba(151, 10, 44, 0.5);
-    pointer-events: none;
+  display: flex;
+  justify-content: space-between;
+  color: #666;
+  font-size: 14px;
+  margin-top: 5px;
 }
       
    </style>
@@ -534,21 +524,26 @@ footer i {
 <!-- Add this right after the library-name div in your HTML -->
 <div class="text-controls">
 <div class="audio-control-container">
-    <button class="audio-control" id="audioControl">
-        <i class="fas fa-headphones"></i>
-        <i class="fas fa-play"></i>
-    </button>
-    <span class="audio-label">ascolta l'audio</span>
+  <button class="audio-control" id="audioControl">
+    <i class="fas fa-headphones"></i>
+    <i class="fas fa-play"></i>
+  </button>
+  <span class="audio-label">ascolta l'audio</span>
 </div>
-  
+
+<div class="progress-container" id="progressContainer">
+  <div class="progress-bar" id="progressBar"></div>
+  <div class="progress-handle" id="progressHandle"></div>
+</div>
+   
    
 <div class="waveform-container">
     <div class="waveform-bars"></div>
     <div class="progress-line"></div>
     <div class="time-display">
-        <span id="currentTime">0:00</span>
-        <span id="totalTime">0:00</span>
-    </div>
+  <span id="currentTime">0:00</span>
+  <span id="totalTime">0:00</span>
+</div>
 </div>
 
             <h1>Donazione di libri</h1>
@@ -696,38 +691,18 @@ function calculateTotalDuration() {
     document.querySelectorAll('h1, h2, p, li').forEach(el => {
         totalText += el.textContent + ' ';
     });
-    totalDuration = (totalText.split(' ').length * 0.4);
+    // Estimate duration based on average reading speed (150 words per minute)
+    const wordCount = totalText.split(/\s+/).length;
+    totalDuration = Math.ceil(wordCount / 150 * 60);
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
 
-function createWaveform() {
-    const container = document.querySelector('.waveform-bars');
-    container.innerHTML = '';
-    const numberOfBars = 200;
-
-    for (let i = 0; i < numberOfBars; i++) {
-        const bar = document.createElement('div');
-        bar.className = 'waveform-bar';
-        const height = 5 + Math.random() * 35;
-        bar.style.height = `${height}px`;
-        container.appendChild(bar);
-    }
-}
-
-function updateWaveform(progress) {
-    const bars = document.querySelectorAll('.waveform-bar');
-    const barsToPlay = Math.floor(progress * bars.length);
+function updateProgress(progress) {
+    const progressBar = document.getElementById('progressBar');
+    const progressHandle = document.getElementById('progressHandle');
     
-    bars.forEach((bar, index) => {
-        if (index < barsToPlay) {
-            bar.classList.add('played');
-        } else {
-            bar.classList.remove('played');
-        }
-    });
-
-    const progressLine = document.querySelector('.progress-line');
-    progressLine.style.left = `${progress * 100}%`;
+    progressBar.style.width = `${progress * 100}%`;
+    progressHandle.style.left = `${progress * 100}%`;
 }
 
 function setupSpeech() {
@@ -767,25 +742,25 @@ function resumeReading() {
     isPlaying = true;
     const audioControl = document.getElementById('audioControl');
     audioControl.innerHTML = '<i class="fas fa-pause"></i>';
-    updateProgress();
+    updateProgressAnimation();
     readNextElement();
 }
 
-function updateProgress() {
+function updateProgressAnimation() {
     if (!isPlaying) return;
 
     const elapsedTime = (Date.now() - startTime) / 1000;
     const progress = Math.min(elapsedTime / totalDuration, 1);
     
-    updateWaveform(progress);
+    updateProgress(progress);
     document.getElementById('currentTime').textContent = formatTime(elapsedTime);
     
     if (progress < 1) {
-        requestAnimationFrame(updateProgress);
+        requestAnimationFrame(updateProgressAnimation);
     }
 }
 
-function handleWaveformClick(e) {
+function handleProgressClick(e) {
     if (isDragging) return;
     
     const rect = e.currentTarget.getBoundingClientRect();
@@ -795,33 +770,28 @@ function handleWaveformClick(e) {
     startTime = Date.now() - (progress * totalDuration * 1000);
     pauseTime = Date.now() - startTime;
     
-    updateWaveform(progress);
+    updateProgress(progress);
     currentIndex = Math.floor(progress * document.querySelectorAll('h1, h2, p, li').length);
     
     if (isPlaying) {
         window.speechSynthesis.cancel();
         readNextElement();
-        updateProgress();
+        updateProgressAnimation();
     }
 }
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
     setupSpeech();
-    createWaveform();
     calculateTotalDuration();
 
-    const waveformContainer = document.querySelector('.waveform-container');
-    waveformContainer.addEventListener('click', handleWaveformClick);
+    const progressContainer = document.getElementById('progressContainer');
+    progressContainer.addEventListener('click', handleProgressClick);
 
-    const audioControlContainer = document.querySelector('.audio-control-container');
     const audioControl = document.getElementById('audioControl');
     
     audioControl.addEventListener('click', () => {
-        const waveformContainer = document.querySelector('.waveform-container');
-        
         if (!isPlaying) {
-            waveformContainer.style.display = 'block';
             audioControl.innerHTML = '<i class="fas fa-pause"></i>';
             resumeReading();
         } else {
@@ -829,8 +799,36 @@ document.addEventListener('DOMContentLoaded', () => {
             stopReading();
         }
     });
+
+    // Add drag functionality for the progress handle
+    const progressHandle = document.getElementById('progressHandle');
+    
+    progressHandle.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        document.addEventListener('mousemove', handleDrag);
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            document.removeEventListener('mousemove', handleDrag);
+        });
+    });
+
+    function handleDrag(e) {
+        if (!isDragging) return;
+        
+        const rect = progressContainer.getBoundingClientRect();
+        let progress = (e.clientX - rect.left) / rect.width;
+        progress = Math.max(0, Math.min(1, progress));
+        
+        startTime = Date.now() - (progress * totalDuration * 1000);
+        updateProgress(progress);
+        
+        if (isPlaying) {
+            window.speechSynthesis.cancel();
+            currentIndex = Math.floor(progress * document.querySelectorAll('h1, h2, p, li').length);
+            readNextElement();
+        }
+    }
 });
-      
 </script>
 
 
