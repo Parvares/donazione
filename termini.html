@@ -826,16 +826,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isPlaying) {
             waveformContainerElement.style.display = 'block';
             audioControl.innerHTML = '<i class="fas fa-pause"></i>';
-            currentIndex = 0;
-            startTime = Date.now();
-            pauseTime = 0;
-            animationProgress = 0;
-            resumeReading();
+            resumeReading();  // Non reimpostiamo currentIndex e startTime, li lasciamo come sono
         } else {
             stopReading();
         }
     });
 });
+
       
 </script>
 
