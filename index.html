@@ -787,42 +787,69 @@ function removeLoadingOverlay() {
 
         
 
-        function validateField(input) {
-            const value = input.value.trim();
-            let isValid = true;
+// Update the validateField function to handle email validation
+function validateField(input) {
+    const value = input.value.trim();
+    let isValid = true;
 
-            if (input.hasAttribute('required') && !value) {
-                showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
-                isValid = false;
-            } else {
-                switch (input.id) {
-                    case 'telefono':
-                        if (value && !/^[0-9]{6,15}$/.test(value)) {
-                            showError(input, 'Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)');
-                            isValid = false;
-                        }
-                        break;
-                        
-           case 'email':
-    if (!value) {
-        showError(input, 'L\'email è obbligatoria');
+    // Handle required fields except email (handled separately)
+    if (input.hasAttribute('required') && !value && input.id !== 'email') {
+        showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
         isValid = false;
-    } else if (!emailValidator.validateSyntax(value)) {
-        showError(input, 'Formato email non valido');
-        isValid = false;
-    }
-    break;
-
-				
+    } else {
+        switch (input.id) {
+            case 'telefono':
+                if (value && !/^[0-9]{6,15}$/.test(value)) {
+                    showError(input, 'Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)');
+                    isValid = false;
                 }
-            }
-
-            if (isValid) {
-                hideError(input);
-            }
-
-            return isValid;
+                break;
+                
+            case 'email':
+                // Show error only if the field is populated and not focused
+                if (value && !input.matches(':focus')) {
+                    if (!emailValidator.validateSyntax(value)) {
+                        showError(input, 'Formato email non valido');
+                        isValid = false;
+                    }
+                } else if (!value && !input.matches(':focus') && input.hasAttribute('required')) {
+                    showError(input, 'L\'email è obbligatoria');
+                    isValid = false;
+                }
+                break;
         }
+    }
+
+    if (isValid) {
+        hideError(input);
+    }
+
+    return isValid;
+}
+
+// Add event listeners for email field focus handling
+document.addEventListener('DOMContentLoaded', function() {
+    const emailInput = document.getElementById('email');
+    
+    if (emailInput) {
+        // Hide error when field receives focus
+        emailInput.addEventListener('focus', function() {
+            hideError(this);
+        });
+
+        // Validate when field loses focus
+        emailInput.addEventListener('blur', function() {
+            validateField(this);
+        });
+
+        // Optional: validate on input change while not focused
+        emailInput.addEventListener('input', function() {
+            if (!this.matches(':focus')) {
+                validateField(this);
+            }
+        });
+    }
+});
 
 
         
