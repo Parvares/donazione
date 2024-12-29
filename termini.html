@@ -446,7 +446,8 @@ footer i {
 .waveform-bar {
     flex: 1;
     background: #ddd;
-    min-width: 2px;
+min-width: 1px; /* Ridotto da 2px a 1px per barre più sottili */
+margin: 0; /* Rimosso il margine per barre più vicine */
     transition: height 0.1s ease;
 }
 
