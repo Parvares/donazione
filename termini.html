@@ -445,13 +445,13 @@ footer i {
 
 .waveform-bar {
     flex: 1;
-    background: #ddd;
+    background: #ddd; /* Colore delle barre non riprodotte */
     min-width: 2px;
-    transition: height 0.1s ease;
+    transition: height 0.1s ease, background-color 0.3s ease; /* Aggiunta della transizione per il colore */
 }
 
 .waveform-bar.played {
-    background: #970a2c;
+    background-color: var(--primary);
 }
 
 .time-display {
