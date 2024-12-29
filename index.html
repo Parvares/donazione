@@ -880,6 +880,20 @@ document.addEventListener('blur', function(e) {
         validateBookField(e.target);
     }
 });
+
+	// Add this style to remove spinner arrows
+const style = document.createElement('style');
+style.textContent = `
+    input[type="number"].book-year::-webkit-inner-spin-button,
+    input[type="number"].book-year::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type="number"].book-year {
+        -moz-appearance: textfield;
+    }
+`;
+document.head.appendChild(style);
         
 
 function validateCheckbox(checkbox) {
