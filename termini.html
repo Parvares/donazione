@@ -696,9 +696,8 @@ function calculateTotalDuration() {
     document.querySelectorAll('h1, h2, p, li').forEach(el => {
         totalText += el.textContent + ' ';
     });
-    // Stima la durata basata sul numero di parole
-    // Assumendo una velocità media di lettura di 150 parole al minuto
-    const wordCount = totalText.trim().split(/\s+/).length;
+    // Estimate: average speaking rate of 150 words per minute
+    const wordCount = totalText.split(/\s+/).length;
     totalDuration = (wordCount / 150) * 60;
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
@@ -706,7 +705,8 @@ function calculateTotalDuration() {
 function createWaveform() {
     const container = document.querySelector('.waveform-bars');
     container.innerHTML = '';
-    const numberOfBars = 100;
+    // Create more bars to ensure full coverage
+    const numberOfBars = Math.ceil(totalDuration / 2); // One bar per 2 seconds
     
     for (let i = 0; i < numberOfBars; i++) {
         const bar = document.createElement('div');
@@ -745,8 +745,9 @@ function setupSpeech() {
             readNextElement();
         } else {
             stopReading();
-            // Assicurati che la waveform sia completata
+            // Ensure we show 100% completion
             updateWaveform(1);
+            document.getElementById('currentTime').textContent = formatTime(totalDuration);
         }
     };
 }
@@ -780,11 +781,10 @@ function updateProgress() {
     if (!isPlaying) return;
 
     const elapsedTime = (Date.now() - startTime) / 1000;
-    // Limita il progresso al 100%
     const progress = Math.min(elapsedTime / totalDuration, 1);
     
     updateWaveform(progress);
-    document.getElementById('currentTime').textContent = formatTime(Math.min(elapsedTime, totalDuration));
+    document.getElementById('currentTime').textContent = formatTime(elapsedTime);
     
     if (progress < 1) {
         requestAnimationFrame(updateProgress);
@@ -796,7 +796,7 @@ function handleWaveformClick(e) {
     
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
-    const progress = Math.max(0, Math.min(x / rect.width, 1));
+    const progress = x / rect.width;
     
     startTime = Date.now() - (progress * totalDuration * 1000);
     pauseTime = Date.now() - startTime;
@@ -811,10 +811,11 @@ function handleWaveformClick(e) {
     }
 }
 
+// Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
     setupSpeech();
-    createWaveform();
     calculateTotalDuration();
+    createWaveform();
 
     const waveformContainer = document.querySelector('.waveform-container');
     waveformContainer.addEventListener('click', handleWaveformClick);
@@ -823,6 +824,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
     audioControl.addEventListener('click', () => {
         if (!isPlaying) {
+            if (currentIndex === document.querySelectorAll('h1, h2, p, li').length) {
+                currentIndex = 0;
+                startTime = Date.now();
+                pauseTime = 0;
+            }
             audioControl.innerHTML = '<i class="fas fa-pause"></i>';
             resumeReading();
         } else {
