@@ -446,14 +446,19 @@ footer i {
 .waveform-bar {
     flex: 1;
     background: #ddd;
-min-width: 1px; /* Ridotto da 2px a 1px per barre più sottili */
-margin: 0; /* Rimosso il margine per barre più vicine */
-    transition: height 0.1s ease;
+    min-width: 1px; /* Thin bars */
+    margin: 0; /* Closer bars */
+    transition: height 0.1s ease, background-color 0.3s ease; /* Combined transitions */
 }
 
 .waveform-bar.played {
-    background: #970a2c;
+    background: var(--primary); /* Use CSS variable for consistency */
 }
+
+.waveform-bar.playing {
+    background-color: rgba(151, 10, 44, 0.5); /* Semi-transparent red */
+}
+
 
 .time-display {
     display: flex;
