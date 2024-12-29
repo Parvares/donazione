@@ -107,14 +107,23 @@
     min-height: 70px; /* Ridotto da 120px */
 }
 
-       .library-name {
-           display: flex;
-           align-items: center;
-           gap: 0.5rem;
-           color: var(--text);
-           font-size: 1.4rem;
-           margin-bottom: 1rem;
-       }
+      .library-name {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text);
+    font-size: 1.1rem; /* Ridotto da 1.4rem */
+    margin-bottom: 1rem;
+}
+
+.library-name a {
+    border-bottom: none; /* Rimuove la sottolineatura esistente */
+}
+
+.library-name a:hover {
+    border-bottom: none; /* Previene la sottolineatura al hover */
+    text-decoration: none; /* Assicura che non ci sia sottolineatura */
+}
 
        .library-name img {
            height: 22px;
@@ -398,14 +407,31 @@ footer i {
     margin: 20px 0;
 }
 
+/* Stile aggiornato per il controllo audio */
 .audio-control {
     display: flex;
     align-items: center;
-    background: none;
+    justify-content: center;
+    background-color: var(--primary);
     border: none;
     cursor: pointer;
-    font-size: 24px;
-    color: #970a2c;
+    font-size: 20px;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    padding: 0;
+    transition: background-color 0.3s ease;
+}
+
+.audio-control:hover {
+    background-color: #800624; /* Versione più scura del colore primario */
+}
+
+.audio-control .fa-headphones,
+.audio-control .fa-play,
+.audio-control .fa-pause {
+    color: white;
 }
 
 .audio-control:hover .fa-headphones {
@@ -416,13 +442,16 @@ footer i {
     display: inline;
 }
 
+
 .fa-play {
     display: none;
 }
 
+/* Aggiorna il colore del testo "ascolta l'audio" per mantenerlo coordinato */
 .audio-label {
-    color: #970a2c;
+    color: var(--primary);
     cursor: pointer;
+    font-size: 0.9rem;
 }
 
 .waveform-container {
