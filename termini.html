@@ -676,7 +676,7 @@ let pauseTime = 0;
 let totalDuration = 0;
 let isDragging = false;
 let animationProgress = 0;
-let lastPlayedIndex = 0; // New variable to track last played position
+let lastPlayedIndex = 0;  // Add this to store the last played position
 
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -698,6 +698,7 @@ function calculateTotalDuration() {
 function createWaveform() {
     const container = document.querySelector('.waveform-bars');
     const numberOfBars = 50;
+    
     for (let i = 0; i < numberOfBars; i++) {
         const bar = document.createElement('div');
         bar.className = 'waveform-bar';
@@ -732,8 +733,8 @@ function setupSpeech() {
     speech.pitch = 1;
     
     speech.onend = () => {
-        lastPlayedIndex = currentIndex; // Update last played position
         currentIndex++;
+        lastPlayedIndex = currentIndex;  // Update lastPlayedIndex
         if (currentIndex < document.querySelectorAll('h1, h2, p, li').length) {
             readNextElement();
         } else {
@@ -753,20 +754,17 @@ function readNextElement() {
 function stopReading() {
     isPlaying = false;
     pauseTime = Date.now() - startTime;
-    lastPlayedIndex = currentIndex; // Save the current position
     const audioControl = document.getElementById('audioControl');
     audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
     window.speechSynthesis.cancel();
-    
-    // Don't reset animation progress when stopping
-    updateWaveform(currentIndex / document.querySelectorAll('h1, h2, p, li').length);
+    lastPlayedIndex = currentIndex;  // Store the current position
 }
 
 function resumeReading() {
     if (!isPlaying) {
+        currentIndex = lastPlayedIndex;  // Restore the last played position
         startTime = Date.now() - pauseTime;
         isPlaying = true;
-        currentIndex = lastPlayedIndex; // Resume from last played position
         updateProgress();
         readNextElement();
     }
@@ -798,7 +796,7 @@ function handleWaveformClick(e) {
     const textElements = document.querySelectorAll('h1, h2, p, li');
     
     currentIndex = Math.floor(progress * textElements.length);
-    lastPlayedIndex = currentIndex; // Update last played position
+    lastPlayedIndex = currentIndex;  // Update lastPlayedIndex
     startTime = Date.now() - (progress * totalDuration * 1000);
     pauseTime = Date.now() - startTime;
     
@@ -825,6 +823,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     audioControl.addEventListener('click', () => {
         isPlaying = !isPlaying;
+        
         if (isPlaying) {
             audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-pause"></i>';
             resumeReading();
