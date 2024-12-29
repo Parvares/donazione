@@ -845,7 +845,7 @@ function validateBookField(input) {
         // Mostra errore solo se il campo è popolato e non è focalizzato
         if (value && !input.matches(':focus')) {
             if (value.length !== 4 || !Number.isInteger(Number(value)) || Number(value) < 1900 || Number(value) > currentYear) {
-                showError(input, `L'anno deve essere un numero di 4 cifre compreso tra 1900 e ${currentYear}`);
+                showError(input, `L'anno deve essere compreso tra 1900 e ${currentYear}`);
                 isValid = false;
             }
         } else {
