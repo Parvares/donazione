@@ -390,6 +390,7 @@ footer i {
       
 
             
+/* Audio control button styles */
 .audio-control-container {
     display: flex;
     align-items: center;
@@ -424,21 +425,11 @@ footer i {
     cursor: pointer;
 }
 
-/* Waveform container - inizialmente nascosto */
 .waveform-container {
-    display: none;  /* Nascosto di default */
-    align-items: center;
-    gap: 2px;
-    height: 40px;
-    padding: 0;
-    margin: 10px 0;
-    background: none;
+    /* Rimosso il bordo o contenitore rettangolare delle barre */
     border: none;
-}
-
-/* Classe da aggiungere quando il audio è attivo */
-.waveform-container.active {
-    display: flex;  /* Si mostra quando attivo */
+    padding: 0;
+    background: none; /* Rimosso il background se c'è */
 }
 
 .waveform-bars {
@@ -449,13 +440,14 @@ footer i {
 }
 
 .waveform-bar {
-    width: 3px;
-    background-color: #ddd;
-    transition: background-color 0.3s ease;
+    flex: 1;
+    background: #ddd;
+    min-width: 2px;
+    transition: height 0.1s ease;
 }
 
 .waveform-bar.played {
-    background-color: #970a2c;
+    background: #970a2c;
 }
 
 .time-display {
@@ -466,8 +458,10 @@ footer i {
 }
 
 .progress-line {
-    display: none;
+    /* Rimosso tutto il codice relativo alla progress line */
+    display: none; /* Nascondi la progress line */
 }
+      
    </style>
 </head>
 <body>
@@ -818,15 +812,20 @@ function handleWaveformClick(e) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // ... codice esistente ...
+    setupSpeech();
+    createWaveform();
+    calculateTotalDuration();
+
+    const waveformContainer = document.querySelector('.waveform-container');
+    waveformContainer.addEventListener('click', handleWaveformClick);
 
     const audioControl = document.getElementById('audioControl');
-    const waveformContainer = document.querySelector('.waveform-container');
+    const waveformContainerElement = document.querySelector('.waveform-container');
     
     audioControl.addEventListener('click', () => {
         if (!isPlaying) {
-            waveformContainer.classList.add('active');  // Mostra la waveform
-            audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-pause"></i>';
+            waveformContainerElement.style.display = 'block';
+            audioControl.innerHTML = '<i class="fas fa-pause"></i>';
             currentIndex = 0;
             startTime = Date.now();
             pauseTime = 0;
@@ -834,7 +833,6 @@ document.addEventListener('DOMContentLoaded', () => {
             resumeReading();
         } else {
             stopReading();
-            waveformContainer.classList.remove('active');  // Nasconde la waveform
         }
     });
 });
