@@ -684,7 +684,7 @@ let startTime = 0;
 let pauseTime = 0;
 let totalDuration = 0;
 let isDragging = false;
-let animationFrameId = null;
+let animationProgress = 0;
 
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -697,17 +697,16 @@ function calculateTotalDuration() {
     document.querySelectorAll('h1, h2, p, li').forEach(el => {
         totalText += el.textContent + ' ';
     });
-    // Stima la durata basata sul numero di parole (assumendo ~150 parole al minuto)
-    totalDuration = (totalText.split(' ').length / 150) * 60;
+    // Estimate duration based on average reading speed (150 words per minute)
+    const wordCount = totalText.split(/\s+/).length;
+    totalDuration = wordCount / 150 * 60;
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
 
 function createWaveform() {
     const container = document.querySelector('.waveform-bars');
-    if (!container) return;  // Aggiungiamo un controllo di sicurezza
-    
-    container.innerHTML = ''; // Clear existing bars
-    const numberOfBars = 100; // Adjust number of bars as needed
+    container.innerHTML = '';
+    const numberOfBars = 50;  // Set fixed number of bars
     
     for (let i = 0; i < numberOfBars; i++) {
         const bar = document.createElement('div');
@@ -720,57 +719,40 @@ function createWaveform() {
 
 function updateWaveform(targetProgress) {
     const bars = document.querySelectorAll('.waveform-bar');
-    if (!bars.length) return;  // Aggiungiamo un controllo di sicurezza
-    
     const barsToPlay = Math.floor(targetProgress * bars.length);
     
+    // Update each bar individually
     bars.forEach((bar, index) => {
         if (index < barsToPlay) {
-            if (!bar.classList.contains('played')) {
-                bar.classList.add('played');
-            }
+            bar.classList.add('played');
         } else {
-            if (bar.classList.contains('played')) {
-                bar.classList.remove('played');
-            }
+            bar.classList.remove('played');
         }
     });
 
     const progressLine = document.querySelector('.progress-line');
-    if (progressLine) {  // Aggiungiamo un controllo di sicurezza
-        progressLine.style.left = `${targetProgress * 100}%`;
-    }
+    progressLine.style.left = `${targetProgress * 100}%`;
 }
 
 function setupSpeech() {
-    if ('speechSynthesis' in window) {  // Verifichiamo che la sintesi vocale sia supportata
-        speech = new SpeechSynthesisUtterance();
-        speech.lang = 'it-IT';
-        speech.rate = 0.9;
-        speech.pitch = 1;
-        
-        speech.onend = () => {
-            currentIndex++;
-            if (currentIndex < document.querySelectorAll('h1, h2, p, li').length) {
-                readNextElement();
-            } else {
-                stopReading();
-            }
-        };
-    } else {
-        console.error('Speech synthesis not supported');
-        // Disabilita il pulsante audio se la sintesi vocale non è supportata
-        const audioControl = document.getElementById('audioControl');
-        if (audioControl) {
-            audioControl.disabled = true;
-            audioControl.style.opacity = '0.5';
+    speech = new SpeechSynthesisUtterance();
+    speech.lang = 'it-IT';
+    speech.rate = 0.9;
+    speech.pitch = 1;
+    
+    speech.onend = () => {
+        currentIndex++;
+        if (currentIndex < document.querySelectorAll('h1, h2, p, li').length) {
+            readNextElement();
+        } else {
+            stopReading();
         }
-    }
+    };
 }
 
 function readNextElement() {
     const textElements = document.querySelectorAll('h1, h2, p, li');
-    if (currentIndex < textElements.length && speech) {
+    if (currentIndex < textElements.length) {
         speech.text = textElements[currentIndex].textContent;
         window.speechSynthesis.speak(speech);
     }
@@ -780,27 +762,16 @@ function stopReading() {
     isPlaying = false;
     pauseTime = Date.now() - startTime;
     const audioControl = document.getElementById('audioControl');
-    if (audioControl) {
-        audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
-    }
-    if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-    }
+    audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
+    window.speechSynthesis.cancel();
     
-    if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-        animationFrameId = null;
-    }
-    
+    animationProgress = 0;
     updateWaveform(0);
-    const currentTimeElement = document.getElementById('currentTime');
-    if (currentTimeElement) {
-        currentTimeElement.textContent = '0:00';
-    }
+    document.getElementById('currentTime').textContent = '0:00';
 }
 
 function resumeReading() {
-    if (!isPlaying && speech) {
+    if (!isPlaying) {
         startTime = Date.now() - pauseTime;
         isPlaying = true;
         updateProgress();
@@ -816,15 +787,13 @@ function updateProgress() {
     const progress = Math.min(currentIndex / textElements.length, 1);
     
     const currentTimeDisplay = Math.min(elapsedTime, totalDuration);
-    const currentTimeElement = document.getElementById('currentTime');
-    if (currentTimeElement) {
-        currentTimeElement.textContent = formatTime(currentTimeDisplay);
-    }
+    document.getElementById('currentTime').textContent = formatTime(currentTimeDisplay);
     
+    // Update waveform with current progress
     updateWaveform(progress);
     
     if (progress < 1) {
-        animationFrameId = requestAnimationFrame(updateProgress);
+        requestAnimationFrame(updateProgress);
     }
 }
 
@@ -833,7 +802,7 @@ function handleWaveformClick(e) {
     
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
-    const progress = Math.max(0, Math.min(1, x / rect.width));
+    const progress = x / rect.width;
     const textElements = document.querySelectorAll('h1, h2, p, li');
     
     currentIndex = Math.floor(progress * textElements.length);
@@ -847,10 +816,7 @@ function handleWaveformClick(e) {
         readNextElement();
     }
     
-    const currentTimeElement = document.getElementById('currentTime');
-    if (currentTimeElement) {
-        currentTimeElement.textContent = formatTime(progress * totalDuration);
-    }
+    document.getElementById('currentTime').textContent = formatTime(progress * totalDuration);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -859,25 +825,22 @@ document.addEventListener('DOMContentLoaded', () => {
     calculateTotalDuration();
 
     const waveformContainer = document.querySelector('.waveform-container');
-    if (waveformContainer) {
-        waveformContainer.addEventListener('click', handleWaveformClick);
-    }
+    waveformContainer.addEventListener('click', handleWaveformClick);
 
     const audioControl = document.getElementById('audioControl');
-    if (audioControl) {
-        audioControl.addEventListener('click', () => {
-            isPlaying = !isPlaying;
-            if (isPlaying) {
-                audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-pause"></i>';
-                currentIndex = 0;
-                startTime = Date.now();
-                pauseTime = 0;
-                resumeReading();
-            } else {
-                stopReading();
-            }
-        });
-    }
+    
+    audioControl.addEventListener('click', () => {
+        isPlaying = !isPlaying;
+        if (isPlaying) {
+            audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-pause"></i>';
+            currentIndex = 0;
+            startTime = Date.now();
+            pauseTime = 0;
+            resumeReading();
+        } else {
+            stopReading();
+        }
+    });
 });
       
 </script>
