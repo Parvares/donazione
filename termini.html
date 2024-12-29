@@ -676,7 +676,7 @@ footer i {
    
    
 
-   <script>
+<script>
 let speech = null;
 let isPlaying = false;
 let currentIndex = 0;
@@ -685,8 +685,6 @@ let pauseTime = 0;
 let totalDuration = 0;
 let isDragging = false;
 let animationProgress = 0;
-let lastUpdateTime = 0;
-const ANIMATION_DURATION = 5000; // 5 seconds for full animation
 
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -697,63 +695,28 @@ function formatTime(seconds) {
 function calculateTotalDuration() {
     let totalText = '';
     document.querySelectorAll('h1, h2, p, li').forEach(el => {
-        totalText += el.textContent + ' ';
+        totalText += el.textContent + " ";
     });
-    // Stima la durata basata sul numero di parole e velocità media di lettura
-    const words = totalText.split(' ').length;
-    totalDuration = Math.ceil(words * 0.4); // ~150 parole al minuto
-    document.getElementById('totalTime').textContent = formatTime(totalDuration);
+    totalDuration = totalText.length * 0.1; // Approximiamo la durata per carattere
 }
 
-function createWaveform() {
-    const container = document.querySelector('.waveform-bars');
-    const numberOfBars = 100;
-    
-    for (let i = 0; i < numberOfBars; i++) {
-        const bar = document.createElement('div');
-        bar.className = 'waveform-bar';
-        const height = 5 + Math.random() * 35;
-        bar.style.height = `${height}px`;
-        container.appendChild(bar);
-    }
-}
+function updateWaveform(targetProgress) {
+    // Interpola l'animazione verso il target in modo fluido
+    animationProgress += (targetProgress - animationProgress) * 0.05;
 
-function updateWaveform(timestamp) {
-    if (!isPlaying) return;
-    
-    if (!lastUpdateTime) lastUpdateTime = timestamp;
-    const deltaTime = timestamp - lastUpdateTime;
-    
-    // Calculate progress based on elapsed time
-    const elapsedTime = (Date.now() - startTime) / 1000;
-    const textElements = document.querySelectorAll('h1, h2, p, li');
-    const targetProgress = Math.min(currentIndex / textElements.length, 1);
-    
-    // Smoothly interpolate towards target progress
-    const interpolationFactor = Math.min(deltaTime / 16, 1); // 60fps target
-    animationProgress += (targetProgress - animationProgress) * interpolationFactor * 0.1;
-    
     const bars = document.querySelectorAll('.waveform-bar');
-    const exactBarsToPlay = animationProgress * bars.length;
-    
-    // Update each bar individually
+    const barsToPlay = Math.floor(animationProgress * bars.length);
+
     bars.forEach((bar, index) => {
-        if (index < exactBarsToPlay) {
-            bar.classList.add('played');
+        if (index < barsToPlay) {
+            bar.classList.add('played'); // Aggiunge la classe per colorare la barra
         } else {
-            bar.classList.remove('played');
+            bar.classList.remove('played'); // Rimuove la colorazione per le barre successive
         }
     });
-    
-    // Update progress line
+
     const progressLine = document.querySelector('.progress-line');
-    progressLine.style.left = `${animationProgress * 100}%`;
-    
-    // Update time display
-    document.getElementById('currentTime').textContent = formatTime(elapsedTime);
-    
-    lastUpdateTime = timestamp;
-    requestAnimationFrame(updateWaveform);
+    progressLine.style.left = `${animationProgress * 100}%`; // Aggiorna la linea di avanzamento
 }
 
 function setupSpeech() {
@@ -786,16 +749,36 @@ function stopReading() {
     const audioControl = document.getElementById('audioControl');
     audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
     window.speechSynthesis.cancel();
-    lastUpdateTime = 0;
+    
+    animationProgress = 0;
+    updateWaveform(0);
+    document.getElementById('currentTime').textContent = '0:00';
 }
 
-function startReading() {
+function resumeReading() {
     if (!isPlaying) {
-        isPlaying = true;
         startTime = Date.now() - pauseTime;
-        lastUpdateTime = 0;
-        requestAnimationFrame(updateWaveform);
+        isPlaying = true;
+        updateProgress();
         readNextElement();
+    }
+}
+
+function updateProgress() {
+    if (!isPlaying) return;
+
+    const elapsedTime = (Date.now() - startTime) / 1000;
+    const textElements = document.querySelectorAll('h1, h2, p, li');
+    const progress = Math.min(currentIndex / textElements.length, 1);
+    
+    const currentTimeDisplay = Math.min(elapsedTime, totalDuration);
+    document.getElementById('currentTime').textContent = formatTime(currentTimeDisplay);
+    
+    // Aggiorna la waveform con una transizione fluida
+    updateWaveform(progress);
+    
+    if (progress < 1) {
+        requestAnimationFrame(updateProgress);
     }
 }
 
@@ -812,20 +795,7 @@ function handleWaveformClick(e) {
     pauseTime = Date.now() - startTime;
     
     animationProgress = progress;
-    
-    const bars = document.querySelectorAll('.waveform-bar');
-    const exactBarsToPlay = animationProgress * bars.length;
-    
-    bars.forEach((bar, index) => {
-        if (index < exactBarsToPlay) {
-            bar.classList.add('played');
-        } else {
-            bar.classList.remove('played');
-        }
-    });
-    
-    const progressLine = document.querySelector('.progress-line');
-    progressLine.style.left = `${progress * 100}%`;
+    updateWaveform(progress);
     
     if (isPlaying) {
         window.speechSynthesis.cancel();
@@ -847,23 +817,31 @@ document.addEventListener('DOMContentLoaded', () => {
     
     audioControl.addEventListener('click', () => {
         if (!isPlaying) {
-            audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-pause"></i>';
-            if (currentIndex >= document.querySelectorAll('h1, h2, p, li').length) {
-                currentIndex = 0;
-                animationProgress = 0;
-                const bars = document.querySelectorAll('.waveform-bar');
-                bars.forEach(bar => bar.classList.remove('played'));
-            }
+            currentIndex = 0;
             startTime = Date.now();
             pauseTime = 0;
-            startReading();
+            animationProgress = 0;
+            resumeReading();
         } else {
             stopReading();
         }
     });
 });
-      
+
+// Crea la waveform (aggiungi barre per la visualizzazione)
+function createWaveform() {
+    const container = document.querySelector('.waveform-bars');
+    const numberOfBars = document.querySelectorAll('h1, h2, p, li').length;
+    for (let i = 0; i < numberOfBars; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'waveform-bar';
+        const height = 5 + Math.random() * 35;
+        bar.style.height = `${height}px`;
+        container.appendChild(bar);
+    }
+}
 </script>
+
 
 
    
