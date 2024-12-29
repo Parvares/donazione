@@ -782,12 +782,16 @@ function stopReading() {
 }
 
 function resumeReading() {
-    if (!isPlaying) {
+    if (!isPlaying) return;
+    
+    if (currentIndex === 0) {
+        startTime = Date.now();
+        readNextElement();
+    } else {
         startTime = Date.now() - pauseTime;
-        isPlaying = true;
-        updateProgress();
         readNextElement();
     }
+    updateProgress();
 }
 
 function updateProgress() {
