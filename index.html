@@ -867,7 +867,7 @@ function handleISBNInput(input) {
     // Se sono stati inseriti caratteri non numerici o il campo è focalizzato
     if (prevValue !== input.value || input.matches(':focus')) {
         if (input.value.length > 0 || prevValue !== input.value) {
-            errorElement.textContent = 'ISBN deve essere di 10 o 13 cifre';
+            errorElement.textContent = 'ISBN deve essere un numero di 10 o 13 cifre senza trattini';
             errorElement.classList.remove('hidden', 'text-red-500');
             errorElement.classList.add('text-gray-500');
         } else {
