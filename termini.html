@@ -737,24 +737,29 @@ function createWaveform() {
 }
 
 function updateWaveform(targetProgress) {
-    // Interpola l'animazione verso il target in modo più fluido
-    animationProgress += (targetProgress - animationProgress) * 0.05; // Cambiato il valore di interpolazione per una transizione più morbida
+    // Interpola l'animazione verso il target
+    animationProgress += (targetProgress - animationProgress) * 0.1;
 
     const bars = document.querySelectorAll('.waveform-bar');
-    const barsToPlay = Math.floor(animationProgress * bars.length); // Numero di barre da colorare in base alla progressione
+    const barsToPlay = Math.floor(animationProgress * bars.length);
 
-    // Coloriamo le barre una alla volta in base al numero calcolato
+    // Modifica l'animazione per essere progressiva e fluida
     bars.forEach((bar, index) => {
         if (index < barsToPlay) {
-            bar.classList.add('played'); // Aggiunge la classe per colorare la barra
+            // Usa una transizione fluida per colorare le barre una alla volta
+            bar.classList.add('played'); 
         } else {
-            bar.classList.remove('played'); // Rimuove la classe per le barre successive
+            bar.classList.remove('played');
         }
     });
 
-    // Aggiorna la linea di progresso (se visibile nella UI)
+    // Aggiorna la progress line
     const progressLine = document.querySelector('.progress-line');
-    progressLine.style.width = `${animationProgress * 100}%`; // Imposta la larghezza della linea di progresso
+    progressLine.style.width = `${animationProgress * 100}%`;
+
+    // Mantieni il tempo corrente aggiornato
+    const currentTimeDisplay = document.getElementById('currentTime');
+    currentTimeDisplay.textContent = formatTime(animationProgress * totalDuration);
 }
 
 
@@ -782,18 +787,18 @@ function readNextElement() {
     }
 }
 
+
 function stopReading() {
     isPlaying = false;
     pauseTime = Date.now() - startTime;
     const audioControl = document.getElementById('audioControl');
     audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
     window.speechSynthesis.cancel();
-    
+
     animationProgress = 0;
     updateWaveform(0);
     document.getElementById('currentTime').textContent = '0:00';
 }
-
 function resumeReading() {
     if (!isPlaying) {
         startTime = Date.now() - pauseTime;
@@ -810,12 +815,11 @@ function updateProgress() {
     const textElements = document.querySelectorAll('h1, h2, p, li');
     const progress = Math.min(currentIndex / textElements.length, 1);
     
+    // Aggiorna l'animazione con la nuova progressione
     const currentTimeDisplay = Math.min(elapsedTime, totalDuration);
     document.getElementById('currentTime').textContent = formatTime(currentTimeDisplay);
-    
-    // Aggiorna la waveform con una transizione fluida
     updateWaveform(progress);
-    
+
     if (progress < 1) {
         requestAnimationFrame(updateProgress);
     }
@@ -823,24 +827,28 @@ function updateProgress() {
 
 function handleWaveformClick(e) {
     if (isDragging) return;
-    
+
+    // Calcola la posizione in percentuale
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const progress = x / rect.width;
-    const textElements = document.querySelectorAll('h1, h2, p, li');
-    
-    currentIndex = Math.floor(progress * textElements.length);
+
+    // Aggiorna il progresso dell'animazione
+    animationProgress = progress;
+    currentIndex = Math.floor(progress * document.querySelectorAll('h1, h2, p, li').length);
+
+    // Calcola i tempi
     startTime = Date.now() - (progress * totalDuration * 1000);
     pauseTime = Date.now() - startTime;
-    
-    animationProgress = progress;
-    updateWaveform(progress);
-    
+
+    // Avvia o riprendi la lettura
     if (isPlaying) {
         window.speechSynthesis.cancel();
         readNextElement();
     }
-    
+
+    // Aggiorna la waveform
+    updateWaveform(progress);
     document.getElementById('currentTime').textContent = formatTime(progress * totalDuration);
 }
 
@@ -854,11 +862,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const audioControl = document.getElementById('audioControl');
     const waveformContainerElement = document.querySelector('.waveform-container');
-    
+
     audioControl.addEventListener('click', () => {
         if (!isPlaying) {
-            waveformContainerElement.style.display = 'block';
-            audioControl.innerHTML = '<i class="fas fa-pause"></i>';
             currentIndex = 0;
             startTime = Date.now();
             pauseTime = 0;
