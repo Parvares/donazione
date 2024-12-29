@@ -747,7 +747,7 @@ function stopReading() {
 
 function resumeReading() {
     if (!isPlaying) {
-        startTime = Date.now() - pauseTime;
+        startTime = Date.now() - pauseTime; // Ripristina il tempo di inizio in base al tempo di pausa
         isPlaying = true;
         updateProgress();
         readNextElement();
@@ -780,7 +780,7 @@ function handleWaveformClick(e) {
     const textElements = document.querySelectorAll('h1, h2, p, li');
 
     currentIndex = Math.floor(progress * textElements.length);
-    startTime = Date.now() - (progress * totalDuration * 1000);
+    startTime = Date.now() - (progress * totalDuration * 1000); // Imposta il tempo di inizio in base al progresso
     pauseTime = Date.now() - startTime;
 
     animationProgress = progress;
@@ -814,6 +814,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+function createWaveform() {
+    const waveformContainer = document.querySelector('.waveform-container');
+    const numBars = 100; // Numero di barre nella waveform
+    const barWidth = 2; // Larghezza di ogni barra
+
+    for (let i = 0; i < numBars; i++) {
+        const bar = document.createElement('div');
+        bar.classList.add('waveform-bar');
+        waveformContainer.appendChild(bar);
+    }
+}
+
 
       
 </script>
