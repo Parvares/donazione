@@ -696,15 +696,18 @@ function calculateTotalDuration() {
     document.querySelectorAll('h1, h2, p, li').forEach(el => {
         totalText += el.textContent + ' ';
     });
-    totalDuration = (totalText.split(' ').length * 0.4);
+    // Stima la durata basata sul numero di parole
+    // Assumendo una velocità media di lettura di 150 parole al minuto
+    const wordCount = totalText.trim().split(/\s+/).length;
+    totalDuration = (wordCount / 150) * 60;
     document.getElementById('totalTime').textContent = formatTime(totalDuration);
 }
 
 function createWaveform() {
     const container = document.querySelector('.waveform-bars');
     container.innerHTML = '';
-    const numberOfBars = 200;
-
+    const numberOfBars = 100;
+    
     for (let i = 0; i < numberOfBars; i++) {
         const bar = document.createElement('div');
         bar.className = 'waveform-bar';
@@ -742,6 +745,8 @@ function setupSpeech() {
             readNextElement();
         } else {
             stopReading();
+            // Assicurati che la waveform sia completata
+            updateWaveform(1);
         }
     };
 }
@@ -775,10 +780,11 @@ function updateProgress() {
     if (!isPlaying) return;
 
     const elapsedTime = (Date.now() - startTime) / 1000;
+    // Limita il progresso al 100%
     const progress = Math.min(elapsedTime / totalDuration, 1);
     
     updateWaveform(progress);
-    document.getElementById('currentTime').textContent = formatTime(elapsedTime);
+    document.getElementById('currentTime').textContent = formatTime(Math.min(elapsedTime, totalDuration));
     
     if (progress < 1) {
         requestAnimationFrame(updateProgress);
@@ -790,7 +796,7 @@ function handleWaveformClick(e) {
     
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
-    const progress = x / rect.width;
+    const progress = Math.max(0, Math.min(x / rect.width, 1));
     
     startTime = Date.now() - (progress * totalDuration * 1000);
     pauseTime = Date.now() - startTime;
@@ -805,7 +811,6 @@ function handleWaveformClick(e) {
     }
 }
 
-// Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
     setupSpeech();
     createWaveform();
@@ -814,14 +819,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const waveformContainer = document.querySelector('.waveform-container');
     waveformContainer.addEventListener('click', handleWaveformClick);
 
-    const audioControlContainer = document.querySelector('.audio-control-container');
     const audioControl = document.getElementById('audioControl');
     
     audioControl.addEventListener('click', () => {
-        const waveformContainer = document.querySelector('.waveform-container');
-        
         if (!isPlaying) {
-            waveformContainer.style.display = 'block';
             audioControl.innerHTML = '<i class="fas fa-pause"></i>';
             resumeReading();
         } else {
