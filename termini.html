@@ -390,7 +390,6 @@ footer i {
       
 
             
-/* Audio control button styles */
 .audio-control-container {
     display: flex;
     align-items: center;
@@ -425,8 +424,9 @@ footer i {
     cursor: pointer;
 }
 
+/* Waveform container - inizialmente nascosto */
 .waveform-container {
-    display: flex;
+    display: none;  /* Nascosto di default */
     align-items: center;
     gap: 2px;
     height: 40px;
@@ -434,6 +434,11 @@ footer i {
     margin: 10px 0;
     background: none;
     border: none;
+}
+
+/* Classe da aggiungere quando il audio è attivo */
+.waveform-container.active {
+    display: flex;  /* Si mostra quando attivo */
 }
 
 .waveform-bars {
@@ -459,11 +464,10 @@ footer i {
     font-size: 12px;
     margin-top: 5px;
 }
-      
+
 .progress-line {
-    display: none; /* Nascondiamo la barra di progresso */
+    display: none;
 }
-      
    </style>
 </head>
 <body>
@@ -814,20 +818,15 @@ function handleWaveformClick(e) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    setupSpeech();
-    createWaveform();
-    calculateTotalDuration();
-
-    const waveformContainer = document.querySelector('.waveform-container');
-    waveformContainer.addEventListener('click', handleWaveformClick);
+    // ... codice esistente ...
 
     const audioControl = document.getElementById('audioControl');
-    const waveformContainerElement = document.querySelector('.waveform-container');
+    const waveformContainer = document.querySelector('.waveform-container');
     
     audioControl.addEventListener('click', () => {
         if (!isPlaying) {
-            waveformContainerElement.style.display = 'block';
-            audioControl.innerHTML = '<i class="fas fa-pause"></i>';
+            waveformContainer.classList.add('active');  // Mostra la waveform
+            audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-pause"></i>';
             currentIndex = 0;
             startTime = Date.now();
             pauseTime = 0;
@@ -835,6 +834,7 @@ document.addEventListener('DOMContentLoaded', () => {
             resumeReading();
         } else {
             stopReading();
+            waveformContainer.classList.remove('active');  // Nasconde la waveform
         }
     });
 });
