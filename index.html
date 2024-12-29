@@ -851,7 +851,30 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-
+// AGGIUNGI QUESTA NUOVA FUNZIONE QUI
+function handleISBNInput(input) {
+    // Rimuovi caratteri non numerici
+    input.value = input.value.replace(/\D/g, '');
+    
+    // Limita a 13 caratteri
+    if (input.value.length > 13) {
+        input.value = input.value.slice(0, 13);
+    }
+    
+    // Mostra messaggio grigio durante la digitazione
+    const errorElement = input.nextElementSibling;
+    if (input.value.length > 0 && input.value.length < 10) {
+        errorElement.textContent = 'ISBN deve essere di 10 o 13 cifre';
+        errorElement.classList.remove('hidden', 'text-red-500');
+        errorElement.classList.add('text-gray-500');
+    } else if (input.value.length > 0 && input.value.length !== 10 && input.value.length !== 13) {
+        errorElement.textContent = 'ISBN deve essere di 10 o 13 cifre';
+        errorElement.classList.remove('hidden', 'text-red-500');
+        errorElement.classList.add('text-gray-500');
+    } else {
+        errorElement.classList.add('hidden');
+    }
+}
         
 
 // Aggiorna la funzione validateBookField
@@ -869,46 +892,67 @@ function validateBookField(input) {
     } else if (input.classList.contains('book-year')) {
         const currentYear = new Date().getFullYear();
         
-        // Mostra errore solo se il campo è popolato e non è focalizzato
         if (value && !input.matches(':focus')) {
             if (value.length !== 4 || !Number.isInteger(Number(value)) || Number(value) < 1900 || Number(value) > currentYear) {
                 showError(input, `L'anno deve essere compreso tra 1900 e ${currentYear}`);
                 isValid = false;
             }
         } else {
-            // Nascondi l'errore quando il campo è vuoto o focalizzato
             hideError(input);
         }
     } else if (input.classList.contains('book-isbn')) {
-        if (value && !/^(?:\d{10}|\d{13})$/.test(value)) {
-            showError(input, 'ISBN deve essere di 10 o 13 cifre');
-            isValid = false;
+        if (value && !input.matches(':focus')) {
+            if (!/^(?:\d{10}|\d{13})$/.test(value)) {
+                showError(input, 'ISBN deve essere di 10 o 13 cifre');
+                isValid = false;
+            }
         }
     }
 
-    if (isValid && !input.classList.contains('book-year')) {
+    if (isValid && !input.matches(':focus')) {
         hideError(input);
     }
 
     return isValid;
 }
 
-// Aggiungi gestione eventi per il campo anno
+// MANTIENI QUESTI EVENT LISTENER ESISTENTI PER IL CAMPO ANNO
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('book-year')) {
-        // Quando il campo anno riceve il focus, nascondi l'errore
         hideError(e.target);
     }
 });
 
 document.addEventListener('blur', function(e) {
     if (e.target.classList.contains('book-year')) {
-        // Valida il campo quando perde il focus
         validateBookField(e.target);
     }
 });
 
-	// Add this style to remove spinner arrows
+// AGGIUNGI QUESTO NUOVO EVENT LISTENER PER L'ISBN
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('book-isbn')) {
+        e.target.addEventListener('input', function() {
+            handleISBNInput(this);
+        });
+        
+        e.target.addEventListener('blur', function() {
+            validateBookField(this);
+        });
+        
+        e.target.addEventListener('focus', function() {
+            hideError(this);
+            if (this.value.length > 0 && this.value.length !== 10 && this.value.length !== 13) {
+                const errorElement = this.nextElementSibling;
+                errorElement.textContent = 'ISBN deve essere di 10 o 13 cifre';
+                errorElement.classList.remove('hidden', 'text-red-500');
+                errorElement.classList.add('text-gray-500');
+            }
+        });
+    }
+});
+
+// AGGIORNA LO STILE ESISTENTE AGGIUNGENDO LE REGOLE PER L'ISBN
 const style = document.createElement('style');
 style.textContent = `
     input[type="number"].book-year::-webkit-inner-spin-button,
@@ -919,9 +963,16 @@ style.textContent = `
     input[type="number"].book-year {
         -moz-appearance: textfield;
     }
+    input[type="tel"].book-isbn::-webkit-inner-spin-button,
+    input[type="tel"].book-isbn::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type="tel"].book-isbn {
+        -moz-appearance: textfield;
+    }
 `;
-document.head.appendChild(style);
-        
+document.head.appendChild(style);        
 
 function validateCheckbox(checkbox) {
     const errorElement = checkbox.parentElement.nextElementSibling;
