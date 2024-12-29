@@ -851,7 +851,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// AGGIUNGI QUESTA NUOVA FUNZIONE QUI
 function handleISBNInput(input) {
     // Rimuovi caratteri non numerici
     input.value = input.value.replace(/\D/g, '');
@@ -879,13 +878,18 @@ function handleISBNInput(input) {
             errorElement.textContent = 'ISBN deve essere di 10 o 13 cifre';
             errorElement.classList.remove('hidden', 'text-gray-500');
             errorElement.classList.add('text-red-500');
+        } else if (/\D/.test(input.value)) {
+            // Se ci sono caratteri non numerici, mostra il messaggio grigio
+            errorElement.textContent = 'ISBN deve essere di 10 o 13 cifre';
+            errorElement.classList.remove('hidden', 'text-red-500');
+            errorElement.classList.add('text-gray-500');
         } else {
             errorElement.classList.add('hidden');
         }
     }
 }
-        
 
+	
 // Aggiorna la funzione validateBookField
 function validateBookField(input) {
     const value = input.value.trim();
