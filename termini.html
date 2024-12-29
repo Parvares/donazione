@@ -684,7 +684,6 @@ let startTime = 0;
 let pauseTime = 0;
 let totalDuration = 0;
 let isDragging = false;
-let animationProgress = 0;
 let animationFrameId = null;
 
 function formatTime(seconds) {
@@ -705,6 +704,8 @@ function calculateTotalDuration() {
 
 function createWaveform() {
     const container = document.querySelector('.waveform-bars');
+    if (!container) return;  // Aggiungiamo un controllo di sicurezza
+    
     container.innerHTML = ''; // Clear existing bars
     const numberOfBars = 100; // Adjust number of bars as needed
     
@@ -719,9 +720,10 @@ function createWaveform() {
 
 function updateWaveform(targetProgress) {
     const bars = document.querySelectorAll('.waveform-bar');
+    if (!bars.length) return;  // Aggiungiamo un controllo di sicurezza
+    
     const barsToPlay = Math.floor(targetProgress * bars.length);
     
-    // Update each bar individually
     bars.forEach((bar, index) => {
         if (index < barsToPlay) {
             if (!bar.classList.contains('played')) {
@@ -735,28 +737,40 @@ function updateWaveform(targetProgress) {
     });
 
     const progressLine = document.querySelector('.progress-line');
-    progressLine.style.left = `${targetProgress * 100}%`;
+    if (progressLine) {  // Aggiungiamo un controllo di sicurezza
+        progressLine.style.left = `${targetProgress * 100}%`;
+    }
 }
 
 function setupSpeech() {
-    speech = new SpeechSynthesisUtterance();
-    speech.lang = 'it-IT';
-    speech.rate = 0.9;
-    speech.pitch = 1;
-    
-    speech.onend = () => {
-        currentIndex++;
-        if (currentIndex < document.querySelectorAll('h1, h2, p, li').length) {
-            readNextElement();
-        } else {
-            stopReading();
+    if ('speechSynthesis' in window) {  // Verifichiamo che la sintesi vocale sia supportata
+        speech = new SpeechSynthesisUtterance();
+        speech.lang = 'it-IT';
+        speech.rate = 0.9;
+        speech.pitch = 1;
+        
+        speech.onend = () => {
+            currentIndex++;
+            if (currentIndex < document.querySelectorAll('h1, h2, p, li').length) {
+                readNextElement();
+            } else {
+                stopReading();
+            }
+        };
+    } else {
+        console.error('Speech synthesis not supported');
+        // Disabilita il pulsante audio se la sintesi vocale non è supportata
+        const audioControl = document.getElementById('audioControl');
+        if (audioControl) {
+            audioControl.disabled = true;
+            audioControl.style.opacity = '0.5';
         }
-    };
+    }
 }
 
 function readNextElement() {
     const textElements = document.querySelectorAll('h1, h2, p, li');
-    if (currentIndex < textElements.length) {
+    if (currentIndex < textElements.length && speech) {
         speech.text = textElements[currentIndex].textContent;
         window.speechSynthesis.speak(speech);
     }
@@ -766,8 +780,12 @@ function stopReading() {
     isPlaying = false;
     pauseTime = Date.now() - startTime;
     const audioControl = document.getElementById('audioControl');
-    audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
-    window.speechSynthesis.cancel();
+    if (audioControl) {
+        audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-play"></i>';
+    }
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+    }
     
     if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
@@ -775,11 +793,14 @@ function stopReading() {
     }
     
     updateWaveform(0);
-    document.getElementById('currentTime').textContent = '0:00';
+    const currentTimeElement = document.getElementById('currentTime');
+    if (currentTimeElement) {
+        currentTimeElement.textContent = '0:00';
+    }
 }
 
 function resumeReading() {
-    if (!isPlaying) {
+    if (!isPlaying && speech) {
         startTime = Date.now() - pauseTime;
         isPlaying = true;
         updateProgress();
@@ -795,7 +816,10 @@ function updateProgress() {
     const progress = Math.min(currentIndex / textElements.length, 1);
     
     const currentTimeDisplay = Math.min(elapsedTime, totalDuration);
-    document.getElementById('currentTime').textContent = formatTime(currentTimeDisplay);
+    const currentTimeElement = document.getElementById('currentTime');
+    if (currentTimeElement) {
+        currentTimeElement.textContent = formatTime(currentTimeDisplay);
+    }
     
     updateWaveform(progress);
     
@@ -823,7 +847,10 @@ function handleWaveformClick(e) {
         readNextElement();
     }
     
-    document.getElementById('currentTime').textContent = formatTime(progress * totalDuration);
+    const currentTimeElement = document.getElementById('currentTime');
+    if (currentTimeElement) {
+        currentTimeElement.textContent = formatTime(progress * totalDuration);
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -832,22 +859,25 @@ document.addEventListener('DOMContentLoaded', () => {
     calculateTotalDuration();
 
     const waveformContainer = document.querySelector('.waveform-container');
-    waveformContainer.addEventListener('click', handleWaveformClick);
+    if (waveformContainer) {
+        waveformContainer.addEventListener('click', handleWaveformClick);
+    }
 
     const audioControl = document.getElementById('audioControl');
-    
-    audioControl.addEventListener('click', () => {
-        isPlaying = !isPlaying;
-        if (isPlaying) {
-            audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-pause"></i>';
-            currentIndex = 0;
-            startTime = Date.now();
-            pauseTime = 0;
-            resumeReading();
-        } else {
-            stopReading();
-        }
-    });
+    if (audioControl) {
+        audioControl.addEventListener('click', () => {
+            isPlaying = !isPlaying;
+            if (isPlaying) {
+                audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-pause"></i>';
+                currentIndex = 0;
+                startTime = Date.now();
+                pauseTime = 0;
+                resumeReading();
+            } else {
+                stopReading();
+            }
+        });
+    }
 });
       
 </script>
