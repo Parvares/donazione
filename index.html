@@ -881,7 +881,7 @@ function validateBookField(input) {
         }
     } else if (input.classList.contains('book-isbn')) {
         if (value && !/^(?:\d{10}|\d{13})$/.test(value)) {
-            showError(input, 'ISBN deve essere di 10 o 13 cifre');
+            showError(input, 'ISBN deve essere di 10 o 13 cifre senza trattini');
             isValid = false;
         }
     }
