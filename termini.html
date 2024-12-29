@@ -865,15 +865,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const audioControl = document.getElementById('audioControl');
     
-    audioControl.addEventListener('click', () => {
-        if (!isPlaying) {
-            audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-pause"></i>';
-            toggleWaveform(); // Mostra/nasconde la waveform quando si clicca il pulsante
-            resumeReading();
-        } else {
-            stopReading();
-        }
-    });
+audioControl.addEventListener('click', () => {
+    if (!isPlaying) {
+        audioControl.innerHTML = '<i class="fas fa-headphones"></i><i class="fas fa-pause"></i>';
+        toggleWaveform(); // Mostra la waveform
+        resumeReading();
+    } else {
+        stopReading();
+        // Non nascondere la waveform quando si mette in pausa
+    }
 });
 </script>
 
