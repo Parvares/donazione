@@ -72,6 +72,52 @@
 
 
 
+      .library-name {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text);
+    font-size: 1.1rem; /* Ridotto da 1.4rem */
+    margin-bottom: 1rem;
+}
+
+.library-name a {
+   position: relative;
+    border-bottom: none; /* Rimuove la sottolineatura esistente */
+}
+
+.library-name a:hover {
+    border-bottom: none; /* Previene la sottolineatura al hover */
+    text-decoration: none; /* Assicura che non ci sia sottolineatura */
+}
+
+       .library-name img {
+           height: 22px;
+           width: 22px;
+           vertical-align: middle;
+       }
+
+    
+.library-name a.tooltip-library:hover::before {
+  content: "Clicca qui per vedere gli appuntamenti della biblioteca";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 2px 6px; /* Ridotto ulteriormente il padding verticale */
+  background-color: #fff;
+  color: #333;
+  border-radius: 3px; /* Ridotto il raggio per armonizzare con l'altezza */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2); /* Ombra meno pronunciata */
+  white-space: nowrap;
+  z-index: 1000;
+  font-size: 12px; /* Ridotta la dimensione del font */
+  margin-bottom: 5px;
+}
+
+
+        
+
         
 .content-wrapper {
     max-width: 900px;
@@ -409,11 +455,7 @@
            title="Visualizza la posizione sulla mappa">
             <img src="location.svg" alt="Location Icon" class="mr-2" style="height: 24px; width: 24px;">
         </a>
-        <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" 
-           class="text-xl hover:underline" 
-           style="color: #970a2c; font-size: 1rem;">
-            Biblioteca Elsa Morante
-        </a>
+       <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" class="tooltip-library"> Biblioteca Elsa Morante </a>
     </div>
 
         
