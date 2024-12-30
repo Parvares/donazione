@@ -509,7 +509,8 @@ footer i {
 
       
       
-    .tooltip-container {
+          /* Base tooltip container */
+        .tooltip-container {
             position: relative;
             display: inline-block;
         }
@@ -520,7 +521,7 @@ footer i {
             position: absolute;
             background-color: white;
             color: #666;
-            padding: 4px 12px;
+            padding: 2px 12px; /* Ridotta altezza */
             border-radius: 4px;
             font-size: 14px;
             font-style: italic;
@@ -529,7 +530,6 @@ footer i {
             opacity: 0;
             transition: opacity 0.3s ease;
             pointer-events: none;
-            z-index: 9999;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             border: 1px solid #ddd;
         }
@@ -544,8 +544,9 @@ footer i {
         .roma-tooltip::after {
             top: 100%;
             left: 50%;
-            transform: translateX(-80%); /* Spostato più a sinistra */
+            transform: translateX(-90%); /* Spostato ancora più a sinistra */
             margin-top: 8px;
+            z-index: 9999;
         }
 
         /* Social icons container */
@@ -557,11 +558,26 @@ footer i {
 
         /* Social icons tooltip specific positioning */
         .social-icons .tooltip-container::after {
+            position: absolute;
             top: 100%;
             left: 50%;
             transform: translateX(-50%);
             margin-top: 8px;
-            z-index: 10000;
+            z-index: 100000; /* Aumentato significativamente per sovrapporsi al banner */
+            background-color: white !important; /* Forzato il background bianco */
+        }
+
+        /* Ensure top banner doesn't interfere */
+        .top-banner {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Additional override for social icons tooltips */
+        .social-icons a::after {
+            z-index: 100000 !important;
+            position: absolute !important;
+            background-color: white !important;
         }
 
 
