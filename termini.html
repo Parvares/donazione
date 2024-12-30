@@ -508,7 +508,7 @@ footer i {
 
       
 
-     .tooltip-container {
+      .tooltip-container {
             position: relative;
             display: inline-block;
         }
@@ -522,16 +522,16 @@ footer i {
             margin-top: 8px;
             background-color: white;
             color: #666;
-            padding: 4px 12px;  /* Ridotto padding verticale */
+            padding: 4px 12px;
             border-radius: 4px;
             font-size: 14px;
-            font-style: italic;  /* Aggiunto corsivo */
+            font-style: italic;
             white-space: nowrap;
             visibility: hidden;
             opacity: 0;
             transition: opacity 0.3s ease;
             pointer-events: none;
-            z-index: 1000;
+            z-index: 9999; /* Aumentato significativamente per essere sicuri che sia sopra tutto */
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             border: 1px solid #ddd;
         }
@@ -542,21 +542,22 @@ footer i {
         }
 
         /* Specific adjustment for Roma logo tooltip */
-        .roma-logo-container::after {
-            left: 80%;  /* Spostato la tooltip verso destra */
+        a[href="https://culture.roma.it/"]::after {
+            left: 0;  /* Reset left position */
+            transform: translateX(20%);  /* Sposta la tooltip verso destra */
         }
 
         /* Updated social icons tooltip positioning */
         .social-icons .tooltip-container::after {
-            top: auto;  /* Rimuove il posizionamento top */
-            bottom: 100%;  /* Sposta la tooltip sopra l'icona */
-            margin-top: 0;
-            margin-bottom: 8px;  /* Aggiunge spazio sotto la tooltip */
+            top: 100%;  /* Posiziona sotto le icone */
+            bottom: auto;
+            margin-top: 8px;
             width: max-content;
             left: 50%;
             transform: translateX(-50%);
             white-space: normal;
             text-align: center;
+            z-index: 10000; /* Ancora più alto per essere sicuri che sia sopra il banner */
         }
 
 
