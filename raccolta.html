@@ -338,11 +338,37 @@
     z-index: 1;
 }
 
-/* Cambia il colore del testo al passaggio del mouse */
+
+        
+
+ /* Cambia il colore del testo al passaggio del mouse */
     a:hover {
-        color: #b73a49; /* Un colore leggermente più chiaro */
+        color: #b73a49; /* Colore leggermente più chiaro */
     }
 
+    /* Tooltip personalizzato */
+    a:hover::after {
+        content: attr(title);
+        position: absolute;
+        top: -30px;
+        left: 0;
+        background-color: #333;
+        color: #fff;
+        padding: 5px 10px;
+        font-size: 0.9rem;
+        border-radius: 5px;
+        white-space: nowrap;
+        transform: translateY(-10px);
+        opacity: 1;
+        visibility: visible;
+        z-index: 10;
+    }
+
+    /* Nascondi il tooltip quando non è in hover */
+    a::after {
+        content: "";
+        visibility: hidden;
+    }
 
 
 
@@ -417,8 +443,8 @@
 
           
 <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" 
-   class="text-xl" 
-   style="color: #970a2c; font-size: 1rem; transition: color 0.3s ease;"
+   class="text-xl"
+   style="color: #970a2c; font-size: 1rem; transition: color 0.3s ease; position: relative;"
    title="Clicca qui per vedere gli appuntamenti della biblioteca">
     Biblioteca Elsa Morante
 </a>
