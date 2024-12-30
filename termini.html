@@ -572,7 +572,35 @@ footer i {
     z-index: 1;
 }
 
+/* Stile tooltip aggiornato */
+.tooltip-container::before {
+  content: attr(aria-label);
+  position: absolute;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s;
+  left: -100%; /* Valore ottimizzato per il posizionamento */
+  transform: translateY(-100%);
+  top: -10px;
+}
 
+/* Mostra tooltip su hover */
+.tooltip-container:hover::before {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Aggiustamenti specifici per X e YouTube */
+.tooltip-container:nth-child(3)::before,
+.tooltip-container:nth-child(4)::before {
+  left: -120%; /* Sposta più a sinistra per X e YouTube */
+}
 
       
    </style>
