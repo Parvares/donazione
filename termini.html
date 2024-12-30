@@ -549,25 +549,22 @@ footer i {
     gap: 1rem;
 }
 
-/* Social icons tooltip positioning */
+/* Social icons tooltip */
 .social-icons .tooltip-container::after {
-    position: absolute;
-    top: 100%;
+    bottom: -40px;  /* Posizione fissa dal basso */
     left: 50%;
     transform: translateX(-50%);
-    margin-top: 8px;
-    z-index: 100000;
+    top: auto;  /* Rimuove il posizionamento top */
     background-color: white !important;
 }
 
-/* Roma logo tooltip specific positioning */
+/* Roma logo tooltip */
 .roma-logo-container::after {
-    position: absolute;
-    top: calc(100% + 20px); /* Aumentato lo spazio dal logo */
+    bottom: -40px;  /* Stessa distanza dal basso come social icons */
     left: 50%;
     transform: translateX(-50%);
-    margin-top: 8px;
-    z-index: 100000;
+    top: auto !important;  /* Forza la rimozione di qualsiasi top precedente */
+    position: absolute !important;
     background-color: white !important;
 }
 
