@@ -515,14 +515,17 @@ document.head.appendChild(style);
 
 /* Social icons tooltips */
 .social-icons .tooltip-container::before {
-    bottom: -40px;
-    left: -200%; /* Increased left offset */
+    bottom: -30px; /* Ridotto l'offset in basso */
+    left: -200%; /* Lasciato invariato l'offset a sinistra */
     background-color: white;
     color: black;
     border: 1px solid #ddd;
     white-space: nowrap;
     width: max-content;
+    padding: 3px 8px; /* Ridotto il padding per una tooltip più compatta */
+    font-size: 12px; /* Font più piccolo per una tooltip più snella */
 }
+
 
 /* Specific targeting for Roma logo tooltip */
 .top-banner > a.tooltip-container::before {
