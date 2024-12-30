@@ -549,11 +549,21 @@ footer i {
     gap: 1rem;
 }
 
-/* Unified tooltip positioning for both Roma logo and social icons */
-.social-icons .tooltip-container::after,
-.roma-logo-container::after {
+/* Social icons tooltip positioning */
+.social-icons .tooltip-container::after {
     position: absolute;
     top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 8px;
+    z-index: 100000;
+    background-color: white !important;
+}
+
+/* Roma logo tooltip specific positioning */
+.roma-logo-container::after {
+    position: absolute;
+    top: calc(100% + 20px); /* Aumentato lo spazio dal logo */
     left: 50%;
     transform: translateX(-50%);
     margin-top: 8px;
