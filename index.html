@@ -292,6 +292,54 @@ select.error {
 
 
 
+      .library-name {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text);
+    font-size: 1.1rem; /* Ridotto da 1.4rem */
+    margin-bottom: 1rem;
+}
+
+.library-name a {
+   position: relative;
+    border-bottom: none; /* Rimuove la sottolineatura esistente */
+}
+
+.library-name a:hover {
+    border-bottom: none; /* Previene la sottolineatura al hover */
+    text-decoration: none; /* Assicura che non ci sia sottolineatura */
+}
+
+       .library-name img {
+           height: 22px;
+           width: 22px;
+           vertical-align: middle;
+       }
+
+    
+.library-name a.tooltip-library:hover::before {
+  content: "Clicca qui per vedere gli appuntamenti della biblioteca";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 2px 6px; /* Ridotto ulteriormente il padding verticale */
+  background-color: #fff;
+  color: #333;
+  border-radius: 3px; /* Ridotto il raggio per armonizzare con l'altezza */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2); /* Ombra meno pronunciata */
+  white-space: nowrap;
+  z-index: 1000;
+  font-size: 12px; /* Ridotta la dimensione del font */
+  margin-bottom: 5px;
+}
+
+
+
+	    
+
+
  .content-wrapper {
     max-width: 900px;
     width: 100%;
@@ -535,24 +583,22 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 	
 <body>
+	
     <div class="top-banner">
-	    
-          <a href="https://culture.roma.it/" target="_blank">
-    <img src="roma.png" alt="Logo Roma" class="roma-logo">
-</a>
-
-	    
+        <a href="https://culture.roma.it/" class="tooltip-container">
+            <img src="roma.png" alt="Logo Roma" class="roma-logo">
+        </a>
         <div class="social-icons">
-            <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook">
+            <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook" class="tooltip-container">
                 <i class="fab fa-facebook"></i>
             </a>
-            <a href="https://www.instagram.com/bibliotecaelsamorante/" target="_blank" aria-label="Instagram">
+            <a href="https://www.instagram.com/bibliotecaelsamorante/" target="_blank" aria-label="Instagram" class="tooltip-container">
                 <i class="fab fa-instagram"></i>
             </a>
-            <a href="https://x.com/bibliomorante" target="_blank" aria-label="X">
+            <a href="https://x.com/bibliomorante" target="_blank" aria-label="X" class="tooltip-container">
                 <i class="fab fa-x-twitter"></i>
             </a>
-            <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank" aria-label="YouTube">
+            <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank" aria-label="YouTube" class="tooltip-container">
                 <i class="fab fa-youtube"></i>
             </a>
         </div>
@@ -596,9 +642,8 @@ document.addEventListener('DOMContentLoaded', () => {
                        title="Visualizza la posizione sulla mappa">
                         <img src="location.svg" alt="Posizione" class="h-5 w-5 text-gray-600">
                     </a>
-                    <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank">
-                       Biblioteca Elsa Morante
-                    </a>
+			
+                      <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" class="tooltip-library"> Biblioteca Elsa Morante </a>
 
                 </div>
                 <h1 class="text-3xl md:text-4xl text-slate-700 font-bold leading-tight text-left">
