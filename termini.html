@@ -542,28 +542,21 @@ footer i {
     opacity: 1;
 }
 
-/* Social icons container */
-.social-icons {
-    position: relative;
-    display: flex;
-    gap: 1rem;
-}
-
-/* Social icons tooltip */
+/* Social icons tooltips */
 .social-icons .tooltip-container::after {
-    bottom: -40px;  /* Posizione fissa dal basso */
+    bottom: -40px;
     left: 50%;
     transform: translateX(-50%);
-    top: auto;  /* Rimuove il posizionamento top */
+    top: auto;
     background-color: white !important;
 }
 
-/* Roma logo tooltip */
-.roma-logo-container::after {
-    bottom: -40px;  /* Stessa distanza dal basso come social icons */
-    left: 50%;
-    transform: translateX(-50%);
-    top: auto !important;  /* Forza la rimozione di qualsiasi top precedente */
+/* Specific targeting for Roma logo tooltip */
+.top-banner > a.tooltip-container::after {
+    bottom: -40px !important;
+    top: auto !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
     position: absolute !important;
     background-color: white !important;
 }
