@@ -529,7 +529,7 @@ document.head.appendChild(style);
 
 /* Specific targeting for Roma logo tooltip */
 .top-banner > a.tooltip-container::before {
-    bottom: -40px;
+    bottom: -30px; /* Ridotto l'offset in basso per spostarla più in alto */
     left: 0;
     transform: translateX(0);
     background-color: white;
@@ -537,7 +537,10 @@ document.head.appendChild(style);
     border: 1px solid #ddd;
     white-space: nowrap;
     width: max-content;
+    padding: 3px 8px; /* Ridotto il padding per una tooltip più compatta */
+    font-size: 12px; /* Font più piccolo per ridurre l'altezza */
 }
+
 
 /* Top banner positioning */
 .top-banner {
