@@ -508,7 +508,7 @@ footer i {
 
       
 
-   .tooltip-container {
+     .tooltip-container {
             position: relative;
             display: inline-block;
         }
@@ -516,23 +516,24 @@ footer i {
         .tooltip-container::after {
             content: "Questo link si apre in una nuova finestra";
             position: absolute;
-            top: 100%;  /* Changed from bottom: 100% to top: 100% */
+            top: 100%;
             left: 50%;
             transform: translateX(-50%);
-            margin-top: 8px;  /* Added margin for better spacing */
-            background-color: white;  /* Changed to white background */
-            color: #666;  /* Changed to grey text */
-            padding: 8px 12px;
+            margin-top: 8px;
+            background-color: white;
+            color: #666;
+            padding: 4px 12px;  /* Ridotto padding verticale */
             border-radius: 4px;
             font-size: 14px;
+            font-style: italic;  /* Aggiunto corsivo */
             white-space: nowrap;
             visibility: hidden;
             opacity: 0;
             transition: opacity 0.3s ease;
             pointer-events: none;
             z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);  /* Added shadow for better visibility */
-            border: 1px solid #ddd;  /* Added border for better definition */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border: 1px solid #ddd;
         }
 
         .tooltip-container:hover::after {
@@ -540,12 +541,17 @@ footer i {
             opacity: 1;
         }
 
-        /* Ensure tooltips for social icons don't get cut off */
-        .social-icons .tooltip-container {
-            position: relative;
+        /* Specific adjustment for Roma logo tooltip */
+        .roma-logo-container::after {
+            left: 30%;  /* Spostato la tooltip verso destra */
         }
 
+        /* Updated social icons tooltip positioning */
         .social-icons .tooltip-container::after {
+            top: auto;  /* Rimuove il posizionamento top */
+            bottom: 100%;  /* Sposta la tooltip sopra l'icona */
+            margin-top: 0;
+            margin-bottom: 8px;  /* Aggiunge spazio sotto la tooltip */
             width: max-content;
             left: 50%;
             transform: translateX(-50%);
