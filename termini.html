@@ -509,7 +509,7 @@ footer i {
 
       
       
-          /* Base tooltip container */
+    /* Base tooltip container */
         .tooltip-container {
             position: relative;
             display: inline-block;
@@ -521,9 +521,10 @@ footer i {
             position: absolute;
             background-color: white;
             color: #666;
-            padding: 2px 12px; /* Ridotta altezza */
+            padding: 1px 12px; /* Ulteriormente ridotta l'altezza */
+            line-height: 1.2; /* Ridotta l'altezza della linea */
             border-radius: 4px;
-            font-size: 14px;
+            font-size: 13px; /* Ridotto leggermente il font */
             font-style: italic;
             white-space: nowrap;
             visibility: hidden;
@@ -543,8 +544,8 @@ footer i {
         /* Roma logo tooltip specific positioning */
         .roma-tooltip::after {
             top: 100%;
-            left: 50%;
-            transform: translateX(-90%); /* Spostato ancora più a sinistra */
+            left: 0; /* Allineato al bordo sinistro del logo */
+            transform: translateX(0); /* Rimosso lo spostamento */
             margin-top: 8px;
             z-index: 9999;
         }
@@ -560,11 +561,11 @@ footer i {
         .social-icons .tooltip-container::after {
             position: absolute;
             top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 0;
+            transform: translateX(-75%); /* Spostato più a sinistra */
             margin-top: 8px;
-            z-index: 100000; /* Aumentato significativamente per sovrapporsi al banner */
-            background-color: white !important; /* Forzato il background bianco */
+            z-index: 100000;
+            background-color: white !important;
         }
 
         /* Ensure top banner doesn't interfere */
