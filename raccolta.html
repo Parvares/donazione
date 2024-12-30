@@ -343,6 +343,26 @@ footer a {
 
 
 
+a {
+    color: var(--primary);
+    text-decoration: none; /* Rimuove la sottolineatura per tutti i link */
+    border-bottom: none; /* Rimuove eventuali bordi inferiori */
+    transition: color 0.3s ease; /* Transizione per un effetto più fluido */
+}
+
+a:hover {
+    color: #e57373 !important; /* Rosso chiaro, Cambia il colore al passaggio del mouse */
+    text-decoration: none !important; /* Assicura che non venga sottolineato */
+    border-bottom: none; /* Rimuove eventuali bordi aggiuntivi */
+}
+
+
+/* Escludi i link all'interno delle icone social */
+.social-icons a:hover {
+    color: var(--primary) !important; /* Mantiene il colore originale */
+}
+        
+
 
 
         
