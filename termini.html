@@ -131,6 +131,28 @@
            vertical-align: middle;
        }
 
+.library-name a[title] {
+  position: relative;
+}
+
+.library-name a[title]:hover::after {
+  content: "Clicca qui per vedere gli appuntamenti della biblioteca";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px;
+  background-color: #fff;
+  color: #333;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  white-space: nowrap;
+  z-index: 1000;
+  font-size: 14px;
+}
+
+      
+      
      
 
       .content-wrapper {
@@ -652,14 +674,10 @@ footer i {
             
            
           <div class="library-name">
-    <a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" 
-       target="_blank" 
-       title="Visualizza la posizione sulla mappa">
-        <img src="location.svg" alt="Location">
-    </a>
-    <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank">
-        Biblioteca Elsa Morante
-    </a>
+  <a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" target="_blank" title="Visualizza la posizione sulla mappa">
+    <img src="location.svg" alt="Location">
+  </a>
+  <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" title="Clicca qui per vedere gli appuntamenti della biblioteca"> Biblioteca Elsa Morante </a>
 </div>
 
 
