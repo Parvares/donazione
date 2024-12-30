@@ -489,24 +489,36 @@ document.head.appendChild(style);
 }
 
 /* Base tooltip style */
+.tooltip-container::before {
+  content: "Questo link si apre in una nuova finestra";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 4px;
+  font-size: 14px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+  z-index: 1000;
+}
+
 .tooltip-container::after {
-    content: "Questo link si apre in una nuova finestra";
-    position: absolute;
-    background-color: white;
-    color: #666;
-    padding: 4px 12px;
-    line-height: 1.3;
-    border-radius: 4px;
-    font-size: 13px;
-    font-style: italic;
-    white-space: nowrap;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    border: 1px solid #ddd;
-    z-index: 100000;
+  content: '';
+  position: absolute;
+  bottom: calc(100% - 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s;
 }
 
 /* Show tooltip on hover */
@@ -607,24 +619,24 @@ document.addEventListener('DOMContentLoaded', () => {
 	
 <body>
     <div class="top-banner">
-        <a href="https://culture.roma.it/" class="tooltip-container">
-            <img src="roma.png" alt="Logo Roma" class="roma-logo">
-        </a>
-        <div class="social-icons">
-            <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook" class="tooltip-container">
-                <i class="fab fa-facebook"></i>
-            </a>
-            <a href="https://www.instagram.com/bibliotecaelsamorante/" target="_blank" aria-label="Instagram" class="tooltip-container">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="https://x.com/bibliomorante" target="_blank" aria-label="X" class="tooltip-container">
-                <i class="fab fa-x-twitter"></i>
-            </a>
-            <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank" aria-label="YouTube" class="tooltip-container">
-                <i class="fab fa-youtube"></i>
-            </a>
-        </div>
-    </div>
+  <a href="https://culture.roma.it/" class="tooltip-container" target="_blank">
+    <img src="roma.png" alt="Logo Roma" class="roma-logo">
+  </a>
+  <div class="social-icons">
+    <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" class="tooltip-container">
+      <i class="fab fa-facebook"></i>
+    </a>
+    <a href="https://www.instagram.com/bibliotecaelsamorante/" target="_blank" class="tooltip-container">
+      <i class="fab fa-instagram"></i>
+    </a>
+    <a href="https://x.com/bibliomorante" target="_blank" class="tooltip-container">
+      <i class="fab fa-x-twitter"></i>
+    </a>
+    <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank" class="tooltip-container">
+      <i class="fab fa-youtube"></i>
+    </a>
+  </div>
+</div>
 
     
     
