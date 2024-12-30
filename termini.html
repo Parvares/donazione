@@ -133,22 +133,23 @@
        }
 
     
-   .library-name a.tooltip-library:hover::before {
+.library-name a.tooltip-library:hover::before {
   content: "Clicca qui per vedere gli appuntamenti della biblioteca";
   position: absolute;
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
-  padding: 1px 8px; /* Ridotto il padding verticale */
+  padding: 2px 6px; /* Ridotto ulteriormente il padding verticale */
   background-color: #fff;
   color: #333;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  border-radius: 3px; /* Ridotto il raggio per armonizzare con l'altezza */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2); /* Ombra meno pronunciata */
   white-space: nowrap;
   z-index: 1000;
-  font-size: 14px;
+  font-size: 12px; /* Ridotta la dimensione del font */
   margin-bottom: 5px;
 }
+
      
 
       .content-wrapper {
