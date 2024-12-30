@@ -438,16 +438,19 @@ footer i {
     bottom: 120%; /* Posiziona sopra il pulsante */
     left: 50%;
     transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.75);
-    color: white;
-    padding: 0.5rem 1rem;
+    background-color: #fff; /* Sfondo bianco */
+    color: #333; /* Testo grigio */
+    padding: 0.5rem 1rem; /* Padding per spazio interno */
     border-radius: 8px;
     font-size: 0.8rem;
-    white-space: nowrap;
+    white-space: nowrap; /* Evita il taglio del testo */
+    max-width: 200px; /* Limita la larghezza massima */
+    border: 1px solid #ddd; /* Bordo sottile */
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
     z-index: 10;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Ombra leggera */
 }
 
 .audio-control:hover .tooltip {
@@ -671,6 +674,7 @@ footer i {
   </button>
   <span class="audio-label">Ascolta l'audio</span>
 </div>
+
 
   
    
