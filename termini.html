@@ -509,14 +509,13 @@ footer i {
 
       
       
-/* Base tooltip container */
 .tooltip-container {
   position: relative;
   display: inline-block;
 }
 
-/* Roma logo tooltip */
-.top-banner > .tooltip-container::after {
+.top-banner > .tooltip-container::after,
+.social-icons a::after {
   content: "Questo link si apre in una nuova finestra";
   position: absolute;
   background-color: white;
@@ -533,61 +532,38 @@ footer i {
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   border: 1px solid #ddd;
   bottom: -40px;
+  z-index: 100000;
+}
+
+.top-banner > .tooltip-container::after {
   left: 50%;
   transform: translateX(-50%);
-  z-index: 100000;
   height: 24px;
   line-height: 1;
   display: flex;
   align-items: center;
 }
 
-/* Social icons tooltips */
-.social-icons a {
-  position: relative;
-}
-
 .social-icons a::after {
-  content: attr(aria-label);
-  position: absolute;
-  background-color: white;
-  color: #666;
-  padding: 4px 12px;
-  border-radius: 4px;
-  font-size: 13px;
-  font-style: italic;
-  white-space: nowrap;
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  border: 1px solid #ddd;
-  bottom: -40px;
   left: -150%;
   transform: translateX(-50%);
-  z-index: 100000;
 }
 
-/* Show tooltips on hover */
+.social-icons a:nth-child(3)::after,
+.social-icons a:nth-child(4)::after {
+  left: -200%;
+}
+
 .tooltip-container:hover::after,
 .social-icons a:hover::after {
   visibility: visible;
   opacity: 1;
 }
 
-/* X and YouTube specific adjustment */
-.social-icons a:nth-child(3)::after,
-.social-icons a:nth-child(4)::after {
-  left: -200%;
-}
-
-/* Top banner z-index */
 .top-banner {
   position: relative;
   z-index: 1;
 }
-
       
    </style>
 </head>
