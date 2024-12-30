@@ -561,14 +561,17 @@ document.head.appendChild(style);
 .biblioteca-link:hover::before {
     content: "Clicca qui per vedere gli appuntamenti della biblioteca";
     position: absolute;
-    bottom: -40px;
+    top: -40px; /* Cambiato da bottom a top per farla apparire sopra */
     left: 0;
     background: white;
     border: 1px solid #ddd;
     padding: 5px 10px;
     white-space: nowrap;
     z-index: 1000;
+    color: grey; /* Impostato il colore grigio */
+    font-style: italic; /* Impostato il testo in corsivo */
 }
+
 	    
     </style>
 
