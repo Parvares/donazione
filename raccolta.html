@@ -347,8 +347,8 @@
     }
 
     /* Tooltip personalizzato */
-    a:hover::after {
-        content: attr(title);
+    a:hover::before {
+        content: "Clicca qui per vedere gli appuntamenti della biblioteca";
         position: absolute;
         top: -30px;
         left: 0;
@@ -365,7 +365,7 @@
     }
 
     /* Nascondi il tooltip quando non è in hover */
-    a::after {
+    a::before {
         content: "";
         visibility: hidden;
     }
@@ -444,8 +444,7 @@
           
 <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" 
    class="text-xl"
-   style="color: #970a2c; font-size: 1rem; transition: color 0.3s ease; position: relative;"
-   title="Clicca qui per vedere gli appuntamenti della biblioteca">
+   style="color: #970a2c; font-size: 1rem; position: relative; transition: color 0.3s ease;">
     Biblioteca Elsa Morante
 </a>
       </div>
