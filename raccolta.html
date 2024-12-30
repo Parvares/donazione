@@ -269,26 +269,98 @@
                 display: none !important; /* Nasconde la sezione "Biblioteca Elsa Morante" */
             }
         }
+
+
+
+        
+
+/* Base tooltip container */
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Base tooltip style */
+.tooltip-container::after {
+    content: "Questo link si apre in una nuova finestra";
+    position: absolute;
+    background-color: white;
+    color: #666;
+    padding: 4px 12px;
+    line-height: 1.3;
+    border-radius: 4px;
+    font-size: 13px;
+    font-style: italic;
+    white-space: nowrap;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    border: 1px solid #ddd;
+    z-index: 100000;
+}
+
+/* Show tooltip on hover */
+.tooltip-container:hover::after {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Social icons tooltips */
+.social-icons .tooltip-container::after {
+    bottom: -40px;
+    left: -150% !important;  /* Spostato molto più a sinistra */
+    transform: translateX(-50%);
+    top: auto;
+    background-color: white !important;
+}
+
+/* Specific targeting for Roma logo tooltip */
+.top-banner > a.tooltip-container::after {
+    bottom: -40px !important;
+    top: auto !important;
+    left: 85% !important;
+    transform: translateX(-50%) !important;
+    position: absolute !important;
+    background-color: white !important;
+    height: 24px !important;
+    line-height: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Top banner positioning */
+.top-banner {
+    position: relative;
+    z-index: 1;
+}
+
+
+
+
+
+
+        
     </style>
 </head>
 <body>
 
-    <div class="top-banner">
-        <img src="roma.png" alt="Logo Roma" class="roma-logo">
+   <div class="top-banner">
+        <a href="https://culture.roma.it/" class="tooltip-container">
+            <img src="roma.png" alt="Logo Roma" class="roma-logo">
+        </a>
         <div class="social-icons">
-            <button onclick="window.print()" class="print-button" title="Stampa">
-                <i class="fas fa-print"></i>
-            </button>
-            <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook">
+            <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook" class="tooltip-container">
                 <i class="fab fa-facebook"></i>
             </a>
-            <a href="https://www.instagram.com/bibliotecaelsamorante/" target="_blank" aria-label="Instagram">
+            <a href="https://www.instagram.com/bibliotecaelsamorante/" target="_blank" aria-label="Instagram" class="tooltip-container">
                 <i class="fab fa-instagram"></i>
             </a>
-            <a href="https://x.com/bibliomorante" target="_blank" aria-label="X">
+            <a href="https://x.com/bibliomorante" target="_blank" aria-label="X" class="tooltip-container">
                 <i class="fab fa-x-twitter"></i>
             </a>
-            <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank" aria-label="YouTube">
+            <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank" aria-label="YouTube" class="tooltip-container">
                 <i class="fab fa-youtube"></i>
             </a>
         </div>
@@ -407,9 +479,8 @@
 <footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
     <div class="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
         <div class="mb-4 md:mb-0">
-            <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" rel="noopener noreferrer">
-                <img src="footermorante.png" alt="Logo Biblioteca Morante" class="h-8 md:h-10">
-            </a>
+            <img src="footermorante.png" alt="Logo Biblioteca Morante" style="cursor: pointer;" 
+    onclick="window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');">
         </div>
         
         <div class="flex flex-col md:flex-row md:space-x-8 space-y-2 md:space-y-0 text-center md:text-left text-sm">
