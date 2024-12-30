@@ -506,7 +506,7 @@ footer i {
 }
 
 
-     /* Add new tooltip styles */
+  /* Add new tooltip styles */
         .tooltip-container {
             position: relative;
             display: inline-block;
@@ -516,11 +516,11 @@ footer i {
         .tooltip-container::after {
             content: "Questo link si apre in una nuova finestra";
             position: absolute;
-            bottom: 100%;
+            bottom: 120%; /* Aumentato per dare più spazio */
             left: 50%;
             transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
+            background-color: white;
+            color: gray;
             padding: 5px 10px;
             border-radius: 4px;
             font-size: 14px;
@@ -531,6 +531,7 @@ footer i {
             pointer-events: none;
             z-index: 1000;
             width: max-content;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Aggiunto un'ombra per visibilità */
         }
 
         /* Show tooltip on hover */
