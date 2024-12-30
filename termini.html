@@ -509,77 +509,77 @@ footer i {
 
       
       
-    /* Base tooltip container */
-        .tooltip-container {
-            position: relative;
-            display: inline-block;
-        }
+/* Base tooltip container */
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+}
 
-        /* Base tooltip style */
-        .tooltip-container::after {
-            content: "Questo link si apre in una nuova finestra";
-            position: absolute;
-            background-color: white;
-            color: #666;
-            padding: 1px 12px; /* Ulteriormente ridotta l'altezza */
-            line-height: 1.2; /* Ridotta l'altezza della linea */
-            border-radius: 4px;
-            font-size: 13px; /* Ridotto leggermente il font */
-            font-style: italic;
-            white-space: nowrap;
-            visibility: hidden;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            border: 1px solid #ddd;
-        }
+/* Base tooltip style */
+.tooltip-container::after {
+    content: "Questo link si apre in una nuova finestra";
+    position: absolute;
+    background-color: white;
+    color: #666;
+    padding: 6px 15px; /* Aumentata l'altezza della tooltip */
+    line-height: 1.5; /* Aumentata l'altezza della linea */
+    border-radius: 4px;
+    font-size: 14px; /* Aumentato il font */
+    font-style: italic;
+    white-space: nowrap;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    border: 1px solid #ddd;
+}
 
-        /* Show tooltip on hover */
-        .tooltip-container:hover::after {
-            visibility: visible;
-            opacity: 1;
-        }
+/* Show tooltip on hover */
+.tooltip-container:hover::after {
+    visibility: visible;
+    opacity: 1;
+}
 
-        /* Roma logo tooltip specific positioning */
-        .roma-tooltip::after {
-            top: 100%;
-            left: 0; /* Allineato al bordo sinistro del logo */
-            transform: translateX(0); /* Rimosso lo spostamento */
-            margin-top: 8px;
-            z-index: 9999;
-        }
+/* Roma logo tooltip specific positioning */
+.roma-tooltip::after {
+    top: 100%;
+    left: 0; /* Allineato al bordo sinistro del logo */
+    transform: translateX(0); /* Rimosso lo spostamento */
+    margin-top: 12px; /* Aumentata la distanza della tooltip */
+    z-index: 9999;
+}
 
-        /* Social icons container */
-        .social-icons {
-            position: relative;
-            display: flex;
-            gap: 1rem;
-        }
+/* Social icons container */
+.social-icons {
+    position: relative;
+    display: flex;
+    gap: 1rem;
+}
 
-        /* Social icons tooltip specific positioning */
-        .social-icons .tooltip-container::after {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            transform: translateX(-75%); /* Spostato più a sinistra */
-            margin-top: 8px;
-            z-index: 100000;
-            background-color: white !important;
-        }
+/* Social icons tooltip specific positioning */
+.social-icons .tooltip-container::after {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    transform: translateX(-75%); /* Spostato più a sinistra */
+    margin-top: 8px;
+    z-index: 100000;
+    background-color: white !important;
+}
 
-        /* Ensure top banner doesn't interfere */
-        .top-banner {
-            position: relative;
-            z-index: 1;
-        }
+/* Ensure top banner doesn't interfere */
+.top-banner {
+    position: relative;
+    z-index: 1;
+}
 
-        /* Additional override for social icons tooltips */
-        .social-icons a::after {
-            z-index: 100000 !important;
-            position: absolute !important;
-            background-color: white !important;
-        }
+/* Additional override for social icons tooltips */
+.social-icons a::after {
+    z-index: 100000 !important;
+    position: absolute !important;
+    background-color: white !important;
+}
 
 
       
