@@ -482,19 +482,16 @@ document.head.appendChild(style);
 
 
 
-/* Common tooltip container style */
+/* Base tooltip container */
 .tooltip-container {
     position: relative;
     display: inline-block;
 }
 
-/* Social icons tooltip */
-.social-icons .tooltip-container::after {
+/* Base tooltip style */
+.tooltip-container::after {
     content: "Questo link si apre in una nuova finestra";
     position: absolute;
-    right: -20px;
-    top: 50%;
-    transform: translateY(-50%);
     background-color: white;
     color: #666;
     padding: 4px 12px;
@@ -512,18 +509,45 @@ document.head.appendChild(style);
     z-index: 100000;
 }
 
-/* Roma logo tooltip */
-.top-banner > .tooltip-container::after {
-    left: 50%;
-    top: 100%;
-    transform: translateX(-50%);
-    margin-top: 5px;
-}
-
+/* Show tooltip on hover */
 .tooltip-container:hover::after {
     visibility: visible;
     opacity: 1;
 }
+
+/* Social icons tooltips */
+.social-icons .tooltip-container::after {
+    bottom: -40px;
+    left: -150% !important;  /* Spostato molto più a sinistra */
+    transform: translateX(-50%);
+    top: auto;
+    background-color: white !important;
+}
+
+/* Specific targeting for Roma logo tooltip */
+.top-banner > a.tooltip-container::after {
+    bottom: -40px !important;
+    top: auto !important;
+    left: 85% !important;
+    transform: translateX(-50%) !important;
+    position: absolute !important;
+    background-color: white !important;
+    height: 24px !important;
+    line-height: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Top banner positioning */
+.top-banner {
+    position: relative;
+    z-index: 1;
+}
+
+.tooltip-library:hover {
+    color: #d64f70; /* Un rosso più chiaro */
+}
+
 	    
 	    
     </style>
