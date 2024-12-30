@@ -410,7 +410,9 @@ footer i {
     align-items: center;
     gap: 10px;
     margin: 20px 0;
+    position: relative; /* Necessario per posizionare la tooltip */
 }
+
 
 /* Stile aggiornato per il controllo audio */
 .audio-control {
@@ -427,7 +429,34 @@ footer i {
     border-radius: 50%;
     padding: 0;
     transition: background-color 0.3s ease;
+    position: relative; /* Per il posizionamento relativo della tooltip */
 }
+
+
+.audio-control .tooltip {
+    position: absolute;
+    bottom: 120%; /* Posiziona sopra il pulsante */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 10;
+}
+
+.audio-control:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+      
 
 .audio-control:hover {
     background-color: #800624; /* Versione più scura del colore primario */
@@ -635,12 +664,14 @@ footer i {
 <!-- Add this right after the library-name div in your HTML -->
 <div class="text-controls">
 <div class="audio-control-container">
-    <button class="audio-control" id="audioControl">
-        <i class="fas fa-headphones"></i>
-        <i class="fas fa-play"></i>
-    </button>
-    <span class="audio-label">Ascolta l'audio</span>
+  <button class="audio-control" id="audioControl">
+    <i class="fas fa-headphones"></i>
+    <i class="fas fa-play"></i>
+    <span class="tooltip">Ascolta l'audio</span>
+  </button>
+  <span class="audio-label">Ascolta l'audio</span>
 </div>
+
   
    
 <div class="waveform-container">
