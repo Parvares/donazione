@@ -512,6 +512,7 @@ footer i {
             display: inline-block;
         }
 
+        /* Tooltip styling */
         .tooltip-container::after {
             content: "Questo link si apre in una nuova finestra";
             position: absolute;
@@ -529,11 +530,19 @@ footer i {
             transition: opacity 0.3s ease;
             pointer-events: none;
             z-index: 1000;
+            width: max-content;
         }
 
+        /* Show tooltip on hover */
         .tooltip-container:hover::after {
             visibility: visible;
             opacity: 1;
+        }
+
+        /* Additional style to make sure tooltip doesn't overflow */
+        .social-icons a {
+            display: inline-block;
+            margin-right: 10px;
         }
 
 
