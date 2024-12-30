@@ -521,10 +521,10 @@ footer i {
     position: absolute;
     background-color: white;
     color: #666;
-    padding: 4px 12px; /* Ridotto il padding per abbassare l'altezza */
-    line-height: 1.3; /* Leggermente ridotto lo spazio tra le righe */
+    padding: 4px 12px;
+    line-height: 1.3;
     border-radius: 4px;
-    font-size: 13px; /* Font leggermente più piccolo */
+    font-size: 13px;
     font-style: italic;
     white-space: nowrap;
     visibility: hidden;
@@ -533,6 +533,7 @@ footer i {
     pointer-events: none;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     border: 1px solid #ddd;
+    z-index: 100000;
 }
 
 /* Show tooltip on hover */
@@ -541,15 +542,6 @@ footer i {
     opacity: 1;
 }
 
-
-
-/* Specific adjustment for Roma logo tooltip */
-        .roma-logo-container::after {
-            left: 30%;  /* Spostato la tooltip verso destra */
-        }
-
-
-      
 /* Social icons container */
 .social-icons {
     position: relative;
@@ -557,30 +549,23 @@ footer i {
     gap: 1rem;
 }
 
-/* Social icons tooltip specific positioning */
-.social-icons .tooltip-container::after {
+/* Unified tooltip positioning for both Roma logo and social icons */
+.social-icons .tooltip-container::after,
+.roma-logo-container::after {
     position: absolute;
     top: 100%;
-    left: 0;
-    transform: translateX(-75%); /* Spostato più a sinistra */
-    margin-top: 8px; /* Stessa distanza come per roma */
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 8px;
     z-index: 100000;
     background-color: white !important;
 }
 
-/* Ensure top banner doesn't interfere */
+/* Top banner positioning */
 .top-banner {
     position: relative;
     z-index: 1;
 }
-
-/* Additional override for social icons tooltips */
-.social-icons a::after {
-    z-index: 100000 !important;
-    position: absolute !important;
-    background-color: white !important;
-}
-
 
 
 
