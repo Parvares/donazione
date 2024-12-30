@@ -482,82 +482,52 @@ document.head.appendChild(style);
 
 
 
-/* Base tooltip container */
 .tooltip-container {
     position: relative;
     display: inline-block;
 }
 
-/* Base tooltip style */
 .tooltip-container::before {
-  content: "Questo link si apre in una nuova finestra";
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 5px 10px;
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  border-radius: 4px;
-  font-size: 14px;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.2s;
-  white-space: nowrap;
-  z-index: 1000;
+    content: "Questo link si apre in una nuova finestra";
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 4px;
+    font-size: 14px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+    z-index: 1000;
 }
 
 .tooltip-container::after {
-  content: '';
-  position: absolute;
-  bottom: calc(100% - 5px);
-  left: 50%;
-  transform: translateX(-50%);
-  border-width: 5px;
-  border-style: solid;
-  border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.2s;
-}
-
-/* Show tooltip on hover */
-.tooltip-container:hover::after {
-    visibility: visible;
-    opacity: 1;
-}
-
-/* Social icons tooltips */
-.social-icons .tooltip-container::after {
-    bottom: -40px;
-    left: -150% !important;  /* Spostato molto più a sinistra */
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 5px);
+    left: 50%;
     transform: translateX(-50%);
-    top: auto;
-    background-color: white !important;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s;
 }
 
-/* Specific targeting for Roma logo tooltip */
-.top-banner > a.tooltip-container::after {
-    bottom: -40px !important;
-    top: auto !important;
-    left: 85% !important;
-    transform: translateX(-50%) !important;
-    position: absolute !important;
-    background-color: white !important;
-    height: 24px !important;
-    line-height: 1 !important;
-    display: flex !important;
-    align-items: center !important;
+.tooltip-container:hover::before,
+.tooltip-container:hover::after {
+    opacity: 1;
+    visibility: visible;
 }
 
-/* Top banner positioning */
 .top-banner {
     position: relative;
     z-index: 1;
-}
-
-.tooltip-library:hover {
-    color: #d64f70; /* Un rosso più chiaro */
 }
 
 	    
