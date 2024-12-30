@@ -1480,9 +1480,10 @@ window.resetBookFields = function(button) {
     <footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
     <div class="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
         <div class="mb-4 md:mb-0">
-            <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" rel="noopener noreferrer">
-                <img src="footermorante.png" alt="Logo Biblioteca Morante" class="h-8 md:h-10">
-            </a>
+             <!-- Logo -->
+            <img src="footermorante.png" alt="Logo Biblioteca Morante" class="h-8 md:h-10" 
+                 style="cursor: pointer;" 
+                 onclick="window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');">
         </div>
         
         <div class="flex flex-col md:flex-row md:space-x-8 space-y-2 md:space-y-0 text-center md:text-left text-sm">
