@@ -621,9 +621,6 @@ footer i {
     z-index: 1;
 }
 
-footer a img {
-    pointer-events: none;
-}
 
       
    </style>
@@ -984,6 +981,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+        const logo = document.querySelector('footer img');
+        logo.removeAttribute('title');
+    });
       
 </script>
 
