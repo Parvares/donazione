@@ -10,122 +10,128 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 
-    <style>
-        :root {
-            --primary: #970a2c;
-        }
-        
-        body {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 20px;
-            background-color: #f3f4f6;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+<style>
+  :root {
+    --primary: #970a2c;
+  }
 
-        .top-banner {
-            background-color: white;
-            padding: 0.8rem 2rem; 
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+  /* Impostazione box-sizing globale per evitare overflow imprevisti */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
 
-        .roma-logo {
-            height: 40px;
-        }
+  /* Impediamo l'overflow orizzontale globale */
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+  }
 
-        .social-icons {
-            display: flex;
-            gap: 1rem;
-            justify-content: flex-end;
-        }
+  body {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 20px;
+    background-color: #f3f4f6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
 
-        .social-icons a {
-            color: var(--primary);
-            font-size: 1.5rem;
-            transition: transform 0.3s ease;
-        }
+  .top-banner {
+    background-color: white;
+    padding: 0.8rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-        .social-icons a:hover {
-            transform: scale(1.2);
-        }
+  .roma-logo {
+    height: 40px;
+  }
 
-        header {
-            background-color: var(--primary);
-            color: #fff;
-            padding: 2rem 0;
-        }
+  .social-icons {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+  }
 
-        .container-header {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
+  .social-icons a {
+    color: var(--primary);
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
+  }
 
+  .social-icons a:hover {
+    transform: scale(1.2);
+  }
 
+  header {
+    background-color: var(--primary);
+    color: #fff;
+    padding: 2rem 0;
+  }
 
-        
-.content-wrapper {
+  .container-header {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .content-wrapper {
     max-width: 900px;
     width: 100%;
     margin: 2rem auto;
     padding: 0 1rem;
     position: relative;
     margin-top: 60px;
-}
+  }
 
-.nav-icons {
+  .nav-icons {
     position: absolute;
     top: -60px;
-    left: 50%; /* Centrato rispetto al contenitore */
-    transform: translateX(calc(-50% - 400px)); /* Spostato a sinistra della larghezza desiderata */
+    left: 50%;
+    transform: translateX(calc(-50% - 400px));
     display: flex;
     align-items: center;
     gap: 3rem;
     padding-top: 20px;
-}
+  }
 
-/* Responsive adjustments */
-@media (max-width: 1400px) {
+  /* Responsive adjustments */
+  @media (max-width: 1400px) {
     .nav-icons {
-        transform: translateX(calc(-50% - 300px));
+      transform: translateX(calc(-50% - 300px));
     }
-}
+  }
 
-@media (max-width: 1200px) {
+  @media (max-width: 1200px) {
     .nav-icons {
-        transform: translateX(calc(-50% - 200px));
+      transform: translateX(calc(-50% - 200px));
     }
-}
+  }
 
-@media (max-width: 992px) {
+  @media (max-width: 992px) {
     .nav-icons {
-        transform: translateX(calc(-50% - 100px));
+      transform: translateX(calc(-50% - 100px));
     }
-}
+  }
 
-@media (max-width: 768px) {
+  @media (max-width: 768px) {
     .nav-icons {
-        position: relative;
-        left: 0;
-        top: 0;
-        transform: none;
-        justify-content: flex-start;
+      position: relative;
+      left: 0;
+      top: 0;
+      transform: none;
+      justify-content: flex-start;
     }
-}
+  }
 
-
-        
-
-        .nav-icons a {
+  .nav-icons a {
     color: #970a2c;
     font-size: 1.25rem;
     text-decoration: none;
@@ -133,213 +139,169 @@
     display: flex;
     align-items: center;
     padding: 0.5rem;
-}
+  }
 
-.nav-icons a:hover {
+  .nav-icons a:hover {
     transform: scale(1.1);
-}
+  }
 
-        .nav-icons a:first-child {
-            font-weight: bold;
-            font-size: 1.8rem;
-            position: relative;
-            letter-spacing: 0.5rem;
-        }
-
-        .nav-icons a:first-child::after {
-            content: '';
-            position: absolute;
-            left: calc(100% + 1.5rem);
-            top: 50%;
-            transform: translateY(-50%);
-            height: 20px;
-            width: 1px;
-            background-color: rgba(128, 128, 128, 0.3);
-        }
-
-        .content-section {
-            margin-top: 40px;
-        }
-
-        .content-section > div {
-            margin-bottom: 1.5rem;
-        }
-
-        footer {
-            background-color: var(--primary);
-            color: #fff;
-            text-align: center;
-            padding: 1.8rem 0;
-        }
-
-        footer a {
-            color: #fff;
-            text-decoration: underline;
-        }
-
-     .print-button {
-    background: none;
-    border: none;
-    color: var(--primary);  /* Mantieni il colore di prima */
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0;
-    transition: transform 0.3s ease;
-}
-
-.print-button:hover {
-    transform: scale(1.2);
-}
-
-@media print {
-    .print-button {
-        color: var(--primary);  /* Assicurati che l'icona mantenga il colore originale anche in stampa */
-    }
-
-            body {
-                background: white;
-                font-size: 11pt;
-                color: black;
-                margin: 0;
-                padding: 0;
-            }
-
-            .top-banner, .nav-icons, .social-icons, footer {
-                display: none !important;
-            }
-
-            header {
-                display: none !important;
-            }
-
-            .content-wrapper {
-                margin: 0;
-                padding: 0;
-            }
-
-            .content-section {
-                margin-top: 0;
-            }
-
-            .content-section > div {
-                break-inside: avoid;
-                page-break-inside: avoid;
-                border: none;
-                box-shadow: none;
-                padding: 0.5cm 0;
-                margin-bottom: 0.5cm;
-            }
-
-            h1 {
-                font-size: 16pt;
-                color: black !important;
-                margin-bottom: 1cm;
-            }
-
-            h2 {
-                font-size: 13pt;
-                color: black !important;
-                margin-bottom: 0.3cm;
-            }
-
-            p {
-                margin-bottom: 0.2cm;
-            }
-
-            a {
-                text-decoration: none;
-                color: black;
-            }
-
-            a[href]::after {
-                content: " (" attr(href) ")";
-                font-size: 8pt;
-                font-style: italic;
-            }
-
-            a[href^="https://www.bibliotechediroma.it"]::after,
-            a[href^="https://www.facebook.com"]::after,
-            a[href^="https://www.instagram.com"]::after,
-            a[href^="https://x.com"]::after,
-            a[href^="https://www.youtube.com"]::after {
-                content: "";
-            }
-
-            .flex.items-center.mb-4 {
-                display: none !important; /* Nasconde la sezione "Biblioteca Elsa Morante" */
-            }
-        }
-
-
-/* Base tooltip container */
-.tooltip-container {
+  .nav-icons a:first-child {
+    font-weight: bold;
+    font-size: 1.8rem;
     position: relative;
-    display: inline-block;
-}
+    letter-spacing: 0.5rem;
+  }
 
-/* Base tooltip style */
-.tooltip-container::after {
-    content: "Questo link si apre in una nuova finestra";
+  .nav-icons a:first-child::after {
+    content: '';
     position: absolute;
+    left: calc(100% + 1.5rem);
+    top: 50%;
+    transform: translateY(-50%);
+    height: 20px;
+    width: 1px;
+    background-color: rgba(128, 128, 128, 0.3);
+  }
+
+  .content-section {
+    margin-top: 40px;
+  }
+
+  .bg-white {
     background-color: white;
-    color: #666;
-    padding: 4px 12px;
-    line-height: 1.3;
-    border-radius: 4px;
-    font-size: 13px;
-    font-style: italic;
-    white-space: nowrap;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    border: 1px solid #ddd;
-    z-index: 100000;
-}
+  }
 
-/* Show tooltip on hover */
-.tooltip-container:hover::after {
-    visibility: visible;
-    opacity: 1;
-}
+  .shadow-md {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
 
-/* Social icons tooltips */
-.social-icons .tooltip-container::after {
-    bottom: -40px;
-    left: -150% !important;  /* Spostato molto più a sinistra */
-    transform: translateX(-50%);
-    top: auto;
-    background-color: white !important;
-}
+  .rounded-lg {
+    border-radius: 8px;
+  }
 
-/* Specific targeting for Roma logo tooltip */
-.top-banner > a.tooltip-container::after {
-    bottom: -40px !important;
-    top: auto !important;
-    left: 85% !important;
-    transform: translateX(-50%) !important;
-    position: absolute !important;
-    background-color: white !important;
-    height: 24px !important;
-    line-height: 1 !important;
-    display: flex !important;
-    align-items: center !important;
-}
+  .p-6 {
+    padding: 1.5rem;
+  }
 
-/* Top banner positioning */
-.top-banner {
+  .mb-6 {
+    margin-bottom: 1.5rem;
+  }
+
+  .text-xl {
+    font-size: 1.25rem;
+  }
+
+  .text-3xl {
+    font-size: 1.875rem;
+  }
+
+  .font-bold {
+    font-weight: bold;
+  }
+
+  .font-semibold {
+    font-weight: 600;
+  }
+
+  /* Ottimizzazione per le immagini */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Footer */
+  footer {
+    background-color: #970a2c;
+    text-align: center;
+    padding: 2rem;
+    width: 100%;
     position: relative;
-    z-index: 1;
-}
+    box-sizing: border-box;
+  }
+
+  footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  footer .flex {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  footer .space-x-4 {
+    gap: 1rem;
+  }
+
+  footer .space-y-2 {
+    margin-top: 1rem;
+  }
+
+  footer .space-x-2 {
+    margin-right: 1rem;
+  }
+
+  footer .h-8 {
+    height: 2rem;
+  }
+
+  footer .md:h-10 {
+    height: 2.5rem;
+  }
+
+  footer .text-center {
+    text-align: center;
+  }
+
+  footer .text-sm {
+    font-size: 0.875rem;
+  }
+
+  footer .md:text-left {
+    text-align: left;
+  }
+
+  footer .text-white {
+    color: white;
+  }
+
+  footer .md:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  footer .items-center {
+    align-items: center;
+  }
+
+  footer .justify-between {
+    justify-content: space-between;
+  }
+
+  footer .md:space-x-8 {
+    gap: 2rem;
+  }
+
+  footer .w-4 {
+    width: 1rem;
+  }
+
+  footer .md:justify-start {
+    justify-content: flex-start;
+  }
+
+  footer .space-x-4 {
+    gap: 1rem;
+  }
+</style>
 
 
 
 
 
 
-        
-    </style>
+
 </head>
 <body>
 
