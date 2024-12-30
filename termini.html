@@ -506,20 +506,18 @@ footer i {
 }
 
 
-      
 
-      .tooltip-container {
+      
+      
+    .tooltip-container {
             position: relative;
             display: inline-block;
         }
 
+        /* Base tooltip style */
         .tooltip-container::after {
             content: "Questo link si apre in una nuova finestra";
             position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            margin-top: 8px;
             background-color: white;
             color: #666;
             padding: 4px 12px;
@@ -531,33 +529,39 @@ footer i {
             opacity: 0;
             transition: opacity 0.3s ease;
             pointer-events: none;
-            z-index: 9999; /* Aumentato significativamente per essere sicuri che sia sopra tutto */
+            z-index: 9999;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             border: 1px solid #ddd;
         }
 
+        /* Show tooltip on hover */
         .tooltip-container:hover::after {
             visibility: visible;
             opacity: 1;
         }
 
-        /* Specific adjustment for Roma logo tooltip */
-        a[href="https://culture.roma.it/"]::after {
-            left: 0;  /* Reset left position */
-            transform: translateX(20%);  /* Sposta la tooltip verso destra */
+        /* Roma logo tooltip specific positioning */
+        .roma-tooltip::after {
+            top: 100%;
+            left: 50%;
+            transform: translateX(-80%); /* Spostato più a sinistra */
+            margin-top: 8px;
         }
 
-        /* Updated social icons tooltip positioning */
+        /* Social icons container */
+        .social-icons {
+            position: relative;
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* Social icons tooltip specific positioning */
         .social-icons .tooltip-container::after {
-            top: 100%;  /* Posiziona sotto le icone */
-            bottom: auto;
-            margin-top: 8px;
-            width: max-content;
+            top: 100%;
             left: 50%;
             transform: translateX(-50%);
-            white-space: normal;
-            text-align: center;
-            z-index: 10000; /* Ancora più alto per essere sicuri che sia sopra il banner */
+            margin-top: 8px;
+            z-index: 10000;
         }
 
 
