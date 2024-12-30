@@ -555,10 +555,14 @@ footer i {
 .top-banner > a.tooltip-container::after {
     bottom: -40px !important;
     top: auto !important;
-    left: 50% !important;
+    left: 75% !important;  /* Spostato più a destra */
     transform: translateX(-50%) !important;
     position: absolute !important;
     background-color: white !important;
+    height: 24px !important;  /* Stessa altezza delle tooltip social */
+    line-height: 1 !important;  /* Aggiustato line-height */
+    display: flex !important;
+    align-items: center !important;
 }
 
 /* Top banner positioning */
