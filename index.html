@@ -492,6 +492,9 @@ document.head.appendChild(style);
 .tooltip-container::after {
     content: "Questo link si apre in una nuova finestra";
     position: absolute;
+    left: 50%;
+    top: 100%;
+    transform: translateX(-50%);
     background-color: white;
     color: #666;
     padding: 4px 12px;
@@ -507,6 +510,7 @@ document.head.appendChild(style);
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     border: 1px solid #ddd;
     z-index: 100000;
+    margin-top: 5px;
 }
 
 /* Show tooltip on hover */
