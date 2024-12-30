@@ -541,14 +541,11 @@ footer i {
     opacity: 1;
 }
 
-/* Roma logo tooltip specific positioning */
-.roma-tooltip::after {
-    top: 100%;
-    left: 0; /* Allineato al bordo sinistro del logo */
-    transform: translateX(0); /* Rimosso lo spostamento */
-    margin-top: 8px; /* Distanza simile alle social icons */
-    z-index: 9999;
-}
+ /* Specific adjustment for Roma logo tooltip */
+        a[href="https://culture.roma.it/"]::after {
+            left: 0;  /* Reset left position */
+            transform: translateX(20%);  /* Sposta la tooltip verso destra */
+        }
 
 /* Social icons container */
 .social-icons {
