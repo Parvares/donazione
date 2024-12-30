@@ -800,9 +800,10 @@ footer i {
    <footer>
     <div class="container mx-auto px-4">
         <!-- Logo -->
-        <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" rel="noopener noreferrer">
-            <img src="footermorante.png" alt="Logo Biblioteca Morante">
-        </a>
+        <a href="#" onclick="window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank'); return false;" rel="noopener noreferrer">
+    <img src="footermorante.png" alt="Logo Biblioteca Morante">
+</a>
+
         
         <!-- Informazioni -->
         <div class="info">
@@ -982,10 +983,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-document.addEventListener("DOMContentLoaded", function() {
-        const logo = document.querySelector('footer img');
-        logo.removeAttribute('title');
-    });
+
       
 </script>
 
