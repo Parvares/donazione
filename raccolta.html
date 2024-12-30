@@ -72,8 +72,6 @@
 
 
 
-              
-
         
 .content-wrapper {
     max-width: 900px;
@@ -273,9 +271,6 @@
         }
 
 
-
-        
-
 /* Base tooltip container */
 .tooltip-container {
     position: relative;
@@ -342,16 +337,25 @@
 
 
 
+
         
     </style>
 </head>
 <body>
 
-   <div class="top-banner">
-        <a href="https://culture.roma.it/" class="tooltip-container">
+    <div class="top-banner">
+        
+     <a href="https://culture.roma.it/" class="tooltip-container">
             <img src="roma.png" alt="Logo Roma" class="roma-logo">
         </a>
+        
         <div class="social-icons">
+            <button onclick="window.print()" class="print-button" title="Stampa">
+                <i class="fas fa-print"></i>
+            </button>
+            
+            
+            
             <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook" class="tooltip-container">
                 <i class="fab fa-facebook"></i>
             </a>
@@ -364,6 +368,9 @@
             <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank" aria-label="YouTube" class="tooltip-container">
                 <i class="fab fa-youtube"></i>
             </a>
+
+
+            
         </div>
     </div>
 
@@ -410,16 +417,14 @@
            title="Visualizza la posizione sulla mappa">
             <img src="location.svg" alt="Location Icon" class="mr-2" style="height: 24px; width: 24px;">
         </a>
-
-          
-<a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" 
-   class="text-xl" 
-   style="color: #970a2c; font-size: 1rem; transition: color 0.3s ease;" 
-   onmouseover="this.style.color='#c73d5d'" 
-   onmouseout="this.style.color='#970a2c'"
-   title="Clicca qui per vedere gli appuntamenti della biblioteca">
-    Biblioteca Elsa Morante
-</a>
+       <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" 
+       class="text-xl" 
+       style="color: #970a2c; font-size: 1rem; transition: color 0.3s ease;" 
+       onmouseover="this.style.color='#c73d5d'" 
+       onmouseout="this.style.color='#970a2c'"
+       title="Clicca qui per vedere gli appuntamenti della biblioteca">
+       Biblioteca Elsa Morante
+      </a>
       </div>
 
         
@@ -480,18 +485,13 @@
     
 
 
-
-    
-  <footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
+    <footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
     <div class="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
         <div class="mb-4 md:mb-0">
-            
             <!-- Logo con onclick -->
 <img src="footermorante.png" alt="Logo Biblioteca Morante" class="h-8 md:h-10" 
      style="cursor: pointer;" 
      onclick="window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');">
-
-
         </div>
         
         <div class="flex flex-col md:flex-row md:space-x-8 space-y-2 md:space-y-0 text-center md:text-left text-sm">
@@ -519,6 +519,7 @@
         </div>
     </div>
 </footer>
+
 
 
 
