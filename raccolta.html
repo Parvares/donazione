@@ -637,6 +637,15 @@ a:hover {
         // Osserva il body per cambiamenti nel DOM
         observer.observe(document.body, { childList: true, subtree: true });
 
+        // Scroll esplicito alla posizione iniziale
+        window.scrollTo(0, 0); // Imposta lo scroll in cima alla pagina
+
+        // Se desideri far scorrere alla sezione specifica, puoi farlo:
+        const targetSection = document.getElementById('where_infobib');
+        if (targetSection) {
+            targetSection.scrollIntoView({ behavior: 'smooth' }); // Scrolla alla sezione target
+        }
+
         // Rimuove il blocco dello scroll per permettere il normale comportamento di scroll
         window.removeEventListener('scroll', preventScroll); // Disabilita il listener per lo scroll
     });
@@ -646,6 +655,7 @@ a:hover {
         window.scrollTo(0, 0); // Blocca lo scroll in alto
     }
 </script>
+
 
 
 
