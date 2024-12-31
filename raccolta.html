@@ -573,67 +573,89 @@ a:hover {
     
 
 
-<footer class="bg-[#970a2c] text-white mt-16 py-8">
-    <div class="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
-        <div class="mb-4 md:mb-0">
-            <img src="footermorante.png" alt="Logo Biblioteca Morante" class="h-8 md:h-10"
-                style="cursor: pointer;"
-                onclick="window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');">
-        </div>
-        
-        <div class="flex flex-col md:flex-row md:space-x-8 space-y-2 md:space-y-0 text-center md:text-left text-sm">
-            <div class="flex items-center justify-center md:justify-start space-x-2">
-                <i class="fas fa-location-dot w-4"></i>
-                <span class="flex flex-col">
-                    <span>Via Adolfo Cozza 7</span>
-                    <span>Municipio X, 00121 Roma</span>
-                </span>
-            </div>
-            
-            <div class="flex items-center justify-center md:justify-start space-x-4">
-                <div class="flex items-center space-x-2">
-                    <i class="fas fa-phone w-4"></i>
-                    <span>06 4546 0481 / 0483</span>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <i class="fas fa-clock w-4"></i>
-                    <span class="flex flex-col">
-                        <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_openings" 
-                           target="_blank" onclick="openPageAndScroll()">Lunedì-Venerdì 09:00-18:30</a>
-                    </span>
-                </div>
-            </div>
-        </div>
+<footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
+  <div class="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
+    <div class="mb-4 md:mb-0">
+      <!-- Logo con onclick -->
+      <img src="footermorante.png" alt="Logo Biblioteca Morante" class="h-8 md:h-10" 
+           style="cursor: pointer;" 
+           onclick="window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');">
     </div>
+
+    <div class="flex flex-col md:flex-row md:space-x-8 space-y-2 md:space-y-0 text-center md:text-left text-sm">
+      <div class="flex items-center justify-center md:justify-start space-x-2">
+        <i class="fas fa-location-dot w-4"></i>
+        <span class="flex flex-col">
+          <span>Via Adolfo Cozza 7</span>
+          <span>Municipio X, 00121 Roma</span>
+        </span>
+      </div>
+
+      <div class="flex items-center justify-center md:justify-start space-x-4">
+        <div class="flex items-center space-x-2">
+          <i class="fas fa-phone w-4"></i>
+          <span>06 4546 0481 / 0483</span>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <i class="fas fa-clock w-4"></i>
+          <span class="flex flex-col">
+            <span>Lunedì-Venerdì 09:00-18:30</span>
+            <!-- Link per fare scroll alla sezione orari nella pagina di destinazione -->
+            <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_openings" onclick="delayedScroll(event)">Scroll to Orari</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
 </footer>
 
-<script>
-    function openPageAndScroll() {
-        // Apri la pagina in una nuova finestra
-        var newWindow = window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');
+<!-- Sezione orari, che si trova più in basso nella pagina -->
+<div id="where_openings">
+  <!-- Contenuti degli orari -->
+  <h3>Orari della biblioteca</h3>
+  <p>Dettagli sugli orari...</p>
+</div>
 
-        // Verifica che la finestra sia caricata e quindi esegui lo scroll
-        newWindow.onload = function() {
-            // Attendi che la finestra sia completamente caricata
-            setTimeout(function() {
-                // Trova l'elemento con l'ID "where_openings" nella finestra
-                var target = newWindow.document.getElementById('where_openings');
-                
-                if (target) {
-                    // Calcola la posizione dell'elemento e scrolla
-                    var targetPosition = target.getBoundingClientRect().top + newWindow.scrollY - 140;
-                    newWindow.scrollTo({
-                        top: targetPosition,
-                        behavior: 'smooth'
-                    });
-                    console.log('Scroll eseguito alla posizione:', targetPosition);
-                } else {
-                    console.log('Elemento target non trovato');
-                }
-            }, 1000); // Ritardo di 1 secondo per evitare problemi di caricamento
-        };
+<script>
+  // Funzione per eseguire lo scroll alla sezione
+  function delayedScroll(event) {
+    event.preventDefault(); // Evita il comportamento predefinito del link
+
+    // Ottieni l'elemento di destinazione
+    const target = document.getElementById("where_openings");
+
+    if (target) {
+      // Calcola la posizione dell'elemento
+      const targetPosition = target.getBoundingClientRect().top + window.scrollY - 140;
+
+      // Stampa la posizione del target (opzionale, per debug)
+      console.log("Posizione del target:", targetPosition);
+
+      // Esegui lo scroll
+      window.scrollTo({
+        top: targetPosition,
+        behavior: "smooth"
+      });
+
+      console.log("Scroll eseguito!");
+    } else {
+      console.log("Target non trovato");
     }
+  }
+
+  // Disabilita il comportamento del tasto "Torna su"
+  const jumperButton = document.getElementById("page_jumper");
+
+  if (jumperButton) {
+    jumperButton.addEventListener("click", function(event) {
+      // Previeni l'azione predefinita del tasto (che fa risalire la pagina)
+      event.preventDefault();
+      console.log('Comportamento del tasto "Torna su" disabilitato');
+    });
+  }
 </script>
+
 
 
 
