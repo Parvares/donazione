@@ -599,7 +599,7 @@ a:hover {
                     <i class="fas fa-clock w-4"></i>
                     <span class="flex flex-col">
                         <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_openings" 
-                           target="_blank" onclick="scrollToTarget()">Lunedì-Venerdì 09:00-18:30</a>
+                           target="_blank" onclick="openPageAndScroll()">Lunedì-Venerdì 09:00-18:30</a>
                     </span>
                 </div>
             </div>
@@ -607,22 +607,31 @@ a:hover {
     </div>
 </footer>
 
-<!-- Script per eseguire lo scroll quando la pagina è caricata -->
 <script>
-    function scrollToTarget() {
-        setTimeout(function() {
-            // Questo codice esegue lo scroll alla sezione specifica della pagina target
-            const target = document.getElementById('where_openings');
-            if (target) {
-                const targetPosition = target.getBoundingClientRect().top + window.scrollY - 140;
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
-            } else {
-                console.log("Elemento target non trovato");
-            }
-        }, 2000); // Ritardo di 1 secondo per assicurarsi che la pagina sia completamente caricata
+    function openPageAndScroll() {
+        // Apri la pagina in una nuova finestra
+        var newWindow = window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');
+
+        // Verifica che la finestra sia caricata e quindi esegui lo scroll
+        newWindow.onload = function() {
+            // Attendi che la finestra sia completamente caricata
+            setTimeout(function() {
+                // Trova l'elemento con l'ID "where_openings" nella finestra
+                var target = newWindow.document.getElementById('where_openings');
+                
+                if (target) {
+                    // Calcola la posizione dell'elemento e scrolla
+                    var targetPosition = target.getBoundingClientRect().top + newWindow.scrollY - 140;
+                    newWindow.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                    console.log('Scroll eseguito alla posizione:', targetPosition);
+                } else {
+                    console.log('Elemento target non trovato');
+                }
+            }, 1000); // Ritardo di 1 secondo per evitare problemi di caricamento
+        };
     }
 </script>
 
