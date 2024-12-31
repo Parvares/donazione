@@ -586,50 +586,59 @@ a:hover {
             e.preventDefault();
             
             const newWindow = window.open(
-                'https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_infobib',
+                'https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2',
                 '_blank'
             );
 
             newWindow.addEventListener('load', () => {
-                // Rimuove il jumper iniziale
-                const jumper = newWindow.document.getElementById('div_jumper');
-                if (jumper) {
-                    jumper.remove();
-                }
-
-                // Osserva i cambiamenti nel DOM per rimuovere il jumper se viene ricreato
-                const observer = new MutationObserver((mutations) => {
+                // Funzione per disabilitare completamente il comportamento di scroll
+                function disableAutoScroll() {
+                    // Rimuove il jumper
                     const jumper = newWindow.document.getElementById('div_jumper');
                     if (jumper) {
-                        jumper.remove();
+                        jumper.parentNode.removeChild(jumper);
                     }
+
+                    // Trova e disabilita eventuali event listener di scroll
+                    const oldScrollTo = newWindow.scrollTo;
+                    newWindow.scrollTo = function() {
+                        const infoSection = newWindow.document.getElementById('where_infobib');
+                        if (infoSection && !window.scrollingToSection) {
+                            window.scrollingToSection = true;
+                            oldScrollTo.call(newWindow, 0, infoSection.offsetTop);
+                            window.scrollingToSection = false;
+                        }
+                    };
+                }
+
+                // Esegue immediatamente
+                disableAutoScroll();
+
+                // Attende che il DOM sia completamente caricato
+                setTimeout(() => {
+                    disableAutoScroll();
+                    
+                    // Scrolla alla sezione desiderata
+                    const infoSection = newWindow.document.getElementById('where_infobib');
+                    if (infoSection) {
+                        infoSection.scrollIntoView();
+                    }
+                }, 1000);
+
+                // Osserva cambiamenti nel DOM
+                const observer = new MutationObserver(() => {
+                    disableAutoScroll();
                 });
 
-                // Configura l'observer per monitorare l'intero documento
                 observer.observe(newWindow.document.body, {
                     childList: true,
                     subtree: true
                 });
 
-                // Sovrascrive la funzione scrollTo per prevenire lo scroll automatico
-                newWindow.scrollTo = function() { return false; };
-                newWindow.scroll = function() { return false; };
-                
-                // Disabilita anche window.scroll
-                newWindow.addEventListener('scroll', function(e) {
-                    const jumper = newWindow.document.getElementById('div_jumper');
-                    if (jumper) {
-                        jumper.remove();
-                    }
+                // Previene scroll forzati
+                newWindow.addEventListener('scroll', (e) => {
+                    disableAutoScroll();
                 }, { passive: false });
-
-                // Forza lo scroll alla sezione desiderata dopo un breve delay
-                setTimeout(() => {
-                    const infoSection = newWindow.document.getElementById('where_infobib');
-                    if (infoSection) {
-                        infoSection.scrollIntoView({ behavior: 'auto' });
-                    }
-                }, 100);
             });
         }
     </script>
