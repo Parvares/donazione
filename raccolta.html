@@ -612,7 +612,7 @@ a:hover {
     </div>
 </footer>
 
-<!-- Aggiungi il blocco JavaScript per nascondere il bottone "Torna su" -->
+<!-- Aggiungi il blocco JavaScript per nascondere il bottone "Torna su" e disabilitare il comportamento di scroll -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         // Verifica la presenza del bottone "Torna su" ogni 100ms
@@ -626,6 +626,9 @@ a:hover {
                 clearInterval(intervalId);
             }
         }, 100); // Controlla ogni 100 millisecondi
+
+        // Disabilita qualsiasi comportamento di scroll che potrebbe far risalire la pagina
+        window.scrollTo(0, 0);  // Scorre alla parte superiore della pagina immediatamente
     });
 </script>
 
