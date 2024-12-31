@@ -18,10 +18,6 @@
     --primary: #970a2c;
 }
 
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 140px; /* Adjust this value based on your header height */
-}
 
 
  * {
@@ -577,17 +573,14 @@ a:hover {
     
 
 
-
-
-<footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
+<footer class="bg-[#970a2c] text-white mt-16 py-8">
   <div class="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
     <div class="mb-4 md:mb-0">
-      <!-- Logo con onclick -->
-      <img src="footermorante.png" alt="Logo Biblioteca Morante" class="h-8 md:h-10" 
-           style="cursor: pointer;" 
+      <img src="footermorante.png" alt="Logo Biblioteca Morante" class="h-8 md:h-10"
+           style="cursor: pointer;"
            onclick="window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');">
     </div>
-    
+
     <div class="flex flex-col md:flex-row md:space-x-8 space-y-2 md:space-y-0 text-center md:text-left text-sm">
       <div class="flex items-center justify-center md:justify-start space-x-2">
         <i class="fas fa-location-dot w-4"></i>
@@ -606,12 +599,10 @@ a:hover {
         <div class="flex items-center space-x-2">
           <i class="fas fa-clock w-4"></i>
           <span class="flex flex-col">
-            <span>
-              <!-- Link con scroll alla sezione specificata -->
-              <a href="#" onclick="openPageAndScroll(); return false;">
-                 Lunedì-Venerdì 09:00-18:30
-              </a>
-            </span>
+            <!-- Link con ancoraggio alla sezione degli orari -->
+            <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_openings" target="_blank">
+              Lunedì-Venerdì 09:00-18:30
+            </a>
           </span>
         </div>
       </div>
@@ -619,67 +610,6 @@ a:hover {
   </div>
 </footer>
 
-<script>
-  function openPageAndScroll() {
-    console.log("Apertura della pagina in una nuova finestra...");
-    
-    // Apri la pagina in una nuova finestra
-    const newWindow = window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');
-    
-    if (!newWindow) {
-      console.error("Impossibile aprire la finestra.");
-      return;
-    }
-
-    // Funzione per verificare quando la pagina è completamente caricata
-    const checkPageLoaded = setInterval(function() {
-      console.log("Verifica se la pagina è stata caricata...");
-
-      // Verifica se la pagina è stata completamente caricata
-      if (newWindow.document.readyState === 'complete') {
-        clearInterval(checkPageLoaded); // Interrompi il controllo periodico
-        console.log("Pagina caricata con successo!");
-
-        // Trova l'elemento target per lo scroll
-        const target = newWindow.document.getElementById("where_openings");
-        if (target) {
-          console.log("Elemento target trovato!");
-          const targetPosition = target.getBoundingClientRect().top + window.scrollY - 140;
-          console.log("Posizione del target:", targetPosition);
-          
-          newWindow.scrollTo({
-            top: targetPosition,
-            behavior: "smooth"
-          });
-          
-          console.log("Scroll eseguito!");
-        } else {
-          console.log("Target non trovato.");
-        }
-      } else {
-        console.log("La pagina non è ancora caricata...");
-      }
-    }, 500); // Verifica ogni 500ms se la pagina è pronta
-  }
-</script>
-
-
-
-
-
-
-   
-    
-    
-    
-    </span>
-</div>
-
-                
-            </div>
-        </div>
-    </div>
-</footer>
 
 
 
