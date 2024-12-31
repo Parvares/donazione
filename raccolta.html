@@ -573,54 +573,40 @@ a:hover {
     
 
 
-    <footer>
-        <div>Via Adolfo Cozza 7 Municipio X, 00121 Roma</div>
-        <div>06 4546 0481 / 0483</div>
-        <div>
-            <a href="#" class="library-hours" onclick="handleLibraryLink(event)">Lunedì-Venerdì 09:00-18:30</a>
+    <footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
+    <div class="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
+        <div class="mb-4 md:mb-0">
+            <!-- Logo con onclick -->
+<img src="footermorante.png" alt="Logo Biblioteca Morante" class="h-8 md:h-10" 
+     style="cursor: pointer;" 
+     onclick="window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');">
         </div>
-    </footer>
-
-    <script>
-        function handleLibraryLink(e) {
-            e.preventDefault();
+        
+        <div class="flex flex-col md:flex-row md:space-x-8 space-y-2 md:space-y-0 text-center md:text-left text-sm">
+            <div class="flex items-center justify-center md:justify-start space-x-2">
+                <i class="fas fa-location-dot w-4"></i>
+                <span class="flex flex-col">
+                    <span>Via Adolfo Cozza 7</span>
+                    <span>Municipio X, 00121 Roma</span>
+                </span>
+            </div>
             
-            // Apre la pagina con l'anchor nell'URL
-            const newWindow = window.open(
-                'https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_infobib',
-                '_blank'
-            );
-
-            // Gestisce lo scroll dopo il caricamento
-            newWindow.addEventListener('load', () => {
-                // Disabilita solo il jumper
-                const jumper = newWindow.document.getElementById('div_jumper');
-                if (jumper) {
-                    jumper.style.display = 'none';
-                }
-
-                // Assicura che il jumper rimanga nascosto
-                newWindow.addEventListener('scroll', () => {
-                    const jumper = newWindow.document.getElementById('div_jumper');
-                    if (jumper) {
-                        jumper.style.display = 'none';
-                    }
-                });
-
-                // Forza lo scroll alla sezione dopo un breve delay
-                setTimeout(() => {
-                    const infoSection = newWindow.document.getElementById('where_infobib');
-                    if (infoSection) {
-                        window.location.hash = 'where_infobib';
-                        infoSection.scrollIntoView();
-                    }
-                }, 100);
-            });
-        }
-    </script>
-
-
-
+            <div class="flex items-center justify-center md:justify-start space-x-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-phone w-4"></i>
+                    <span>06 4546 0481 / 0483</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-clock w-4"></i>
+                    <span class="flex flex-col">
+                        <span>Lunedì-Venerdì 09:00-18:30</span>
+                        <span>Sabato 09:00-13:00</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
 
 
 
