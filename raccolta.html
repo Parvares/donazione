@@ -627,12 +627,22 @@ a:hover {
             top: target.getBoundingClientRect().top + window.scrollY - 140,
             behavior: "smooth",
           });
-          window.history.pushState(null, "", "#where_openings"); // Aggiorna l'URL senza salto
         }
       });
     } else {
-      // Naviga alla nuova pagina
+      // Naviga alla nuova pagina e attende il caricamento per scrollare
       window.location.href = targetURL;
+      window.addEventListener("load", () => {
+        waitForElement("where_openings", () => {
+          const target = document.getElementById("where_openings");
+          if (target) {
+            window.scrollTo({
+              top: target.getBoundingClientRect().top + window.scrollY - 140,
+              behavior: "smooth",
+            });
+          }
+        });
+      });
     }
   }
 
@@ -646,6 +656,7 @@ a:hover {
     }, 100); // Controlla ogni 100 ms
   }
 </script>
+
 
 
 
