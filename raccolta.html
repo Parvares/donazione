@@ -605,41 +605,55 @@ a:hover {
           <i class="fas fa-clock w-4"></i>
           <span class="flex flex-col">
             <span>Lunedì-Venerdì 09:00-18:30</span>
-         
-              
-<a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_openings" onclick="delayedScroll(event)">Scroll to Orari</a>
+            
+            <!-- Link con scroll -->
+            <a href="javascript:void(0);" onclick="delayedScroll(event)">Scroll to Orari</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Sezione orari, che si trova più in basso nella pagina -->
-  <div id="where_openings">
+  <div id="where_openings" style="margin-top: 2000px;">
+    <h3>Orario</h3>
+    <ul>
+      <li>Orario modificato per le festività natalizie</li>
+      <li>27/12/2024 - 02/01/2025</li>
+      <li>Lunedì: 09:00 - 13:45</li>
+      <li>Martedì: Chiuso</li>
+    </ul>
+  </div>
+</footer>
 
-        <!-- Aggiungi il tuo script -->
-  <script>
-    // Funzione per eseguire lo scroll alla sezione
-    function delayedScroll(event) {
-      event.preventDefault(); // Evita il comportamento predefinito del link
+<!-- Script per il funzionamento dello scroll -->
+<script>
+  // Funzione per eseguire lo scroll alla sezione
+  function delayedScroll(event) {
+    event.preventDefault();  // Evita il comportamento predefinito del link
 
-      // Ottieni l'elemento di destinazione
-      const target = document.getElementById("where_openings");
+    // Ottieni l'elemento di destinazione
+    const target = document.getElementById("where_openings");
 
-      if (target) {
-        // Calcola la posizione dell'elemento
-        const targetPosition = target.getBoundingClientRect().top + window.scrollY - 140;
+    if (target) {
+      // Calcola la posizione dell'elemento
+      const targetPosition = target.getBoundingClientRect().top + window.scrollY - 140;
 
-        // Stampa la posizione del target (opzionale, per debug)
-        console.log("Posizione del target:", targetPosition);
+      // Stampa la posizione del target (opzionale, per debug)
+      console.log("Posizione del target:", targetPosition);
 
-        // Esegui lo scroll
-        window.scrollTo({
-          top: targetPosition,
-          behavior: "smooth"
-        });
+      // Esegui lo scroll
+      window.scrollTo({
+        top: targetPosition,
+        behavior: "smooth"
+      });
 
-        console.log("Scroll eseguito!");
-      } else {
-        console.log("Target non trovato");
-      }
+      console.log("Scroll eseguito!");
+    } else {
+      console.log("Target non trovato");
     }
-  </script>
+  }
+</script>
 
 
 
