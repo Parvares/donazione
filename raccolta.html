@@ -573,89 +573,46 @@ a:hover {
     
 
 
-<footer class="bg-[#970a2c] text-white mt-16 py-8">
-    <div class="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
-        <div class="mb-4 md:mb-0">
-            <!-- Logo con onclick -->
-            <img src="footermorante.png" alt="Logo Biblioteca Morante" class="h-8 md:h-10" 
-                 style="cursor: pointer;" 
-                 onclick="window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');">
+<footer>
+        <div>Via Adolfo Cozza 7 Municipio X, 00121 Roma</div>
+        <div>06 4546 0481 / 0483</div>
+        <div>
+            <a href="#" class="library-hours" onclick="handleLibraryLink(event)">Lunedì-Venerdì 09:00-18:30</a>
         </div>
-        
-        <div class="flex flex-col md:flex-row md:space-x-8 space-y-2 md:space-y-0 text-center md:text-left text-sm">
-            <div class="flex items-center justify-center md:justify-start space-x-2">
-                <i class="fas fa-location-dot w-4"></i>
-                <span class="flex flex-col">
-                    <span>Via Adolfo Cozza 7</span>
-                    <span>Municipio X, 00121 Roma</span>
-                </span>
-            </div>
+    </footer>
+
+    <script>
+        function handleLibraryLink(e) {
+            e.preventDefault();
             
-            <div class="flex items-center justify-center md:justify-start space-x-4">
-                <div class="flex items-center space-x-2">
-                    <i class="fas fa-phone w-4"></i>
-                    <span>06 4546 0481 / 0483</span>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <i class="fas fa-clock w-4"></i>
-                    <span class="flex flex-col">
-                        <!-- Aggiungi il link per la sezione orari -->
-                        <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_infobib" 
-                           target="_blank" 
-                           id="work-hours-link">
-                            Lunedì-Venerdì 09:00-18:30
-                        </a>
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
+            const newWindow = window.open(
+                'https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2',
+                '_blank'
+            );
 
-<!-- Aggiungi il blocco JavaScript per disabilitare il bottone "Torna su" -->
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Nascondi il bottone "Torna su" all'inizio
-        const button = document.getElementById('page_jumper');
-        if (button) {
-            button.style.display = 'none'; // Nasconde il bottone "Torna su"
-        }
-
-        // Usa un MutationObserver per monitorare il DOM e prevenire la comparsa del bottone
-        const observer = new MutationObserver(function(mutationsList, observer) {
-            mutationsList.forEach(function(mutation) {
-                if (mutation.type === 'childList') {
-                    const button = document.getElementById('page_jumper');
-                    if (button) {
-                        // Nascondi ogni bottone "Torna su" che venga aggiunto
-                        button.style.display = 'none';
-                    }
+            newWindow.addEventListener('load', () => {
+                // Rimuove il pulsante "Torna su"
+                const jumper = newWindow.document.getElementById('div_jumper');
+                if (jumper) {
+                    jumper.remove();
                 }
+
+                // Scorre alla sezione info
+                const infoSection = newWindow.document.getElementById('where_infobib');
+                if (infoSection) {
+                    infoSection.scrollIntoView({ behavior: 'smooth' });
+                }
+
+                // Previene la ricomparsa del pulsante durante lo scroll
+                newWindow.addEventListener('scroll', () => {
+                    const jumper = newWindow.document.getElementById('div_jumper');
+                    if (jumper) {
+                        jumper.remove();
+                    }
+                });
             });
-        });
-
-        // Osserva il body per cambiamenti nel DOM
-        observer.observe(document.body, { childList: true, subtree: true });
-
-        // Scroll esplicito alla posizione iniziale
-        window.scrollTo(0, 0); // Imposta lo scroll in cima alla pagina
-
-        // Se desideri far scorrere alla sezione specifica, puoi farlo:
-        const targetSection = document.getElementById('where_infobib');
-        if (targetSection) {
-            targetSection.scrollIntoView({ behavior: 'smooth' }); // Scrolla alla sezione target
         }
-
-        // Rimuove il blocco dello scroll per permettere il normale comportamento di scroll
-        window.removeEventListener('scroll', preventScroll); // Disabilita il listener per lo scroll
-    });
-
-    // Funzione per prevenire lo scroll (è ora disabilitata)
-    function preventScroll(event) {
-        window.scrollTo(0, 0); // Blocca lo scroll in alto
-    }
-</script>
-
+    </script>
 
 
 
