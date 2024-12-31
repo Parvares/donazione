@@ -34,13 +34,16 @@ body {
 
 .top-banner {
     background-color: white;
-    padding: 0.8rem 1rem;
+    padding: 0.8rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    position: relative;
+    z-index: 1;
     box-sizing: border-box;
 }
+
 
 .roma-logo {
     height: 40px;
@@ -337,14 +340,51 @@ footer a {
     .top-banner {
         padding: 0.8rem 0.5rem;
     }
+
     .roma-logo {
         height: 30px;
     }
-     .social-icons {
+
+    .social-icons {
         gap: 0.5rem;
     }
+
     .social-icons a {
         font-size: 1.2rem;
+    }
+
+    .container-header {
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .container-header img {
+        height: auto;
+        width: 100%;
+        max-width: 250px;
+        margin: 0.5rem 0;
+    }
+
+    footer {
+        padding: 1rem;
+    }
+
+    footer .container {
+        padding: 0 0.5rem;
+        text-align: center;
+    }
+
+    footer .flex-col {
+        align-items: center;
+    }
+
+    footer .space-x-4 {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    footer .space-x-2 {
+        justify-content: center;
     }
 }
 
