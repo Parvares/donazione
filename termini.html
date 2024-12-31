@@ -515,28 +515,31 @@ footer i {
 }
 
 .waveform-container {
-    display: none;
-    position: relative;
-    height: 60px;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
     background: #f5f5f5;
     border-radius: 4px;
     padding: 10px;
     margin: 10px 0;
     cursor: pointer;
+    position: relative;
 }
 
 .waveform-bars {
     display: flex;
-    align-items: flex-end;
-    height: 40px;
-    gap: 1px;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    gap: 2px;
 }
 
 .waveform-bar {
     flex: 1;
     background: #ddd;
     min-width: 2px;
-    transition: height 0.1s ease;
+    transition: background-color 0.3s ease;
 }
 
 .waveform-bar.played {
@@ -640,6 +643,14 @@ a:hover {
 }
 
 
+@media (max-width: 768px) {
+    .tooltip-container::before,
+    .tooltip-container::after,
+    .tooltip-library:hover::before,
+    .tooltip {
+        display: none !important;
+    }
+} 
       
       
    </style>
@@ -897,9 +908,6 @@ function updateWaveform(progress) {
             bar.classList.remove('played');
         }
     });
-
-    const progressLine = document.querySelector('.progress-line');
-    progressLine.style.left = `${progress * 100}%`;
 }
 
 function setupSpeech() {
