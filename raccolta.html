@@ -342,15 +342,8 @@ footer a {
     }
 }
 
-        .biblioteca-link {
-    color: #970a2c;
-    font-size: 1rem;
-    transition: color 0.3s ease;
-}
 
-.biblioteca-link:hover {
-    color: #c73d5d;
-}
+        
 
 
 @media (max-width: 1400px) {
@@ -514,18 +507,21 @@ a:hover {
 
 
         
-     <div class="flex items-center mb-4">
-    <a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" 
-       target="_blank" 
-       title="Visualizza la posizione sulla mappa">
-        <img src="location.svg" alt="Location Icon" class="mr-2" style="height: 24px; width: 24px;">
-    </a>
-   <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" 
-      class="text-xl biblioteca-link"
-      title="Clicca qui per vedere gli appuntamenti della biblioteca">
-      Biblioteca Elsa Morante
-   </a>
-</div>
+     <div class="flex items-center mb-4" style="color: #970a2c;">
+        <a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" 
+           target="_blank" 
+           title="Visualizza la posizione sulla mappa">
+            <img src="location.svg" alt="Location Icon" class="mr-2" style="height: 24px; width: 24px;">
+        </a>
+       <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" 
+       class="text-xl" 
+       style="color: #970a2c; font-size: 1rem; transition: color 0.3s ease;" 
+       onmouseover="this.style.color='#c73d5d'" 
+       onmouseout="this.style.color='#970a2c'"
+       title="Clicca qui per vedere gli appuntamenti della biblioteca">
+       Biblioteca Elsa Morante
+      </a>
+      </div>
 
 
         
