@@ -607,7 +607,31 @@ a:hover {
         <span>Lunedì-Venerdì 09:00-18:30</span>
 
         
-<span><a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_openings">Sabato 09:00-13:00</a></span>
+<span>
+  <a href="javascript:void(0);" onclick="scrollToSectionOrOpen()">Sabato 09:00-13:00</a>
+</span>
+
+<script>
+  function scrollToSectionOrOpen() {
+    const currentURL = window.location.href;
+    const targetURL = "https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_openings";
+
+    // Se siamo già sulla pagina target, scrolliamo localmente
+    if (currentURL === targetURL.split("#")[0]) {
+      const target = document.getElementById("where_openings");
+      if (target) {
+        window.scrollTo({
+          top: target.offsetTop - 140, // Compensa la barra di navigazione
+          behavior: "smooth",
+        });
+      }
+    } else {
+      // Altrimenti apri l'URL (nella stessa scheda o nuova)
+      window.location.href = targetURL; // Puoi usare `window.open(targetURL, '_blank')` per una nuova scheda
+    }
+  }
+</script>
+
    
     
     
