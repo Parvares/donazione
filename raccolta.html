@@ -573,7 +573,21 @@ a:hover {
     
 
 
-<footer>
+       footer {
+            margin-top: 2rem;
+            line-height: 1.6;
+        }
+        .library-hours {
+            color: inherit;
+            text-decoration: none;
+        }
+        .library-hours:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <footer>
         <div>Via Adolfo Cozza 7 Municipio X, 00121 Roma</div>
         <div>06 4546 0481 / 0483</div>
         <div>
@@ -591,54 +605,27 @@ a:hover {
             );
 
             newWindow.addEventListener('load', () => {
-                // Funzione per disabilitare completamente il comportamento di scroll
-                function disableAutoScroll() {
-                    // Rimuove il jumper
-                    const jumper = newWindow.document.getElementById('div_jumper');
-                    if (jumper) {
-                        jumper.parentNode.removeChild(jumper);
-                    }
-
-                    // Trova e disabilita eventuali event listener di scroll
-                    const oldScrollTo = newWindow.scrollTo;
-                    newWindow.scrollTo = function() {
-                        const infoSection = newWindow.document.getElementById('where_infobib');
-                        if (infoSection && !window.scrollingToSection) {
-                            window.scrollingToSection = true;
-                            oldScrollTo.call(newWindow, 0, infoSection.offsetTop);
-                            window.scrollingToSection = false;
-                        }
-                    };
+                // Prima rimuove il jumper
+                const jumper = newWindow.document.getElementById('div_jumper');
+                if (jumper) {
+                    jumper.style.display = 'none';
                 }
 
-                // Esegue immediatamente
-                disableAutoScroll();
-
-                // Attende che il DOM sia completamente caricato
+                // Poi scrolla alla sezione
                 setTimeout(() => {
-                    disableAutoScroll();
-                    
-                    // Scrolla alla sezione desiderata
                     const infoSection = newWindow.document.getElementById('where_infobib');
                     if (infoSection) {
                         infoSection.scrollIntoView();
                     }
-                }, 1000);
+                }, 500);
 
-                // Osserva cambiamenti nel DOM
-                const observer = new MutationObserver(() => {
-                    disableAutoScroll();
+                // Continua a rimuovere il jumper se riappare
+                newWindow.addEventListener('scroll', () => {
+                    const jumper = newWindow.document.getElementById('div_jumper');
+                    if (jumper) {
+                        jumper.style.display = 'none';
+                    }
                 });
-
-                observer.observe(newWindow.document.body, {
-                    childList: true,
-                    subtree: true
-                });
-
-                // Previene scroll forzati
-                newWindow.addEventListener('scroll', (e) => {
-                    disableAutoScroll();
-                }, { passive: false });
             });
         }
     </script>
