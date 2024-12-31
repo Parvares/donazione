@@ -644,8 +644,15 @@ a:hover {
 
         // Disabilita ogni scroll automatico o forzato
         document.body.style.overflow = 'hidden';  // Disabilita lo scroll della pagina
+        document.documentElement.style.overflow = 'hidden';  // Disabilita lo scroll della pagina su altri elementi
+
+        // Rimuove l'evento di scroll che potrebbe causare il problema
+        window.addEventListener("scroll", function(event) {
+            window.scrollTo(0, 0); // Azzera qualsiasi scorrimento
+        });
     });
 </script>
+
 
 
 
