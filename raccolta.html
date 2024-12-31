@@ -579,7 +579,7 @@ a:hover {
 
 
 
- <footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
+<footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
   <div class="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
     <div class="mb-4 md:mb-0">
       <!-- Logo con onclick -->
@@ -624,20 +624,29 @@ a:hover {
     // Apri la pagina in una nuova finestra
     const newWindow = window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');
     
-    // Quando la nuova finestra è caricata, esegui lo scroll
-    newWindow.onload = function() {
-      // Scroll alla sezione dove sono indicati gli orari
-      const target = newWindow.document.getElementById("where_openings");
-      if (target) {
-        const targetPosition = target.getBoundingClientRect().top + window.scrollY - 140;
-        newWindow.scrollTo({
-          top: targetPosition,
-          behavior: "smooth"
-        });
+    // Funzione per verificare quando la pagina è completamente caricata
+    const checkPageLoaded = setInterval(function() {
+      // Verifica se la pagina è stata completamente caricata
+      if (newWindow.document.readyState === 'complete') {
+        clearInterval(checkPageLoaded); // Interrompi il controllo periodico
+        
+        // Trova l'elemento target per lo scroll
+        const target = newWindow.document.getElementById("where_openings");
+        if (target) {
+          const targetPosition = target.getBoundingClientRect().top + window.scrollY - 140;
+          newWindow.scrollTo({
+            top: targetPosition,
+            behavior: "smooth"
+          });
+          console.log("Scroll eseguito!");
+        } else {
+          console.log("Target non trovato");
+        }
       }
-    };
+    }, 500); // Verifica ogni 500ms se la pagina è pronta
   }
 </script>
+
 
 
 
