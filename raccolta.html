@@ -611,51 +611,32 @@ a:hover {
   <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_openings" onclick="delayedScroll(event)">Scroll to Target</a>
 </span>
 
-<script>
-  function delayedScroll(event) {
-    event.preventDefault(); // Previene il comportamento predefinito del link
+ <script>
+        // Funzione per il delayed scroll
+        function delayedScroll(event) {
+            event.preventDefault();  // Previeni l'azione predefinita del link
 
-    const targetURL = "https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_openings";
-    const currentURL = window.location.href.split("#")[0];
+            // Ottieni l'elemento di destinazione
+            const target = document.getElementById("where_openings");
 
-    if (currentURL === targetURL.split("#")[0]) {
-      // Scroll nella stessa pagina
-      waitForElement("where_openings", () => {
-        const target = document.getElementById("where_openings");
-        if (target) {
-          window.scrollTo({
-            top: target.getBoundingClientRect().top + window.scrollY - 140,
-            behavior: "smooth",
-          });
+            if (target) {
+                // Calcola la posizione dell'elemento
+                const targetPosition = target.getBoundingClientRect().top + window.scrollY - 140;
+                console.log('Posizione target:', targetPosition);
+
+                // Esegui lo scroll con un ritardo di 300 ms
+                setTimeout(() => {
+                    console.log('Eseguendo scroll alla posizione:', targetPosition);
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: "smooth",
+                    });
+                }, 300);
+            } else {
+                console.log('Target non trovato');
+            }
         }
-      });
-    } else {
-      // Naviga alla nuova pagina e attende il caricamento per scrollare
-      window.location.href = targetURL;
-      window.addEventListener("load", () => {
-        waitForElement("where_openings", () => {
-          const target = document.getElementById("where_openings");
-          if (target) {
-            window.scrollTo({
-              top: target.getBoundingClientRect().top + window.scrollY - 140,
-              behavior: "smooth",
-            });
-          }
-        });
-      });
-    }
-  }
-
-  function waitForElement(id, callback) {
-    const interval = setInterval(() => {
-      const element = document.getElementById(id);
-      if (element) {
-        clearInterval(interval);
-        callback();
-      }
-    }, 100); // Controlla ogni 100 ms
-  }
-</script>
+    </script>
 
 
 
