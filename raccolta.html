@@ -573,15 +573,15 @@ a:hover {
     
 
 
-    <footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
+<footer class="bg-[#970a2c] text-white mt-16 py-8">
     <div class="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
         <div class="mb-4 md:mb-0">
             <!-- Logo con onclick -->
-<img src="footermorante.png" alt="Logo Biblioteca Morante" class="h-8 md:h-10" 
-     style="cursor: pointer;" 
-     onclick="window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');">
+            <img src="footermorante.png" alt="Logo Biblioteca Morante" class="h-8 md:h-10"
+                style="cursor: pointer;"
+                onclick="window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');">
         </div>
-        
+
         <div class="flex flex-col md:flex-row md:space-x-8 space-y-2 md:space-y-0 text-center md:text-left text-sm">
             <div class="flex items-center justify-center md:justify-start space-x-2">
                 <i class="fas fa-location-dot w-4"></i>
@@ -590,37 +590,35 @@ a:hover {
                     <span>Municipio X, 00121 Roma</span>
                 </span>
             </div>
-            
+
             <div class="flex items-center justify-center md:justify-start space-x-4">
                 <div class="flex items-center space-x-2">
                     <i class="fas fa-phone w-4"></i>
                     <span>06 4546 0481 / 0483</span>
                 </div>
                 <div class="flex items-center space-x-2">
-    <i class="fas fa-clock w-4"></i>
-    <span class="flex flex-col">
-        <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_infobib" target="_blank" id="work-hours-link">
-            Lunedì-Venerdì 09:00-18:30
-        </a>
-    </span>
-</div>
-
-
-// Disabilitare il bottone "Torna su"
-document.addEventListener("DOMContentLoaded", function() {
-    const divJumper = document.getElementById("div_jumper");
-    if (divJumper) {
-        divJumper.style.display = 'none'; // Nasconde il bottone
-    }
-});
-
-
-
-                
+                    <i class="fas fa-clock w-4"></i>
+                    <span class="flex flex-col">
+                        <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_infobib" target="_blank" id="work-hours-link">
+                            Lunedì-Venerdì 09:00-18:30
+                        </a>
+                    </span>
+                </div>
             </div>
         </div>
     </div>
 </footer>
+
+<!-- Aggiungi il blocco JavaScript qui sotto -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const divJumper = document.getElementById("div_jumper");
+        if (divJumper) {
+            divJumper.style.display = 'none'; // Nasconde il bottone "Torna su"
+        }
+    });
+</script>
+
 
 
 
