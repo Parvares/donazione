@@ -585,31 +585,52 @@ a:hover {
         function handleLibraryLink(e) {
             e.preventDefault();
             
-            // Apre la pagina in una nuova finestra
             const newWindow = window.open(
                 'https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_infobib',
                 '_blank'
             );
 
-            // Funzione per gestire lo scroll e rimuovere il jumper
-            function handleLoadedWindow() {
-                // Rimuove il jumper
+            newWindow.addEventListener('load', () => {
+                // Rimuove il jumper iniziale
                 const jumper = newWindow.document.getElementById('div_jumper');
                 if (jumper) {
                     jumper.remove();
                 }
 
-                // Previene la ricomparsa del jumper
-                newWindow.addEventListener('scroll', () => {
+                // Osserva i cambiamenti nel DOM per rimuovere il jumper se viene ricreato
+                const observer = new MutationObserver((mutations) => {
                     const jumper = newWindow.document.getElementById('div_jumper');
                     if (jumper) {
                         jumper.remove();
                     }
                 });
-            }
 
-            // Aggiunge l'event listener per quando la pagina è completamente caricata
-            newWindow.addEventListener('load', handleLoadedWindow);
+                // Configura l'observer per monitorare l'intero documento
+                observer.observe(newWindow.document.body, {
+                    childList: true,
+                    subtree: true
+                });
+
+                // Sovrascrive la funzione scrollTo per prevenire lo scroll automatico
+                newWindow.scrollTo = function() { return false; };
+                newWindow.scroll = function() { return false; };
+                
+                // Disabilita anche window.scroll
+                newWindow.addEventListener('scroll', function(e) {
+                    const jumper = newWindow.document.getElementById('div_jumper');
+                    if (jumper) {
+                        jumper.remove();
+                    }
+                }, { passive: false });
+
+                // Forza lo scroll alla sezione desiderata dopo un breve delay
+                setTimeout(() => {
+                    const infoSection = newWindow.document.getElementById('where_infobib');
+                    if (infoSection) {
+                        infoSection.scrollIntoView({ behavior: 'auto' });
+                    }
+                }, 100);
+            });
         }
     </script>
 
