@@ -573,7 +573,7 @@ a:hover {
     
 
 
-<footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
+<footer class="bg-[#970a2c] text-white mt-16 py-8">
     <div class="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
         <div class="mb-4 md:mb-0">
             <!-- Logo con onclick -->
@@ -615,10 +615,9 @@ a:hover {
 <!-- Aggiungi il blocco JavaScript per disabilitare il bottone "Torna su" -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Nascondi il bottone "Torna su" e impedisci il comportamento di scroll
+        // Nascondi il bottone "Torna su" all'inizio
         const button = document.getElementById('page_jumper');
         if (button) {
-            // Nasconde il bottone subito
             button.style.display = 'none';
         }
 
@@ -638,8 +637,10 @@ a:hover {
         // Osserva il body per cambiamenti nel DOM
         observer.observe(document.body, { childList: true, subtree: true });
 
-        // Disabilita eventuali azioni di scroll verso l'alto
-        window.scrollTo(0, 0);
+        // Impedisci lo scroll verso l'alto
+        window.addEventListener('scroll', function() {
+            window.scrollTo(0, 0); // Blocca lo scroll in alto
+        });
     });
 </script>
 
