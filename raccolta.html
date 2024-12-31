@@ -330,7 +330,13 @@ footer a {
         display: none !important;
     }
 
- 
+   .contact-link::before {
+    content: attr(href);
+    font-size: 24px;
+  }
+  .contact-text {
+    display: none;
+  }
 
      
 }
@@ -523,7 +529,7 @@ a:hover {
                 <h2 class="text-2xl font-semibold mb-4" style="color: #970a2c;">Cooperativa Assistenza e Territorio</h2>
                 <p class="mb-2">
                     <strong>Contatti:</strong> 
-                    <a href="https://www.assistenza-territorio.it/contatti/" title="https://www.assistenza-territorio.it/contatti/" target="_blank">Sito Web</a>
+                    <a href="https://www.assistenza-territorio.it/contatti/" class="contact-link" title="https://www.assistenza-territorio.it/contatti/" target="_blank"><span class="contact-text">Sito Web</a>
                 </p>
                 <p><strong>Email:</strong> info@assistenza-territorio.it</p>
             </div>
