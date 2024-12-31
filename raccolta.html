@@ -621,31 +621,48 @@ a:hover {
 
 <script>
   function openPageAndScroll() {
+    console.log("Apertura della pagina in una nuova finestra...");
+    
     // Apri la pagina in una nuova finestra
     const newWindow = window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');
     
+    if (!newWindow) {
+      console.error("Impossibile aprire la finestra.");
+      return;
+    }
+
     // Funzione per verificare quando la pagina è completamente caricata
     const checkPageLoaded = setInterval(function() {
+      console.log("Verifica se la pagina è stata caricata...");
+
       // Verifica se la pagina è stata completamente caricata
       if (newWindow.document.readyState === 'complete') {
         clearInterval(checkPageLoaded); // Interrompi il controllo periodico
-        
+        console.log("Pagina caricata con successo!");
+
         // Trova l'elemento target per lo scroll
         const target = newWindow.document.getElementById("where_openings");
         if (target) {
+          console.log("Elemento target trovato!");
           const targetPosition = target.getBoundingClientRect().top + window.scrollY - 140;
+          console.log("Posizione del target:", targetPosition);
+          
           newWindow.scrollTo({
             top: targetPosition,
             behavior: "smooth"
           });
+          
           console.log("Scroll eseguito!");
         } else {
-          console.log("Target non trovato");
+          console.log("Target non trovato.");
         }
+      } else {
+        console.log("La pagina non è ancora caricata...");
       }
     }, 500); // Verifica ogni 500ms se la pagina è pronta
   }
 </script>
+
 
 
 
