@@ -612,28 +612,24 @@ a:hover {
     </div>
 </footer>
 
-<!-- Aggiungi il blocco JavaScript per disabilitare il bottone "Torna su" e prevenire lo scroll -->
+<!-- Aggiungi il blocco JavaScript per disabilitare il bottone "Torna su" senza bloccare la pagina -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Interrompe eventuali azioni che potrebbero far risalire la pagina
-        window.scrollTo(0, 0);  // Inizialmente scrolla la pagina in cima
-
-        // Nascondi il bottone "Torna su" e disabilita il suo comportamento
+        // Nascondi e disabilita il bottone "Torna su" quando la pagina è caricata
         const button = document.getElementById('page_jumper');
         if (button) {
-            // Nascondi il bottone e impedisci eventuali eventi di clic
+            // Nascondi il bottone
             button.style.display = 'none';
-            button.setAttribute('disabled', true);
         }
 
-        // Usa un observer per verificare che il bottone "Torna su" non venga riaggiunto
+        // Usa un MutationObserver per monitorare il DOM e prevenire la comparsa del bottone
         const observer = new MutationObserver(function(mutationsList, observer) {
             mutationsList.forEach(function(mutation) {
                 if (mutation.type === 'childList') {
                     const button = document.getElementById('page_jumper');
                     if (button) {
-                        button.style.display = 'none'; // Nasconde ogni bottone che venga aggiunto
-                        button.setAttribute('disabled', true);
+                        // Nascondi ogni bottone "Torna su" che venga aggiunto
+                        button.style.display = 'none';
                     }
                 }
             });
@@ -641,15 +637,6 @@ a:hover {
 
         // Osserva il body per cambiamenti nel DOM
         observer.observe(document.body, { childList: true, subtree: true });
-
-        // Disabilita ogni scroll automatico o forzato
-        document.body.style.overflow = 'hidden';  // Disabilita lo scroll della pagina
-        document.documentElement.style.overflow = 'hidden';  // Disabilita lo scroll della pagina su altri elementi
-
-        // Rimuove l'evento di scroll che potrebbe causare il problema
-        window.addEventListener("scroll", function(event) {
-            window.scrollTo(0, 0); // Azzera qualsiasi scorrimento
-        });
     });
 </script>
 
