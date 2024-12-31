@@ -607,30 +607,44 @@ a:hover {
             <span>Lunedì-Venerdì 09:00-18:30</span>
          
               
-       <span>
-  <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_openings" onclick="delayedScroll(event)">Scroll to Target</a>
-</span>
+
 
 <script>
   function delayedScroll(event) {
-    event.preventDefault(); // Ferma il comportamento predefinito del link
+    event.preventDefault(); // Previene il comportamento predefinito del link
+
     const targetURL = "https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_openings";
     const currentURL = window.location.href.split("#")[0];
 
     if (currentURL === targetURL.split("#")[0]) {
       // Scroll nella stessa pagina
-      const target = document.getElementById("where_openings");
-      if (target) {
-        // Usa `scrollIntoView` per scroll fluido
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-        window.history.pushState(null, "", "#where_openings"); // Aggiorna l'hash senza saltare
-      }
+      waitForElement("where_openings", () => {
+        const target = document.getElementById("where_openings");
+        if (target) {
+          window.scrollTo({
+            top: target.getBoundingClientRect().top + window.scrollY - 140,
+            behavior: "smooth",
+          });
+          window.history.pushState(null, "", "#where_openings"); // Aggiorna l'URL senza salto
+        }
+      });
     } else {
       // Naviga alla nuova pagina
       window.location.href = targetURL;
     }
   }
+
+  function waitForElement(id, callback) {
+    const interval = setInterval(() => {
+      const element = document.getElementById(id);
+      if (element) {
+        clearInterval(interval);
+        callback();
+      }
+    }, 100); // Controlla ogni 100 ms
+  }
 </script>
+
 
 
               
