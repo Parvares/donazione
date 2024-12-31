@@ -612,12 +612,19 @@ a:hover {
 <!-- Aggiungi il blocco JavaScript qui sotto -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        const divJumper = document.getElementById("div_jumper");
-        if (divJumper) {
-            divJumper.style.display = 'none'; // Nasconde il bottone "Torna su"
-        }
+        // Usa setTimeout per ritardare l'esecuzione del codice
+        setTimeout(function() {
+            const divJumper = document.getElementById("div_jumper");
+            if (divJumper) {
+                // Nascondi l'elemento
+                divJumper.style.display = 'none'; // Nasconde il bottone "Torna su"
+                // Alternativa per disabilitare il bottone, impedendo l'interazione
+                // divJumper.style.pointerEvents = 'none'; 
+            }
+        }, 500); // Aggiungi un ritardo di 500ms per dare tempo al DOM di caricarsi
     });
 </script>
+
 
 
 
