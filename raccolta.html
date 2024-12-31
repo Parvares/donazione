@@ -329,6 +329,18 @@ footer a {
     .flex.items-center.mb-4 {
         display: none !important;
     }
+
+    /* Aumenta la dimensione del font per gli URL */
+    .contact-url {
+        font-size: 12pt !important;
+    }
+    
+    /* Rimuovi il testo 'Sito Web' prima degli URL */
+    .contact-url::before {
+        content: "";
+    }
+
+     
 }
         
 
