@@ -529,7 +529,7 @@ footer i {
     display: flex;
     align-items: flex-end;
     height: 40px;
-    gap: 0.5px;  /* Ridotto da 1px */
+    gap: 1px;
 }
 
 .waveform-bar {
@@ -872,9 +872,9 @@ function calculateTotalDuration() {
 
 function createWaveform() {
     const container = document.querySelector('.waveform-bars');
-    // Torniamo al numero originale di barre per mantenerle sottili
-    const numberOfBars = 200; // Aumentiamo il numero di barre per renderle più strette
-    
+    // Riduciamo il numero di barre da creare
+    const numberOfBars = 50; // Prima era probabilmente > 100
+
     for (let i = 0; i < numberOfBars; i++) {
         const bar = document.createElement('div');
         bar.className = 'waveform-bar';
