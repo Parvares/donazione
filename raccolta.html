@@ -608,33 +608,39 @@ a:hover {
 
         
 <span>
-  <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_openings" onclick="handleScroll(event)">Sabato 09:00-13:00</a>
+  <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_openings" onclick="delayedScroll(event)">Sabato 09:00-13:00</a>
 </span>
 
-<script>
-  function handleScroll(event) {
-    // Ferma il comportamento predefinito del link
-    event.preventDefault();
 
-    const target = document.getElementById("where_openings");
-    const currentURL = window.location.href.split("#")[0];
-    const targetURL = "https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2";
+function delayedScroll(event) {
+  // Ferma il comportamento predefinito
+  event.preventDefault();
 
-    // Se siamo sulla stessa pagina, scrolla localmente
-    if (currentURL === targetURL) {
+  const targetURL = "https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_openings";
+  const currentURL = window.location.href.split("#")[0];
+
+  if (currentURL === targetURL.split("#")[0]) {
+    // Scroll nella stessa pagina dopo un ritardo
+    setTimeout(() => {
+      const target = document.getElementById("where_openings");
       if (target) {
-        // Scrolla con offset per la barra
         window.scrollTo({
-          top: target.getBoundingClientRect().top + window.scrollY - 140, // Offset per barra fissa
+          top: target.getBoundingClientRect().top + window.scrollY - 140,
           behavior: "smooth",
         });
       }
-    } else {
-      // Naviga alla pagina target
-      window.location.href = event.currentTarget.href;
-    }
+    }, 300); // Ritardo di 300 ms per aspettare eventuali modifiche DOM
+  } else {
+    // Naviga al link e ritarda lo scroll dopo il caricamento
+    window.location.href = targetURL;
+    setTimeout(() => {
+      const target = document.getElementById("where_openings");
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 1000); // Ritardo per assicurarsi che la pagina sia caricata
   }
-</script>
+}
 
 
    
