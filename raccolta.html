@@ -37,6 +37,7 @@
         
 body {
     font-family: "Space Grotesk", sans-serif;
+    font-weight: 500; /* Imposta il peso del font a 500 */
     font-size: 20px;
     background-color: #f3f4f6;
     display: flex;
@@ -47,6 +48,11 @@ body {
     width: 100%;
     overflow-x: hidden;
     position: relative;
+}
+
+        /* Escludere il footer dal peso 500 */
+footer, footer * {
+    font-weight: normal; /* Imposta il peso normale per il testo nel footer */
 }
 
 .top-banner {
