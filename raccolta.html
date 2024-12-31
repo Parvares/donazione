@@ -599,7 +599,7 @@ a:hover {
                 <div class="flex items-center space-x-2">
                     <i class="fas fa-clock w-4"></i>
                     <span class="flex flex-col">
-                        <!-- Ancoraggio verso la sezione della pagina target -->
+                        <!-- Aggiungi il link per la sezione orari -->
                         <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_infobib" 
                            target="_blank" 
                            id="work-hours-link">
@@ -612,25 +612,41 @@ a:hover {
     </div>
 </footer>
 
-<!-- Aggiungi il blocco JavaScript per nascondere il bottone "Torna su" e disabilitare il comportamento di scroll -->
+<!-- Aggiungi il blocco JavaScript per disabilitare il bottone "Torna su" e prevenire lo scroll -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Verifica la presenza del bottone "Torna su" ogni 100ms
-        const intervalId = setInterval(function() {
-            const button = document.getElementById('page_jumper');
-            if (button) {
-                // Nasconde il bottone
-                button.style.display = 'none';
-                console.log('Bottone "Torna su" nascosto');
-                // Ferma l'intervallo una volta che il bottone è stato trovato e nascosto
-                clearInterval(intervalId);
-            }
-        }, 100); // Controlla ogni 100 millisecondi
+        // Interrompe eventuali azioni che potrebbero far risalire la pagina
+        window.scrollTo(0, 0);  // Inizialmente scrolla la pagina in cima
 
-        // Disabilita qualsiasi comportamento di scroll che potrebbe far risalire la pagina
-        window.scrollTo(0, 0);  // Scorre alla parte superiore della pagina immediatamente
+        // Nascondi il bottone "Torna su" e disabilita il suo comportamento
+        const button = document.getElementById('page_jumper');
+        if (button) {
+            // Nascondi il bottone e impedisci eventuali eventi di clic
+            button.style.display = 'none';
+            button.setAttribute('disabled', true);
+        }
+
+        // Usa un observer per verificare che il bottone "Torna su" non venga riaggiunto
+        const observer = new MutationObserver(function(mutationsList, observer) {
+            mutationsList.forEach(function(mutation) {
+                if (mutation.type === 'childList') {
+                    const button = document.getElementById('page_jumper');
+                    if (button) {
+                        button.style.display = 'none'; // Nasconde ogni bottone che venga aggiunto
+                        button.setAttribute('disabled', true);
+                    }
+                }
+            });
+        });
+
+        // Osserva il body per cambiamenti nel DOM
+        observer.observe(document.body, { childList: true, subtree: true });
+
+        // Disabilita ogni scroll automatico o forzato
+        document.body.style.overflow = 'hidden';  // Disabilita lo scroll della pagina
     });
 </script>
+
 
 
 
