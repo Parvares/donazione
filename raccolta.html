@@ -265,7 +265,7 @@ footer a {
 
         
 
- @media print {
+@media print {
     .print-button {
         color: var(--primary);
     }
@@ -329,18 +329,19 @@ footer a {
     .flex.items-center.mb-4 {
         display: none !important;
     }
+    .web-text {
+        display: none;
+    }
+    .print-url {
+        display: inline !important;
+        font-size: 24px;
+    }
+}
 
-  .contact-link::before {
-    content: attr(href);
-    font-size: 24px;
-  }
-  .contact-link::after {
-    content: " (" attr(href) ")";
-  }
-  .contact-text {
-    display: none;
-  }
-     
+@media screen {
+    .print-url {
+        display: none;
+    }
 }
         
 
@@ -531,7 +532,10 @@ a:hover {
     <h2 class="text-2xl font-semibold mb-4" style="color: #970a2c;">Cooperativa Assistenza e Territorio</h2>
     <p class="mb-2">
         <strong>Contatti:</strong> 
-        <a href="https://www.assistenza-territorio.it/contatti/" class="contact-link" title="https://www.assistenza-territorio.it/contatti/" target="_blank"><span class="contact-text">Sito Web</span></a>
+        <a href="https://www.assistenza-territorio.it/contatti/" class="url-link" title="https://www.assistenza-territorio.it/contatti/" target="_blank">
+            <span class="web-text">Sito Web</span>
+            <span class="print-url">https://www.assistenza-territorio.it/contatti/</span>
+        </a>
     </p>
     <p><strong>Email:</strong> info@assistenza-territorio.it</p>
 </div>
