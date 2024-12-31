@@ -621,7 +621,8 @@ a:hover {
 
             if (target) {
                 // Calcola la posizione dell'elemento
-                const targetPosition = target.getBoundingClientRect().top + window.scrollY - 140;
+                const targetPosition = target.getBoundingClientRect().top + window.scrollY;
+
                 console.log('Posizione target:', targetPosition);
 
                 // Esegui lo scroll con un ritardo di 300 ms
