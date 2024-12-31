@@ -579,7 +579,7 @@ a:hover {
 
 
 
-    <footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
+ <footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
   <div class="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
     <div class="mb-4 md:mb-0">
       <!-- Logo con onclick -->
@@ -606,20 +606,12 @@ a:hover {
         <div class="flex items-center space-x-2">
           <i class="fas fa-clock w-4"></i>
           <span class="flex flex-col">
-
-
-              
             <span>
-              <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_openings" 
-                 onclick="window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_openings', '_blank');">
+              <!-- Link con scroll alla sezione specificata -->
+              <a href="#" onclick="openPageAndScroll(); return false;">
                  Lunedì-Venerdì 09:00-18:30
               </a>
             </span>
-
-
-
-
-              
           </span>
         </div>
       </div>
@@ -627,21 +619,26 @@ a:hover {
   </div>
 </footer>
 
+<script>
+  function openPageAndScroll() {
+    // Apri la pagina in una nuova finestra
+    const newWindow = window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');
+    
+    // Quando la nuova finestra è caricata, esegui lo scroll
+    newWindow.onload = function() {
+      // Scroll alla sezione dove sono indicati gli orari
+      const target = newWindow.document.getElementById("where_openings");
+      if (target) {
+        const targetPosition = target.getBoundingClientRect().top + window.scrollY - 140;
+        newWindow.scrollTo({
+          top: targetPosition,
+          behavior: "smooth"
+        });
+      }
+    };
+  }
+</script>
 
-
-
-
-
-              
-
-
-              
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
-</footer>
 
 
 
