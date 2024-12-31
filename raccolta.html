@@ -612,13 +612,13 @@ a:hover {
     </div>
 </footer>
 
-<!-- Aggiungi il blocco JavaScript per disabilitare il bottone "Torna su" senza bloccare la pagina -->
+<!-- Aggiungi il blocco JavaScript per disabilitare il bottone "Torna su" -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Nascondi e disabilita il bottone "Torna su" quando la pagina è caricata
+        // Nascondi il bottone "Torna su" e impedisci il comportamento di scroll
         const button = document.getElementById('page_jumper');
         if (button) {
-            // Nascondi il bottone
+            // Nasconde il bottone subito
             button.style.display = 'none';
         }
 
@@ -637,6 +637,9 @@ a:hover {
 
         // Osserva il body per cambiamenti nel DOM
         observer.observe(document.body, { childList: true, subtree: true });
+
+        // Disabilita eventuali azioni di scroll verso l'alto
+        window.scrollTo(0, 0);
     });
 </script>
 
