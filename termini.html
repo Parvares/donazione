@@ -872,8 +872,8 @@ function calculateTotalDuration() {
 
 function createWaveform() {
     const container = document.querySelector('.waveform-bars');
-    container.innerHTML = '';
-    const numberOfBars = 200;
+    // Riduciamo il numero di barre da creare
+    const numberOfBars = 50; // Prima era probabilmente > 100
 
     for (let i = 0; i < numberOfBars; i++) {
         const bar = document.createElement('div');
