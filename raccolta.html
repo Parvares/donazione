@@ -573,7 +573,7 @@ a:hover {
     
 
 
-  <footer>
+    <footer>
         <div>Via Adolfo Cozza 7 Municipio X, 00121 Roma</div>
         <div>06 4546 0481 / 0483</div>
         <div>
@@ -585,37 +585,39 @@ a:hover {
         function handleLibraryLink(e) {
             e.preventDefault();
             
+            // Apre la pagina con l'anchor nell'URL
             const newWindow = window.open(
-                'https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2',
+                'https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_infobib',
                 '_blank'
             );
 
+            // Gestisce lo scroll dopo il caricamento
             newWindow.addEventListener('load', () => {
-                // Prima rimuove il jumper
+                // Disabilita solo il jumper
                 const jumper = newWindow.document.getElementById('div_jumper');
                 if (jumper) {
                     jumper.style.display = 'none';
                 }
 
-                // Poi scrolla alla sezione
-                setTimeout(() => {
-                    const infoSection = newWindow.document.getElementById('where_infobib');
-                    if (infoSection) {
-                        infoSection.scrollIntoView();
-                    }
-                }, 500);
-
-                // Continua a rimuovere il jumper se riappare
+                // Assicura che il jumper rimanga nascosto
                 newWindow.addEventListener('scroll', () => {
                     const jumper = newWindow.document.getElementById('div_jumper');
                     if (jumper) {
                         jumper.style.display = 'none';
                     }
                 });
+
+                // Forza lo scroll alla sezione dopo un breve delay
+                setTimeout(() => {
+                    const infoSection = newWindow.document.getElementById('where_infobib');
+                    if (infoSection) {
+                        window.location.hash = 'where_infobib';
+                        infoSection.scrollIntoView();
+                    }
+                }, 100);
             });
         }
     </script>
-
 
 
 
