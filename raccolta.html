@@ -614,12 +614,20 @@ a:hover {
     document.addEventListener("DOMContentLoaded", function() {
         // Usa setTimeout per ritardare l'esecuzione del codice
         setTimeout(function() {
+            // Nasconde il bottone "Torna su"
             const divJumper = document.getElementById("div_jumper");
             if (divJumper) {
-                // Nascondi l'elemento
-                divJumper.style.display = 'none'; // Nasconde il bottone "Torna su"
-                // Alternativa per disabilitare il bottone, impedendo l'interazione
-                // divJumper.style.pointerEvents = 'none'; 
+                divJumper.style.display = 'none';  // Nasconde l'elemento che contiene il bottone
+                // Alternativa: disabilita l'interazione con il bottone
+                // divJumper.style.pointerEvents = 'none';
+            }
+
+            // Se c'è il bottone "Torna su", disabilita il comportamento di scroll
+            const pageJumper = document.getElementById("page_jumper");
+            if (pageJumper) {
+                pageJumper.addEventListener("click", function(event) {
+                    event.preventDefault();  // Impedisce lo scroll verso l'alto
+                });
             }
         }, 500); // Aggiungi un ritardo di 500ms per dare tempo al DOM di caricarsi
     });
