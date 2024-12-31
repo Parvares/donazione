@@ -330,24 +330,7 @@ footer a {
         display: none !important;
     }
 
- /* Altre regole di stampa */
-    a[href*="http"]:not([href*="facebook"], [href*="instagram"], [href*="twitter"], [href*="youtube"])::after {
-        content: " (" attr(href) ")";
-        font-size: 8pt;
-        font-style: italic;
-    }
-
-    a[href*="https://www.assistenza-territorio.it/contatti/"]:not([href^="https://www.bibliotechediroma.it"])::after {
-        content: " (https://www.assistenza-territorio.it/contatti/)";
-    }
-
-    a[href*="https://sancarlods.it/pages/index.php"]:not([href^="https://www.bibliotechediroma.it"])::after {
-        content: " (https://sancarlods.it/pages/index.php)";
-    }
-
-    a[href*="https://www.csp-palocco.it/chi-siamo/chi-siamo"]:not([href^="https://www.bibliotechediroma.it"])::after {
-        content: " (https://www.csp-palocco.it/chi-siamo/chi-siamo)";
-    }
+ 
 
      
 }
