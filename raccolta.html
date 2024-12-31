@@ -608,29 +608,34 @@ a:hover {
 
         
 <span>
-  <a href="javascript:void(0);" onclick="scrollToSectionOrOpen()">Sabato 09:00-13:00</a>
+  <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_openings" onclick="handleScroll(event)">Sabato 09:00-13:00</a>
 </span>
 
 <script>
-  function scrollToSectionOrOpen() {
-    const currentURL = window.location.href;
-    const targetURL = "https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_openings";
+  function handleScroll(event) {
+    // Ferma il comportamento predefinito del link
+    event.preventDefault();
 
-    // Se siamo già sulla pagina target, scrolliamo localmente
-    if (currentURL === targetURL.split("#")[0]) {
-      const target = document.getElementById("where_openings");
+    const target = document.getElementById("where_openings");
+    const currentURL = window.location.href.split("#")[0];
+    const targetURL = "https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2";
+
+    // Se siamo sulla stessa pagina, scrolla localmente
+    if (currentURL === targetURL) {
       if (target) {
+        // Scrolla con offset per la barra
         window.scrollTo({
-          top: target.offsetTop - 140, // Compensa la barra di navigazione
+          top: target.getBoundingClientRect().top + window.scrollY - 140, // Offset per barra fissa
           behavior: "smooth",
         });
       }
     } else {
-      // Altrimenti apri l'URL (nella stessa scheda o nuova)
-      window.location.href = targetURL; // Puoi usare `window.open(targetURL, '_blank')` per una nuova scheda
+      // Naviga alla pagina target
+      window.location.href = event.currentTarget.href;
     }
   }
 </script>
+
 
    
     
