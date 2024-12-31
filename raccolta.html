@@ -263,51 +263,73 @@ footer a {
     align-items: center !important;
 }
 
-  @media print {
-            body {
-                font-size: 14px;
-                margin: 0;
-                padding: 0;
-            }
-            
-            .content-wrapper {
-                margin-top: 20px;
-            }
-            
-            .top-banner, .nav-icons, footer {
-                display: none;
-            }
-            
-            .container-header {
-                padding: 1rem 0;
-            }
-            
-            .container-header img {
-                height: 50px;
-            }
-            
-            .content-section {
-                margin-top: 20px;
-            }
-            
-            a[href]:after {
-                content: " (" attr(href) ")";
-                font-size: 16px;
-                color: #666;
-            }
-            
-            .bg-white {
-                box-shadow: none;
-                margin-bottom: 15px;
-                padding: 15px;
-            }
-            
-            @page {
-                margin: 1cm;
-                size: A4;
-            }
-        }
+        
 
+  @media print {
+    .print-button {
+        color: var(--primary);
+    }
+    body {
+        background: white;
+        font-size: 11pt;
+        color: black;
+        margin: 0;
+        padding: 0;
+    }
+    .top-banner, .nav-icons, .social-icons, footer {
+        display: none !important;
+    }
+    header {
+        display: none !important;
+    }
+    .content-wrapper {
+        margin: 0;
+        padding: 0;
+    }
+    .content-section {
+        margin-top: 0;
+    }
+    .content-section > div {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        border: none;
+        box-shadow: none;
+        padding: 0.5cm 0;
+        margin-bottom: 0.5cm;
+    }
+    h1 {
+        font-size: 16pt;
+        color: black !important;
+        margin-bottom: 1cm;
+    }
+    h2 {
+        font-size: 13pt;
+        color: black !important;
+        margin-bottom: 0.3cm;
+    }
+    p {
+        margin-bottom: 0.2cm;
+    }
+    a {
+        text-decoration: none;
+        color: black;
+    }
+    a[href]::after {
+        content: " (" attr(href) ")";
+        font-size: 12pt;
+        font-style: italic;
+    }
+    a[href^="https://www.bibliotechediroma.it"]::after,
+    a[href^="https://www.facebook.com"]::after,
+    a[href^="https://www.instagram.com"]::after,
+    a[href^="https://x.com"]::after,
+    a[href^="https://www.youtube.com"]::after {
+        content: "";
+    }
+    .flex.items-center.mb-4 {
+        display: none !important;
+    }
+}
 
         
 
