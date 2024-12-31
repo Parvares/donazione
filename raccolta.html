@@ -585,35 +585,33 @@ a:hover {
         function handleLibraryLink(e) {
             e.preventDefault();
             
+            // Apre la pagina in una nuova finestra
             const newWindow = window.open(
-                'https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2',
+                'https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2#where_infobib',
                 '_blank'
             );
 
-            newWindow.addEventListener('load', () => {
-                // Rimuove il pulsante "Torna su"
+            // Funzione per gestire lo scroll e rimuovere il jumper
+            function handleLoadedWindow() {
+                // Rimuove il jumper
                 const jumper = newWindow.document.getElementById('div_jumper');
                 if (jumper) {
                     jumper.remove();
                 }
 
-                // Scorre alla sezione info
-                const infoSection = newWindow.document.getElementById('where_infobib');
-                if (infoSection) {
-                    infoSection.scrollIntoView({ behavior: 'smooth' });
-                }
-
-                // Previene la ricomparsa del pulsante durante lo scroll
+                // Previene la ricomparsa del jumper
                 newWindow.addEventListener('scroll', () => {
                     const jumper = newWindow.document.getElementById('div_jumper');
                     if (jumper) {
                         jumper.remove();
                     }
                 });
-            });
+            }
+
+            // Aggiunge l'event listener per quando la pagina è completamente caricata
+            newWindow.addEventListener('load', handleLoadedWindow);
         }
     </script>
-
 
 
 
