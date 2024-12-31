@@ -618,7 +618,7 @@ a:hover {
         // Nascondi il bottone "Torna su" all'inizio
         const button = document.getElementById('page_jumper');
         if (button) {
-            button.style.display = 'none';
+            button.style.display = 'none'; // Nasconde il bottone "Torna su"
         }
 
         // Usa un MutationObserver per monitorare il DOM e prevenire la comparsa del bottone
@@ -637,12 +637,16 @@ a:hover {
         // Osserva il body per cambiamenti nel DOM
         observer.observe(document.body, { childList: true, subtree: true });
 
-        // Impedisci lo scroll verso l'alto
-        window.addEventListener('scroll', function() {
-            window.scrollTo(0, 0); // Blocca lo scroll in alto
-        });
+        // Rimuove il blocco dello scroll per permettere il normale comportamento di scroll
+        window.removeEventListener('scroll', preventScroll); // Disabilita il listener per lo scroll
     });
+
+    // Funzione per prevenire lo scroll (è ora disabilitata)
+    function preventScroll(event) {
+        window.scrollTo(0, 0); // Blocca lo scroll in alto
+    }
 </script>
+
 
 
 
