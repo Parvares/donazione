@@ -952,132 +952,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-
-
-// Utility function to check if element exists and has classList
-// Utility function to check if element exists and has classList
-function hasClass(element, className) {
-    return element && element.classList && element.classList.contains(className);
-}
-
-// Validation function for book year
-function validateBookYear(input) {
-    if (!input) return false;
-    
-    // Remove non-numeric characters on input
-    input.value = input.value.replace(/\D/g, '');
-    
-    const currentYear = new Date().getFullYear();
-    const value = input.value.trim();
-    let isValid = true;
-
-    if (value) {
-        const year = Number(value);
-        if (isNaN(year) || year < 1900 || year > currentYear) {
-            showError(input, `L'anno deve essere compreso tra 1900 e ${currentYear}`);
-            isValid = false;
-        }
-    }
-
-    if (isValid) {
-        hideError(input);
-    }
-
-    return isValid;
-}
-
-// Validation function for ISBN
-function validateISBN(input) {
-    if (!input) return false;
-    
-    const value = input.value.trim();
-    let isValid = true;
-
-    if (!value) {
-        // Show gray helper text for empty ISBN
-        showHelperText(input, 'Inserisci il codice ISBN (10 o 13 cifre)');
-    } else if (!input.matches(':focus')) {
-        if (!/^(?:\d{10}|\d{13})$/.test(value)) {
-            showError(input, 'ISBN deve essere di 10 o 13 cifre');
-            isValid = false;
-        }
-    }
-
-    if (isValid && value) {
-        hideError(input);
-        hideHelperText(input);
-    }
-
-    return isValid;
-}
-
-// Helper text functions
-function showHelperText(input, text) {
-    const helperDiv = input.parentElement.querySelector('.helper-text') || 
-                     createHelperElement(input);
-    helperDiv.textContent = text;
-    helperDiv.style.display = 'block';
-}
-
-function hideHelperText(input) {
-    const helperDiv = input.parentElement.querySelector('.helper-text');
-    if (helperDiv) {
-        helperDiv.style.display = 'none';
-    }
-}
-
-function createHelperElement(input) {
-    const helperDiv = document.createElement('p');
-    helperDiv.className = 'helper-text text-sm text-gray-500 mt-1';
-    input.parentElement.appendChild(helperDiv);
-    return helperDiv;
-}
-
-// Updated event listeners with proper element checks
-document.addEventListener('click', function(e) {
-    if (hasClass(e.target, 'book-year')) {
-        hideError(e.target);
-    }
-});
-
-document.addEventListener('input', function(e) {
-    if (hasClass(e.target, 'book-year')) {
-        validateBookYear(e.target);
-    }
-    if (hasClass(e.target, 'book-isbn')) {
-        // Remove non-numeric characters
-        e.target.value = e.target.value.replace(/\D/g, '');
-        // Limit to 13 characters
-        if (e.target.value.length > 13) {
-            e.target.value = e.target.value.slice(0, 13);
-        }
-        if (!e.target.value) {
-            showHelperText(e.target, 'Inserisci il codice ISBN (10 o 13 cifre)');
-        }
-    }
-});
-
-document.addEventListener('blur', function(e) {
-    if (hasClass(e.target, 'book-year')) {
-        validateBookYear(e.target);
-    }
-    if (hasClass(e.target, 'book-isbn')) {
-        validateISBN(e.target);
-    }
-});
-
-document.addEventListener('focus', function(e) {
-    if (hasClass(e.target, 'book-isbn') || hasClass(e.target, 'book-year')) {
-        hideError(e.target);
-        if (hasClass(e.target, 'book-isbn')) {
-            hideHelperText(e.target);
-        }
-    }
-});
-
-
-
-	
 // AGGIUNGI QUESTA NUOVA FUNZIONE QUI
 function handleISBNInput(input) {
     const prevValue = input.value;
@@ -1153,8 +1027,42 @@ function validateBookField(input) {
     return isValid;
 }
 
+// MANTIENI QUESTI EVENT LISTENER ESISTENTI PER IL CAMPO ANNO
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('book-year')) {
+        hideError(e.target);
+    }
+});
 
-	
+document.addEventListener('blur', function(e) {
+    if (e.target.classList.contains('book-year')) {
+        validateBookField(e.target);
+    }
+});
+
+// AGGIUNGI QUESTO NUOVO EVENT LISTENER PER L'ISBN
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('book-isbn')) {
+        e.target.addEventListener('input', function() {
+            handleISBNInput(this);
+        });
+        
+        e.target.addEventListener('blur', function() {
+            handleISBNInput(this);
+        });
+        
+        e.target.addEventListener('focus', function() {
+            handleISBNInput(this);
+            if (this.value.length > 0 && this.value.length !== 10 && this.value.length !== 13) {
+                const errorElement = this.nextElementSibling;
+                errorElement.textContent = 'ISBN deve essere di 10 o 13 cifre';
+                errorElement.classList.remove('hidden', 'text-red-500');
+                errorElement.classList.add('text-gray-500');
+            }
+        });
+    }
+});
+
 // AGGIORNA LO STILE ESISTENTE AGGIUNGENDO LE REGOLE PER L'ISBN
 const style = document.createElement('style');
 style.textContent = `
