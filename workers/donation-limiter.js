@@ -8,7 +8,7 @@ export default {
         };
 
         const RATE_LIMIT = "ON";  // Puoi cambiare questo a "OFF" per disattivare il rate limiting
-        const MAX_DONATIONS = 2;  // Quando modifichi questo valore, il contatore si resetterà
+        const MAX_DONATIONS = 1;  // Quando modifichi questo valore, il contatore si resetterà
         const LIMIT_VERSION = "v1";
         // Includiamo MAX_DONATIONS nella chiave base
         const LIMIT_KEY = `current_rate_limit_${LIMIT_VERSION}_max_${MAX_DONATIONS}`;
