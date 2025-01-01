@@ -1544,6 +1544,7 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
         }
     };
 
+    console.log('Request Data:', JSON.stringify(emailData, null, 2));
     showLoadingOverlay();
 
     try {
@@ -1555,7 +1556,9 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
             body: JSON.stringify(emailData)
         });
 
+        console.log('Response status:', response.status);
         const result = await response.json();
+        console.log('Response data:', result);
 
         if (response.ok) {
             showSuccessPopup('La tua donazione è stata inviata con successo!');
@@ -1570,11 +1573,11 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
             const errorMessages = document.querySelectorAll('.error-message');
             errorMessages.forEach(msg => msg.classList.add('hidden'));
         } else {
-            showGlobalErrorPopup(result.error || 'Si è verificato un errore durante l\'invio della donazione.');
+            throw new Error(result.error || 'Si è verificato un errore durante l\'invio della donazione.');
         }
     } catch (error) {
-        console.error('Error:', error);
-        showGlobalErrorPopup('Si è verificato un errore durante l\'invio. Riprova più tardi.');
+        console.error('Full error:', error);
+        showGlobalErrorPopup(error.message || 'Si è verificato un errore durante l\'invio. Riprova più tardi.');
     } finally {
         removeLoadingOverlay();
     }
