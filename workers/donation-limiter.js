@@ -7,6 +7,11 @@ export default {
             'Access-Control-Max-Age': '86400',
         };
 
+        // Aggiungi una costante per tracciare l'ultimo limite impostato
+        const RATE_LIMIT = "ON";   // Puoi cambiare questo a "OFF" per disattivare il rate limiting
+        const MAX_DONATIONS = 2;  // Nuovo limite configurabile
+        const LIMIT_KEY = "current_rate_limit";
+
         if (request.method === 'OPTIONS') {
             return new Response(null, {
                 headers: { ...corsHeaders }
@@ -19,21 +24,29 @@ export default {
             const key = `${clientIP}-${today}`;
 
             try {
-                let donationCount = await env.DONATIONS_TRACKER.get(key);
-                
-                // Se non esiste una chiave (prima donazione del giorno), inizializza a 0
-                if (!donationCount) {
-                    donationCount = 0;
+                // Controlla se il limite è cambiato
+                const storedLimit = await env.DONATIONS_TRACKER.get(LIMIT_KEY);
+                if (storedLimit !== MAX_DONATIONS.toString()) {
+                    // Resetta tutti i contatori eliminando le chiavi esistenti
+                    // Nota: in produzione dovresti usare list() e delete() per eliminare tutte le chiavi
+                    await env.DONATIONS_TRACKER.put(LIMIT_KEY, MAX_DONATIONS.toString());
                 }
 
-                // Se sono state fatte già 3 donazioni, blocca ulteriori invii
-                if (donationCount >= 3) {
-                    return new Response(JSON.stringify({
-                        error: 'Hai già inviato 3 donazioni oggi. Riprova domani.'
-                    }), {
-                        status: 429,
-                        headers: { 'Content-Type': 'application/json', ...corsHeaders }
-                    });
+                let donationCount = await env.DONATIONS_TRACKER.get(key);
+                
+                if (RATE_LIMIT === "ON") {
+                    if (!donationCount) {
+                        donationCount = 0;
+                    }
+
+                    if (parseInt(donationCount) >= MAX_DONATIONS) {
+                        return new Response(JSON.stringify({
+                            error: `Hai già inviato ${MAX_DONATIONS} donazioni oggi. Riprova domani.`
+                        }), {
+                            status: 429,
+                            headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                        });
+                    }
                 }
 
                 const requestData = await request.json();
@@ -54,11 +67,11 @@ export default {
                 });
 
                 if (emailjsResponse.ok) {
-                    // Incrementa il numero di donazioni
-                    donationCount++;
+                    donationCount = parseInt(donationCount) + 1;
 
-                    // Aggiorna il contatore delle donazioni per l'IP
-                    await env.DONATIONS_TRACKER.put(key, donationCount.toString(), { expirationTtl: 86400 });
+                    if (RATE_LIMIT === "ON") {
+                        await env.DONATIONS_TRACKER.put(key, donationCount.toString(), { expirationTtl: 86400 });
+                    }
 
                     return new Response(JSON.stringify({
                         success: true,
