@@ -1449,6 +1449,63 @@ window.resetBookFields = function(button) {
 // Add this at the top of your form handling JavaScript file
 const WORKER_URL = 'https://donation-limiterjs.bibliotecamorante.workers.dev/api/donate';
 
+// Initialize bookCount variable
+let bookCount = 0;
+
+// Function to create a new book entry
+function createBookEntry() {
+    const bookList = document.getElementById('bookList');
+    const entryDiv = document.createElement('div');
+    entryDiv.className = 'book-entry bg-gray-50 p-4 rounded-lg mb-4';
+    bookCount++;
+
+    entryDiv.innerHTML = `
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">
+                Libro ${bookCount}
+            </label>
+            <input type="text" class="book-title shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Titolo" required>
+            <div class="error-message hidden text-red-500 text-sm mt-1">Campo obbligatorio</div>
+        </div>
+        <div class="mb-4">
+            <input type="text" class="book-author shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Autore">
+        </div>
+        <div class="mb-4">
+            <input type="text" class="book-publisher shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Editore">
+        </div>
+        <div class="mb-4">
+            <input type="text" class="book-year shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Anno">
+        </div>
+        <div class="mb-4">
+            <input type="text" class="book-isbn shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="ISBN">
+        </div>
+        ${bookCount > 1 ? `
+        <button type="button" class="remove-book bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors">
+            Rimuovi libro
+        </button>
+        ` : ''}
+    `;
+
+    if (bookCount > 1) {
+        entryDiv.querySelector('.remove-book').addEventListener('click', function() {
+            entryDiv.remove();
+            updateBookNumbers();
+        });
+    }
+
+    bookList.appendChild(entryDiv);
+}
+
+// Function to update book numbers after removal
+function updateBookNumbers() {
+    const entries = document.querySelectorAll('.book-entry');
+    entries.forEach((entry, index) => {
+        const label = entry.querySelector('label');
+        label.textContent = `Libro ${index + 1}`;
+    });
+    bookCount = entries.length;
+}
+
 document.getElementById('donationForm').addEventListener('submit', async (event) => {
     event.preventDefault();
     
@@ -1569,11 +1626,11 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
         removeLoadingOverlay();
         showSuccessPopup('La tua donazione è stata inviata con successo!');
         
-        // Reset form
+        // Reset form and recreate initial book entry
         event.target.reset();
         document.getElementById('bookList').innerHTML = '';
         bookCount = 0;
-        createBookEntry();
+        createBookEntry(); // Ricrea la prima scheda libro
 
         // Reset errors
         const errorMessages = document.querySelectorAll('.error-message');
@@ -1588,6 +1645,12 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
         removeLoadingOverlay();
     }
 });
+
+// Add book button handler
+document.getElementById('addBook').addEventListener('click', createBookEntry);
+
+// Create initial book entry when page loads
+createBookEntry();
         
     </script>
 
