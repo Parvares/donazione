@@ -8,10 +8,9 @@ export default {
         };
 
         const RATE_LIMIT = "ON";  // Puoi cambiare questo a "OFF" per disattivare il rate limiting
-        const MAX_DONATIONS = 2;  // Quando modifichi questo valore, il contatore si resetterà
-        const LIMIT_VERSION = "v1";
-        // Includiamo MAX_DONATIONS nella chiave base
-        const LIMIT_KEY = `current_rate_limit_${LIMIT_VERSION}_max_${MAX_DONATIONS}`;
+        const MAX_DONATIONS = 1;  // Quando modifichi questo valore, il contatore si resetterà
+        const LIMIT_VERSION = "v2"; // Incrementato per gestire il reset
+        const CONFIG_KEY = "rate_limit_config";
 
         if (request.method === 'OPTIONS') {
             return new Response(null, {
@@ -22,11 +21,41 @@ export default {
         if (request.method === 'POST' && new URL(request.url).pathname === '/api/donate') {
             const clientIP = request.headers.get('CF-Connecting-IP');
             const today = new Date().toISOString().split('T')[0];
-            // Includiamo MAX_DONATIONS nella chiave specifica dell'utente
-            const key = `${clientIP}-${today}-${LIMIT_VERSION}-max_${MAX_DONATIONS}`;
-
+            
             try {
-                let donationCount = await env.DONATIONS_TRACKER.get(key);
+                // Verifica la configurazione corrente
+                let currentConfig = await env.DONATIONS_TRACKER.get(CONFIG_KEY);
+                let needsReset = false;
+                
+                if (!currentConfig) {
+                    // Prima inizializzazione
+                    currentConfig = JSON.stringify({
+                        maxDonations: MAX_DONATIONS,
+                        version: LIMIT_VERSION,
+                        lastUpdate: today
+                    });
+                    await env.DONATIONS_TRACKER.put(CONFIG_KEY, currentConfig);
+                } else {
+                    const config = JSON.parse(currentConfig);
+                    if (config.maxDonations !== MAX_DONATIONS || config.version !== LIMIT_VERSION) {
+                        needsReset = true;
+                        // Aggiorna la configurazione
+                        config.maxDonations = MAX_DONATIONS;
+                        config.version = LIMIT_VERSION;
+                        config.lastUpdate = today;
+                        await env.DONATIONS_TRACKER.put(CONFIG_KEY, JSON.stringify(config));
+                    }
+                }
+
+                // Chiave per il contatore dell'utente
+                const userKey = `${clientIP}-${today}-${LIMIT_VERSION}-${MAX_DONATIONS}`;
+                
+                if (needsReset) {
+                    // Reset del contatore per questo utente
+                    await env.DONATIONS_TRACKER.delete(userKey);
+                }
+
+                let donationCount = await env.DONATIONS_TRACKER.get(userKey);
                 donationCount = donationCount ? parseInt(donationCount) : 0;
                 
                 if (RATE_LIMIT === "ON" && donationCount >= MAX_DONATIONS) {
@@ -57,7 +86,7 @@ export default {
 
                 if (emailjsResponse.ok) {
                     if (RATE_LIMIT === "ON") {
-                        await env.DONATIONS_TRACKER.put(key, (donationCount + 1).toString(), { expirationTtl: 86400 });
+                        await env.DONATIONS_TRACKER.put(userKey, (donationCount + 1).toString(), { expirationTtl: 86400 });
                     }
 
                     return new Response(JSON.stringify({
