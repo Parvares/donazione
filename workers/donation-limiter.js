@@ -7,10 +7,11 @@ export default {
             'Access-Control-Max-Age': '86400',
         };
 
-        const RATE_LIMIT = "ON";  // Puoi cambiare questo a "ON" per disattivare il rate limiting
-        const MAX_DONATIONS = 3;  // Limitato a x donazioni per IP
+        const RATE_LIMIT = "ON";
+        const MAX_DONATIONS = 3;  // Quando modifichi questo valore, il contatore si resetterà
         const LIMIT_VERSION = "v1";
-        const LIMIT_KEY = `current_rate_limit_${LIMIT_VERSION}`;
+        // Includiamo MAX_DONATIONS nella chiave base
+        const LIMIT_KEY = `current_rate_limit_${LIMIT_VERSION}_max_${MAX_DONATIONS}`;
 
         if (request.method === 'OPTIONS') {
             return new Response(null, {
@@ -21,7 +22,8 @@ export default {
         if (request.method === 'POST' && new URL(request.url).pathname === '/api/donate') {
             const clientIP = request.headers.get('CF-Connecting-IP');
             const today = new Date().toISOString().split('T')[0];
-            const key = `${clientIP}-${today}-${LIMIT_VERSION}`;  // Includi la versione nella chiave
+            // Includiamo MAX_DONATIONS nella chiave specifica dell'utente
+            const key = `${clientIP}-${today}-${LIMIT_VERSION}-max_${MAX_DONATIONS}`;
 
             try {
                 let donationCount = await env.DONATIONS_TRACKER.get(key);
