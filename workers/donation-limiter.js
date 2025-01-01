@@ -7,9 +7,9 @@ export default {
             'Access-Control-Max-Age': '86400',
         };
 
-        const RATE_LIMIT = "ON";
+        const RATE_LIMIT = "ON";  // Puoi cambiare questo a "ON" per disattivare il rate limiting
         const MAX_DONATIONS = 1;  // Limitato a 1 donazione
-        const LIMIT_VERSION = "v1";  // Versione del limite per forzare il reset
+        const LIMIT_VERSION = "v1";
         const LIMIT_KEY = `current_rate_limit_${LIMIT_VERSION}`;
 
         if (request.method === 'OPTIONS') {
