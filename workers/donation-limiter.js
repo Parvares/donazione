@@ -7,10 +7,10 @@ export default {
             'Access-Control-Max-Age': '86400',
         };
 
-        // Aggiungi una costante per tracciare l'ultimo limite impostato
-        const RATE_LIMIT = "ON";   // Puoi cambiare questo a "OFF" per disattivare il rate limiting
-        const MAX_DONATIONS = 1;  // Nuovo limite configurabile
-        const LIMIT_KEY = "current_rate_limit";
+        const RATE_LIMIT = "ON";
+        const MAX_DONATIONS = 1;  // Limitato a 1 donazione
+        const LIMIT_VERSION = "v1";  // Versione del limite per forzare il reset
+        const LIMIT_KEY = `current_rate_limit_${LIMIT_VERSION}`;
 
         if (request.method === 'OPTIONS') {
             return new Response(null, {
@@ -21,32 +21,19 @@ export default {
         if (request.method === 'POST' && new URL(request.url).pathname === '/api/donate') {
             const clientIP = request.headers.get('CF-Connecting-IP');
             const today = new Date().toISOString().split('T')[0];
-            const key = `${clientIP}-${today}`;
+            const key = `${clientIP}-${today}-${LIMIT_VERSION}`;  // Includi la versione nella chiave
 
             try {
-                // Controlla se il limite è cambiato
-                const storedLimit = await env.DONATIONS_TRACKER.get(LIMIT_KEY);
-                if (storedLimit !== MAX_DONATIONS.toString()) {
-                    // Resetta tutti i contatori eliminando le chiavi esistenti
-                    // Nota: in produzione dovresti usare list() e delete() per eliminare tutte le chiavi
-                    await env.DONATIONS_TRACKER.put(LIMIT_KEY, MAX_DONATIONS.toString());
-                }
-
                 let donationCount = await env.DONATIONS_TRACKER.get(key);
+                donationCount = donationCount ? parseInt(donationCount) : 0;
                 
-                if (RATE_LIMIT === "ON") {
-                    if (!donationCount) {
-                        donationCount = 0;
-                    }
-
-                    if (parseInt(donationCount) >= MAX_DONATIONS) {
-                        return new Response(JSON.stringify({
-                            error: `Hai già inviato ${MAX_DONATIONS} donazioni oggi. Riprova domani.`
-                        }), {
-                            status: 429,
-                            headers: { 'Content-Type': 'application/json', ...corsHeaders }
-                        });
-                    }
+                if (RATE_LIMIT === "ON" && donationCount >= MAX_DONATIONS) {
+                    return new Response(JSON.stringify({
+                        error: `Hai già inviato ${MAX_DONATIONS} donazioni oggi. Riprova domani.`
+                    }), {
+                        status: 429,
+                        headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                    });
                 }
 
                 const requestData = await request.json();
@@ -67,10 +54,8 @@ export default {
                 });
 
                 if (emailjsResponse.ok) {
-                    donationCount = parseInt(donationCount) + 1;
-
                     if (RATE_LIMIT === "ON") {
-                        await env.DONATIONS_TRACKER.put(key, donationCount.toString(), { expirationTtl: 86400 });
+                        await env.DONATIONS_TRACKER.put(key, (donationCount + 1).toString(), { expirationTtl: 86400 });
                     }
 
                     return new Response(JSON.stringify({
