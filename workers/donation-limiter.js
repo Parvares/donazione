@@ -1,7 +1,7 @@
 export default {
     async fetch(request, env) {
         const corsHeaders = {
-            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Origin': 'https://parvares.github.io/donazione/'
             'Access-Control-Allow-Methods': 'GET, HEAD, POST, OPTIONS',
             'Access-Control-Allow-Headers': 'Content-Type',
             'Access-Control-Max-Age': '86400',
