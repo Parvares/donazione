@@ -5,6 +5,14 @@ addEventListener('fetch', event => {
 // Chiave KV per tenere traccia delle donazioni
 const DONATIONS_NAMESPACE = 'DONATIONS_TRACKER'
 
+// Headers CORS specifici per il dominio GitHub Pages
+const corsHeaders = {
+  'Access-Control-Allow-Origin': 'https://parvares.github.io',
+  'Access-Control-Allow-Methods': 'GET, HEAD, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Max-Age': '86400',
+}
+
 async function handleRequest(request) {
   // Verifica se è una richiesta OPTIONS (CORS preflight)
   if (request.method === 'OPTIONS') {
@@ -28,20 +36,21 @@ async function handleRequest(request) {
           status: 429,
           headers: {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'POST',
-            'Access-Control-Allow-Headers': 'Content-Type'
+            ...corsHeaders
           }
         })
       }
 
-      // Se non ha fatto donazioni oggi, inoltra la richiesta a EmailJS
+      // Ottieni il corpo della richiesta
+      const requestData = await request.json()
+
+      // Inoltra la richiesta a EmailJS
       const emailjsResponse = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: request.body
+        body: JSON.stringify(requestData)
       })
 
       if (emailjsResponse.ok) {
@@ -56,43 +65,56 @@ async function handleRequest(request) {
         }), {
           headers: {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+            ...corsHeaders
           }
         })
       } else {
+        const emailjsError = await emailjsResponse.text()
         return new Response(JSON.stringify({
-          error: 'Errore nell\'invio della donazione'
+          error: 'Errore nell\'invio della donazione',
+          details: emailjsError
         }), {
           status: 500,
           headers: {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+            ...corsHeaders
           }
         })
       }
     } catch (error) {
       return new Response(JSON.stringify({
-        error: 'Errore interno del server'
+        error: 'Errore interno del server',
+        details: error.message
       }), {
         status: 500,
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
+          ...corsHeaders
         }
       })
     }
   }
 
   // Per altre richieste, restituisci 404
-  return new Response('Not Found', { status: 404 })
+  return new Response('Not Found', { 
+    status: 404,
+    headers: corsHeaders
+  })
 }
 
+// Funzione per gestire le richieste OPTIONS (CORS preflight)
 function handleOptions(request) {
-  return new Response(null, {
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type'
-    }
-  })
+  if (request.headers.get('Origin') !== null &&
+      request.headers.get('Access-Control-Request-Method') !== null &&
+      request.headers.get('Access-Control-Request-Headers') !== null) {
+    return new Response(null, {
+      headers: corsHeaders
+    })
+  } else {
+    return new Response(null, {
+      headers: {
+        Allow: 'GET, HEAD, POST, OPTIONS',
+      },
+    })
+  }
 }
