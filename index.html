@@ -1449,8 +1449,52 @@ window.resetBookFields = function(button) {
 // Add this at the top of your form handling JavaScript file
 const WORKER_URL = 'https://donation-limiterjs.bibliotecamorante.workers.dev/api/donate';
 
-// Initialize bookCount variable
-let bookCount = 0;
+// Check if bookCount already exists in the global scope
+if (typeof bookCount === 'undefined') {
+    var bookCount = 0;
+}
+
+// Function to show global error popup without React dependency
+function showGlobalErrorPopup(message) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-4 rounded shadow-lg z-50';
+    errorDiv.textContent = message;
+    
+    document.body.appendChild(errorDiv);
+    
+    setTimeout(() => {
+        errorDiv.remove();
+    }, 5000);
+}
+
+// Function to show success popup
+function showSuccessPopup(message) {
+    const successDiv = document.createElement('div');
+    successDiv.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-4 rounded shadow-lg z-50';
+    successDiv.textContent = message;
+    
+    document.body.appendChild(successDiv);
+    
+    setTimeout(() => {
+        successDiv.remove();
+    }, 5000);
+}
+
+// Loading overlay functions
+function showLoadingOverlay() {
+    const overlay = document.createElement('div');
+    overlay.id = 'loadingOverlay';
+    overlay.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    overlay.innerHTML = '<div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-white"></div>';
+    document.body.appendChild(overlay);
+}
+
+function removeLoadingOverlay() {
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) {
+        overlay.remove();
+    }
+}
 
 // Function to create a new book entry
 function createBookEntry() {
@@ -1506,6 +1550,44 @@ function updateBookNumbers() {
     bookCount = entries.length;
 }
 
+// Field validation functions
+function validateField(field) {
+    if (field.hasAttribute('required') && !field.value.trim()) {
+        field.classList.add('border-red-500');
+        const errorMessage = field.nextElementSibling;
+        if (errorMessage && errorMessage.classList.contains('error-message')) {
+            errorMessage.classList.remove('hidden');
+        }
+        return false;
+    }
+    return true;
+}
+
+function validateBookField(field) {
+    if (field.classList.contains('book-title') && field.hasAttribute('required') && !field.value.trim()) {
+        field.classList.add('border-red-500');
+        const errorMessage = field.nextElementSibling;
+        if (errorMessage && errorMessage.classList.contains('error-message')) {
+            errorMessage.classList.remove('hidden');
+        }
+        return false;
+    }
+    return true;
+}
+
+function validateCheckbox(checkbox) {
+    if (!checkbox.checked) {
+        checkbox.classList.add('border-red-500');
+        const errorMessage = checkbox.parentElement.nextElementSibling;
+        if (errorMessage && errorMessage.classList.contains('error-message')) {
+            errorMessage.classList.remove('hidden');
+        }
+        return false;
+    }
+    return true;
+}
+
+// Form submission handler
 document.getElementById('donationForm').addEventListener('submit', async (event) => {
     event.preventDefault();
     
@@ -1630,7 +1712,7 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
         event.target.reset();
         document.getElementById('bookList').innerHTML = '';
         bookCount = 0;
-        createBookEntry(); // Ricrea la prima scheda libro
+        createBookEntry();
 
         // Reset errors
         const errorMessages = document.querySelectorAll('.error-message');
