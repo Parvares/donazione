@@ -8,7 +8,7 @@ const config = {
         apiKey: 'AIzaSyCHJzsPtp8CfKeUag-vvyTxobwR_DmYink'
     },
     library: {
-        email: 'biblioteca.elsamorante@bibliotechediroma.it' // Email della biblioteca
+        email: 'elsamorante@bibliotechediroma.it' // Aggiungi l'email della biblioteca
     }
 };
 
