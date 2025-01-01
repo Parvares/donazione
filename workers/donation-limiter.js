@@ -9,10 +9,7 @@ export default {
 
         if (request.method === 'OPTIONS') {
             return new Response(null, {
-                headers: {
-                    ...corsHeaders,
-                    'Allow': 'GET, HEAD, POST, OPTIONS',
-                }
+                headers: { ...corsHeaders }
             });
         }
 
@@ -23,33 +20,30 @@ export default {
 
             try {
                 const donationCount = await env.DONATIONS_TRACKER.get(key);
-                
                 if (donationCount) {
                     return new Response(JSON.stringify({
                         error: 'Hai già inviato una donazione oggi. Riprova domani.'
                     }), {
                         status: 429,
-                        headers: {
-                            'Content-Type': 'application/json',
-                            ...corsHeaders
-                        }
+                        headers: { 'Content-Type': 'application/json', ...corsHeaders }
                     });
                 }
 
                 const requestData = await request.json();
-                const emailjsData = {
-                    service_id: requestData.service_id,
-                    template_id: requestData.template_id,
-                    user_id: requestData.user_id,
-                    template_params: requestData.template_params
-                };
-
+                
                 const emailjsResponse = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Origin': 'https://bibliotecamorante.workers.dev'
                     },
-                    body: JSON.stringify(emailjsData)
+                    body: JSON.stringify({
+                        service_id: requestData.service_id,
+                        template_id: requestData.template_id,
+                        user_id: requestData.user_id,
+                        template_params: requestData.template_params,
+                        accessToken: requestData.user_id
+                    })
                 });
 
                 if (emailjsResponse.ok) {
@@ -58,22 +52,16 @@ export default {
                         success: true,
                         message: 'Donazione inviata con successo'
                     }), {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            ...corsHeaders
-                        }
+                        headers: { 'Content-Type': 'application/json', ...corsHeaders }
                     });
                 } else {
-                    const emailjsError = await emailjsResponse.text();
+                    const errorText = await emailjsResponse.text();
                     return new Response(JSON.stringify({
                         error: 'Errore nell\'invio della donazione',
-                        details: emailjsError
+                        details: errorText
                     }), {
                         status: 500,
-                        headers: {
-                            'Content-Type': 'application/json',
-                            ...corsHeaders
-                        }
+                        headers: { 'Content-Type': 'application/json', ...corsHeaders }
                     });
                 }
             } catch (error) {
@@ -82,17 +70,11 @@ export default {
                     details: error.message
                 }), {
                     status: 500,
-                    headers: {
-                        'Content-Type': 'application/json',
-                        ...corsHeaders
-                    }
+                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
                 });
             }
         }
 
-        return new Response('Not Found', {
-            status: 404,
-            headers: corsHeaders
-        });
+        return new Response('Not Found', { status: 404, headers: corsHeaders });
     }
 };
