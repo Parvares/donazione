@@ -9,7 +9,7 @@ export default {
 
         // Aggiungi una costante per tracciare l'ultimo limite impostato
         const RATE_LIMIT = "ON";   // Puoi cambiare questo a "OFF" per disattivare il rate limiting
-        const MAX_DONATIONS = 2;  // Nuovo limite configurabile
+        const MAX_DONATIONS = 1;  // Nuovo limite configurabile
         const LIMIT_KEY = "current_rate_limit";
 
         if (request.method === 'OPTIONS') {
