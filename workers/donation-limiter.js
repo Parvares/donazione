@@ -2,10 +2,8 @@ addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request))
 })
 
-// Chiave KV per tenere traccia delle donazioni
 const DONATIONS_NAMESPACE = 'DONATIONS_TRACKER'
 
-// Headers CORS specifici per il dominio GitHub Pages
 const corsHeaders = {
   'Access-Control-Allow-Origin': 'https://parvares.github.io/donazione/',
   'Access-Control-Allow-Methods': 'GET, HEAD, POST, OPTIONS',
@@ -14,19 +12,16 @@ const corsHeaders = {
 }
 
 async function handleRequest(request) {
-  // Verifica se è una richiesta OPTIONS (CORS preflight)
   if (request.method === 'OPTIONS') {
     return handleOptions(request)
   }
 
-  // Verifica se è una richiesta POST per la donazione
   if (request.method === 'POST' && new URL(request.url).pathname === '/api/donate') {
     const clientIP = request.headers.get('CF-Connecting-IP')
     const today = new Date().toISOString().split('T')[0]
     const key = `${clientIP}-${today}`
 
     try {
-      // Verifica se l'IP ha già fatto una donazione oggi
       const donationCount = await DONATIONS_TRACKER.get(key)
       
       if (donationCount) {
@@ -41,24 +36,25 @@ async function handleRequest(request) {
         })
       }
 
-      // Ottieni il corpo della richiesta
       const requestData = await request.json()
-
-      // Inoltra la richiesta a EmailJS
+      
       const emailjsResponse = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(requestData)
+        body: JSON.stringify({
+          service_id: requestData.service_id,
+          template_id: requestData.template_id,
+          user_id: requestData.user_id,
+          template_params: requestData.template_params
+        })
       })
 
       if (emailjsResponse.ok) {
-        // Registra la donazione per oggi
         await DONATIONS_TRACKER.put(key, '1', {
-          expirationTtl: 86400 // Scade dopo 24 ore
+          expirationTtl: 86400
         })
-
         return new Response(JSON.stringify({
           success: true,
           message: 'Donazione inviata con successo'
@@ -95,14 +91,12 @@ async function handleRequest(request) {
     }
   }
 
-  // Per altre richieste, restituisci 404
   return new Response('Not Found', { 
     status: 404,
     headers: corsHeaders
   })
 }
 
-// Funzione per gestire le richieste OPTIONS (CORS preflight)
 function handleOptions(request) {
   if (request.headers.get('Origin') !== null &&
       request.headers.get('Access-Control-Request-Method') !== null &&
