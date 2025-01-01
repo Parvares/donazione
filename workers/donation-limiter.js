@@ -19,10 +19,17 @@ export default {
             const key = `${clientIP}-${today}`;
 
             try {
-                const donationCount = await env.DONATIONS_TRACKER.get(key);
-                if (donationCount) {
+                let donationCount = await env.DONATIONS_TRACKER.get(key);
+                
+                // Se non esiste una chiave (prima donazione del giorno), inizializza a 0
+                if (!donationCount) {
+                    donationCount = 0;
+                }
+
+                // Se sono state fatte già 3 donazioni, blocca ulteriori invii
+                if (donationCount >= 3) {
                     return new Response(JSON.stringify({
-                        error: 'Hai già inviato una donazione oggi. Riprova domani.'
+                        error: 'Hai già inviato 3 donazioni oggi. Riprova domani.'
                     }), {
                         status: 429,
                         headers: { 'Content-Type': 'application/json', ...corsHeaders }
@@ -47,7 +54,12 @@ export default {
                 });
 
                 if (emailjsResponse.ok) {
-                    await env.DONATIONS_TRACKER.put(key, '1', { expirationTtl: 86400 });
+                    // Incrementa il numero di donazioni
+                    donationCount++;
+
+                    // Aggiorna il contatore delle donazioni per l'IP
+                    await env.DONATIONS_TRACKER.put(key, donationCount.toString(), { expirationTtl: 86400 });
+
                     return new Response(JSON.stringify({
                         success: true,
                         message: 'Donazione inviata con successo'
