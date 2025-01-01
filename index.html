@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 
-    <script type="module" src="config.js"></script>
+    <script type="module" src="scripts/config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -1446,149 +1446,7 @@ window.resetBookFields = function(button) {
 	    
 
 
-// Add this at the top of your form handling JavaScript file
-const WORKER_URL = 'https://donation-limiterjs.bibliotecamorante.workers.dev/api/donate';
-
-// Check if bookCount already exists in the global scope
-if (typeof bookCount === 'undefined') {
-    var bookCount = 0;
-}
-
-// Function to show global error popup without React dependency
-function showGlobalErrorPopup(message) {
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-4 rounded shadow-lg z-50';
-    errorDiv.textContent = message;
-    
-    document.body.appendChild(errorDiv);
-    
-    setTimeout(() => {
-        errorDiv.remove();
-    }, 5000);
-}
-
-// Function to show success popup
-function showSuccessPopup(message) {
-    const successDiv = document.createElement('div');
-    successDiv.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-4 rounded shadow-lg z-50';
-    successDiv.textContent = message;
-    
-    document.body.appendChild(successDiv);
-    
-    setTimeout(() => {
-        successDiv.remove();
-    }, 5000);
-}
-
-// Loading overlay functions
-function showLoadingOverlay() {
-    const overlay = document.createElement('div');
-    overlay.id = 'loadingOverlay';
-    overlay.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
-    overlay.innerHTML = '<div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-white"></div>';
-    document.body.appendChild(overlay);
-}
-
-function removeLoadingOverlay() {
-    const overlay = document.getElementById('loadingOverlay');
-    if (overlay) {
-        overlay.remove();
-    }
-}
-
-// Function to create a new book entry
-function createBookEntry() {
-    const bookList = document.getElementById('bookList');
-    const entryDiv = document.createElement('div');
-    entryDiv.className = 'book-entry bg-gray-50 p-4 rounded-lg mb-4';
-    bookCount++;
-
-    entryDiv.innerHTML = `
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2">
-                Libro ${bookCount}
-            </label>
-            <input type="text" class="book-title shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Titolo" required>
-            <div class="error-message hidden text-red-500 text-sm mt-1">Campo obbligatorio</div>
-        </div>
-        <div class="mb-4">
-            <input type="text" class="book-author shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Autore">
-        </div>
-        <div class="mb-4">
-            <input type="text" class="book-publisher shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Editore">
-        </div>
-        <div class="mb-4">
-            <input type="text" class="book-year shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Anno">
-        </div>
-        <div class="mb-4">
-            <input type="text" class="book-isbn shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="ISBN">
-        </div>
-        ${bookCount > 1 ? `
-        <button type="button" class="remove-book bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors">
-            Rimuovi libro
-        </button>
-        ` : ''}
-    `;
-
-    if (bookCount > 1) {
-        entryDiv.querySelector('.remove-book').addEventListener('click', function() {
-            entryDiv.remove();
-            updateBookNumbers();
-        });
-    }
-
-    bookList.appendChild(entryDiv);
-}
-
-// Function to update book numbers after removal
-function updateBookNumbers() {
-    const entries = document.querySelectorAll('.book-entry');
-    entries.forEach((entry, index) => {
-        const label = entry.querySelector('label');
-        label.textContent = `Libro ${index + 1}`;
-    });
-    bookCount = entries.length;
-}
-
-// Field validation functions
-function validateField(field) {
-    if (field.hasAttribute('required') && !field.value.trim()) {
-        field.classList.add('border-red-500');
-        const errorMessage = field.nextElementSibling;
-        if (errorMessage && errorMessage.classList.contains('error-message')) {
-            errorMessage.classList.remove('hidden');
-        }
-        return false;
-    }
-    return true;
-}
-
-function validateBookField(field) {
-    if (field.classList.contains('book-title') && field.hasAttribute('required') && !field.value.trim()) {
-        field.classList.add('border-red-500');
-        const errorMessage = field.nextElementSibling;
-        if (errorMessage && errorMessage.classList.contains('error-message')) {
-            errorMessage.classList.remove('hidden');
-        }
-        return false;
-    }
-    return true;
-}
-
-function validateCheckbox(checkbox) {
-    if (!checkbox.checked) {
-        checkbox.classList.add('border-red-500');
-        const errorMessage = checkbox.parentElement.nextElementSibling;
-        if (errorMessage && errorMessage.classList.contains('error-message')) {
-            errorMessage.classList.remove('hidden');
-        }
-        return false;
-    }
-    return true;
-}
-
-// Form submission handler
-document.getElementById('donationForm').addEventListener('submit', async (event) => {
+    document.getElementById('donationForm').addEventListener('submit', async (event) => {
     event.preventDefault();
     
     let isValid = true;
@@ -1618,7 +1476,7 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
         isValid = false;
     }
 
-    if (!isValid) {
+	       if (!isValid) {
         showGlobalErrorPopup('Per favore, compila correttamente tutti i campi obbligatori.');
         return;
     }
@@ -1673,12 +1531,10 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
     showLoadingOverlay();
 
     try {
-        // Prepare the EmailJS parameters
-        const emailjsParams = {
-            template_id: config.emailjs.templateId,
-            service_id: config.emailjs.serviceId,
-            user_id: config.emailjs.publicKey,
-            template_params: {
+        const response = await emailjs.send(
+            config.emailjs.serviceId,
+            config.emailjs.templateId,
+            {
                 to_email: config.library.email,
                 from_name: `${nome} ${cognome}`,
                 from_email: email,
@@ -1687,28 +1543,14 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
                 telefono: telefono || 'Non specificato',
                 books: formattedBooks,
                 notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
-            }
-        };
-
-        // Send request to Cloudflare Worker
-        const response = await fetch(WORKER_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(emailjsParams)
-        });
-
-        const result = await response.json();
-
-        if (!response.ok) {
-            throw new Error(result.error || 'Si è verificato un errore durante l\'invio.');
-        }
+            config.emailjs.publicKey
+        );
 
         removeLoadingOverlay();
         showSuccessPopup('La tua donazione è stata inviata con successo!');
         
-        // Reset form and recreate initial book entry
+        // Reset form
         event.target.reset();
         document.getElementById('bookList').innerHTML = '';
         bookCount = 0;
@@ -1719,20 +1561,14 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
         errorMessages.forEach(msg => {
             msg.classList.add('hidden');
         });
-    } catch (error) {
-        console.error('Error:', error);
-        removeLoadingOverlay();
-        showGlobalErrorPopup(error.message || 'Si è verificato un errore durante l\'invio. Riprova più tardi.');
-    } finally {
-        removeLoadingOverlay();
-    }
+   } catch (error) {
+    console.error('Error:', error);
+    removeLoadingOverlay();
+    showGlobalErrorPopup('Si è verificato un errore durante l\'invio. Riprova più tardi.');
+} finally {
+    removeLoadingOverlay();
+}
 });
-
-// Add book button handler
-document.getElementById('addBook').addEventListener('click', createBookEntry);
-
-// Create initial book entry when page loads
-createBookEntry();
         
     </script>
 
@@ -1781,6 +1617,13 @@ createBookEntry();
 
 
     
+
+<script type="module">
+  import ErrorNotification from './ErrorNotification.js';
+  
+  const root = ReactDOM.createRoot(document.getElementById('error-root'));
+  root.render(React.createElement(ErrorNotification));
+</script>
 
     
 </body>
