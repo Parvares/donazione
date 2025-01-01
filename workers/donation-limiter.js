@@ -7,7 +7,7 @@ const DONATIONS_NAMESPACE = 'DONATIONS_TRACKER'
 
 // Headers CORS specifici per il dominio GitHub Pages
 const corsHeaders = {
-  'Access-Control-Allow-Origin': 'https://parvares.github.io',
+  'Access-Control-Allow-Origin': 'https://parvares.github.io/donazione/',
   'Access-Control-Allow-Methods': 'GET, HEAD, POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
   'Access-Control-Max-Age': '86400',
