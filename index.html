@@ -860,11 +860,12 @@ function showSuccessPopup(message) {
 
     // Add the message with styled email
     const textContainer = document.createElement('div');
-    const [firstLine, ...rest] = message.split('\n');
-    textContainer.innerHTML = `
-        <strong style="font-weight: bold;">${firstLine}</strong><br>
-        Ti risponderemo presto all'indirizzo <span style="color: #1e40af; font-weight: 600;">${rest.join('<br>')}</span>
-    `;
+    // Extract email from the message using regex
+    const messageText = message.replace(
+        /(.+)<br>(.+) ([\w.-]+@[\w.-]+\.\w+)(.*)/, 
+        '$1<br>$2 <span style="color: #1e40af; font-weight: 600;">$3</span>$4'
+    );
+    textContainer.innerHTML = `<strong style="font-weight: bold;">${messageText}</strong>`;
     popup.appendChild(textContainer);
 
     // Remove automatically after 5 seconds
@@ -877,7 +878,6 @@ function showSuccessPopup(message) {
     // Add the popup to the body
     document.body.appendChild(popup);
 }
-
 
 
 
