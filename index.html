@@ -856,40 +856,6 @@ function showSuccessPopup(message) {
     document.body.appendChild(popup);
 }
 
-
-	
-
-// Add animation keyframes to the document
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes fadeInSlideDown {
-        from {
-            opacity: 0;
-            transform: translate(-50%, -20px);
-        }
-        to {
-            opacity: 1;
-            transform: translate(-50%, 0);
-        }
-    }
-    
-    @keyframes fadeOutSlideUp {
-        from {
-            opacity: 1;
-            transform: translate(-50%, 0);
-        }
-        to {
-            opacity: 0;
-            transform: translate(-50%, -20px);
-        }
-    }
-`;
-document.head.appendChild(style);
-
-
-
-
-
 function showLoadingOverlay() {
     const overlay = document.createElement('div');
     overlay.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
@@ -1596,9 +1562,7 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
         console.log('Response data:', result);
 
         if (response.ok) {
-            const userEmail = document.getElementById('email').value.trim();
-            showSuccessPopup(`La tua donazione è stata inviata con successo!<br>Ti risponderemo presto all'indirizzo email ${userEmail}`);
-
+            showSuccessPopup('La tua donazione è stata inviata con successo!');
             
             // Reset form
             event.target.reset();
