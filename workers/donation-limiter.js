@@ -7,7 +7,7 @@ export default {
             'Access-Control-Max-Age': '86400',
         };
 
-        const RATE_LIMIT = "ON";  // Puoi cambiare questo a "OFF" per disattivare il rate limiting
+        const RATE_LIMIT = "OFF";  // Puoi cambiare questo a "OFF" per disattivare il rate limiting
         const MAX_DONATIONS = 1;  // Quando modifichi questo valore, il contatore si resetterà
         const LIMIT_VERSION = "v2"; // Incrementato per gestire il reset
         const CONFIG_KEY = "rate_limit_config";
