@@ -1563,7 +1563,8 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
 
         if (response.ok) {
             const userEmail = document.getElementById('email').value.trim();
-          showSuccessPopup(`La tua donazione è stata inviata con successo! Ti risponderemo presto all'indirizzo email ${userEmail}`);
+            showSuccessPopup(`La tua donazione è stata inviata con successo!<br>Ti risponderemo presto all'indirizzo email ${userEmail}`);
+
             
             // Reset form
             event.target.reset();
