@@ -837,44 +837,44 @@ function showGlobalErrorPopup(message) {
         
 
 function showSuccessPopup(message) {
-    // Rimuovi eventuali popup esistenti
+    // Remove any existing popups
     const existingPopups = document.querySelectorAll('.success-popup');
     existingPopups.forEach(popup => document.body.removeChild(popup));
 
-    // Crea il popup
+    // Create the popup
     const popup = document.createElement('div');
     popup.className = 'success-popup fixed top-4 left-1/2 transform -translate-x-1/2 px-6 py-4 rounded shadow-lg flex items-center gap-3';
-    popup.style.backgroundColor = '#22c55e'; // Verde di sfondo
-    popup.style.color = '#ffffff'; // Testo bianco per un contrasto ottimale
+    popup.style.backgroundColor = '#22c55e'; // Green background
+    popup.style.color = '#ffffff'; // White text
     popup.style.zIndex = '50';
-    popup.style.fontFamily = '"Space Grotesk", sans-serif'; // Font richiesto
+    popup.style.fontFamily = '"Space Grotesk", sans-serif';
     popup.style.fontSize = '16px';
-    popup.style.fontWeight = '400'; // Peso normale per il testo generale
-    popup.style.lineHeight = '1.5'; // Spaziatura tra le righe
+    popup.style.fontWeight = '400';
+    popup.style.lineHeight = '1.5';
 
-    // Aggiungi l'icona
+    // Add the checkmark icon
     const icon = document.createElement('span');
-    icon.innerHTML = '✔️'; // Icona di spunta
-    icon.style.fontSize = '20px'; // Dimensione dell'icona
+    icon.innerHTML = '✔️';
+    icon.style.fontSize = '20px';
     popup.appendChild(icon);
 
-    // Aggiungi il messaggio
+    // Add the message with styled email
     const textContainer = document.createElement('div');
-    const [firstLine, ...rest] = message.split('\n'); // Divide il messaggio in più righe
-    textContainer.innerHTML = 
+    const [firstLine, ...rest] = message.split('\n');
+    textContainer.innerHTML = `
         <strong style="font-weight: bold;">${firstLine}</strong><br>
-        ${rest.join('<br>')}
-    ;
+        Ti risponderemo presto all'indirizzo <span style="color: #1e40af; font-weight: 600;">${rest.join('<br>')}</span>
+    `;
     popup.appendChild(textContainer);
 
-    // Rimuovi automaticamente il popup dopo 5 secondi
+    // Remove automatically after 5 seconds
     setTimeout(() => {
         if (document.body.contains(popup)) {
             document.body.removeChild(popup);
         }
     }, 5000);
 
-    // Aggiungi il popup al body
+    // Add the popup to the body
     document.body.appendChild(popup);
 }
 
