@@ -863,7 +863,12 @@ function showSuccessPopup(message) {
     const [firstLine, ...rest] = message.split('\n'); // Divide il messaggio in più righe
     textContainer.innerHTML = `
         <strong style="font-weight: bold;">${firstLine}</strong><br>
-        ${rest.join('<br>')}
+        ${rest.map(line => {
+            // Evidenzia l'indirizzo email in blu se esiste
+            return line.includes('@') ? 
+                `<span style="color: #1d4ed8; font-weight: bold;">${line}</span>` : 
+                line;
+        }).join('<br>')}
     `;
     popup.appendChild(textContainer);
 
@@ -877,6 +882,7 @@ function showSuccessPopup(message) {
     // Aggiungi il popup al body
     document.body.appendChild(popup);
 }
+
 
 
 
