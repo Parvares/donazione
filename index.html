@@ -841,52 +841,23 @@ function showSuccessPopup(message) {
     existingPopups.forEach(popup => document.body.removeChild(popup));
 
     const popup = document.createElement('div');
-    popup.className = 'success-popup fixed top-4 left-1/2 transform -translate-x-1/2 px-8 py-6 rounded-lg shadow-lg font-sans';
+    popup.className = 'success-popup fixed top-4 left-1/2 transform -translate-x-1/2 px-6 py-4 rounded shadow-lg';
     popup.style.backgroundColor = '#22c55e';
     popup.style.color = 'white';
     popup.style.zIndex = '50';
-    popup.style.maxWidth = '90%';
-    popup.style.width = 'auto';
-    popup.style.fontFamily = '"Space Grotesk", sans-serif';
-    
-    const content = document.createElement('div');
-    content.className = 'flex items-center gap-3';
-    
-    // Add check icon
-    const icon = document.createElement('div');
-    icon.innerHTML = '<i class="fas fa-circle-check text-2xl"></i>';
-    
-    // Add formatted message
-    const messageDiv = document.createElement('div');
-    messageDiv.style.lineHeight = '1.5';
-    
-    // Split message by <br> and apply different styles
-    const [firstLine, secondLine] = message.split('<br>');
-    messageDiv.innerHTML = `
-        <div class="font-semibold text-lg">${firstLine}</div>
-        <div class="font-normal text-base opacity-90">${secondLine}</div>
-    `;
-
-    content.appendChild(icon);
-    content.appendChild(messageDiv);
-    popup.appendChild(content);
-
-    // Add animation classes
-    popup.style.animation = 'fadeInSlideDown 0.5s ease-out';
+    popup.innerHTML = message;
 
     setTimeout(() => {
         if (document.body.contains(popup)) {
-            popup.style.animation = 'fadeOutSlideUp 0.5s ease-out';
-            setTimeout(() => {
-                if (document.body.contains(popup)) {
-                    document.body.removeChild(popup);
-                }
-            }, 450);
+            document.body.removeChild(popup);
         }
     }, 5000);
 
     document.body.appendChild(popup);
 }
+
+
+	
 
 // Add animation keyframes to the document
 const style = document.createElement('style');
