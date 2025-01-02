@@ -861,15 +861,10 @@ function showSuccessPopup(message) {
     // Aggiungi il messaggio
     const textContainer = document.createElement('div');
     const [firstLine, ...rest] = message.split('\n'); // Divide il messaggio in più righe
-    textContainer.innerHTML = `
+    textContainer.innerHTML = 
         <strong style="font-weight: bold;">${firstLine}</strong><br>
-        ${rest.map(line => {
-            // Evidenzia l'indirizzo email in blu se esiste
-            return line.includes('@') ? 
-                `<span style="color: #1d4ed8; font-weight: bold;">${line}</span>` : 
-                line;
-        }).join('<br>')}
-    `;
+        ${rest.join('<br>')}
+    ;
     popup.appendChild(textContainer);
 
     // Rimuovi automaticamente il popup dopo 5 secondi
