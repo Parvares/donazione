@@ -1588,16 +1588,15 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
         const result = await response.json();
         console.log('Response data:', result);
 
-        if (response.ok) {
-            const userEmail = document.getElementById('email').value.trim();
-           showSuccessPopup(`La tua donazione è stata inviata con successo!<br>Ti risponderemo presto all'indirizzo ${userEmail}`);
-    
+if (response.ok) {
+    const userEmail = document.getElementById('email').value.trim();
+    showSuccessPopup(`Donazione inviata con successo!<br>Riceverai presto una risposta a ${userEmail}`);
             
-            // Reset form
-            event.target.reset();
-            document.getElementById('bookList').innerHTML = '';
-            bookCount = 0;
-            createBookEntry();
+    // Reset form
+    event.target.reset();
+    document.getElementById('bookList').innerHTML = '';
+    bookCount = 0;
+    createBookEntry();
 
             // Reset errors
             const errorMessages = document.querySelectorAll('.error-message');
