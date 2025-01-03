@@ -1152,30 +1152,35 @@ function validateCheckbox(checkbox) {
 }
 
         
-    window.createBookEntry = function() {
+window.createBookEntry = function() {
     const bookDiv = document.createElement('div');
-    bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
+    bookDiv.className = 'book-entry p-6 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 mb-6';
     bookCount++;
 
     bookDiv.innerHTML = `
-        <div class="flex justify-between items-center mb-4">
-            <span class="book-counter flex items-center justify-center w-6 h-6 rounded-full text-white font-semibold text-sm" style="background-color: rgb(34, 197, 94)">${bookCount}</span>
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-3">
+                <span class="book-counter w-8 h-8 flex items-center justify-center rounded-full text-white font-semibold text-sm bg-gradient-to-r from-green-400 to-green-500">${bookCount}</span>
+                <h4 class="text-lg font-semibold text-gray-700">Libro ${bookCount}</h4>
+            </div>
             <div class="flex gap-2">
                 ${bookCount > 1 ? `
-                    <button type="button" class="reset-book-btn text-blue-500 hover:text-blue-700" title="Azzera campi" onclick="resetBookFields(this)">
-                        <i class="fas fa-undo"></i>
+                    <button type="button" class="reset-book-btn p-2 hover:bg-gray-100 rounded-full transition-colors" 
+                            title="Azzera campi" onclick="resetBookFields(this)">
+                        <i class="fas fa-undo text-blue-500"></i>
                     </button>
-                    <button type="button" class="remove-book-btn text-red-500 hover:text-red-700" title="Rimuovi libro" onclick="removeBook(this)">
-                        <i class="fas fa-trash"></i>
+                    <button type="button" class="remove-book-btn p-2 hover:bg-red-50 rounded-full transition-colors" 
+                            title="Rimuovi libro" onclick="removeBook(this)">
+                        <i class="fas fa-trash text-red-500"></i>
                     </button>
                 ` : `
-                    <button type="button" class="reset-book-btn text-blue-500 hover:text-blue-700" title="Azzera campi" onclick="resetBookFields(this)">
-                        <i class="fas fa-undo"></i>
+                    <button type="button" class="reset-book-btn p-2 hover:bg-gray-100 rounded-full transition-colors" 
+                            title="Azzera campi" onclick="resetBookFields(this)">
+                        <i class="fas fa-undo text-blue-500"></i>
                     </button>
                 `}
             </div>
         </div>
-
 
 
  
