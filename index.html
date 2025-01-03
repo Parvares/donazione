@@ -1590,7 +1590,7 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
 
 if (response.ok) {
     const userEmail = document.getElementById('email').value.trim();
-    showSuccessPopup(`Donazione inviata con successo!<br>Riceverai presto una risposta a ${userEmail}`);
+    showSuccessPopup(`Donazione inviata con successo!<br>Riceverai presto una risposta a <span style="color: #D5E5F6; font-weight: 500;">${userEmail}</span>`);
             
     // Reset form
     event.target.reset();
