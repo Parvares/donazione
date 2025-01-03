@@ -579,7 +579,47 @@ document.head.appendChild(style);
 }
 
 
+/* Animazioni e transizioni */
+input, textarea, select, button {
+    transition: all 0.2s ease-in-out !important;
+}
 
+input:focus, textarea:focus, select:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.book-entry {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Stile moderno per i pulsanti */
+.add-book-btn {
+    @apply w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg 
+    hover:from-blue-600 hover:to-blue-700 transition-all duration-200 
+    flex items-center justify-center gap-2 font-medium shadow-md 
+    hover:shadow-lg transform hover:-translate-y-0.5;
+}
+
+/* Hover effects per le icone */
+.fas {
+    transition: transform 0.2s ease;
+}
+
+label:hover .fas {
+    transform: scale(1.1);
+}
 
 	    
     </style>
