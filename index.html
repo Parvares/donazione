@@ -1203,8 +1203,10 @@ function validateCheckbox(checkbox) {
     const bookDiv = document.createElement('div');
     bookDiv.className = 'book-entry p-6 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 mb-6';
     bookCount++;
-    bookDiv.innerHTML = `
-        <div class="flex items-center justify-between mb-4">
+    
+    // Creiamo il template HTML come stringa
+    const template = 
+        `<div class="flex items-center justify-between mb-4">
             <div class="flex items-center gap-3">
                 <span class="book-counter w-8 h-8 flex items-center justify-center rounded-full text-white font-semibold text-sm bg-gradient-to-r from-green-400 to-green-500">${bookCount}</span>
                 <h4 class="text-lg font-semibold text-gray-700">Libro ${bookCount}</h4>
@@ -1304,13 +1306,13 @@ function validateCheckbox(checkbox) {
             <input type="tel" inputmode="numeric" class="book-isbn w-full pl-10 pr-3 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200" maxlength="13">
             <i class="fas fa-barcode absolute left-3 top-[38px] text-gray-400"></i>
             <p class="hidden error-message text-sm text-red-500 mt-1">ISBN non valido</p>
-        </div>
-    `;
+        </div>`;
+
+    bookDiv.innerHTML = template;
 
     const bookList = document.getElementById('bookList');
     bookList.appendChild(bookDiv);
 
-    // Se c'è più di un libro, mostra il pulsante per aggiungerne altri
     if (bookCount >= 1) {
         const addButton = document.createElement('button');
         addButton.type = 'button';
@@ -1321,9 +1323,10 @@ function validateCheckbox(checkbox) {
     }
 
     // Aggiungi la funzionalità di ricerca
-    setupSearchFunctionality(bookDiv);
+    if (typeof setupSearchFunctionality === 'function') {
+        setupSearchFunctionality(bookDiv);
+    }
 };
-
 
  
 
