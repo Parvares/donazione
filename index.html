@@ -2,7 +2,9 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+   <meta name="theme-color" content="#970a2c">
    <meta name="description" content="Dona libri a Ostia e supporta la cultura con libri usati o nuovi. Scopri come fare la differenza!">
 
 
@@ -1199,28 +1201,128 @@ function validateCheckbox(checkbox) {
         
     window.createBookEntry = function() {
     const bookDiv = document.createElement('div');
-    bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
+    bookDiv.className = 'book-entry p-6 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 mb-6';
     bookCount++;
-
     bookDiv.innerHTML = `
-        <div class="flex justify-between items-center mb-4">
-            <span class="book-counter flex items-center justify-center w-6 h-6 rounded-full text-white font-semibold text-sm" style="background-color: rgb(34, 197, 94)">${bookCount}</span>
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-3">
+                <span class="book-counter w-8 h-8 flex items-center justify-center rounded-full text-white font-semibold text-sm bg-gradient-to-r from-green-400 to-green-500">${bookCount}</span>
+                <h4 class="text-lg font-semibold text-gray-700">Libro ${bookCount}</h4>
+            </div>
             <div class="flex gap-2">
+                <button type="button" class="reset-book-btn p-2 hover:bg-gray-100 rounded-full transition-colors" 
+                        title="Azzera campi" onclick="resetBookFields(this)">
+                    <i class="fas fa-undo text-blue-500"></i>
+                </button>
                 ${bookCount > 1 ? `
-                    <button type="button" class="reset-book-btn text-blue-500 hover:text-blue-700" title="Azzera campi" onclick="resetBookFields(this)">
-                        <i class="fas fa-undo"></i>
+                    <button type="button" class="remove-book-btn p-2 hover:bg-red-50 rounded-full transition-colors" 
+                            title="Rimuovi libro" onclick="removeBook(this)">
+                        <i class="fas fa-trash text-red-500"></i>
                     </button>
-                    <button type="button" class="remove-book-btn text-red-500 hover:text-red-700" title="Rimuovi libro" onclick="removeBook(this)">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                ` : `
-                    <button type="button" class="reset-book-btn text-blue-500 hover:text-blue-700" title="Azzera campi" onclick="resetBookFields(this)">
-                        <i class="fas fa-undo"></i>
-                    </button>
-                `}
+                ` : ''}
             </div>
         </div>
 
+        <div class="mb-5">
+            <div class="flex items-center gap-2 mb-2">
+                <label class="flex items-center gap-2 text-blue-600 font-medium">
+                    <i class="fas fa-search text-lg"></i>
+                    Search & click
+                    <span class="text-gray-500 text-sm font-normal">(opzionale)</span>
+                </label>
+                <div class="relative group">
+                    <i class="fas fa-info-circle text-blue-400 hover:text-blue-600 cursor-help"></i>
+                    <div class="invisible group-hover:visible absolute right-0 sm:left-0 top-6 w-64 sm:w-72 p-3 bg-white border border-gray-200 rounded-lg shadow-lg z-10 text-sm text-gray-700">
+                        <div class="absolute -top-2 right-2 sm:right-auto sm:left-2 w-4 h-4 bg-white border-t border-l border-gray-200 transform rotate-45"></div>
+                        Cerca, seleziona e... boom! La scheda si completa al volo! Se preferisci, puoi inserire i dati manualmente.
+                    </div>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <input type="text" 
+                    class="quick-search w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200" 
+                    placeholder="Cerca per titolo, autore o ISBN...">
+                <button type="button" 
+                    class="search-btn bg-blue-500 text-white px-4 rounded-lg hover:bg-blue-600 transition-colors">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="search-results hidden mt-2 bg-white border border-gray-200 rounded-lg max-h-60 overflow-y-auto shadow-lg"></div>
+        </div>
+
+        <div class="mb-5 relative">
+            <label class="block mb-1 text-slate-700 font-medium flex items-center gap-2">
+                <i class="fas fa-book text-blue-500"></i>
+                Titolo<span class="required-asterisk">*</span>
+            </label>
+            <input type="text" class="book-title w-full pl-10 pr-3 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200" required>
+            <i class="fas fa-book absolute left-3 top-[38px] text-gray-400"></i>
+            <p class="hidden error-message text-sm text-red-500 mt-1">Il titolo è obbligatorio</p>
+        </div>
+
+        <div class="mb-5 relative">
+            <label class="block mb-1 text-slate-700 font-medium flex items-center gap-2">
+                <i class="fas fa-user-edit text-blue-500"></i>
+                Autore
+            </label>
+            <input type="text" class="book-author w-full pl-10 pr-3 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+            <i class="fas fa-user-edit absolute left-3 top-[38px] text-gray-400"></i>
+        </div>
+
+        <div class="mb-5 relative">
+            <label class="block mb-1 text-slate-700 font-medium flex items-center gap-2">
+                <i class="fas fa-building text-blue-500"></i>
+                Editore
+            </label>
+            <input type="text" class="book-publisher w-full pl-10 pr-3 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+            <i class="fas fa-building absolute left-3 top-[38px] text-gray-400"></i>
+        </div>
+
+        <div class="mb-5 relative">
+            <label class="block mb-1 text-slate-700 font-medium flex items-center gap-2">
+                <i class="fas fa-calendar text-blue-500"></i>
+                Anno
+            </label>
+            <input type="number" min="1400" max="2024" class="book-year w-full pl-10 pr-3 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+            <i class="fas fa-calendar absolute left-3 top-[38px] text-gray-400"></i>
+            <p class="hidden error-message text-sm text-red-500 mt-1">Anno non valido</p>
+        </div>
+
+        <div class="mb-5 relative">
+            <div class="flex items-center gap-2">
+                <label class="block text-slate-700 font-medium flex items-center gap-2">
+                    <i class="fas fa-barcode text-blue-500"></i>
+                    ISBN <span class="text-gray-500 font-normal">(raccomandato)</span>
+                </label>
+                <div class="relative group -mt-1">
+                    <i class="fas fa-info-circle text-gray-400 hover:text-gray-600 cursor-help"></i>
+                    <div class="invisible group-hover:visible absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-white border border-gray-200 text-gray-700 text-sm rounded-lg w-64 shadow-lg z-10">
+                        L'ISBN è un codice numerico di 10 o 13 cifre che identifica univocamente un libro. Lo trovi sul retro del libro sopra al codice a barre o nella pagina del copyright.
+                    </div>
+                </div>
+            </div>
+            <input type="tel" inputmode="numeric" class="book-isbn w-full pl-10 pr-3 py-2 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200" maxlength="13">
+            <i class="fas fa-barcode absolute left-3 top-[38px] text-gray-400"></i>
+            <p class="hidden error-message text-sm text-red-500 mt-1">ISBN non valido</p>
+        </div>
+    `;
+
+    const bookList = document.getElementById('bookList');
+    bookList.appendChild(bookDiv);
+
+    // Se c'è più di un libro, mostra il pulsante per aggiungerne altri
+    if (bookCount >= 1) {
+        const addButton = document.createElement('button');
+        addButton.type = 'button';
+        addButton.className = 'add-book-btn';
+        addButton.onclick = createBookEntry;
+        addButton.innerHTML = '<i class="fas fa-plus"></i> Aggiungi Libro';
+        bookList.appendChild(addButton);
+    }
+
+    // Aggiungi la funzionalità di ricerca
+    setupSearchFunctionality(bookDiv);
+};
 
 
  
