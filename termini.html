@@ -164,19 +164,63 @@
     margin-top: 60px;
 }
 
-.nav-icons {
+
+ /* Poi aggiungiamo le regole specifiche per mobile con maggiore specificità */
+@media screen and (max-width: 768px) {
+  .content-wrapper .nav-icons {
     position: absolute;
-    top: -60px;
-    left: 50%;
-    transform: translateX(-50%); /* Semplificato il transform */
-    display: flex;
-    align-items: center;
-    gap: 3rem;
-    padding-top: 20px;
-    visibility: visible;
-    opacity: 1;
+    left: 1rem !important; /* Forziamo la posizione a sinistra */
+    top: -50px !important;
+    transform: none !important;
+    justify-content: flex-start !important;
+    padding: 0 !important;
+    gap: 1.5rem !important;
+    z-index: 100;
+  }
+
+  /* Manteniamo il separatore tra le icone */
+  .content-wrapper .nav-icons a:first-child::after {
+    content: '';
+    position: absolute;
+    left: calc(100% + 0.75rem);
+    top: 50%;
+    transform: translateY(-50%);
+    height: 20px;
+    width: 1px;
+    background-color: rgba(128, 128, 128, 0.3);
+  }
+
+  /* Aggiustiamo il wrapper per compensare la nuova posizione delle icone */
+  .content-wrapper {
+    margin-top: 70px;
+    position: relative;
+  }
+
+  /* Assicuriamoci che l'header non interferisca */
+  header {
+    min-height: auto !important;
+    padding: 1rem 0 !important;
+  }
 }
-      
+
+/* Rimuoviamo le vecchie media query che potrebbero interferire */
+@media (max-width: 1400px) {
+  .nav-icons {
+    transform: none;
+  }
+}
+
+@media (max-width: 1200px) {
+  .nav-icons {
+    transform: none;
+  }
+}
+
+@media (max-width: 992px) {
+  .nav-icons {
+    transform: none;
+  }
+}     
 
 @media (max-width: 1400px) {
     .nav-icons {
@@ -196,48 +240,7 @@
     }
 }
 
-@media (max-width: 768px) {
-  .nav-icons {
-    position: absolute;
-    left: 1rem;
-    top: -50px;
-    transform: none;
-    justify-content: flex-start;
-    padding: 0;
-    gap: 1.5rem;
-    display: flex;
-    align-items: center;
-  }
 
-  .nav-icons a:first-child::after {
-    content: '';
-    position: absolute;
-    left: calc(100% + 0.75rem);
-    top: 50%;
-    transform: translateY(-50%);
-    height: 20px;
-    width: 1px;
-    background-color: rgba(128, 128, 128, 0.3);
-  }
-
-  .content-wrapper {
-    margin-top: 80px;
-    padding: 0 1rem;
-  }
-
-  header {
-    min-height: auto;
-    padding: 1rem 0;
-  }
-
-  .container-header {
-    padding: 0.5rem;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 1.5rem;
-  }
-}
 
 
 
