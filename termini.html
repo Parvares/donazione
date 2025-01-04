@@ -321,13 +321,16 @@ a:hover {
 }
 
 
+
+      
+
 footer {
     background-color: var(--primary);
     color: #FFFFFF;
     font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     font-size: 14px;
     font-weight: 400;
-    padding: 1rem 0; /* Ridotto da 2rem a 1rem */
+    padding: 1.5rem 0; /* Aumentato da 1rem a 1.5rem */
 }
 
 footer .container {
@@ -349,9 +352,8 @@ footer img {
 footer .info {
     display: flex;
     flex-wrap: wrap;
-    gap: 4rem; /* Aumentato da 2.5rem a 4rem per maggiore spazio tra i blocchi */
+    gap: 4rem; /* Manteniamo la distanza aumentata tra i blocchi */
     font-size: 0.85rem;
-    opacity: 1; /* Cambiato da 0.9 a 1 per maggiore visibilità */
     color: #FFFFFF;
 }
 
@@ -365,15 +367,24 @@ footer .info i {
     color: #FFFFFF;
     font-size: 1.1rem;
     margin-top: 0.2rem;
-    opacity: 1; /* Cambiato da 0.9 a 1 per maggiore visibilità */
 }
 
 footer .info span {
     display: flex;
-    flex-direction: row; /* Cambiato da column a row */
-    gap: 0.3rem;
+    flex-direction: column; /* Ripristinato column per mantenere le due righe */
+    gap: 0.1rem;
     line-height: 1.2;
-    white-space: nowrap; /* Aggiunto per mantenere il testo su una riga */
+}
+
+/* Stile specifico per i numeri di telefono */
+footer .info a {
+    color: #FFFFFF !important; /* Forza il colore bianco per i link del telefono */
+    text-decoration: none;
+}
+
+footer .info .block {
+    display: block;
+    margin: 0;
 }
 
 /* Mantieni le regole esistenti per il mobile */
