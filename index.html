@@ -580,7 +580,38 @@ document.head.appendChild(style);
 }
 
 
+/* Aggiungi questo CSS dopo lo stile esistente, prima della chiusura del tag style */
 
+@media screen and (max-width: 767px) {
+    /* Modifica dell'header per mobile */
+    header {
+        background-color: #970a2c;  /* amaranto */
+        height: 60px;               /* altezza dimezzata */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Gestione dei loghi nell'header */
+    .container-header {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Nascondi il logo Morante su mobile */
+    .container-header img[src="logomorante.png"] {
+        display: none;
+    }
+
+    /* Ridimensiona il logo bianco per mobile */
+    .container-header img[src="logobianco.png"] {
+        height: 35px;  /* Altezza dimezzata rispetto ai 70px originali */
+        width: auto;
+        max-width: 100%;
+    }
+}
 
 	    
     </style>
