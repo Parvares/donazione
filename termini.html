@@ -324,13 +324,13 @@ a:hover {
 footer {
     background-color: var(--primary);
     color: #fff;
-    padding: 2rem 0;
+    padding: 1.5rem 0; /* Ridotto da 2rem */
 }
 
 footer .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0 1rem; /* Ridotto da 2rem per avvicinare ai bordi */
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -352,21 +352,28 @@ footer .info {
 
 footer .info div {
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* Cambiato da center a flex-start */
     gap: 0.5rem;
 }
 
 footer .info i {
     color: #fff;
     font-size: 1.1rem;
+    margin-top: 0.2rem; /* Aggiunto per allineare meglio le icone con il testo */
+}
+
+footer .info span {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem; /* Aggiunto per ridurre lo spazio tra le righe */
 }
 
 footer .info .block {
     display: block;
-    margin-top: 0.25rem;
-    margin-left: 1.5rem;
+    margin: 0; /* Rimosso il margin precedente */
 }
 
+/* Manteniamo invariato il mobile */
 @media (max-width: 768px) {
     footer .container {
         flex-direction: column;
@@ -378,7 +385,6 @@ footer .info .block {
         gap: 1.5rem;
     }
 }
-      
       
            
            header {
