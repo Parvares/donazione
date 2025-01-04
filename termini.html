@@ -197,13 +197,52 @@
 }
 
 @media (max-width: 768px) {
-    .nav-icons {
-        position: relative;
-        left: 0;
-        top: 0;
-        transform: none;
-        justify-content: flex-start;
-    }
+  .nav-icons {
+    position: absolute;
+    top: -45px;  /* Spostato più in alto */
+    left: 20px;  /* Allineato a sinistra con un margine */
+    transform: none;  /* Rimuove il transform precedente */
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    justify-content: flex-start;
+    width: auto;
+  }
+
+  /* Stile per il separatore dopo la prima icona */
+  .nav-icons a:first-child::after {
+    content: '';
+    position: absolute;
+    left: calc(100% + 0.75rem); /* Posizione del separatore */
+    top: 50%;
+    transform: translateY(-50%);
+    height: 20px;
+    width: 1px;
+    background-color: rgba(128, 128, 128, 0.3);
+    display: block; /* Assicura che il separatore sia visibile */
+  }
+
+  /* Aggiusta la dimensione delle icone per mobile */
+  .nav-icons img {
+    height: 20px;
+    width: 20px;
+  }
+
+  /* Aggiusta il container principale per dare spazio alle icone */
+  .content-wrapper {
+    margin-top: 80px; /* Aumenta lo spazio superiore */
+    padding-top: 0;
+  }
+
+  /* Assicura che il container dell'header non interferisca */
+  header {
+    position: relative;
+  }
+
+  .container-header {
+    padding-top: 2rem; /* Aggiunge spazio sopra il logo nell'header */
+  }
 }
 
 
