@@ -324,12 +324,13 @@ a:hover {
 footer {
     background-color: var(--primary);
     color: #fff;
-    padding: 2rem 0;
+    padding: 2.5rem 0; /* Aumentato da 1.5rem per un footer più alto */
 }
 
 footer .container {
-    width: 95%;
+    max-width: 1200px;
     margin: 0 auto;
+    padding: 0 0.2rem; /* Ulteriormente ridotto da 0.5rem per avvicinare ai bordi */
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -346,8 +347,8 @@ footer .info {
     display: flex;
     flex-wrap: wrap;
     gap: 2.5rem;
-    font-size: 0.85rem;
-    opacity: 0.9;
+    font-size: 0.85rem; /* Leggermente ridotto per ridurre l'intensità */
+    opacity: 0.9; /* Aggiunto per ridurre leggermente la luminosità del testo */
 }
 
 footer .info div {
@@ -360,7 +361,7 @@ footer .info i {
     color: #fff;
     font-size: 1.1rem;
     margin-top: 0.2rem;
-    opacity: 0.9;
+    opacity: 0.9; /* Aggiunto per uniformare con il testo */
 }
 
 footer .info span {
