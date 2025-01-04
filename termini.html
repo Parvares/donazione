@@ -196,79 +196,14 @@
     }
 }
 
-/* Rimuovere o modificare questa regola che sta causando il problema */
 @media (max-width: 768px) {
-  header {
-    min-height: auto;
-    padding: 1rem 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .nav-icons {
-    position: absolute !important;
-    top: 10px !important;
-    left: 20px !important;
-    transform: none !important;
-    justify-content: flex-start !important;
-    padding: 0 !important;
-    gap: 1.5rem !important;
-  }
-
-
-  /* Mantieni il separatore verticale */
-  .nav-icons a:first-child::after {
-    content: '';
-    position: absolute;
-    left: calc(100% + 0.75rem);
-    top: 50%;
-    transform: translateY(-50%);
-    height: 20px;
-    width: 1px;
-    background-color: rgba(128, 128, 128, 0.3);
-    display: block;
-  }
-
-     header {
-    min-height: auto;
-    padding: 1rem 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-
-.container {
-    padding: 0.5rem;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 1.5rem;
-    width: 100%;
-  }
-
-  /* Aggiusta le dimensioni delle immagini nell'header */
-  header img {
-    height: 37px;
-  }
-
-  header .logo-morante {
-    height: 87px;
-  }
-
-  main {
-    margin: 1rem;
-    padding: 1.5rem;
-  }
-
-  .footer-info {
-    flex-direction: column;
-  }
-
-  /* Aggiusta il content wrapper per evitare sovrapposizioni */
-  .content-wrapper {
-    margin-top: 60px;
-    position: relative;
-  }
+    .nav-icons {
+        position: relative;
+        left: 0;
+        top: 0;
+        transform: none;
+        justify-content: flex-start;
+    }
 }
 
 
@@ -510,7 +445,13 @@ footer .info .block {
                flex-direction: column;
            }
            
-
+           .nav-icons {
+               position: relative;
+               top: 0;
+               left: 0;
+               padding: 0.5rem 0;
+               justify-content: center;
+           }
            
            .container {
                padding: 0.5rem;
