@@ -324,13 +324,13 @@ a:hover {
 footer {
     background-color: var(--primary);
     color: #fff;
-    padding: 2.5rem 0; /* Aumentato da 1.5rem per un footer più alto */
+    padding: 1.5rem 0; /* Ridotto da 2rem */
 }
 
 footer .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 0.2rem; /* Ulteriormente ridotto da 0.5rem per avvicinare ai bordi */
+    padding: 0 1rem; /* Ridotto da 2rem per avvicinare ai bordi */
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -347,35 +347,33 @@ footer .info {
     display: flex;
     flex-wrap: wrap;
     gap: 2.5rem;
-    font-size: 0.85rem; /* Leggermente ridotto per ridurre l'intensità */
-    opacity: 0.9; /* Aggiunto per ridurre leggermente la luminosità del testo */
+    font-size: 0.9rem;
 }
 
 footer .info div {
     display: flex;
-    align-items: flex-start;
+    align-items: flex-start; /* Cambiato da center a flex-start */
     gap: 0.5rem;
 }
 
 footer .info i {
     color: #fff;
     font-size: 1.1rem;
-    margin-top: 0.2rem;
-    opacity: 0.9; /* Aggiunto per uniformare con il testo */
+    margin-top: 0.2rem; /* Aggiunto per allineare meglio le icone con il testo */
 }
 
 footer .info span {
     display: flex;
     flex-direction: column;
-    gap: 0.1rem;
-    line-height: 1.2;
+    gap: 0.15rem; /* Aggiunto per ridurre lo spazio tra le righe */
 }
 
 footer .info .block {
     display: block;
-    margin: 0;
+    margin: 0; /* Rimosso il margin precedente */
 }
 
+/* Manteniamo invariato il mobile */
 @media (max-width: 768px) {
     footer .container {
         flex-direction: column;
