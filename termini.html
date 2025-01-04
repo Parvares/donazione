@@ -767,18 +767,16 @@ a:hover {
    
 @media (max-width: 768px) {
     .nav-icons {
-        position: absolute; /* Sposta le icone sopra il contenuto */
-        top: 10px;          /* Aggiusta l'altezza per posizionarle in alto */
-        left: 10px;         /* Allinea a sinistra */
-        transform: none;    /* Rimuovi eventuali trasformazioni */
-        justify-content: flex-start; /* Allinea a sinistra */
-        gap: 10px;          /* Riduci lo spazio tra le icone */
-        z-index: 1000;      /* Assicurati che siano sopra gli altri elementi */
-    }
-    .nav-icons a:first-child::after {
-        left: auto; /* Disattiva l'allineamento speciale per mobile */
+        position: absolute; /* Permette di posizionare le icone indipendentemente dagli altri elementi */
+        top: 10px;          /* Posiziona le icone in alto */
+        left: 10px;         /* Allinea le icone a sinistra */
+        transform: none;    /* Rimuove eventuali trasformazioni */
+        justify-content: flex-start; /* Allinea le icone a sinistra */
+        gap: 10px;          /* Spazio tra le icone */
+        z-index: 1000;      /* Assicura che le icone siano sopra gli altri elementi */
     }
 }
+
 
 
       
