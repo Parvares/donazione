@@ -767,15 +767,18 @@ a:hover {
    
 @media (max-width: 768px) {
     .nav-icons {
-        position: absolute; /* Permette di posizionare le icone indipendentemente dagli altri elementi */
-        top: 10px;          /* Posiziona le icone in alto */
-        left: 10px;         /* Allinea le icone a sinistra */
-        transform: none;    /* Rimuove eventuali trasformazioni */
-        justify-content: flex-start; /* Allinea le icone a sinistra */
-        gap: 10px;          /* Spazio tra le icone */
-        z-index: 1000;      /* Assicura che le icone siano sopra gli altri elementi */
+        position: fixed; /* Fissa le icone rispetto alla finestra */
+        top: 10px;       /* Posizionamento dall'alto */
+        left: 10px;      /* Posizionamento da sinistra */
+        display: flex;   /* Allinea le icone in fila */
+        gap: 10px;       /* Spaziatura tra le icone */
+        z-index: 1000;   /* Assicura che siano in primo piano */
+    }
+    .text-box {
+        margin-top: 60px; /* Aggiusta lo spazio per il contenuto sottostante */
     }
 }
+
 
 
 
