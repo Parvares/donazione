@@ -321,18 +321,22 @@ a:hover {
 }
 
 
+/* Ensure the footer has some padding as well */
 footer {
     background-color: var(--primary);
     color: #fff;
-    padding: 1.5rem 0; /* Altezza ridotta */
+    padding: 1.5rem 2rem; /* Added horizontal padding */
 }
 
 footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 4rem; /* Increased padding from default */
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    gap: 1rem; /* Spaziatura minima */
+    gap: 1rem;
 }
 
 footer img {
@@ -365,10 +369,10 @@ footer i {
     font-size: 1rem; /* Icone ridimensionate */
 }
 
+/* Adjust spacing for mobile devices */
 @media (max-width: 768px) {
-    footer .info {
-        flex-direction: column; /* Layout verticale su schermi piccoli */
-        align-items: flex-start;
+    footer .container {
+        padding: 0 2rem; /* Slightly less padding on mobile */
     }
 }
       
