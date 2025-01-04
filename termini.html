@@ -196,47 +196,58 @@
     }
 }
 
+/* Reset delle regole generali per mobile */
 @media (max-width: 768px) {
     .nav-icons {
-        position: absolute;
-        left: 1rem;  /* Posiziona a sinistra */
-        top: -50px;  /* Sposta più in alto */
-        transform: none;  /* Rimuove il transform esistente */
-        padding: 0;
-        justify-content: flex-start;
-        gap: 1.5rem;
-        z-index: 10;  /* Assicura che le icone siano sopra altri elementi */
+        position: absolute !important;  /* Forza il posizionamento assoluto */
+        left: 1rem !important;  /* Forza la posizione a sinistra */
+        top: -50px !important;  /* Sposta più in alto */
+        transform: none !important;  /* Rimuove qualsiasi transform */
+        padding: 0 !important;
+        justify-content: flex-start !important;
+        gap: 1.5rem !important;
+        z-index: 10 !important;
+        width: auto !important;  /* Permette al contenitore di adattarsi al contenuto */
+        display: flex !important;
     }
 
-    /* Gestisce il separatore tra le icone */
+    /* Aggiorna il separatore tra le icone */
     .nav-icons a:first-child::after {
         content: '';
-        position: absolute;
-        right: -0.75rem;  /* Metà del gap tra le icone */
-        top: 50%;
-        transform: translateY(-50%);
-        height: 16px;  /* Altezza ridotta per mobile */
-        width: 1px;
-        background-color: rgba(128, 128, 128, 0.3);
+        position: absolute !important;
+        right: -0.75rem !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        height: 16px !important;
+        width: 1px !important;
+        background-color: rgba(128, 128, 128, 0.3) !important;
+        display: block !important;
     }
 
-    /* Rimuove eventuali stili conflittuali dalla media query esistente */
+    /* Assicura che il content wrapper non interferisca */
     .content-wrapper {
-        margin-top: 30px;  /* Riduce il margine superiore */
-        padding: 0 1rem;
-        position: relative;
+        margin-top: 30px !important;
+        padding: 0 1rem !important;
+        position: relative !important;
     }
 
-    /* Assicura che le icone mantengano le dimensioni corrette */
+    /* Mantieni le dimensioni delle icone */
     .nav-icons img {
-        height: 22px;
-        width: 22px;
+        height: 22px !important;
+        width: 22px !important;
+        display: block !important;
     }
 
-    /* Previene conflitti con altri elementi del layout */
+    /* Sistema il posizionamento relativo dell'header */
     header {
-        position: relative;  /* Necessario per il corretto posizionamento assoluto delle icone */
-        margin-bottom: 2rem;  /* Spazio aggiuntivo per le icone sottostanti */
+        position: relative !important;
+        margin-bottom: 2rem !important;
+        min-height: auto !important;
+    }
+
+    /* Rimuovi eventuali stili che potrebbero interferire */
+    .container-header {
+        position: relative !important;
     }
 }
 
