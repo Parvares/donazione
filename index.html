@@ -586,7 +586,7 @@ document.head.appendChild(style);
     /* Modifica dell'header per mobile */
     header {
         background-color: #970a2c;  /* amaranto */
-        height: 60px;               /* altezza dimezzata */
+        height: 130px;               /* altezza dimezzata */
         display: flex;
         align-items: center;
         justify-content: center;
@@ -613,6 +613,33 @@ document.head.appendChild(style);
     }
 }
 
+@media (max-width: 768px) {
+    .top-banner {
+        padding: 0.4rem 1rem; /* Reduced padding */
+        min-height: 40px; /* Reduced minimum height */
+    }
+	    
+
+@media screen and (max-width: 768px) {
+    .nav-icons {
+        padding: 0.75rem 1rem; /* Spazio per le icone di navigazione */
+        margin-bottom: -0.5rem; /* Riduce lo spazio sotto le icone */
+    }
+    
+    .content-wrapper {
+        margin-top: -0.25rem;
+    }
+    
+    /* Aggiusta lo spazio dopo il banner per mobile */
+    .top-banner + header {
+        margin-bottom: 0.75rem;
+    }
+
+    /* Riduce lo spazio superiore del contenitore principale su mobile */
+    .max-w-4xl.mx-auto.bg-white.p-8.rounded-lg.mt-2 {
+        margin-top: 0.5rem; /* Ridotto da 2 (0.5rem) */
+    }
+}
 	    
     </style>
 
@@ -1652,10 +1679,10 @@ if (response.ok) {
 
 
 
-    <footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
+<footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
     <div class="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
         <div class="mb-4 md:mb-0">
-             <!-- Logo -->
+            <!-- Logo -->
             <img src="footermorante.png" alt="Logo Biblioteca Morante" class="h-8 md:h-10" 
                  style="cursor: pointer;" 
                  onclick="window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');">
@@ -1672,8 +1699,18 @@ if (response.ok) {
             
             <div class="flex items-center justify-center md:justify-start space-x-4">
                 <div class="flex items-center space-x-2">
-                    <i class="fas fa-phone w-4"></i>
-                    <span>06 4546 0481 / 0483</span>
+                    <a href="tel:+390645460481" style="text-decoration: none; color: inherit;">
+                        <i class="fas fa-phone w-4"></i>
+                    </a>
+                    <span>
+                        <a href="tel:+390645460481" style="text-decoration: none; color: inherit;">
+                            06 4546 0481
+                        </a> 
+                        / 
+                        <a href="tel:+390645460483" style="text-decoration: none; color: inherit;">
+                            0483
+                        </a>
+                    </span>
                 </div>
                 <div class="flex items-center space-x-2">
                     <i class="fas fa-clock w-4"></i>
