@@ -321,92 +321,114 @@ a:hover {
 }
 
 
-/* Footer base styles */
 footer {
     background-color: var(--primary);
     color: #fff;
-    padding: 1.5rem 0;
-    width: 100%;
+    padding: 1.5rem 0; /* Altezza ridotta */
 }
 
-/* Container styles with better spacing control */
 footer .container {
-    max-width: 1200px;
-    width: 90%;
-    margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem; /* Spaziatura minima */
 }
 
-/* Logo styles */
 footer img {
-    height: 35px;
+    height: 35px; /* Logo leggermente più piccolo */
     max-width: 100%;
-    margin-right: 1rem;
+    margin-right: 1rem; /* Spaziatura tra logo e stringhe */
 }
 
-/* Info section styles */
 footer .info {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
-    gap: 2rem;
-    font-size: 0.85rem;
+    gap: 1.5rem; /* Minore spazio tra blocchi di testo */
+    font-size: 0.85rem; /* Testo ridotto */
 }
 
-/* Individual info item styles */
-footer .info div {
+footer .info > div {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    line-height: 1.4; /* Migliore leggibilità */
 }
 
-/* Icon styles */
-footer .info i {
-    font-size: 1rem;
-    width: 20px;
-    text-align: center;
+footer .info span.block {
+    display: block; /* Forza il rientro a capo per indirizzi e orari */
 }
 
-/* Responsive adjustments */
-@media (max-width: 1024px) {
-    footer .container {
-        width: 95%;
-    }
+footer i {
+    font-size: 1rem; /* Icone ridimensionate */
 }
 
 @media (max-width: 768px) {
-    footer .container {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
-
     footer .info {
-        width: 100%;
-        justify-content: flex-start;
-        flex-direction: column;
+        flex-direction: column; /* Layout verticale su schermi piccoli */
         align-items: flex-start;
-        gap: 1rem;
-    }
-
-    footer img {
-        margin-right: 0;
-        margin-bottom: 1rem;
     }
 }
+      
+      
+           
+           header {
+               min-height: auto;
+               padding: 1rem 0;
+               display: flex;
+               flex-direction: column;
+           }
+           
+           .nav-icons {
+               position: relative;
+               top: 0;
+               left: 0;
+               padding: 0.5rem 0;
+               justify-content: center;
+           }
+           
+           .container {
+               padding: 0.5rem;
+               flex-direction: row;
+               justify-content: center;
+               align-items: center;
+               gap: 1.5rem;
+               width: 100%;
+           }
+           
+           header img {
+               height: 37px;
+           }
+           
+           header .logo-morante {
+               height: 87px;
+           }
+           
+           main {
+               margin: 1rem;
+               padding: 1.5rem;
+           }
 
-/* Optional: Add support for dark mode */
-@media (prefers-color-scheme: dark) {
-    footer {
-        background-color: var(--primary);
-        color: #fff;
-    }
-}
+           .footer-info {
+               flex-direction: column;
+           }
+       }
+
+       @media print {
+           .top-banner, header, .nav-icons, footer {
+               display: none;
+           }
+
+           main {
+               box-shadow: none;
+               border: none;
+               padding: 0;
+               margin: 0;
+           }
+       }
+
 
 
       
