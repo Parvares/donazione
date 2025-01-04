@@ -324,13 +324,13 @@ a:hover {
 footer {
     background-color: var(--primary);
     color: #fff;
-    padding: 1.5rem 0;
+    padding: 2.5rem 0; /* Aumentato da 1.5rem per un footer più alto */
 }
 
 footer .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 0.5rem; /* Ulteriormente ridotto da 1rem */
+    padding: 0 0.2rem; /* Ulteriormente ridotto da 0.5rem per avvicinare ai bordi */
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -347,7 +347,8 @@ footer .info {
     display: flex;
     flex-wrap: wrap;
     gap: 2.5rem;
-    font-size: 0.9rem;
+    font-size: 0.85rem; /* Leggermente ridotto per ridurre l'intensità */
+    opacity: 0.9; /* Aggiunto per ridurre leggermente la luminosità del testo */
 }
 
 footer .info div {
@@ -360,13 +361,14 @@ footer .info i {
     color: #fff;
     font-size: 1.1rem;
     margin-top: 0.2rem;
+    opacity: 0.9; /* Aggiunto per uniformare con il testo */
 }
 
 footer .info span {
     display: flex;
     flex-direction: column;
-    gap: 0.1rem; /* Ulteriormente ridotto da 0.15rem */
-    line-height: 1.2; /* Aggiunto per compattare ulteriormente il testo */
+    gap: 0.1rem;
+    line-height: 1.2;
 }
 
 footer .info .block {
