@@ -324,13 +324,12 @@ a:hover {
 footer {
     background-color: var(--primary);
     color: #fff;
-    padding: 2rem 0; /* Aumentato da 1.5rem per un footer più alto */
+    padding: 2rem 0;
 }
 
 footer .container {
-    max-width: 1200px;
+    width: 98%; /* Modificato da max-width per usare una percentuale */
     margin: 0 auto;
-    padding: 0 0.2rem; /* Ulteriormente ridotto da 0.5rem per avvicinare ai bordi */
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -347,8 +346,8 @@ footer .info {
     display: flex;
     flex-wrap: wrap;
     gap: 2.5rem;
-    font-size: 0.85rem; /* Leggermente ridotto per ridurre l'intensità */
-    opacity: 0.9; /* Aggiunto per ridurre leggermente la luminosità del testo */
+    font-size: 0.85rem;
+    opacity: 0.9;
 }
 
 footer .info div {
@@ -361,7 +360,7 @@ footer .info i {
     color: #fff;
     font-size: 1.1rem;
     margin-top: 0.2rem;
-    opacity: 0.9; /* Aggiunto per uniformare con il testo */
+    opacity: 0.9;
 }
 
 footer .info span {
@@ -380,6 +379,7 @@ footer .info .block {
     footer .container {
         flex-direction: column;
         align-items: flex-start;
+        width: 95%; /* Leggero aggiustamento per mobile */
     }
     
     footer .info {
