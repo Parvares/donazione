@@ -197,13 +197,46 @@
 }
 
 @media (max-width: 768px) {
-    .nav-icons {
-        position: relative;
-        left: 0;
-        top: 0;
-        transform: none;
-        justify-content: flex-start;
-    }
+  .nav-icons {
+    position: absolute;
+    left: 1rem;
+    top: -50px;
+    transform: none;
+    justify-content: flex-start;
+    padding: 0;
+    gap: 1.5rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-icons a:first-child::after {
+    content: '';
+    position: absolute;
+    left: calc(100% + 0.75rem);
+    top: 50%;
+    transform: translateY(-50%);
+    height: 20px;
+    width: 1px;
+    background-color: rgba(128, 128, 128, 0.3);
+  }
+
+  .content-wrapper {
+    margin-top: 80px;
+    padding: 0 1rem;
+  }
+
+  header {
+    min-height: auto;
+    padding: 1rem 0;
+  }
+
+  .container-header {
+    padding: 0.5rem;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+  }
 }
 
 
