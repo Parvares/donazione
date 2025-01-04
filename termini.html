@@ -330,7 +330,7 @@ footer {
     font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     font-size: 14px;
     font-weight: 400;
-    padding: 1.5rem 0; /* Aumentato da 1rem a 1.5rem */
+    padding: 1.5rem 0;
 }
 
 footer .container {
@@ -352,7 +352,7 @@ footer img {
 footer .info {
     display: flex;
     flex-wrap: wrap;
-    gap: 4rem; /* Manteniamo la distanza aumentata tra i blocchi */
+    gap: 8rem; /* Aumentato da 4rem a 8rem per dare più spazio tra i blocchi */
     font-size: 0.85rem;
     color: #FFFFFF;
 }
@@ -371,14 +371,20 @@ footer .info i {
 
 footer .info span {
     display: flex;
-    flex-direction: column; /* Ripristinato column per mantenere le due righe */
+    flex-direction: column;
     gap: 0.1rem;
     line-height: 1.2;
 }
 
-/* Stile specifico per i numeri di telefono */
+/* Stile specifico per il blocco del telefono nella versione desktop */
+footer .info div:nth-child(2) span {
+    flex-direction: row; /* Forza la direzione orizzontale per il numero di telefono */
+    gap: 0.3rem; /* Spazio tra i componenti del numero */
+    white-space: nowrap; /* Previene l'andare a capo */
+}
+
 footer .info a {
-    color: #FFFFFF !important; /* Forza il colore bianco per i link del telefono */
+    color: #FFFFFF !important;
     text-decoration: none;
 }
 
@@ -426,7 +432,6 @@ footer .info .block {
         display: inline-block;
     }
 }
-
 
       
            
