@@ -161,7 +161,8 @@
     margin: 2rem auto;
     padding: 0 1rem;
     position: relative;
-    margin-top: 60px;
+    margin-top: 80px;
+    padding-top: 0;
 }
 
 .nav-icons {
@@ -198,26 +199,30 @@
 
 @media (max-width: 768px) {
     .nav-icons {
-        position: relative;
-        left: 0;
-        top: 0;
+        position: absolute;
+        top: -45px; /* Spostato più in alto */
+        left: 20px; /* Allineato a sinistra */
         transform: none;
+        padding: 0;
+        gap: 1.5rem;
         justify-content: flex-start;
+        width: auto;
+        visibility: visible;
+        opacity: 1;
+        z-index: 100;
     }
-}
 
 
 
       
     .nav-icons a {
-    display: flex;
-    align-items: center;
-    visibility: visible;
-    opacity: 1;
-    text-decoration: none;
-    border-bottom: none;
-       
-}
+        display: flex;
+        align-items: center;
+        visibility: visible;
+        opacity: 1;
+        text-decoration: none;
+        border-bottom: none;
+    }
 
        .nav-icons a:hover {
            transform: scale(1.1);
@@ -225,23 +230,23 @@
           border-bottom: none;
        }
 
-       .nav-icons a:first-child {
-           font-weight: bold;
-           font-size: 1.8rem;
-           position: relative;
-           letter-spacing: 0.5rem;
-       }
+        .nav-icons a:first-child {
+        font-weight: bold;
+        font-size: 1.8rem;
+        position: relative;
+        letter-spacing: 0.5rem;
+    }
 
-       .nav-icons a:first-child::after {
-           content: '';
-           position: absolute;
-           left: calc(100% + 1.5rem);
-           top: 50%;
-           transform: translateY(-50%);
-           height: 20px;
-           width: 1px;
-           background-color: rgba(128, 128, 128, 0.3);
-       }
+    .nav-icons a:first-child::after {
+        content: '';
+        position: absolute;
+        left: calc(100% + 0.75rem); /* Ridotto lo spazio dopo l'icona */
+        top: 50%;
+        transform: translateY(-50%);
+        height: 20px;
+        width: 1px;
+        background-color: rgba(128, 128, 128, 0.3);
+    }
        
        header img {
            height: 70px;
@@ -441,6 +446,7 @@ footer .info .block {
            header {
                min-height: auto;
                padding: 1rem 0;
+               margin-top: 45px; /* Aggiunto margine superiore */
                display: flex;
                flex-direction: column;
            }
