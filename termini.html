@@ -198,11 +198,45 @@
 
 @media (max-width: 768px) {
     .nav-icons {
-        position: relative;
-        left: 0;
-        top: 0;
-        transform: none;
+        position: absolute;
+        left: 1rem;  /* Posiziona a sinistra */
+        top: -50px;  /* Sposta più in alto */
+        transform: none;  /* Rimuove il transform esistente */
+        padding: 0;
         justify-content: flex-start;
+        gap: 1.5rem;
+        z-index: 10;  /* Assicura che le icone siano sopra altri elementi */
+    }
+
+    /* Gestisce il separatore tra le icone */
+    .nav-icons a:first-child::after {
+        content: '';
+        position: absolute;
+        right: -0.75rem;  /* Metà del gap tra le icone */
+        top: 50%;
+        transform: translateY(-50%);
+        height: 16px;  /* Altezza ridotta per mobile */
+        width: 1px;
+        background-color: rgba(128, 128, 128, 0.3);
+    }
+
+    /* Rimuove eventuali stili conflittuali dalla media query esistente */
+    .content-wrapper {
+        margin-top: 30px;  /* Riduce il margine superiore */
+        padding: 0 1rem;
+        position: relative;
+    }
+
+    /* Assicura che le icone mantengano le dimensioni corrette */
+    .nav-icons img {
+        height: 22px;
+        width: 22px;
+    }
+
+    /* Previene conflitti con altri elementi del layout */
+    header {
+        position: relative;  /* Necessario per il corretto posizionamento assoluto delle icone */
+        margin-bottom: 2rem;  /* Spazio aggiuntivo per le icone sottostanti */
     }
 }
 
