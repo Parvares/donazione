@@ -346,10 +346,12 @@ footer .container {
 }
 
 footer img {
-    height: 35px;
+    width: 200px; /* Imposta una larghezza maggiore */
+    height: auto; /* Mantieni le proporzioni originali */
     max-width: 100%;
     cursor: pointer;
 }
+
 
 footer .info {
     display: flex;
@@ -930,7 +932,7 @@ a:hover {
 <footer>
     <div class="container">
         <img src="footermorante.png" alt="Logo Biblioteca Morante" 
-             style="cursor: pointer; width: 200px; height: auto;" 
+             style="cursor: pointer; width: 200px; height: 80px;" 
              onclick="window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');">
         <div class="info">
             <div>
@@ -957,6 +959,7 @@ a:hover {
         </div>
     </div>
 </footer>
+
 
 
    
