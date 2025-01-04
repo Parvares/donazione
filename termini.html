@@ -395,12 +395,19 @@ footer .info .block {
     }
 
     footer .info div {
-        flex-direction: column; /* Forza i contenuti in colonna */
+        flex-direction: column; /* Per gli altri blocchi lascia i contenuti in colonna */
         text-align: center; /* Centra il contenuto */
     }
 
-    footer .info div:nth-child(2), /* Secondo blocco */
-    footer .info div:nth-child(3) { /* Terzo blocco */
+    footer .info div:nth-child(1) { /* Indirizzo */
+        flex-direction: row; /* Disporre l'icona e il testo in orizzontale */
+        justify-content: center; /* Centra il contenuto */
+        gap: 0.5rem; /* Spaziatura tra icona e testo */
+        align-items: center; /* Allinea verticalmente */
+    }
+
+    footer .info div:nth-child(2), /* Secondo blocco (telefono) */
+    footer .info div:nth-child(3) { /* Terzo blocco (orari) */
         flex-direction: row; /* Metti in riga i contenuti */
         justify-content: center; /* Centra i contenuti */
         align-items: center; /* Allinea verticalmente */
@@ -412,7 +419,6 @@ footer .info .block {
         display: inline-block; /* Permette di affiancare i testi */
     }
 }
-
 
       
            
