@@ -196,12 +196,21 @@
     }
 }
 
+/* Rimuovere o modificare questa regola che sta causando il problema */
 @media (max-width: 768px) {
+  header {
+    min-height: auto;
+    padding: 1rem 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Rimuoviamo il posizionamento relativo che causava il problema */
   .nav-icons {
     position: absolute;
-    top: -45px;  /* Spostato più in alto */
-    left: 20px;  /* Allineato a sinistra con un margine */
-    transform: none;  /* Rimuove il transform precedente */
+    top: 10px;  /* Posiziona in alto */
+    left: 20px;  /* Allinea a sinistra */
+    transform: none;
     padding: 0;
     display: flex;
     align-items: center;
@@ -210,38 +219,50 @@
     width: auto;
   }
 
-  /* Stile per il separatore dopo la prima icona */
+  /* Mantieni il separatore verticale */
   .nav-icons a:first-child::after {
     content: '';
     position: absolute;
-    left: calc(100% + 0.75rem); /* Posizione del separatore */
+    left: calc(100% + 0.75rem);
     top: 50%;
     transform: translateY(-50%);
     height: 20px;
     width: 1px;
     background-color: rgba(128, 128, 128, 0.3);
-    display: block; /* Assicura che il separatore sia visibile */
+    display: block;
   }
 
-  /* Aggiusta la dimensione delle icone per mobile */
-  .nav-icons img {
-    height: 20px;
-    width: 20px;
+  .container {
+    padding: 0.5rem;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
   }
 
-  /* Aggiusta il container principale per dare spazio alle icone */
+  /* Aggiusta le dimensioni delle immagini nell'header */
+  header img {
+    height: 37px;
+  }
+
+  header .logo-morante {
+    height: 87px;
+  }
+
+  main {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
+  .footer-info {
+    flex-direction: column;
+  }
+
+  /* Aggiusta il content wrapper per evitare sovrapposizioni */
   .content-wrapper {
-    margin-top: 80px; /* Aumenta lo spazio superiore */
-    padding-top: 0;
-  }
-
-  /* Assicura che il container dell'header non interferisca */
-  header {
+    margin-top: 60px;
     position: relative;
-  }
-
-  .container-header {
-    padding-top: 2rem; /* Aggiunge spazio sopra il logo nell'header */
   }
 }
 
