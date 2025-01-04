@@ -198,20 +198,28 @@
 
 /* Reset delle regole generali per mobile */
 @media (max-width: 768px) {
+    /* Sistema il layout complessivo */
+    .content-wrapper {
+        margin-top: 60px !important;  /* Aumenta lo spazio per le icone di navigazione */
+        padding: 0 1rem !important;
+        position: relative !important;
+    }
+
+    /* Posiziona le icone di navigazione */
     .nav-icons {
-        position: absolute !important;  /* Forza il posizionamento assoluto */
-        left: 1rem !important;  /* Forza la posizione a sinistra */
-        top: -50px !important;  /* Sposta più in alto */
-        transform: none !important;  /* Rimuove qualsiasi transform */
+        position: absolute !important;
+        left: 1rem !important;
+        top: -40px !important;  /* Aggiustato per evitare sovrapposizione con il banner */
+        transform: none !important;
         padding: 0 !important;
         justify-content: flex-start !important;
         gap: 1.5rem !important;
         z-index: 10 !important;
-        width: auto !important;  /* Permette al contenitore di adattarsi al contenuto */
+        width: auto !important;
         display: flex !important;
     }
 
-    /* Aggiorna il separatore tra le icone */
+    /* Sistema il separatore tra le icone */
     .nav-icons a:first-child::after {
         content: '';
         position: absolute !important;
@@ -224,13 +232,6 @@
         display: block !important;
     }
 
-    /* Assicura che il content wrapper non interferisca */
-    .content-wrapper {
-        margin-top: 30px !important;
-        padding: 0 1rem !important;
-        position: relative !important;
-    }
-
     /* Mantieni le dimensioni delle icone */
     .nav-icons img {
         height: 22px !important;
@@ -238,16 +239,23 @@
         display: block !important;
     }
 
-    /* Sistema il posizionamento relativo dell'header */
+    /* Sistema il posizionamento dell'header */
     header {
         position: relative !important;
-        margin-bottom: 2rem !important;
+        padding: 1rem 0 !important;
         min-height: auto !important;
+        margin-bottom: 1rem !important;
     }
 
-    /* Rimuovi eventuali stili che potrebbero interferire */
-    .container-header {
-        position: relative !important;
+    /* Aggiusta il contenitore principale */
+    main {
+        margin-top: 2rem !important;  /* Aumenta lo spazio tra le icone e il contenuto */
+    }
+
+    /* Sistema la library-name per mantenere lo spazio corretto */
+    .library-name {
+        margin-top: 1rem !important;
+        margin-bottom: 1.5rem !important;
     }
 }
 
