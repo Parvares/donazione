@@ -423,81 +423,9 @@ a:hover {
 
 
         
-/* Aggiungi questo CSS dopo lo stile esistente, prima della chiusura del tag style */
 
-@media screen and (max-width: 767px) {
-    /* Modifica dell'header per mobile */
-    header {
-        background-color: #970a2c;  /* amaranto */
-        height: 130px;               /* altezza dimezzata */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
 
-    /* Gestione dei loghi nell'header */
-    .container-header {
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
 
-    /* Nascondi il logo Morante su mobile */
-    .container-header img[src="logomorante.png"] {
-        display: none;
-    }
-
-    /* Ridimensiona il logo bianco per mobile */
-    .container-header img[src="logobianco.png"] {
-        height: 35px;  /* Altezza dimezzata rispetto ai 70px originali */
-        width: auto;
-        max-width: 100%;
-    }
-}
-
-@media screen and (max-width: 768px) {
-  .top-banner {
-    padding: 0.8rem 1rem;  /* Riduco leggermente il padding orizzontale per dare più spazio */
-  }
-  
-  .roma-logo {
-    height: 48px;  /* Aumentato da 40px */
-  }
-  
-  .social-icons {
-    gap: 0.75rem;  /* Riduco leggermente lo spazio tra le icone per compensare */
-  }
-  
-  .social-icons a,
-  .social-icons button {
-    font-size: 1.75rem;  /* Aumentato da 1.5rem */
-  }
-  
-  /* Assicuriamoci che il contenitore mantenga l'allineamento corretto */
-  .top-banner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 72px;  /* Garantisce un'altezza minima del banner */
-  }
-  
-  /* Aggiustiamo il contenitore delle icone social per il nuovo sizing */
-  .social-icons {
-    display: flex;
-    align-items: center;
-    height: 100%;
-  }
-  
-  /* Miglioriamo l'area cliccabile per le icone più grandi */
-  .social-icons a,
-  .social-icons button {
-    padding: 0.25rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-}
         
     </style>
 </head>
@@ -679,9 +607,6 @@ a:hover {
         </div>
     </div>
 </footer>
-
-
-
 
 
 
