@@ -323,7 +323,11 @@ a:hover {
 
 footer {
     background-color: var(--primary);
-    color: #fff;
+    color: #FFFFFF; /* Specifica il colore bianco */
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", 
+                 "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; /* Font stack */
+    font-size: 14px; /* Imposta la dimensione del font */
+    font-weight: 400; /* Peso del font */
     padding: 2rem 0;
 }
 
@@ -340,6 +344,7 @@ footer .container {
 footer img {
     height: 35px;
     max-width: 100%;
+    cursor: pointer;
 }
 
 footer .info {
@@ -348,6 +353,7 @@ footer .info {
     gap: 2.5rem;
     font-size: 0.85rem;
     opacity: 0.9;
+    color: RGB(255, 255, 255); /* Usando la notazione RGB */
 }
 
 footer .info div {
@@ -357,7 +363,7 @@ footer .info div {
 }
 
 footer .info i {
-    color: #fff;
+    color: #FFFFFF; /* Colore icone */
     font-size: 1.1rem;
     margin-top: 0.2rem;
     opacity: 0.9;
@@ -380,12 +386,13 @@ footer .info .block {
         flex-direction: column;
         align-items: flex-start;
     }
-    
+
     footer .info {
         flex-direction: column;
         gap: 1.5rem;
     }
 }
+
       
            
            header {
