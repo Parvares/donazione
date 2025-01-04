@@ -384,14 +384,35 @@ footer .info .block {
 @media (max-width: 768px) {
     footer .container {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center; /* Centra i contenuti */
+        text-align: center; /* Allinea il testo al centro */
     }
 
     footer .info {
         flex-direction: column;
-        gap: 1.5rem;
+        gap: 1rem; /* Riduci lo spazio tra le sezioni */
+        align-items: center; /* Centra i blocchi interni */
+    }
+
+    footer .info div {
+        flex-direction: column; /* Forza i contenuti in colonna */
+        text-align: center; /* Centra il contenuto */
+    }
+
+    footer .info div:nth-child(2), /* Secondo blocco */
+    footer .info div:nth-child(3) { /* Terzo blocco */
+        flex-direction: row; /* Metti in riga i contenuti */
+        justify-content: center; /* Centra i contenuti */
+        align-items: center; /* Allinea verticalmente */
+        gap: 0.5rem; /* Spaziatura tra le voci */
+    }
+
+    footer .info div:nth-child(2) span,
+    footer .info div:nth-child(3) span {
+        display: inline-block; /* Permette di affiancare i testi */
     }
 }
+
 
       
            
