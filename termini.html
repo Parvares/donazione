@@ -43,6 +43,7 @@
        }
        
 .top-banner {
+    
     background-color: white;
     padding: 0.8rem 2rem; /* Ridotto da 1.2rem */
     display: flex;
@@ -50,7 +51,7 @@
     align-items: center;
     min-height: 60px; /* Ridotto da 80px */
     position: relative;  /* Aggiunto */
-    z-index: 10;        /* Aggiunto */
+    z-index: 2;        /* Aggiunto */
     width: 100%;        /* Aggiunto */
 }
 
@@ -642,9 +643,10 @@ a:hover {
 @media (max-width: 768px) {
     /* Sistema il layout complessivo */
     .content-wrapper {
-        margin-top: 60px !important;
-        padding: 0 1rem !important;
+        margin-top: 0 !important;  /* Rimuovi il margin-top extra */
+        
         position: relative !important;
+        padding-top: 1rem;
     }
 
     /* Posiziona le icone di navigazione */
@@ -652,12 +654,13 @@ a:hover {
         transform: translateX(-50%);  /* Reset della trasformazione */
         width: auto;                  /* Aggiunto */
         justify-content: center;      /* Aggiunto */
-        position: absolute !important;
+        position: relative;
         left: 1rem !important;
-        top: -40px !important;
-        transform: none !important;
-        padding: 0 !important;
-        justify-content: flex-start !important;
+        top: auto;
+        left: auto;
+        transform: none 
+        padding: 1rem 0;
+        justify-content: center;
         gap: 1.5rem !important;
         z-index: 10 !important;
         width: auto !important;
@@ -688,8 +691,8 @@ a:hover {
     header {
         top: auto;   /* Rimuovere qualsiasi posizionamento fisso 
         position: relative !important;
-        padding: 1rem 0 !important;
-        min-height: auto !important;
+        padding: 1rem 0;
+        min-height: auto; 
         margin-bottom: 1rem !important;
         margin-top: 0;    /* Assicura nessuno spazio extra */
     }
