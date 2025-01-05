@@ -613,7 +613,7 @@ footer .info .block {
 /* Top banner positioning */
 .top-banner {
     position: relative;
-    z-index: 1;
+    z-index: 2;
 }
 
 
@@ -640,18 +640,19 @@ a:hover {
     }
 
     /* Posiziona le icone di navigazione */
-    .nav-icons {
-        position: absolute !important;
-        left: 1rem !important;
-        top: -40px !important;
-        transform: none !important;
-        padding: 0 !important;
-        justify-content: flex-start !important;
-        gap: 1.5rem !important;
-        z-index: 10 !important;
-        width: auto !important;
-        display: flex !important;
-    }
+.nav-icons {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    padding-top: 20px;
+    visibility: visible;
+    opacity: 1;
+    z-index: 1; /* Aggiunto per garantire il corretto layering */
+}
 
     /* Sistema il separatore tra le icone */
     .nav-icons a:first-child::after {
