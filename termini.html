@@ -195,14 +195,7 @@
     }
 }
 
-/* Reset delle regole generali per mobile */
-@media (max-width: 768px) {
-    /* Sistema il layout complessivo */
-    .content-wrapper {
-        margin-top: 60px !important;  /* Aumenta lo spazio per le icone di navigazione */
-        padding: 0 1rem !important;
-        position: relative !important;
-    }
+
 
     /* Posiziona le icone di navigazione */
     .nav-icons {
@@ -444,93 +437,6 @@ footer .info .block {
     margin: 0;
 }
 
-/* Mantieni le regole mobili ma ripristina la larghezza del container per schermi piccoli */
-@media (max-width: 768px) {
-    footer {
-        padding: 2rem 0; /* Mantiene un padding più contenuto per mobile */
-    }
-
-    footer .container {
-        width: 95%; /* Ripristina la larghezza originale per schermi piccoli */
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-
-    footer .info {
-        flex-direction: column;
-        gap: 1rem;
-        align-items: center;
-    }
-
-    footer .info div {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    footer .info div:nth-child(1) {
-        flex-direction: row;
-        justify-content: center;
-        gap: 0.5rem;
-        align-items: center;
-    }
-
-    footer .info div:nth-child(2),
-    footer .info div:nth-child(3) {
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    footer .info div:nth-child(2) span,
-    footer .info div:nth-child(3) span {
-        display: inline-block;
-    }
-}
-      
-           
-           header {
-               min-height: auto;
-               padding: 1rem 0;
-               display: flex;
-               flex-direction: column;
-           }
-           
-           .nav-icons {
-               position: relative;
-               top: 0;
-               left: 0;
-               padding: 0.5rem 0;
-               justify-content: center;
-           }
-           
-           .container {
-               padding: 0.5rem;
-               flex-direction: row;
-               justify-content: center;
-               align-items: center;
-               gap: 1.5rem;
-               width: 100%;
-           }
-           
-           header img {
-               height: 37px;
-           }
-           
-           header .logo-morante {
-               height: 87px;
-           }
-           
-           main {
-               margin: 1rem;
-               padding: 1.5rem;
-           }
-
-           .footer-info {
-               flex-direction: column;
-           }
-       }
 
        @media print {
            .top-banner, header, .nav-icons, footer {
@@ -816,6 +722,113 @@ a:hover {
     }
 }
 
+
+/* Mobile-first base styles */
+@media (max-width: 768px) {
+  /* Layout and spacing */
+  .content-wrapper {
+    margin-top: 60px !important;
+    padding: 0 1rem !important;
+    position: relative !important;
+  }
+
+  /* Navigation icons */
+  .nav-icons {
+    position: absolute !important;
+    left: 1rem !important;
+    top: -40px !important;
+    transform: none !important;
+    padding: 0 !important;
+    justify-content: flex-start !important;
+    gap: 1.5rem !important;
+    z-index: 10 !important;
+    width: auto !important;
+    display: flex !important;
+  }
+
+  /* Navigation icon separator */
+  .nav-icons a:first-child::after {
+    content: '';
+    position: absolute !important;
+    right: -0.75rem !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    height: 16px !important;
+    width: 1px !important;
+    background-color: rgba(128, 128, 128, 0.3) !important;
+    display: block !important;
+  }
+
+  /* Icon sizing */
+  .nav-icons img {
+    height: 22px !important;
+    width: 22px !important;
+    display: block !important;
+  }
+
+  /* Header adjustments */
+  header {
+    min-height: auto !important;
+    padding: 1rem 0 !important;
+    margin-bottom: 1rem !important;
+    position: relative !important;
+  }
+
+  /* Main content */
+  main {
+    margin: 1rem !important;
+    padding: 1.5rem !important;
+  }
+
+  /* Library name spacing */
+  .library-name {
+    margin-top: 1rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  /* Footer adjustments */
+  footer {
+    padding: 2rem 0;
+  }
+
+  footer .container {
+    width: 95%;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  footer .info {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  footer .info div {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  footer .info div:nth-child(1) {
+    flex-direction: row;
+    justify-content: center;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  footer .info div:nth-child(2),
+  footer .info div:nth-child(3) {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  footer .info div:nth-child(2) span,
+  footer .info div:nth-child(3) span {
+    display: inline-block;
+  }
+}
 
 
       
