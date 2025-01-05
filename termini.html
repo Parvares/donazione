@@ -382,11 +382,11 @@ footer {
     font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     font-size: 14px;
     font-weight: 400;
-    padding: 2rem 0; /* Aumentato da 1.5rem a 2.5rem per maggiore altezza */
+    padding: 1.5rem 0;
 }
 
 footer .container {
-    width: 80%; /* Ridotto da 95% a 80% per aumentare i margini laterali */
+    width: 90%; /* Increased from 80% to bring content closer to edges */
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
@@ -396,7 +396,7 @@ footer .container {
 }
 
 footer img {
-    height: 35px;
+    height: 45px; /* Increased from 35px */
     max-width: 100%;
     cursor: pointer;
 }
@@ -404,21 +404,21 @@ footer img {
 footer .info {
     display: flex;
     flex-wrap: wrap;
-    gap: 3.5rem;
+    gap: 2rem; /* Reduced from 3.5rem to bring text groups closer */
     font-size: 0.85rem;
     color: #FFFFFF;
 }
 
 footer .info div {
     display: flex;
-    align-items: flex-start;
-    gap: 0.5rem;
+    align-items: center; /* Changed from flex-start to better align icons with text */
+    gap: 0.4rem; /* Reduced from 0.5rem to bring icons closer to text */
 }
 
 footer .info i {
     color: #FFFFFF;
-    font-size: 1.1rem;
-    margin-top: 0.2rem;
+    font-size: 1rem; /* Reduced from 1.1rem to better match text size */
+    margin-top: 0; /* Removed margin-top for better vertical alignment */
 }
 
 footer .info span {
