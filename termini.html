@@ -87,31 +87,33 @@
            transform: scale(1.2);
        }
        
-       header {
-           background-color: var(--primary);
-           color: #fff;
-           padding: 2rem 0;
-           min-height: 4cm;
-           display: flex;
-           justify-content: center;
-           align-items: center;
-           position: relative;
-           flex-direction: column;
-           text-align: center;
-           margin-top: 0;      /* Aggiunto */
-       }
+header {
+    background-color: var(--primary);
+    color: #fff;
+    padding: 2rem 0;
+    min-height: 4cm;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;  /* Cambiato da fixed a relative */
+    flex-direction: column;
+    text-align: center;
+    width: 100%;        /* Aggiunto */
+    top: auto;          /* Rimosso eventuale posizionamento fixed */
+}
 
- .container-header {
+.container-header {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0.8rem; /* Ridotto da 2rem */
+    padding: 0.8rem;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     flex-wrap: wrap;
     gap: 1rem;
-    min-height: 70px; /* Ridotto da 120px */
+    min-height: 70px;
+    position: relative;  /* Aggiunto */
 }
 
       .library-name {
