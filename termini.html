@@ -98,6 +98,7 @@
            position: relative;
            flex-direction: column;
            text-align: center;
+           margin-top: 0;      /* Aggiunto */
        }
 
  .container-header {
@@ -167,6 +168,7 @@
     width: 100%;
     margin: 2rem auto;
     margin-top: 60px;
+    z-index: 5;         /* Aggiunto */
 }
 
 .nav-icons {
@@ -180,6 +182,7 @@
     padding-top: 20px;
     visibility: visible;
     opacity: 1;
+    z-index: 6;         /* Aggiunto */
 }
       
 
@@ -644,6 +647,9 @@ a:hover {
 
     /* Posiziona le icone di navigazione */
     .nav-icons {
+        transform: translateX(-50%);  /* Reset della trasformazione */
+        width: auto;                  /* Aggiunto */
+        justify-content: center;      /* Aggiunto */
         position: absolute !important;
         left: 1rem !important;
         top: -40px !important;
@@ -682,6 +688,7 @@ a:hover {
         padding: 1rem 0 !important;
         min-height: auto !important;
         margin-bottom: 1rem !important;
+        margin-top: 0;    /* Assicura nessuno spazio extra */
     }
 
     /* Reset del layout per prevenire spazi indesiderati */
@@ -692,11 +699,14 @@ a:hover {
     }
 
     .top-banner {
+        position: sticky;  /* Aggiunto */
+        top: 0;           /* Aggiunto */
+        z-index: 100;     /* Aumentato */
         padding: 0.4rem 1rem;
         min-height: 40px;
         background-color: white;
         position: relative;
-        z-index: 2;
+        
     }
 
     .roma-logo {
