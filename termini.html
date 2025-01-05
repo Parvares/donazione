@@ -33,29 +33,51 @@
 
    
   <!-- Variabili CSS Custom -->
+<!-- Stili base e variabili CSS -->
 <style>
+    * {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
     :root {
         --primary: #970a2c;
         --text: #180207;
         --bg: #f3f4f6;
     }
+
+    html, body {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+
+    body {
+        font-weight: 500;
+        background-color: var(--bg);
+        color: var(--text);
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 22px;
+        line-height: 32px;
+        letter-spacing: normal;
+        word-spacing: 0px;
+    }
 </style>
 
 <!-- Stili Tailwind Custom -->
 <style type="text/tailwindcss">
-    @layer base {
-        html, body {
-            @apply w-full m-0 p-0 overflow-x-hidden;
-        }
-        
-        body {
-            @apply font-medium bg-[--bg] text-[--text] font-sans text-lg leading-8;
-        }
-    }
-
     @layer components {
         .top-banner {
             @apply bg-white px-8 py-3 flex justify-between items-center min-h-[60px];
+        }
+
+        .top-banner a {
+            @apply border-b-0 flex items-center;
+        }
+
+        .top-banner a:hover {
+            @apply border-b-0;
         }
 
         .roma-logo {
@@ -67,7 +89,11 @@
         }
 
         .social-icons a {
-            @apply text-[--primary] text-2xl transition-transform hover:scale-110;
+            @apply text-[--primary] text-2xl transition-transform;
+        }
+
+        .social-icons a:hover {
+            @apply transform scale-120;
         }
 
         header {
@@ -82,8 +108,20 @@
             @apply flex items-center gap-2 text-[--text] text-lg mb-4;
         }
 
+        .library-name a {
+            @apply relative border-b-0;
+        }
+
+        .library-name a:hover {
+            @apply border-b-0 no-underline;
+        }
+
         .library-name img {
             @apply h-[22px] w-[22px] align-middle;
+        }
+
+        .library-name a.tooltip-library:hover::before {
+            @apply content-['Clicca_qui_per_vedere_gli_appuntamenti_della_biblioteca'] absolute bottom-full left-1/2 -translate-x-1/2 px-2 py-1 bg-white text-gray-700 rounded shadow-sm whitespace-nowrap z-10 text-xs mb-1;
         }
 
         .content-wrapper {
@@ -95,7 +133,11 @@
         }
 
         .nav-icons a {
-            @apply flex items-center visible opacity-100 no-underline hover:scale-110 transition-transform;
+            @apply flex items-center visible opacity-100 no-underline border-b-0;
+        }
+
+        .nav-icons a:hover {
+            @apply transform scale-110 no-underline border-b-0;
         }
 
         .nav-icons a:first-child {
@@ -162,12 +204,32 @@
             @apply flex items-center justify-center bg-[--primary] border-0 cursor-pointer text-xl text-white w-9 h-9 rounded-full p-0 transition-colors hover:bg-[#800624] relative;
         }
 
+        .audio-control .tooltip {
+            @apply absolute bottom-[120%] left-1/2 -translate-x-1/2 bg-white text-gray-700 px-4 py-2 rounded-lg text-sm whitespace-nowrap max-w-[200px] border border-gray-200 opacity-0 invisible transition-opacity z-10 shadow-lg;
+        }
+
+        .audio-control:hover .tooltip {
+            @apply opacity-100 visible;
+        }
+
         .waveform-container {
             @apply hidden relative h-[60px] bg-gray-100 rounded p-3 my-3 cursor-pointer;
         }
 
         .waveform-bars {
             @apply flex items-end h-10 gap-px;
+        }
+
+        .waveform-bar {
+            @apply flex-1 bg-gray-300 min-w-[2px] transition-all;
+        }
+
+        .waveform-bar.played {
+            @apply bg-[--primary];
+        }
+
+        .time-display {
+            @apply flex justify-between text-xs mt-1;
         }
 
         .tooltip-container {
@@ -178,8 +240,8 @@
             @apply content-['Questo_link_si_apre_in_una_nuova_finestra'] absolute bg-white text-gray-600 px-3 py-1 rounded text-sm italic whitespace-nowrap invisible opacity-0 transition-opacity pointer-events-none shadow-md border border-gray-200 z-50;
         }
 
-        .tooltip-container:hover::after {
-            @apply visible opacity-100;
+        .social-icons .tooltip-container::after {
+            @apply bottom-[-40px] left-[-150%]!important -translate-x-1/2 top-auto bg-white!important;
         }
     }
 
@@ -211,12 +273,24 @@
                 @apply absolute!important left-4!important -top-10!important transform-none!important p-0!important justify-start!important gap-6!important z-10!important w-auto!important flex!important;
             }
 
+            .nav-icons a:first-child::after {
+                @apply content-[''] absolute!important right-[-0.75rem]!important top-1/2!important -translate-y-1/2!important h-4!important w-px!important bg-gray-300/30!important block!important;
+            }
+
+            .nav-icons img {
+                @apply h-[22px]!important w-[22px]!important block!important;
+            }
+
             header {
                 @apply relative!important py-4!important min-h-0!important mb-4!important;
             }
 
             main {
                 @apply mt-8!important;
+            }
+
+            .library-name {
+                @apply mt-4!important mb-6!important;
             }
 
             footer .container {
@@ -233,6 +307,16 @@
 
             footer .info div:first-child {
                 @apply flex-row justify-center gap-2 items-center;
+            }
+
+            footer .info div:nth-child(2), 
+            footer .info div:nth-child(3) {
+                @apply flex-row justify-center items-center gap-2;
+            }
+
+            footer .info div:nth-child(2) span, 
+            footer .info div:nth-child(3) span {
+                @apply inline-block;
             }
         }
 
