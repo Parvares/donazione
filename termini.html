@@ -42,17 +42,16 @@
            word-spacing: 0px;
        }
        
-.top-banner {
-    
+.top-banner { 
     background-color: white;
-    padding: 0.8rem 2rem; /* Ridotto da 1.2rem */
+    padding: 0.8rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    min-height: 60px; /* Ridotto da 80px */
-    position: relative;  /* Aggiunto */
-    z-index: 2;        /* Aggiunto */
-    width: 100%;        /* Aggiunto */
+    min-height: 60px;
+    position: relative;  /* Cambiato da fixed a relative */
+    z-index: 2;
+    width: 100%;
 }
 
 
@@ -88,19 +87,18 @@
            transform: scale(1.2);
        }
        
-header {
-    background-color: var(--primary);
-    color: #fff;
-    padding: 2rem 0;
-    min-height: 4cm;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;  /* Cambiato da fixed a relative */
-    flex-direction: column;
-    text-align: center;
-    width: 100%;        /* Aggiunto */
-    top: auto;          /* Rimosso eventuale posizionamento fixed */
+header { 
+    background-color: var(--primary); 
+    color: #fff; 
+    padding: 2rem 0; 
+    min-height: 4cm; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    position: relative;  /* Assicuriamoci che sia relative */
+    flex-direction: column; 
+    text-align: center; 
+    width: 100%;
 }
 
 .container-header {
@@ -162,16 +160,14 @@ header {
 
      
 
-      .content-wrapper {
-
-    margin-top: 60px !important;
+.content-wrapper {
+    margin-top: 2rem !important;  /* Modificato da 60px */
     padding: 0 1rem !important;
-    position: relative !important;     
+    position: relative !important;
     max-width: 900px;
     width: 100%;
-    margin: 2rem auto;
-    margin-top: 60px;
-    z-index: 5;         /* Aggiunto */
+    margin: 0 auto;
+    z-index: 1;
 }
 
 .nav-icons {
@@ -643,7 +639,7 @@ a:hover {
 @media (max-width: 768px) {
     /* Sistema il layout complessivo */
     .content-wrapper {
-        margin-top: 0 !important;  /* Rimuovi il margin-top extra */
+       margin-top: 1rem !important;  /* Riduce il margine su mobile */
         
         position: relative !important;
         padding-top: 1rem;
