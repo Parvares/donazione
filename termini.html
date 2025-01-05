@@ -684,6 +684,7 @@ a:hover {
 
     /* Header e contenitori principali */
     header {
+        top: auto;   /* Rimuovere qualsiasi posizionamento fisso 
         position: relative !important;
         padding: 1rem 0 !important;
         min-height: auto !important;
@@ -699,8 +700,8 @@ a:hover {
     }
 
     .top-banner {
-        position: sticky;  /* Aggiunto */
-        top: 0;           /* Aggiunto */
+       
+        top: auto;        
         z-index: 100;     /* Aumentato */
         padding: 0.4rem 1rem;
         min-height: 40px;
@@ -714,6 +715,7 @@ a:hover {
     }
 
     .container-header {
+        position: relative;  /* Assicurarsi che sia relative */
         padding: 0;
         display: flex;
         align-items: center;
