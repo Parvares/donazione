@@ -3,7 +3,6 @@
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#970a2c">
    <meta name="description" content="Termini e condizioni per donazioni di libri ad Ostia.">
 
    <title>Termini donazione</title>
@@ -156,13 +155,11 @@
      
 
       .content-wrapper {
-
-    margin-top: 60px !important;
-    padding: 0 1rem !important;
-    position: relative !important;     
     max-width: 900px;
     width: 100%;
     margin: 2rem auto;
+    padding: 0 1rem;
+    position: relative;
     margin-top: 60px;
 }
 
@@ -198,8 +195,28 @@
     }
 }
 
+/* Reset delle regole generali per mobile */
+@media (max-width: 768px) {
+    /* Sistema il layout complessivo */
+    .content-wrapper {
+        margin-top: 60px !important;  /* Aumenta lo spazio per le icone di navigazione */
+        padding: 0 1rem !important;
+        position: relative !important;
+    }
 
-
+    /* Posiziona le icone di navigazione */
+    .nav-icons {
+        position: absolute !important;
+        left: 1rem !important;
+        top: -40px !important;  /* Aggiustato per evitare sovrapposizione con il banner */
+        transform: none !important;
+        padding: 0 !important;
+        justify-content: flex-start !important;
+        gap: 1.5rem !important;
+        z-index: 10 !important;
+        width: auto !important;
+        display: flex !important;
+    }
 
     /* Sistema il separatore tra le icone */
     .nav-icons a:first-child::after {
@@ -221,8 +238,18 @@
         display: block !important;
     }
 
- 
+    /* Sistema il posizionamento dell'header */
+    header {
+        position: relative !important;
+        padding: 1rem 0 !important;
+        min-height: auto !important;
+        margin-bottom: 1rem !important;
+    }
 
+    /* Aggiusta il contenitore principale */
+    main {
+        margin-top: 2rem !important;  /* Aumenta lo spazio tra le icone e il contenuto */
+    }
 
     /* Sistema la library-name per mantenere lo spazio corretto */
     .library-name {
@@ -295,17 +322,13 @@
     line-height: 1.2; /* Rende il titolo meno alto */
        }
        
-     h2 {
-    color: var(--primary);  /* Mantiene il colore amaranto esistente */
-    font-size: 1.7rem;
-    margin-bottom: 2rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--primary);
-    font-family: 'Space Grotesk', sans-serif !important;  /* Usa lo stesso font del testo */
-    font-weight: 500 !important;  /* Usa lo stesso peso del testo */
-    letter-spacing: normal !important;  /* Reset spaziatura lettere */
-    word-spacing: 0px !important;  /* Reset spaziatura parole */
-}
+       h2 {
+           color: var(--primary);
+           font-size: 1.7rem; /* Ridotto da 1.8rem */
+           margin-bottom: 2rem;
+           padding-bottom: 0.5rem;
+           border-bottom: 2px solid var(--primary);
+       }
        
        ul {
            list-style-type: none;
@@ -420,6 +443,108 @@ footer .info .block {
     display: block;
     margin: 0;
 }
+
+/* Mantieni le regole mobili ma ripristina la larghezza del container per schermi piccoli */
+@media (max-width: 768px) {
+    footer {
+        padding: 2rem 0; /* Mantiene un padding più contenuto per mobile */
+    }
+
+    footer .container {
+        width: 95%; /* Ripristina la larghezza originale per schermi piccoli */
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    footer .info {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    footer .info div {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    footer .info div:nth-child(1) {
+        flex-direction: row;
+        justify-content: center;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    footer .info div:nth-child(2),
+    footer .info div:nth-child(3) {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    footer .info div:nth-child(2) span,
+    footer .info div:nth-child(3) span {
+        display: inline-block;
+    }
+}
+      
+           
+           header {
+               min-height: auto;
+               padding: 1rem 0;
+               display: flex;
+               flex-direction: column;
+           }
+           
+           .nav-icons {
+               position: relative;
+               top: 0;
+               left: 0;
+               padding: 0.5rem 0;
+               justify-content: center;
+           }
+           
+           .container {
+               padding: 0.5rem;
+               flex-direction: row;
+               justify-content: center;
+               align-items: center;
+               gap: 1.5rem;
+               width: 100%;
+           }
+           
+           header img {
+               height: 37px;
+           }
+           
+           header .logo-morante {
+               height: 87px;
+           }
+           
+           main {
+               margin: 1rem;
+               padding: 1.5rem;
+           }
+
+           .footer-info {
+               flex-direction: column;
+           }
+       }
+
+       @media print {
+           .top-banner, header, .nav-icons, footer {
+               display: none;
+           }
+
+           main {
+               box-shadow: none;
+               border: none;
+               padding: 0;
+               margin: 0;
+           }
+       }
+
 
 
 
@@ -630,147 +755,68 @@ a:hover {
 }
 
 
-/* Base styles for mobile */
 @media (max-width: 768px) {
-    /* Sistema il layout complessivo */
-    .content-wrapper {
-        margin-top: 60px !important;
-        padding: 0 1rem !important;
-        position: relative !important;
+    .tooltip-container::before,
+    .tooltip-container::after,
+    .tooltip-library:hover::before,
+    .tooltip {
+        display: none !important;
     }
+} 
+      
 
-    /* Posiziona le icone di navigazione */
-    .nav-icons {
-        position: absolute !important;
-        left: 1rem !important;
-        top: -40px !important;
-        transform: none !important;
-        padding: 0 !important;
-        justify-content: flex-start !important;
-        gap: 1.5rem !important;
-        z-index: 10 !important;
-        width: auto !important;
-        display: flex !important;
-    }
+/* Aggiungi questo CSS dopo lo stile esistente, prima della chiusura del tag style */
 
-    /* Sistema il separatore tra le icone */
-    .nav-icons a:first-child::after {
-        content: '';
-        position: absolute !important;
-        right: -0.75rem !important;
-        top: 50% !important;
-        transform: translateY(-50%) !important;
-        height: 16px !important;
-        width: 1px !important;
-        background-color: rgba(128, 128, 128, 0.3) !important;
-        display: block !important;
-    }
-
-    /* Mantieni le dimensioni delle icone */
-    .nav-icons img {
-        height: 22px !important;
-        width: 22px !important;
-        display: block !important;
-    }
-
-    /* Header e contenitori principali */
+@media screen and (max-width: 767px) {
+    /* Modifica dell'header per mobile */
     header {
-        position: relative !important;
-        padding: 1rem 0 !important;
-        min-height: auto !important;
-        margin-bottom: 1rem !important;
-    }
-
-    /* Reset del layout per prevenire spazi indesiderati */
-    body {
-        margin: 0;
-        padding: 0;
-        overflow-x: hidden;
-    }
-
-    .top-banner {
-        padding: 0.4rem 1rem;
-        min-height: 40px;
-        background-color: white;
-        position: relative;
-        z-index: 2;
-    }
-
-    .roma-logo {
-        height: 35px;
-    }
-
-    .container-header {
-        padding: 0;
+        background-color: #970a2c;  /* amaranto */
+        height: 130px;               /* altezza dimezzata */
         display: flex;
         align-items: center;
         justify-content: center;
     }
 
-    .container-header img[src="logobianco.png"] {
-        height: 35px;
-        width: auto;
-        max-width: 100%;
+    /* Gestione dei loghi nell'header */
+    .container-header {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
+    /* Nascondi il logo Morante su mobile */
     .container-header img[src="logomorante.png"] {
         display: none;
     }
 
-    main {
-        margin-top: 2rem !important;
+    /* Ridimensiona il logo bianco per mobile */
+    .container-header img[src="logobianco.png"] {
+        height: 35px;  /* Altezza dimezzata rispetto ai 70px originali */
+        width: auto;
+        max-width: 100%;
     }
+}   
 
-    .library-name {
-        margin-top: 1rem !important;
-        margin-bottom: 1.5rem !important;
-    }
-}
 
-/* Footer adjustments for mobile */
+
 @media (max-width: 768px) {
-    footer {
-        padding: 2rem 0;
+    .top-banner {
+        padding: 0.4rem 1rem; /* Reduced padding */
+        min-height: 40px; /* Reduced minimum height */
     }
-
-    footer .container {
-        width: 95%;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
+    
+    .roma-logo {
+        height: 35px; /* Reduced logo size */
     }
-
-    footer .info {
-        flex-direction: column;
-        gap: 1rem;
-        align-items: center;
-    }
-
-    footer .info div {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    footer .info div:nth-child(1) {
-        flex-direction: row;
-        justify-content: center;
-        gap: 0.5rem;
-        align-items: center;
-    }
-
-    footer .info div:nth-child(2),
-    footer .info div:nth-child(3) {
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    footer .info div:nth-child(2) span,
-    footer .info div:nth-child(3) span {
-        display: inline-block;
+    
+    /* Rimosso il codice che modificava le dimensioni delle icone social */
+    .social-icons {
+        gap: 1rem; /* Mantenuto il gap originale */
     }
 }
+
+
 
       
    </style>
