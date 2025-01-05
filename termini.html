@@ -42,16 +42,13 @@
            word-spacing: 0px;
        }
        
-.top-banner { 
+.top-banner {
     background-color: white;
-    padding: 0.8rem 2rem;
+    padding: 0.8rem 2rem; /* Ridotto da 1.2rem */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    min-height: 60px;
-    position: relative;  /* Cambiato da fixed a relative */
-    z-index: 2;
-    width: 100%;
+    min-height: 60px; /* Ridotto da 80px */
 }
 
 
@@ -87,32 +84,30 @@
            transform: scale(1.2);
        }
        
-header { 
-    background-color: var(--primary); 
-    color: #fff; 
-    padding: 2rem 0; 
-    min-height: 4cm; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    position: relative;  /* Assicuriamoci che sia relative */
-    flex-direction: column; 
-    text-align: center; 
-    width: 100%;
-}
+       header {
+           background-color: var(--primary);
+           color: #fff;
+           padding: 2rem 0;
+           min-height: 4cm;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           position: relative;
+           flex-direction: column;
+           text-align: center;
+       }
 
-.container-header {
+ .container-header {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0.8rem;
+    padding: 0.8rem; /* Ridotto da 2rem */
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     flex-wrap: wrap;
     gap: 1rem;
-    min-height: 70px;
-    position: relative;  /* Aggiunto */
+    min-height: 70px; /* Ridotto da 120px */
 }
 
       .library-name {
@@ -160,14 +155,15 @@ header {
 
      
 
-.content-wrapper {
-    margin-top: 6rem !important;  /* Modificato da 60px */
+      .content-wrapper {
+
+    margin-top: 60px !important;
     padding: 0 1rem !important;
-    position: relative !important;
+    position: relative !important;     
     max-width: 900px;
     width: 100%;
-    margin: 0 auto;
-    z-index: 1;
+    margin: 2rem auto;
+    margin-top: 60px;
 }
 
 .nav-icons {
@@ -181,7 +177,6 @@ header {
     padding-top: 20px;
     visibility: visible;
     opacity: 1;
-    z-index: 6;         /* Aggiunto */
 }
       
 
@@ -639,24 +634,19 @@ a:hover {
 @media (max-width: 768px) {
     /* Sistema il layout complessivo */
     .content-wrapper {
-       margin-top: 0rem !important;  /* Riduce il margine su mobile */
-        
+        margin-top: 60px !important;
+        padding: 0 1rem !important;
         position: relative !important;
-        padding-top: 1rem;
     }
 
     /* Posiziona le icone di navigazione */
     .nav-icons {
-        transform: translateX(-50%);  /* Reset della trasformazione */
-        width: auto;                  /* Aggiunto */
-        justify-content: center;      /* Aggiunto */
-        position: relative;
+        position: absolute !important;
         left: 1rem !important;
-        top: auto;
-        left: auto;
-        transform: none 
-        padding: 1rem 0;
-        justify-content: center;
+        top: -40px !important;
+        transform: none !important;
+        padding: 0 !important;
+        justify-content: flex-start !important;
         gap: 1.5rem !important;
         z-index: 10 !important;
         width: auto !important;
@@ -685,12 +675,10 @@ a:hover {
 
     /* Header e contenitori principali */
     header {
-        top: auto;   /* Rimuovere qualsiasi posizionamento fisso 
         position: relative !important;
-        padding: 1rem 0;
-        min-height: auto; 
+        padding: 1rem 0 !important;
+        min-height: auto !important;
         margin-bottom: 1rem !important;
-        margin-top: 0;    /* Assicura nessuno spazio extra */
     }
 
     /* Reset del layout per prevenire spazi indesiderati */
@@ -701,14 +689,11 @@ a:hover {
     }
 
     .top-banner {
-       
-        top: auto;        
-        z-index: 100;     /* Aumentato */
         padding: 0.4rem 1rem;
         min-height: 40px;
         background-color: white;
         position: relative;
-        
+        z-index: 2;
     }
 
     .roma-logo {
@@ -716,7 +701,6 @@ a:hover {
     }
 
     .container-header {
-        position: relative;  /* Assicurarsi che sia relative */
         padding: 0;
         display: flex;
         align-items: center;
