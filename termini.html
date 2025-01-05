@@ -770,57 +770,65 @@ a:hover {
 } 
       
 
-/* Aggiungi questo CSS dopo lo stile esistente, prima della chiusura del tag style */
+/* Media query consolidata per mobile */
+@media screen and (max-width: 768px) {
+    /* Top banner styling */
+    .top-banner {
+        padding: 0.4rem 1rem;
+        min-height: 40px;
+    }
+    
+    .roma-logo {
+        height: 35px;
+    }
+    
+    .social-icons {
+        gap: 1rem;
+    }
 
-@media screen and (max-width: 767px) {
-    /* Modifica dell'header per mobile */
+    /* Header styling */
     header {
-        background-color: #970a2c;  /* amaranto */
-        height: 60px;               /* altezza dimezzata */
+        min-height: auto;
+        padding: 1rem 0;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
     }
 
-    /* Gestione dei loghi nell'header */
     .container-header {
-        height: 100%;
+        padding: 0;
         display: flex;
         align-items: center;
         justify-content: center;
     }
 
-    /* Nascondi il logo Morante su mobile */
+    /* Logo handling */
+    .container-header img[src="logobianco.png"] {
+        height: 35px;
+        width: auto;
+        max-width: 100%;
+    }
+
     .container-header img[src="logomorante.png"] {
         display: none;
     }
 
-    /* Ridimensiona il logo bianco per mobile */
-    .container-header img[src="logobianco.png"] {
-        height: 35px;  /* Altezza dimezzata rispetto ai 70px originali */
-        width: auto;
-        max-width: 100%;
+    /* Content wrapper adjustments */
+    .content-wrapper {
+        margin-top: 1rem;
     }
-}   
 
-
-
-@media (max-width: 768px) {
-    .top-banner {
-        padding: 0.4rem 1rem; /* Reduced padding */
-        min-height: 40px; /* Reduced minimum height */
-    }
-    
-    .roma-logo {
-        height: 35px; /* Reduced logo size */
-    }
-    
-    /* Rimosso il codice che modificava le dimensioni delle icone social */
-    .social-icons {
-        gap: 1rem; /* Mantenuto il gap originale */
+    /* Navigation icons */
+    .nav-icons {
+        position: relative;
+        top: 0;
+        transform: none;
+        padding: 0.5rem 0;
+        justify-content: center;
+        width: 100%;
     }
 }
-
 
 
       
