@@ -50,6 +50,26 @@ body {
     position: relative;
 }
 
+
+/* Override Tailwind text-3xl class */
+.text-3xl {
+    font-size: 32px !important;
+    font-weight: 400 !important;
+}
+
+/* Specific h1 override */
+h1.text-3xl {
+    font-size: 32px !important;
+    font-weight: 400 !important;
+    color: #970a2c;
+}
+
+/* Remove font-bold class effect on h1 */
+h1.font-bold {
+    font-weight: 400 !important;
+}
+        
+
         /* Escludere il footer dal peso 500 */
 footer, footer * {
     font-weight: normal; /* Imposta il peso normale per il testo nel footer */
