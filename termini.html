@@ -216,39 +216,45 @@
         position: relative !important;
     }
 
-    /* Posiziona le icone di navigazione */
-    .nav-icons {
-        position: absolute !important;
-        left: 1rem !important;
-        top: -40px !important;  /* Aggiustato per evitare sovrapposizione con il banner */
-        transform: none !important;
-        padding: 0 !important;
-        justify-content: flex-start !important;
-        gap: 1.5rem !important;
-        z-index: 10 !important;
-        width: auto !important;
-        display: flex !important;
-    }
-
+  /* Posiziona le icone di navigazione */
+  .nav-icons {
+    position: absolute !important;
+    left: 1rem !important;
+    top: -40px !important;
+    transform: none !important;
+    padding: 0 !important;
+    justify-content: flex-start !important;
+    gap: 1.5rem !important;
+    z-index: 10 !important;
+    width: auto !important;
+    display: flex !important;
+    visibility: visible !important; /* Assicura che le icone siano visibili */
+    opacity: 1 !important; /* Assicura che le icone siano completamente opache */
+  }
+   
     /* Sistema il separatore tra le icone */
-    .nav-icons a:first-child::after {
-        content: '';
-        position: absolute !important;
-        right: -0.75rem !important;
-        top: 50% !important;
-        transform: translateY(-50%) !important;
-        height: 16px !important;
-        width: 1px !important;
-        background-color: rgba(128, 128, 128, 0.3) !important;
-        display: block !important;
-    }
+  .nav-icons a:first-child::after {
+    content: '' !important;
+    position: absolute !important;
+    right: -0.75rem !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    height: 16px !important;
+    width: 1px !important;
+    background-color: rgba(128, 128, 128, 0.3) !important;
+    display: block !important;
+    visibility: visible !important; /* Assicura che il separatore sia visibile */
+    opacity: 1 !important; /* Assicura che il separatore sia completamente opaco */
+  }
 
     /* Mantieni le dimensioni delle icone */
-    .nav-icons img {
-        height: 22px !important;
-        width: 22px !important;
-        display: block !important;
-    }
+  .nav-icons img {
+    height: 22px !important;
+    width: 22px !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
 
     /* Sistema il posizionamento dell'header */
     header {
@@ -274,10 +280,10 @@
 
       
     .nav-icons a {
-    display: flex;
-    align-items: center;
-    visibility: visible;
-    opacity: 1;
+    display: flex !important;
+    align-items: center !important;
+    visibility: visible !important;
+    opacity: 1 !important;
     text-decoration: none;
     border-bottom: none;
        
@@ -900,9 +906,10 @@ a:hover {
   }
   
   .nav-icons {
+    transform: none !important; 
     position: absolute;
     top: 0;
-    left: 1rem;
+    left: 1rem !important;
     gap: 2rem;
     display: flex !important;
     visibility: visible !important;
