@@ -109,15 +109,27 @@
     min-height: 70px; /* Ridotto da 120px */
 }
 
-      .library-name {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--text);
-    font-size: 1.1rem; /* Ridotto da 1.4rem */
-    margin-bottom: 1rem;
+/* Updated library name container styles */
+.library-name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* This spreads out the children */
+  width: 100%;
+  margin-bottom: 1rem;
 }
 
+/* Left side of library name containing location and name */
+.library-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Audio control styles updated for right alignment */
+.text-controls {
+  position: relative;
+}
+      
 .library-name a {
    position: relative;
     border-bottom: none; /* Rimuove la sottolineatura esistente */
@@ -318,6 +330,7 @@
        main h1 {
            color: var(--primary);
            font-size: 2rem; /* Ridotto da un valore precedente */
+          margin-top: 3rem;
         margin-bottom: 1.5rem; /* Riduce la distanza sotto il titolo */
     line-height: 1.2; /* Rende il titolo meno alto */
        }
@@ -554,11 +567,13 @@ footer .info .block {
             
 /* Audio control button styles */
 .audio-control-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 20px 0;
-    position: relative; /* Necessario per posizionare la tooltip */
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 
@@ -867,25 +882,24 @@ a:hover {
         <main>
             
            
-<div class="library-name">
-  <a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" target="_blank">
-    <img src="location.svg" alt="Location">
-  </a>
-  <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" class="tooltip-library"> Biblioteca Elsa Morante </a>
-</div>
-
-
-           
-<!-- Add this right after the library-name div in your HTML -->
-<div class="text-controls">
-<div class="audio-control-container">
-  <button class="audio-control" id="audioControl">
-    <i class="fas fa-headphones"></i>
-    <i class="fas fa-play"></i>
-    <span class="tooltip">Ascolta l'audio</span>
-  </button>
-  <span class="audio-label">Ascolta l'audio</span>
-</div>
+ <div class="library-name">
+    <div class="library-info">
+      <a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" target="_blank">
+        <img src="location.svg" alt="Location">
+      </a>
+      <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" class="tooltip-library">
+        Biblioteca Elsa Morante
+      </a>
+    </div>
+    <div class="audio-control-container">
+      <button class="audio-control" id="audioControl">
+        <i class="fas fa-headphones"></i>
+        <i class="fas fa-play"></i>
+        <span class="tooltip">Ascolta l'audio</span>
+      </button>
+      <span class="audio-label">Ascolta l'audio</span>
+    </div>
+  </div>
 
 
   
