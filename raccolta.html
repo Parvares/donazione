@@ -325,6 +325,20 @@ footer a {
     }
     h2 {
         font-size: 20px;
+
+/* Override all h2 variations */
+h2,
+h2.text-2xl,
+.text-2xl,
+h2.font-semibold,
+.font-semibold {
+    font-size: 20px !important;
+}
+
+/* Remove Tailwind's font-semibold effect */
+.text-2xl.font-semibold {
+    font-size: 20px !important;
+}
     
         color: black !important;
         margin-bottom: 0.2cm;
