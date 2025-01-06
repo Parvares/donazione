@@ -122,21 +122,25 @@
 .library-info {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
 }
 
 .library-info a.tooltip-library {
     font-weight: 400;
     font-size: 16px;
-    color: #E63E42;  /* Slightly darker red */
+    color: #CC2226;  /* darker red */
     display: flex;
     align-items: center;
+    line-height: 1;  /* Helps with vertical alignment */
 }
 
 .library-info img {
     height: 16px;
     width: 16px;
-    opacity: 0.9;  /* Slightly dim the icon to match the darker text */
+    display: block;  /* Removes any unwanted space */
+    opacity: 0.9;
+    position: relative;
+    top: -1px;  /* Fine-tune vertical alignment */
 }
       
 /* Audio control styles updated for right alignment */
