@@ -831,7 +831,65 @@ a:hover {
     }
 }
 
+/* Mobile optimization */
+@media (max-width: 768px) {
+  .library-name {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
 
+  .audio-control-container {
+    position: relative;
+    right: auto;
+    top: auto;
+    align-self: flex-start;
+  }
+
+  .library-info {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .tooltip-library {
+    font-size: 1.1rem; /* Slightly smaller font for mobile */
+    line-height: 1.3;
+  }
+
+  main h1 {
+    margin-top: 2rem; /* Reduced top margin for mobile */
+  }
+
+  .audio-control {
+    width: 32px; /* Slightly smaller button for mobile */
+    height: 32px;
+    font-size: 16px;
+  }
+
+  .audio-label {
+    font-size: 0.8rem; /* Smaller text for mobile */
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .library-name {
+    margin-bottom: 1.5rem;
+  }
+
+  .library-info {
+    gap: 0.3rem; /* Reduced gap for very small screens */
+  }
+
+  .audio-control-container {
+    gap: 8px;
+  }
+
+  .tooltip-library {
+    font-size: 1rem;
+  }
+}
 
       
    </style>
