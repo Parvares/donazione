@@ -326,12 +326,17 @@ footer a {
     h2 {
         font-size: 20px;
 
-/* Override all h2 variations */
-h2,
-h2.text-2xl,
-.text-2xl,
-h2.font-semibold,
-.font-semibold {
+/* Target h2 with maximum specificity */
+body .content-wrapper .container-fluid .bg-white h2.text-2xl.font-semibold,
+.content-section h2,
+h2.text-2xl.font-semibold,
+.bg-white h2 {
+    font-size: 20px !important;
+    font-weight: 500 !important;
+}
+
+/* Remove Tailwind defaults */
+.text-2xl {
     font-size: 20px !important;
 }
 
