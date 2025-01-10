@@ -29,7 +29,50 @@
     --accent: #700f0a;     /* Darker bordeaux */
 }
 
+/* Stile base per tutte le etichette del form */
+label.block {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.01em;
+}
 
+/* Stile specifico per le etichette dei dati personali */
+.section-header + div label.block,
+.section-header + div + div label.block,
+.section-header + div + div + div label.block,
+.section-header + div + div + div + div label.block,
+.section-header + div + div + div + div + div label.block {
+    font-size: 1.05rem;
+    color: #111827;
+}
+
+/* Stile per le etichette dei libri */
+.book-entry label.block {
+    font-size: 1.05rem;
+    color: #111827;
+    font-weight: 600;
+}
+
+/* Stile per il testo opzionale nelle etichette */
+label .text-gray-500 {
+    font-size: 0.95rem;
+    color: #6b7280;
+}
+
+/* Effetto hover sulle etichette */
+label.block:hover {
+    color: #000000;
+}
+
+/* Stile per l'asterisco obbligatorio */
+.required-asterisk {
+    color: #dc2626 !important;
+    font-weight: 700 !important;
+    font-size: 1.1em !important;
+}
+	    
 
 /* Stile base per tutti gli input */
 input[type="text"],
@@ -639,50 +682,6 @@ document.head.appendChild(style);
     .max-w-4xl.mx-auto.bg-white.p-8.rounded-lg.mt-2 {
         margin-top: 0.5rem; /* Ridotto da 2 (0.5rem) */
     }
-}
-
-/* Stile base per tutte le etichette del form */
-label.block {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #1f2937;
-    margin-bottom: 0.5rem;
-    letter-spacing: 0.01em;
-}
-
-/* Stile specifico per le etichette dei dati personali */
-.section-header + div label.block,
-.section-header + div + div label.block,
-.section-header + div + div + div label.block,
-.section-header + div + div + div + div label.block,
-.section-header + div + div + div + div + div label.block {
-    font-size: 1.05rem;
-    color: #111827;
-}
-
-/* Stile per le etichette dei libri */
-.book-entry label.block {
-    font-size: 1.05rem;
-    color: #111827;
-    font-weight: 600;
-}
-
-/* Stile per il testo opzionale nelle etichette */
-label .text-gray-500 {
-    font-size: 0.95rem;
-    color: #6b7280;
-}
-
-/* Effetto hover sulle etichette */
-label.block:hover {
-    color: #000000;
-}
-
-/* Stile per l'asterisco obbligatorio */
-.required-asterisk {
-    color: #dc2626 !important;
-    font-weight: 700 !important;
-    font-size: 1.1em !important;
 }
 
 
