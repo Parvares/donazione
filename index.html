@@ -641,7 +641,13 @@ document.head.appendChild(style);
     }
 }
 
+a img[src="location.svg"] {
+    transition: filter 0.3s ease;
+}
 
+a img[src="location.svg"]:hover {
+    filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(157%) contrast(97%);
+}
 	
 	
     </style>
