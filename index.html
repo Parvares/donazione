@@ -641,16 +641,14 @@ document.head.appendChild(style);
     }
 }
 
-.content-wrapper .nav-icons a[href*="openstreetmap"] img[src*="location"],
-.content-wrapper a[href*="openstreetmap"] img[src*="location"] {
-    transition: filter 0.3s ease;
+
+.location-icon {
+    transition: all 0.3s ease;
 }
 
-.content-wrapper .nav-icons a[href*="openstreetmap"] img[src*="location"]:hover,
-.content-wrapper a[href*="openstreetmap"] img[src*="location"]:hover {
-    filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(197%) contrast(97%);
-}
-	
+.location-icon:hover {
+    filter: brightness(0) saturate(100%) invert(50%) sepia(50%) saturate(500%) hue-rotate(-10deg) brightness(150%) contrast(90%);
+}	
 	
     </style>
 
@@ -765,10 +763,7 @@ document.addEventListener('DOMContentLoaded', () => {
        <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg mt-2"> <!-- Removed shadow-md class -->
             <div class="flex flex-col mb-10 text-left space-y-4 px-4">
                 <div class="flex items-center gap-2 mb-2">
-                    <a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" 
-                       target="_blank" 
-                       title="Visualizza la posizione sulla mappa">
-                        <img src="location.svg" alt="Posizione" class="h-5 w-5 text-gray-600">
+<a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18"target=_blank title="Visualizza la posizione sulla mappa"><img alt=Posizione src=location.svg class="h-5 text-gray-600 w-5 location-icon">
                     </a>
                    <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" 
    target="_blank"
