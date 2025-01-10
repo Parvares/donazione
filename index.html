@@ -502,43 +502,43 @@ document.head.appendChild(style);
     display: inline-block;
 }
 
-/* Base tooltip style */
+/* Common tooltip styles for all tooltips */
 .tooltip-container::before {
-    content: "Questo link si apre in una nuova finestra";
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 5px 10px;
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    border-radius: 4px;
-    font-size: 14px;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s;
-    white-space: nowrap;
-    z-index: 1000;
+  content: "Questo link si apre in una nuova finestra";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 4px;
+  font-size: 14px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+  z-index: 1000;
 }
 
 /* Show tooltip on hover */
 .tooltip-container:hover::before {
-    visibility: visible;
-    opacity: 1;
+  visibility: visible;
+  opacity: 1;
 }
 
 /* Social icons tooltips */
 .social-icons .tooltip-container::before {
-    bottom: -30px; /* Ridotto l'offset in basso */
-    left: -200%; /* Lasciato invariato l'offset a sinistra */
-    background-color: white;
-    color: black;
-    border: 1px solid #ddd;
-    white-space: nowrap;
-    width: max-content;
-    padding: 3px 8px; /* Ridotto il padding per una tooltip più compatta */
-    font-size: 12px; /* Font più piccolo per una tooltip più snella */
-    font-style: italic; /* Impostato il testo in corsivo */
+  bottom: -30px;
+  left: -200%;
+  background-color: white;
+  color: black;
+  border: 1px solid #ddd;
+  white-space: nowrap;
+  width: max-content;
+  padding: 3px 8px;
+  font-size: 12px;
+  font-style: italic;
 }
 
 
@@ -654,7 +654,42 @@ document.head.appendChild(style);
     }
 }
 
+/* Modified Search & Click tooltip */
+  .group:hover .group-hover\:visible {
+    visibility: visible !important;
+    opacity: 1 !important;
+    background-color: white !important;
+    color: black !important;
+    border: 1px solid #ddd !important;
+    white-space: nowrap !important;
+    width: max-content !important;
+    padding: 3px 8px !important;
+    font-size: 12px !important;
+    font-style: italic !important;
+    box-shadow: none !important;
+    font-family: inherit !important;
+  }
 
+  /* Remove arrow from tooltip */
+  .group:hover .group-hover\:visible .transform {
+    display: none;
+  }
+
+  /* Position the tooltip like title */
+  .group:hover .group-hover\:visible {
+    top: -25px !important;
+    left: 0 !important;
+    transform: none !important;
+  }
+
+  /* Adjust text width and wrapping */
+  .group:hover .group-hover\:visible {
+    max-width: 300px !important;
+    white-space: normal !important;
+    line-height: 1.4 !important;
+  }
+</style>
+	
     </style>
 
 
