@@ -1214,8 +1214,53 @@ function validateCheckbox(checkbox) {
     }
 }
 
+
+
+
+// Aggiungere questa funzione per gestire la duplicazione
+window.duplicateBook = function(button) {
+    const originalEntry = button.closest('.book-entry');
+    const newEntry = originalEntry.cloneNode(true);
+    
+    // Incrementa il contatore globale dei libri
+    bookCount++;
+    
+    // Aggiorna il numero del nuovo libro
+    const counter = newEntry.querySelector('.book-counter');
+    if (counter) {
+        counter.textContent = bookCount;
+    }
+    
+    // Resetta la sezione di ricerca
+    const searchSection = newEntry.querySelector('.mb-5:has(.quick-search)');
+    if (searchSection) {
+        const searchInput = searchSection.querySelector('.quick-search');
+        if (searchInput) {
+            searchInput.value = '';
+        }
+        const searchResults = searchSection.querySelector('.search-results');
+        if (searchResults) {
+            searchResults.classList.add('hidden');
+        }
+        searchSection.style.display = ''; // Mostra di nuovo la sezione di ricerca
+    }
+    
+    // Reinizializza gli event listener per la nuova entry
+    const inputs = newEntry.querySelectorAll('input');
+    inputs.forEach(input => {
+        if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
+            input.addEventListener('input', () => validateBookField(input));
+            input.addEventListener('blur', () => validateBookField(input));
+        }
+    });
+    
+    // Inserisci la nuova entry dopo quella originale
+    originalEntry.after(newEntry);
+    updateBookCounters();
+};	
         
-    window.createBookEntry = function() {
+// Modifica la funzione createBookEntry per aggiungere il pulsante duplica
+window.createBookEntry = function() {
     const bookDiv = document.createElement('div');
     bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
     bookCount++;
@@ -1225,6 +1270,9 @@ function validateCheckbox(checkbox) {
             <span class="book-counter flex items-center justify-center w-6 h-6 rounded-full text-white font-semibold text-sm" style="background-color: rgb(34, 197, 94)">${bookCount}</span>
             <div class="flex gap-2">
                 ${bookCount > 1 ? `
+                    <button type="button" class="duplicate-book-btn text-green-500 hover:text-green-700" title="Duplica libro" onclick="duplicateBook(this)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                     <button type="button" class="reset-book-btn text-blue-500 hover:text-blue-700" title="Azzera campi" onclick="resetBookFields(this)">
                         <i class="fas fa-undo"></i>
                     </button>
@@ -1232,13 +1280,16 @@ function validateCheckbox(checkbox) {
                         <i class="fas fa-trash"></i>
                     </button>
                 ` : `
+                    <button type="button" class="duplicate-book-btn text-green-500 hover:text-green-700" title="Duplica libro" onclick="duplicateBook(this)">
+                        <i class="fas fa-copy"></i>
+                    </button>
                     <button type="button" class="reset-book-btn text-blue-500 hover:text-blue-700" title="Azzera campi" onclick="resetBookFields(this)">
                         <i class="fas fa-undo"></i>
                     </button>
                 `}
             </div>
         </div>
-
+        
 
 
  
