@@ -1059,37 +1059,26 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // AGGIUNGI QUESTA NUOVA FUNZIONE QUI
+// Modified handleISBNInput function to remove the gray message
 function handleISBNInput(input) {
     const prevValue = input.value;
-    // Rimuovi caratteri non numerici
+    // Remove non-numeric characters
     input.value = input.value.replace(/\D/g, '');
     
-    // Limita a 13 caratteri
+    // Limit to 13 characters
     if (input.value.length > 13) {
         input.value = input.value.slice(0, 13);
     }
     
     const errorElement = input.nextElementSibling;
     
-    // Se sono stati inseriti caratteri non numerici o il campo è focalizzato
-    if (prevValue !== input.value || input.matches(':focus')) {
-        if (input.value.length > 0 || prevValue !== input.value) {
-            errorElement.textContent = 'Inserisci un numero di 10 o 13 cifre senza trattini';
-            errorElement.classList.remove('hidden', 'text-red-500');
-            errorElement.classList.add('text-gray-500');
-        } else {
-            errorElement.classList.add('hidden');
-        }
-    } 
-    // Se il campo non è focalizzato, valida e mostra errore in rosso se necessario
-    else {
-        if (input.value.length > 0 && !/^(?:\d{10}|\d{13})$/.test(input.value)) {
-            errorElement.textContent = 'ISBN deve essere di 10 o 13 cifre';
-            errorElement.classList.remove('hidden', 'text-gray-500');
-            errorElement.classList.add('text-red-500');
-        } else {
-            errorElement.classList.add('hidden');
-        }
+    // Only show error message when validation fails
+    if (!input.matches(':focus') && input.value.length > 0 && !/^(?:\d{10}|\d{13})$/.test(input.value)) {
+        errorElement.textContent = 'ISBN deve essere di 10 o 13 cifre';
+        errorElement.classList.remove('hidden', 'text-gray-500');
+        errorElement.classList.add('text-red-500');
+    } else {
+        errorElement.classList.add('hidden');
     }
 }
         
