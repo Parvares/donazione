@@ -32,11 +32,13 @@
 /* Aggiungo il nuovo stile per l'icona location */
 .location-icon {
     transition: all 0.3s ease;
-    filter: invert(39%) sepia(0%) saturate(0%) hue-rotate(147deg) brightness(97%) contrast(92%);
+    /* Rosso scuro iniziale (#540f26) */
+    filter: invert(10%) sepia(29%) saturate(2467%) hue-rotate(317deg) brightness(92%) contrast(95%);
 }
 
 .location-icon:hover {
-    filter: invert(15%) sepia(95%) saturate(2713%) hue-rotate(337deg) brightness(84%) contrast(98%);
+    /* Rosso più chiaro al hover (#e06b8e) */
+    filter: invert(59%) sepia(15%) saturate(1622%) hue-rotate(308deg) brightness(92%) contrast(84%);
 }
 
 /* Stile base per tutti gli input */
@@ -764,13 +766,15 @@ document.addEventListener('DOMContentLoaded', () => {
        <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg mt-2"> <!-- Removed shadow-md class -->
             <div class="flex flex-col mb-10 text-left space-y-4 px-4">
                 <div class="flex items-center gap-2 mb-2">
-                    <a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" 
+			
+<a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" 
    target="_blank" 
    title="Visualizza la posizione sulla mappa">
     <img alt="Posizione" 
          src="location.svg" 
-         class="location-icon h-5 w-5 text-gray-600">
+         class="location-icon h-5 w-5">
 </a>
+			
                    <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" 
    target="_blank"
    class="biblioteca-link">
