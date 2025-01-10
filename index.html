@@ -1286,22 +1286,23 @@ window.createBookEntry = function() {
 
  
 
-        <div class="mb-5">
-	
-<div class="flex items-center gap-2 mb-2">
-    <label class="flex items-center gap-2 text-blue-600 font-medium">
-        <i class="fas fa-book-open text-lg"></i>
-        Search & click
+<!-- Sostituisci il div esistente con questo nuovo codice -->
+<div class="mb-5">
+  <div class="flex items-center gap-2 mb-2"> 
+    <label class="group flex items-center gap-2 cursor-help">
+      <i class="fas fa-book-open text-lg text-blue-600 group-hover:text-blue-700 transition-colors"></i> 
+      <span class="text-blue-600 font-medium group-hover:text-blue-700 transition-colors relative">
+        Search & click 
         <span class="text-gray-500 text-sm font-normal">(opzionale)</span>
-    </label>
-    <div class="relative group">
-        <i class="fas fa-info-circle text-blue-400 hover:text-blue-600 cursor-help"></i>
-        <div class="invisible group-hover:visible absolute right-0 sm:left-0 top-6 w-64 sm:w-72 p-3 bg-white border border-gray-200 rounded-lg shadow-lg z-10 text-sm text-gray-700">
-            <div class="absolute -top-2 right-2 sm:right-auto sm:left-2 w-4 h-4 bg-white border-t border-l border-gray-200 transform rotate-45"></div>
-            Cerca, seleziona e... boom! La scheda si completa al volo! Se preferisci, puoi inserire i dati manualmente. 
+        
+        <!-- Tooltip spostato qui -->
+        <div class="invisible group-hover:visible absolute left-0 top-6 w-72 p-3 bg-white border border-gray-200 rounded-lg shadow-lg z-10 text-sm text-gray-700">
+          <div class="absolute -top-2 left-2 w-4 h-4 bg-white border-t border-l border-gray-200 transform rotate-45"></div>
+          Cerca, seleziona e... boom! La scheda si completa al volo! Se preferisci, puoi inserire i dati manualmente.
         </div>
-    </div>
-</div>
+      </span>
+    </label>
+  </div>
 
             <div class="flex gap-2">
                 <input type="text" 
