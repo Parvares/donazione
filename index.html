@@ -1059,26 +1059,37 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // AGGIUNGI QUESTA NUOVA FUNZIONE QUI
-// Modified handleISBNInput function to remove the gray message
 function handleISBNInput(input) {
     const prevValue = input.value;
-    // Remove non-numeric characters
+    // Rimuovi caratteri non numerici
     input.value = input.value.replace(/\D/g, '');
     
-    // Limit to 13 characters
+    // Limita a 13 caratteri
     if (input.value.length > 13) {
         input.value = input.value.slice(0, 13);
     }
     
     const errorElement = input.nextElementSibling;
     
-    // Only show error message when validation fails
-    if (!input.matches(':focus') && input.value.length > 0 && !/^(?:\d{10}|\d{13})$/.test(input.value)) {
-        errorElement.textContent = 'ISBN deve essere di 10 o 13 cifre';
-        errorElement.classList.remove('hidden', 'text-gray-500');
-        errorElement.classList.add('text-red-500');
-    } else {
-        errorElement.classList.add('hidden');
+    // Se sono stati inseriti caratteri non numerici o il campo è focalizzato
+    if (prevValue !== input.value || input.matches(':focus')) {
+        if (input.value.length > 0 || prevValue !== input.value) {
+            errorElement.textContent = 'Inserisci un numero di 10 o 13 cifre senza trattini';
+            errorElement.classList.remove('hidden', 'text-red-500');
+            errorElement.classList.add('text-gray-500');
+        } else {
+            errorElement.classList.add('hidden');
+        }
+    } 
+    // Se il campo non è focalizzato, valida e mostra errore in rosso se necessario
+    else {
+        if (input.value.length > 0 && !/^(?:\d{10}|\d{13})$/.test(input.value)) {
+            errorElement.textContent = 'ISBN deve essere di 10 o 13 cifre';
+            errorElement.classList.remove('hidden', 'text-gray-500');
+            errorElement.classList.add('text-red-500');
+        } else {
+            errorElement.classList.add('hidden');
+        }
     }
 }
         
@@ -1331,21 +1342,23 @@ window.createBookEntry = function() {
             <input type="number" min="1400" max="2024" class="book-year w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
             <p class="hidden error-message text-sm text-red-500 mt-1">Anno non valido</p>
         </div>
-        <div class="mb-5">
-            <div class="flex items-center gap-1">
-                <label class="block text-slate-700 font-medium">ISBN <span class="text-gray-500 font-normal">(raccomandato)</span></label>
-                <div class="relative group -mt-1">
-                    <i class="fa-solid fa-circle-info text-gray-500 hover:text-gray-700 transition-colors text-sm"></i>
-                    <div class="invisible group-hover:visible absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-white border border-gray-200 text-gray-700 text-sm rounded-lg w-64 shadow-lg z-10">
-                        <div class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full w-0 h-0 border-8 border-transparent border-t-white"></div>
-                        <div class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full w-0 h-0 border-[9px] border-transparent border-t-gray-200"></div>
-                        L'ISBN è un codice numerico di 10 o 13 cifre che identifica univocamente un libro. Lo trovi sul retro del libro sopra al codice a barre o nella pagina del copyright.
-                    </div>
-                </div>
+
+ 
+<div class="mb-5">
+    <div class="flex items-center gap-1">
+        <label class="block text-slate-700 font-medium">ISBN <span class="text-gray-500 font-normal">(raccomandato)</span></label>
+        <div class="relative group -mt-1">
+            <i class="fa-solid fa-circle-info text-gray-500 hover:text-gray-700 transition-colors text-sm"></i>
+            <div class="invisible group-hover:visible absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-white border border-gray-200 text-gray-700 text-sm rounded-lg w-64 shadow-lg z-10">
+                <div class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full w-0 h-0 border-8 border-transparent border-t-white"></div>
+                <div class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full w-0 h-0 border-[9px] border-transparent border-t-gray-200"></div>
+                L'ISBN è un codice numerico di 10 o 13 cifre che identifica univocamente un libro. Lo trovi sul retro del libro sopra al codice a barre o nella pagina del copyright.
             </div>
-            <input type="tel" inputmode="numeric" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" maxlength="13">
-            <p class="hidden error-message text-sm text-red-500 mt-1">ISBN non valido</p>
         </div>
+    </div>
+    <input type="tel" inputmode="numeric" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" maxlength="13" placeholder="Inserisci un numero di 10 o 13 cifre senza trattini">
+    <p class="hidden error-message text-sm text-red-500 mt-1">ISBN non valido</p>
+</div>
         
         <button type="button" class="add-book-btn" onclick="createBookEntry()">+ Aggiungi Libro</button>
     `;
