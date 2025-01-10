@@ -1285,38 +1285,23 @@ window.createBookEntry = function() {
 
 
  
-<div class="mb-5">
-    <label class="search-click-label flex items-center gap-2 text-slate-700 font-medium cursor-pointer group relative">
-        <i class="fas fa-book-open text-lg"></i>
-        <span class="transition-colors duration-150 active:text-blue-800 group-hover:text-blue-600">Search & click</span>
-        <span class="text-gray-500 text-sm font-normal">(opzionale)</span>
 
-        <div class="invisible group-hover:visible absolute left-0 top-6 w-64 sm:w-72 p-3 bg-white border border-gray-200 rounded-lg shadow-lg z-10 text-sm text-gray-700">
-            <div class="absolute -top-2 left-2 w-4 h-4 bg-white border-t border-l border-gray-200 transform rotate-45"></div>
+        <div class="mb-5">
+	
+<div class="flex items-center gap-2 mb-2">
+    <label class="flex items-center gap-2 text-blue-600 font-medium">
+        <i class="fas fa-book-open text-lg"></i>
+        Search & click
+        <span class="text-gray-500 text-sm font-normal">(opzionale)</span>
+    </label>
+    <div class="relative group">
+        <i class="fas fa-info-circle text-blue-400 hover:text-blue-600 cursor-help"></i>
+        <div class="invisible group-hover:visible absolute right-0 sm:left-0 top-6 w-64 sm:w-72 p-3 bg-white border border-gray-200 rounded-lg shadow-lg z-10 text-sm text-gray-700">
+            <div class="absolute -top-2 right-2 sm:right-auto sm:left-2 w-4 h-4 bg-white border-t border-l border-gray-200 transform rotate-45"></div>
             Cerca, seleziona e... boom! La scheda si completa al volo! Se preferisci, puoi inserire i dati manualmente. 
         </div>
-    </label>
+    </div>
 </div>
-
-
-
-
-<style>
-/* Stile per l'effetto di click */
-.search-click-label:active span:first-of-type {
-    color: #1e40af; /* Blu più scuro quando cliccato */
-}
-
-/* Assicuriamoci che il cursore sia pointer su tutta l'area cliccabile */
-.search-click-label {
-    user-select: none; /* Previene la selezione del testo durante il click */
-}
-
-/* Animazione smooth per il cambio di colore */
-.search-click-label span:first-of-type {
-    transition: color 0.15s ease-in-out;
-}
-</style>
 
             <div class="flex gap-2">
                 <input type="text" 
