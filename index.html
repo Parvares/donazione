@@ -1081,23 +1081,7 @@ function handleISBNInput(input) {
     }
 }
 
-// Update the event listeners for ISBN field
-document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('book-isbn')) {
-        e.target.addEventListener('input', function() {
-            handleISBNInput(this);
-        });
-        
-        e.target.addEventListener('blur', function() {
-            handleISBNInput(this);
-        });
-        
-        e.target.addEventListener('focus', function() {
-            const errorElement = this.nextElementSibling;
-            errorElement.classList.add('hidden');
-        });
-    }
-});
+
         
 
 // Aggiorna la funzione validateBookField
