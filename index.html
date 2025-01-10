@@ -641,15 +641,6 @@ document.head.appendChild(style);
     }
 }
 
-.location-icon {
-    fill: #666; /* Colore normale */
-    transition: fill 0.3s ease; /* Aggiunge un'animazione */
-}
-
-a:hover .location-icon {
-    fill: #0078d7; /* Cambia colore al passaggio del mouse */
-}
-
 
 	
     </style>
@@ -765,18 +756,11 @@ document.addEventListener('DOMContentLoaded', () => {
        <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg mt-2"> <!-- Removed shadow-md class -->
             <div class="flex flex-col mb-10 text-left space-y-4 px-4">
                 <div class="flex items-center gap-2 mb-2">
-                   
-			
-<a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" 
-   target="_blank" 
-   title="Visualizza la posizione sulla mappa">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 location-icon" viewBox="0 0 24 24">
-        <path d="M12 2C8.13 2 5 5.13 5 9c0 6.38 7 13 7 13s7-6.62 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z" />
-    </svg>
-</a>
-
-
-                   
+                    <a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" 
+                       target="_blank" 
+                       title="Visualizza la posizione sulla mappa">
+                        <img src="location.svg" alt="Posizione" class="h-5 w-5 text-gray-600">
+                    </a>
                    <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" 
    target="_blank"
    class="biblioteca-link">
