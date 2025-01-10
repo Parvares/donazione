@@ -642,12 +642,21 @@ document.head.appendChild(style);
 }
 
 
-.location-icon {
+a[href*="openstreetmap"] {
+    display: inline-block;
+}
+
+a[href*="openstreetmap"]:hover img {
+    opacity: 0.7;
+}
+
+/* Stile dedicato per l'icona location */
+.flex.gap-2.items-center.mb-2 a[href*="openstreetmap"] img {
     transition: all 0.3s ease;
 }
 
-.location-icon:hover {
-    filter: brightness(0) saturate(100%) invert(50%) sepia(50%) saturate(500%) hue-rotate(-10deg) brightness(150%) contrast(90%);
+.flex.gap-2.items-center.mb-2 a[href*="openstreetmap"]:hover img {
+    filter: opacity(.5) drop-shadow(0 0 0 #e06b8e);
 }	
 	
     </style>
