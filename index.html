@@ -641,12 +641,14 @@ document.head.appendChild(style);
     }
 }
 
-a img[src="location.svg"] {
+.content-wrapper .nav-icons a[href*="openstreetmap"] img[src*="location"],
+.content-wrapper a[href*="openstreetmap"] img[src*="location"] {
     transition: filter 0.3s ease;
 }
 
-a img[src="location.svg"]:hover {
-    filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(157%) contrast(97%);
+.content-wrapper .nav-icons a[href*="openstreetmap"] img[src*="location"]:hover,
+.content-wrapper a[href*="openstreetmap"] img[src*="location"]:hover {
+    filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(197%) contrast(97%);
 }
 	
 	
