@@ -1095,9 +1095,34 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// AGGIUNGI QUESTA NUOVA FUNZIONE QUI
+
+function validateISBN(input) {
+    const value = input.value.trim();
+    const errorElement = input.parentElement.querySelector('.error-message');
+    
+    // Clear any existing errors first
+    hideError(input);
+    
+    // Only validate if there's a value and the field isn't focused
+    if (!input.matches(':focus') && value.length > 0) {
+        // Check if it's the correct length
+        if (!/^(?:\d{10}|\d{13})$/.test(value)) {
+            showError(input, 'ISBN deve essere di 10 o 13 cifre');
+            return false;
+        }
+        
+        // If it's ISBN-13, check the prefix
+        if (value.length === 13 && !value.startsWith('978') && !value.startsWith('979')) {
+            showError(input, 'ISBN-13 deve iniziare con 978 o 979');
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+// Update the existing handleISBNInput function
 function handleISBNInput(input) {
-    const prevValue = input.value;
     // Remove non-numeric characters
     input.value = input.value.replace(/\D/g, '');
     
@@ -1106,17 +1131,24 @@ function handleISBNInput(input) {
         input.value = input.value.slice(0, 13);
     }
     
-    const errorElement = input.nextElementSibling;
-    
-    // Only show error message if the field is not focused and has an invalid value
-    if (!input.matches(':focus') && input.value.length > 0 && !/^(?:\d{10}|\d{13})$/.test(input.value)) {
-        errorElement.textContent = 'ISBN deve essere di 10 o 13 cifre';
-        errorElement.classList.remove('hidden', 'text-gray-500');
-        errorElement.classList.add('text-red-500');
-    } else {
-        errorElement.classList.add('hidden');
-    }
+    // Validate the ISBN
+    validateISBN(input);
 }
+
+// Add event listeners for ISBN fields
+document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('blur', function(e) {
+        if (e.target.classList.contains('book-isbn')) {
+            validateISBN(e.target);
+        }
+    });
+    
+    document.addEventListener('input', function(e) {
+        if (e.target.classList.contains('book-isbn')) {
+            handleISBNInput(e.target);
+        }
+    });
+});
 
 
         
