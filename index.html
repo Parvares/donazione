@@ -1108,12 +1108,18 @@ function validateISBN(input) {
         // Check if it's the correct length
         if (!/^(?:\d{10}|\d{13})$/.test(value)) {
             showError(input, 'ISBN deve essere di 10 o 13 cifre');
+            // Ensure error message is red
+            errorElement.classList.remove('text-gray-500');
+            errorElement.classList.add('text-red-500');
             return false;
         }
         
         // If it's ISBN-13, check the prefix
         if (value.length === 13 && !value.startsWith('978') && !value.startsWith('979')) {
             showError(input, 'ISBN-13 deve iniziare con 978 o 979');
+            // Ensure error message is red
+            errorElement.classList.remove('text-gray-500');
+            errorElement.classList.add('text-red-500');
             return false;
         }
     }
@@ -1131,8 +1137,26 @@ function handleISBNInput(input) {
         input.value = input.value.slice(0, 13);
     }
     
-    // Validate the ISBN
+    // Validate the ISBN and ensure error is red
+    const errorElement = input.parentElement.querySelector('.error-message');
+    if (errorElement && !errorElement.classList.contains('hidden')) {
+        errorElement.classList.remove('text-gray-500');
+        errorElement.classList.add('text-red-500');
+    }
+    
     validateISBN(input);
+}
+
+// Update the showError function to ensure error is always red
+function showError(input, message) {
+    const errorElement = input.parentElement.querySelector('.error-message');
+    if (errorElement) {
+        errorElement.textContent = message;
+        errorElement.classList.remove('hidden', 'text-gray-500');
+        errorElement.classList.add('text-red-500');
+        input.classList.add('border-red-500');
+        input.classList.remove('border-gray-300', 'focus:border-blue-500');
+    }
 }
 
 // Add event listeners for ISBN fields
