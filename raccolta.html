@@ -495,6 +495,43 @@ a:hover {
         max-width: 100%;
     }
 }
+
+
+@media print {
+    /* Increase title size for print */
+    h1.text-3xl {
+        font-size: 14pt !important;
+        margin-bottom: 0.4cm !important;
+        font-weight: bold !important;
+    }
+
+    /* Make bookcrossing points display inline */
+    .list-disc.list-inside {
+        display: flex;
+        flex-direction: row;
+        list-style: none;
+        padding: 0;
+    }
+
+    .list-disc.list-inside li {
+        margin-right: 1em;
+    }
+
+    .list-disc.list-inside li:not(:last-child)::after {
+        content: "•";
+        margin-left: 1em;
+    }
+
+    /* Hide specific content in Facebook group section */
+    .bg-white.shadow-md.rounded-lg.p-6.mb-6:nth-of-type(3) p {
+        display: none;
+    }
+
+    /* Only show the heading for the Facebook group section */
+    .bg-white.shadow-md.rounded-lg.p-6.mb-6:nth-of-type(3) {
+        margin-bottom: 0.3cm;
+    }
+}
         
     </style>
 </head>
@@ -588,6 +625,20 @@ a:hover {
         <h1 class="text-3xl font-bold text-left" style="color: #970a2c;">Centri di Raccolta per Donazione Libri e Audiovisivi</h1>
     </div>
 
+<div class="bg-white shadow-md rounded-lg p-6 mb-6">
+    <h2 class="text-2xl font-semibold mb-4" style="color: #970a2c;">Associazione Culturale Clemente Riva</h2>
+    <p class="mb-2"><strong>Ubicazione:</strong> Ostia, viale Ammiraglio Del Bono, 46</p>
+    <p>
+        <strong>Contatti:</strong> <a href="https://associazioneclementeriva.wordpress.com" title="https://associazioneclementeriva.wordpress.com" target="_blank">Sito Web</a>
+        <br>
+        <span><strong>Telefono:</strong> 3205353933 | <strong>Email:</strong> assclementeriva@gmail.com</a>
+        </span>
+    </p>
+</div>
+
+
+
+            
             <div class="bg-white shadow-md rounded-lg p-6 mb-6">
                 <h2 class="text-2xl font-semibold mb-4" style="color: #970a2c;">Cooperativa Assistenza e Territorio</h2>
                 <p class="mb-2">
