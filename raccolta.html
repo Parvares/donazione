@@ -554,12 +554,11 @@ a:hover {
 
 <a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" target="_blank" title="Visualizza la posizione sulla mappa">
   <img src="location.svg" alt="Location Icon" class="mr-2" style="height: 24px; width: 24px; 
-    /* Colore iniziale: #970a2c (rosso scuro) */
     filter: invert(13%) sepia(82%) saturate(2079%) hue-rotate(334deg) brightness(87%) contrast(101%);
-    transition: filter 0.3s ease;"
-    /* Colore hover: #D34F6A (rosso chiaro) */
-    onmouseover="this.style.filter='invert(45%) sepia(45%) saturate(794%) hue-rotate(314deg) brightness(89%) contrast(92%)'"
-    onmouseout="this.style.filter='invert(13%) sepia(82%) saturate(2079%) hue-rotate(334deg) brightness(87%) contrast(101%)'">
+    transition: filter 0.3s ease, transform 0.3s ease;  /* Aggiunta transizione per transform */
+    transform: scale(1);"  /* Stato iniziale */
+    onmouseover="this.style.filter='invert(45%) sepia(45%) saturate(794%) hue-rotate(314deg) brightness(89%) contrast(92%)'; this.style.transform='scale(1.2)'"  /* Aggiunto scale */
+    onmouseout="this.style.filter='invert(13%) sepia(82%) saturate(2079%) hue-rotate(334deg) brightness(87%) contrast(101%)'; this.style.transform='scale(1)'">
 </a>
          
        <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" 
