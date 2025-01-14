@@ -232,17 +232,32 @@ select.error {
 
         
         
-        .top-banner {
-            background-color: white;
-            padding: 0.8rem 2rem; 
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+.top-banner {
+    height: 56px;  /* Fixed height to match the original design */
+    min-height: 56px;
+    max-height: 56px;
+    padding: 0.8rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    overflow: hidden; /* Prevent content from affecting height */
+}
 
-        .roma-logo {
-            height: 40px;
-        }
+/* Ensure logo maintains proper dimensions */
+.roma-logo {
+    height: 40px;
+    width: auto;
+    display: block; /* Remove any potential inline spacing */
+}
+
+/* Ensure the link doesn't add extra space */
+.top-banner > a {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    text-decoration: none;
+}
 
         .print-button {
             background: none;
