@@ -502,24 +502,7 @@ document.head.appendChild(style);
     display: inline-block;
 }
 
-/* Common tooltip styles for all tooltips */
-.tooltip-container::before {
-  content: "Questo link si apre in una nuova finestra";
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 5px 10px;
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  border-radius: 4px;
-  font-size: 14px;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.2s;
-  white-space: nowrap;
-  z-index: 1000;
-}
+
 
 /* Show tooltip on hover */
 .tooltip-container:hover::before {
@@ -741,9 +724,12 @@ document.addEventListener('DOMContentLoaded', () => {
 	
 <body>
     <div class="top-banner">
-  <a href="https://culture.roma.it/" class="tooltip-container" target="_blank">
-    <img src="roma.png" alt="Logo Roma" class="roma-logo">
-  </a>
+        <a href="https://culture.roma.it/" class="tooltip-container" target="_blank" title="Questo link si apre in una nuova finestra">
+            <img src="roma.png" alt="Logo Roma" class="roma-logo">
+        </a>
+    </div>
+</body>
+
 
 
 
