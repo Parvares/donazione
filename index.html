@@ -230,15 +230,7 @@ select.error {
     color: #d9292e;
 }
 
-   .banner-content {
-    height: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}     
+        
         
         .top-banner {
             background-color: white;
@@ -504,9 +496,36 @@ document.head.appendChild(style);
 
 
 
+/* Base tooltip container */
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+}
 
+/* Common tooltip styles for all tooltips */
+.tooltip-container::before {
+  content: "Questo link si apre in una nuova finestra";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 4px;
+  font-size: 14px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+  z-index: 1000;
+}
 
-
+/* Show tooltip on hover */
+.tooltip-container:hover::before {
+  visibility: visible;
+  opacity: 1;
+}
 
 /* Social icons tooltips */
 .social-icons .tooltip-container::before {
@@ -721,11 +740,10 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 	
 <body>
-<div class="top-banner">
-  <div class="banner-content">
-    <a href="https://culture.roma.it/" target="_blank" title="Questo link si apre in una nuova finestra" 
-      <img src="roma.png" alt="Logo Roma" class="roma-logo">
-    </a>
+    <div class="top-banner">
+  <a href="https://culture.roma.it/" class="tooltip-container" target="_blank">
+    <img src="roma.png" alt="Logo Roma" class="roma-logo">
+  </a>
 
 
 
