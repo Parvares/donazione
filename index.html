@@ -270,22 +270,22 @@ select.error {
             transform: scale(1.2);
         }
 
-        .social-icons {
-            display: flex;
-            gap: 1rem;
-            justify-content: flex-end;
-            align-items: center;
-        }
+.social-icons {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    align-items: center;
+}
 
-        .social-icons a {
-            color: var(--primary);
-            font-size: 1.5rem;
-            transition: transform 0.3s ease;
-        }
+.social-icons a {
+    color: var(--primary);
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
+}
 
-        .social-icons a:hover {
-            transform: scale(1.2);
-        }
+.social-icons a:hover {
+    transform: scale(1.2);
+}
         
         header {
     background-color: var(--primary);
@@ -757,27 +757,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+<!-- Rimuovo il tooltip-container e semplifico la struttura -->
 <div class="social-icons">
-    <a href="https://www.bibliotechediroma.it/opac" title="Cerca nel catalogo delle biblioteche di Roma" target="_blank">
+    <a href="https://www.bibliotechediroma.it/opac" target="_blank"> 
         <div style="background-color: #970a2c; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 4px;">
             <i class="fas fa-search" style="color: white; font-size: 14px;"></i>
         </div>
     </a>
-
-	
-    <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" class="tooltip-container">
-      <i class="fab fa-facebook"></i>
+    <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank">
+        <i class="fab fa-facebook"></i>
     </a>
-    <a href="https://www.instagram.com/bibliotecaelsamorante/" target="_blank" class="tooltip-container">
-      <i class="fab fa-instagram"></i>
+    <a href="https://www.instagram.com/bibliotecaelsamorante/" target="_blank">
+        <i class="fab fa-instagram"></i>
     </a>
-    <a href="https://x.com/bibliomorante" target="_blank" class="tooltip-container">
-      <i class="fab fa-x-twitter"></i>
+    <a href="https://x.com/bibliomorante" target="_blank">
+        <i class="fab fa-x-twitter"></i>
     </a>
-    <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank" class="tooltip-container">
-      <i class="fab fa-youtube"></i>
+    <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank">
+        <i class="fab fa-youtube"></i>
     </a>
-  </div>
 </div>
 
     
