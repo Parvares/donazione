@@ -538,35 +538,7 @@ document.head.appendChild(style);
   opacity: 1;
 }
 
-/* Social icons tooltips */
-.social-icons .tooltip-container::before {
-  bottom: -30px;
-  left: -200%;
-  background-color: white;
-  color: black;
-  border: 1px solid #ddd;
-  white-space: nowrap;
-  width: max-content;
-  padding: 3px 8px;
-  font-size: 12px;
-  font-style: italic;
-}
 
-
-/* Specific targeting for Roma logo tooltip */
-.top-banner > a.tooltip-container::before {
-    bottom: -20px; /* Posizione ancora più in alto */
-    left: 0;
-    transform: translateX(0);
-    background-color: white;
-    color: black;
-    border: 1px solid #ddd;
-    white-space: nowrap;
-    width: max-content;
-    padding: 5px 10px; /* Aumentato il padding per maggiore altezza */
-    font-size: 14px; /* Aumentato il font per aumentare l'altezza */
-    font-style: italic; /* Impostato il testo in corsivo */
-}
 
 
 
@@ -757,13 +729,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-<!-- Rimuovo il tooltip-container e semplifico la struttura -->
 <div class="social-icons">
     <a href="https://www.bibliotechediroma.it/opac" target="_blank"> 
         <div style="background-color: #970a2c; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 4px;">
             <i class="fas fa-search" style="color: white; font-size: 14px;"></i>
         </div>
     </a>
+    <!-- Rimosso solo la classe tooltip-container dai link social mantenendo il resto della struttura -->
     <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank">
         <i class="fab fa-facebook"></i>
     </a>
