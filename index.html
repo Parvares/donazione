@@ -233,30 +233,27 @@ select.error {
         
         
 .top-banner {
-    height: 56px;  /* Fixed height to match the original design */
-    min-height: 56px;
-    max-height: 56px;
-    padding: 0.8rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: white;
-    overflow: hidden; /* Prevent content from affecting height */
+    height: 40px !important; /* Forza l'altezza fissa */
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 2rem !important;
+    background-color: white !important;
+    position: relative !important;
 }
 
-/* Ensure logo maintains proper dimensions */
-.roma-logo {
-    height: 40px;
-    width: auto;
-    display: block; /* Remove any potential inline spacing */
-}
-
-/* Ensure the link doesn't add extra space */
 .top-banner > a {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    text-decoration: none;
+    height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    line-height: 1 !important;
+}
+
+.roma-logo {
+    height: 40px !important;
+    width: auto !important;
+    vertical-align: middle !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
         .print-button {
