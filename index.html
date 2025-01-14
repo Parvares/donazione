@@ -232,53 +232,17 @@ select.error {
 
         
         
-/* Reset specifico per il banner e i suoi elementi diretti */
-body > .top-banner {
-    height: 40px;
-    min-height: 40px;
-    max-height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 2rem;
-    background-color: white;
-    box-sizing: border-box;
-}
+        .top-banner {
+            background-color: white;
+            padding: 0.8rem 2rem; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-/* Stile specifico per il contenitore del logo */
-body > .top-banner > a {
-    display: flex;
-    align-items: center;
-    height: 100%;
-}
-
-/* Stile specifico per il logo */
-body > .top-banner > a > .roma-logo {
-    height: 40px;
-    width: auto;
-    display: block;
-}
-
-/* Stile specifico per il contenitore delle social icons */
-body > .top-banner > .social-icons {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    height: 100%;
-}
-
-/* Stile specifico per i link delle social icons */
-body > .top-banner > .social-icons > a {
-    display: flex;
-    align-items: center;
-    height: 100%;
-}
-
-/* Rimozione di stili tooltip problematici */
-body > .top-banner > a::before,
-body > .top-banner > a::after {
-    display: none !important;
-}
+        .roma-logo {
+            height: 40px;
+        }
 
         .print-button {
             background: none;
@@ -538,7 +502,24 @@ document.head.appendChild(style);
     display: inline-block;
 }
 
-
+/* Common tooltip styles for all tooltips */
+.tooltip-container::before {
+  content: "Questo link si apre in una nuova finestra";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 4px;
+  font-size: 14px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+  z-index: 1000;
+}
 
 /* Show tooltip on hover */
 .tooltip-container:hover::before {
@@ -760,12 +741,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	
 <body>
     <div class="top-banner">
-        <a href="https://culture.roma.it/" target="_blank" title="Questo link si apre in una nuova finestra">
-            <img src="roma.png" alt="Logo Roma" class="roma-logo">
-        </a>
-    </div>
-</body>
-
+  <a href="https://culture.roma.it/" class="tooltip-container" target="_blank">
+    <img src="roma.png" alt="Logo Roma" class="roma-logo">
+  </a>
 
 
 
