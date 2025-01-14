@@ -724,50 +724,7 @@ footer .info .block {
 
       
       
-/* Base tooltip container */
-.tooltip-container {
-    position: relative;
-    display: inline-block;
-}
 
-/* Base tooltip style */
-.tooltip-container::after {
-    content: "Questo link si apre in una nuova finestra";
-    position: absolute;
-    background-color: white;
-    color: #666;
-    padding: 4px 12px;
-    line-height: 1.3;
-    border-radius: 4px;
-    font-size: 13px;
-    font-style: italic;
-    white-space: nowrap;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    border: 1px solid #ddd;
-    z-index: 100000;
-}
-
-
-
-
-
-/* Specific targeting for Roma logo tooltip */
-.top-banner > a.tooltip-container::after {
-    bottom: -40px !important;
-    top: auto !important;
-    left: 85% !important;
-    transform: translateX(-50%) !important;
-    position: absolute !important;
-    background-color: white !important;
-    height: 24px !important;
-    line-height: 1 !important;
-    display: flex !important;
-    align-items: center !important;
-}
 
 /* Top banner positioning */
 .top-banner {
@@ -1036,26 +993,30 @@ a:hover {
    </style>
 </head>
 <body>
-   <div class="top-banner">
-        <a href="https://culture.roma.it/" class="tooltip-container" target="_blank" rel="noopener noreferrer">
-    <img src="roma.png" alt="Logo Roma" class="roma-logo">
-</a>
-
-        <div class="social-icons">
-            <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook" class="tooltip-container">
-                <i class="fab fa-facebook"></i>
-            </a>
-            <a href="https://www.instagram.com/bibliotecaelsamorante/" target="_blank" aria-label="Instagram" class="tooltip-container">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="https://x.com/bibliomorante" target="_blank" aria-label="X" class="tooltip-container">
-                <i class="fab fa-x-twitter"></i>
-            </a>
-            <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank" aria-label="YouTube" class="tooltip-container">
-                <i class="fab fa-youtube"></i>
-            </a>
-        </div>
+<div class="top-banner">
+    <a href="https://culture.roma.it/" target="_blank" title="Questo link si apre in una nuova finestra">
+        <img src="roma.png" alt="Logo Roma" class="roma-logo">
+    </a>
+    <div class="social-icons">
+        <a href="https://www.bibliotechediroma.it/opac" target="_blank" title="Cerca nel catalogo delle biblioteche di Roma">
+            <div style="background-color: #970a2c; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 4px;">
+                <i class="fas fa-search" style="color: white; font-size: 14px;"></i>
+            </div>
+        </a>
+        <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" title="Questo link si apre in una nuova finestra">
+            <i class="fab fa-facebook"></i>
+        </a>
+        <a href="https://www.instagram.com/bibliotecaelsamorante/" target="_blank" title="Questo link si apre in una nuova finestra">
+            <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://x.com/bibliomorante" target="_blank" title="Questo link si apre in una nuova finestra">
+            <i class="fab fa-x-twitter"></i>
+        </a>
+        <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank" title="Questo link si apre in una nuova finestra">
+            <i class="fab fa-youtube"></i>
+        </a>
     </div>
+</div>
 
   <header>
     <div class="container-header">
@@ -1083,7 +1044,7 @@ a:hover {
            
  <div class="library-name">
     <div class="library-info">
-       
+     
 <a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" 
    target="_blank" 
    title="Visualizza la posizione sulla mappa">
@@ -1098,7 +1059,7 @@ a:hover {
    title="Clicca qui per vedere gli appuntamenti della biblioteca">
    Biblioteca Elsa Morante
 </a>
-	    
+       
     </div>
     <div class="audio-control-container">
       <button class="audio-control" id="audioControl">
