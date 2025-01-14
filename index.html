@@ -232,13 +232,24 @@ select.error {
 
         
         
-        .top-banner {
-            background-color: white;
-            padding: 0.8rem 2rem; 
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+.top-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 2rem; 
+    background-color: white;
+    position: relative;
+    z-index: 1;
+}
+.top-banner a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.top-banner a img {
+    height: 40px;
+}
 
         .roma-logo {
             height: 40px;
@@ -739,11 +750,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	
 </script>
 	
-<body>
-    <div class="top-banner">
-  <a href="https://culture.roma.it/" class="tooltip-container" target="_blank">
-    <img src="roma.png" alt="Logo Roma" class="roma-logo">
-  </a>
+<body> <div class="top-banner"> 
+	<a href="https://culture.roma.it/" target="_blank" title="Questo link si apre in una nuova finestra"> 
+	<img src="roma.png" alt="Logo Roma" class="roma-logo"> </a>
 
 
 
