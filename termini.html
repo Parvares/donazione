@@ -128,19 +128,26 @@
 .library-info a.tooltip-library {
     font-weight: 400;
     font-size: 16px;
-    color: #CC2226;  /* darker red */
+    color: #CC2226;
     display: flex;
     align-items: center;
-    line-height: 1;  /* Helps with vertical alignment */
+    line-height: 1.2;
+    transition: color 0.3s ease;
 }
 
 .library-info img {
     height: 16px;
     width: 16px;
-    display: block;  /* Removes any unwanted space */
+    display: block;
     opacity: 0.9;
     position: relative;
-    top: -1px;  /* Fine-tune vertical alignment */
+    top: -1px;
+    transition: all 0.3s ease;
+}
+
+.library-info a:hover img {
+    color: #FF4D4F;
+    transform: scale(1.1);
 }
       
 /* Audio control styles updated for right alignment */
