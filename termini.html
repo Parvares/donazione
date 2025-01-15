@@ -125,17 +125,23 @@
   gap: 8px;
 }
 
-/* Aumentiamo la specificità del selettore */
 .library-info a.biblioteca-link, 
 .library-info a.tooltip-library,
 .library-name .library-info a {
     font-weight: 400 !important;
-    font-size: 17px !important;
-    color: #CC2226;
+    font-size: 12px !important;
+    color: #970a2c !important; /* Colore amaranto base */
     display: flex;
     align-items: center;
     line-height: 1.2;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+/* Effetto hover con rosso più chiaro */
+.library-info a.biblioteca-link:hover, 
+.library-info a.tooltip-library:hover,
+.library-name .library-info a:hover {
+    color: #c41239 !important; /* Rosso più chiaro all'hover */
 }
 
 .library-info img {
