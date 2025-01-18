@@ -1353,82 +1353,92 @@ window.createBookEntry = function() {
    
 	
 	
- // Cache object to store search results
-const searchCache = {
-  data: {},
-  // Cache duration in milliseconds (4 hours)
-  maxAge: 4 * 60 * 60 * 1000,
+ // Cache e contatore delle richieste
+const apiState = {
+  dailyRequests: 0,
+  lastResetDate: new Date().toDateString(),
+  QUOTA_THRESHOLD: 800,
   
-  set: function(query, results) {
-    this.data[query] = {
-      timestamp: Date.now(),
-      results: results
-    };
-  },
-  
-  get: function(query) {
-    const cached = this.data[query];
-    if (!cached) return null;
-    
-    // Check if cache is still valid
-    if (Date.now() - cached.timestamp > this.maxAge) {
-      delete this.data[query];
-      return null;
+  incrementRequests: function() {
+    // Resetta il contatore se è un nuovo giorno
+    const today = new Date().toDateString();
+    if (this.lastResetDate !== today) {
+      this.dailyRequests = 0;
+      this.lastResetDate = today;
     }
+    this.dailyRequests++;
     
-    return cached.results;
-  }
-};
-
-// Rate limiting setup
-const rateLimiter = {
-  requests: [],
-  maxRequests: 95, // Buffer below the 100 requests/minute limit
-  timeWindow: 60 * 1000, // 1 minute in milliseconds
-  
-  canMakeRequest: function() {
-    const now = Date.now();
-    // Remove requests older than the time window
-    this.requests = this.requests.filter(time => now - time < this.timeWindow);
-    return this.requests.length < this.maxRequests;
+    // Salva lo stato nel localStorage
+    this.saveState();
+    return this.dailyRequests;
   },
   
-  addRequest: function() {
-    this.requests.push(Date.now());
+  isOverThreshold: function() {
+    // Controlla se è un nuovo giorno
+    const today = new Date().toDateString();
+    if (this.lastResetDate !== today) {
+      this.dailyRequests = 0;
+      this.lastResetDate = today;
+      this.saveState();
+      return false;
+    }
+    return this.dailyRequests >= this.QUOTA_THRESHOLD;
+  },
+  
+  saveState: function() {
+    localStorage.setItem('apiState', JSON.stringify({
+      dailyRequests: this.dailyRequests,
+      lastResetDate: this.lastResetDate
+    }));
+  },
+  
+  loadState: function() {
+    const saved = localStorage.getItem('apiState');
+    if (saved) {
+      const state = JSON.parse(saved);
+      // Carica solo se è dello stesso giorno
+      if (state.lastResetDate === new Date().toDateString()) {
+        this.dailyRequests = state.dailyRequests;
+        this.lastResetDate = state.lastResetDate;
+      } else {
+        // Se è un nuovo giorno, resetta
+        this.dailyRequests = 0;
+        this.lastResetDate = new Date().toDateString();
+        this.saveState();
+      }
+    }
   }
 };
 
-const performSearch = async () => {
+// Carica lo stato salvato all'avvio
+apiState.loadState();
+
+const performSearch = async (forceSearch = false) => {
   const query = searchInput.value.trim();
+  
   if (!query) {
     resultsDiv.classList.add('hidden');
     return;
   }
 
- // Aggiungi qui il nuovo controllo della lunghezza minima
   if (query.length < 3) {
     resultsDiv.classList.add('hidden');
     return;
-  }	
-
-  // First check cache
-  const cachedResults = searchCache.get(query);
-  if (cachedResults) {
-    displayResults(cachedResults);
-    return;
   }
 
-  // Check rate limit
-  if (!rateLimiter.canMakeRequest()) {
-    showError('Troppe richieste. Per favore, attendi un momento prima di effettuare una nuova ricerca.');
+  // Se siamo oltre la soglia e non è una ricerca forzata, non procedere
+  if (apiState.isOverThreshold() && !forceSearch) {
+    showSearchModeMessage();
     return;
   }
 
   try {
-    rateLimiter.addRequest();
     const response = await fetch(
       `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&key=${config.googleBooks.apiKey}&maxResults=5`
     );
+    
+    // Incrementa il contatore solo per le richieste riuscite
+    apiState.incrementRequests();
     
     if (response.status === 429) {
       showError('Limite giornaliero delle ricerche raggiunto. Riprova domani o inserisci i dati manualmente.');
@@ -1441,52 +1451,53 @@ const performSearch = async () => {
 
     const data = await response.json();
     
-    // Cache the results
     if (data.items && data.items.length > 0) {
-      searchCache.set(query, data.items);
+      resultsDiv.innerHTML = data.items.map(book => {
+        const info = book.volumeInfo;
+        return `
+          <div class="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 transition-colors duration-150"
+               onclick="selectBook(this, ${JSON.stringify({
+                 title: info.title || '',
+                 authors: info.authors ? info.authors.join(', ') : '',
+                 publisher: info.publisher || '',
+                 year: info.publishedDate ? info.publishedDate.substring(0, 4) : '',
+                 isbn: info.industryIdentifiers ? 
+                       info.industryIdentifiers.find(id => id.type === 'ISBN_13')?.identifier || 
+                       info.industryIdentifiers.find(id => id.type === 'ISBN_10')?.identifier || 
+                       '' : ''
+               }).replace(/"/g, '&quot;')})">
+            <div class="font-medium text-blue-600">${info.title || 'Titolo sconosciuto'}</div>
+            <div class="text-sm text-gray-600">
+              ${info.authors ? info.authors.join(', ') : 'Autore sconosciuto'}
+              ${info.publishedDate ? `(${info.publishedDate.substring(0, 4)})` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+      resultsDiv.classList.remove('hidden');
+    } else {
+      resultsDiv.innerHTML = '<div class="p-3 text-gray-600">Nessun risultato trovato</div>';
+      resultsDiv.classList.remove('hidden');
     }
-    
-    displayResults(data.items);
-
   } catch (error) {
     console.error('Error searching Google Books:', error);
-    if (error.message.includes('429')) {
-      showError('Limite giornaliero delle ricerche raggiunto. Riprova domani o inserisci i dati manualmente.');
-    } else {
-      showError('Errore durante la ricerca. Riprova più tardi o inserisci i dati manualmente.');
-    }
+    showError('Errore durante la ricerca. Riprova più tardi o inserisci i dati manualmente.');
   }
 };
 
-const displayResults = (items) => {
-  if (items && items.length > 0) {
-    resultsDiv.innerHTML = items.map(book => {
-      const info = book.volumeInfo;
-      return `
-        <div class="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 transition-colors duration-150"
-             onclick="selectBook(this, ${JSON.stringify({
-               title: info.title || '',
-               authors: info.authors ? info.authors.join(', ') : '',
-               publisher: info.publisher || '',
-               year: info.publishedDate ? info.publishedDate.substring(0, 4) : '',
-               isbn: info.industryIdentifiers ? 
-                     info.industryIdentifiers.find(id => id.type === 'ISBN_13')?.identifier || 
-                     info.industryIdentifiers.find(id => id.type === 'ISBN_10')?.identifier || 
-                     '' : ''
-             }).replace(/"/g, '&quot;')})">
-          <div class="font-medium text-blue-600">${info.title || 'Titolo sconosciuto'}</div>
-          <div class="text-sm text-gray-600">
-            ${info.authors ? info.authors.join(', ') : 'Autore sconosciuto'}
-            ${info.publishedDate ? `(${info.publishedDate.substring(0, 4)})` : ''}
-          </div>
-        </div>
-      `;
-    }).join('');
-    resultsDiv.classList.remove('hidden');
-  } else {
-    resultsDiv.innerHTML = '<div class="p-3 text-gray-600">Nessun risultato trovato</div>';
-    resultsDiv.classList.remove('hidden');
-  }
+const showSearchModeMessage = () => {
+  resultsDiv.innerHTML = `
+    <div class="p-3 text-amber-600">
+      <div class="mb-2">
+        <strong>Modalità di ricerca manuale attiva</strong>
+      </div>
+      <div class="text-sm text-gray-600">
+        Per preservare la quota giornaliera, la ricerca automatica è stata disattivata.
+        Usa il tasto Invio o il pulsante di ricerca per cercare.
+      </div>
+    </div>
+  `;
+  resultsDiv.classList.remove('hidden');
 };
 
 const showError = (message) => {
@@ -1501,25 +1512,31 @@ const showError = (message) => {
   resultsDiv.classList.remove('hidden');
 };
 
-// Debounce setup with a longer delay to reduce API calls
+// Gestione eventi con debounce
 let debounceTimer;
-const DEBOUNCE_DELAY = 600; // Increased to 500ms
+const DEBOUNCE_DELAY = 500;
 
+// Event listener per input con controllo della soglia
 searchInput.addEventListener('input', () => {
   clearTimeout(debounceTimer);
-  debounceTimer = setTimeout(performSearch, DEBOUNCE_DELAY);
-});
-
-searchBtn.addEventListener('click', performSearch);
-
-searchInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') {
-    clearTimeout(debounceTimer);
-    performSearch();
+  if (!apiState.isOverThreshold()) {
+    debounceTimer = setTimeout(() => performSearch(false), DEBOUNCE_DELAY);
+  } else {
+    showSearchModeMessage();
   }
 });
 
+// Event listener per click sul bottone
+searchBtn.addEventListener('click', () => performSearch(true));
 
+// Event listener per il tasto Invio
+searchInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    clearTimeout(debounceTimer);
+    performSearch(true);
+  }
+});
+	
 
 
 
