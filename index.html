@@ -1309,18 +1309,23 @@ window.createBookEntry = function() {
 <div class="mb-5">
 
   <div class="flex items-center gap-2 mb-2">
-    <label class="group flex items-center gap-2 cursor-help">
+    <label class="group flex items-center gap-2">
       <i class="fas fa-book-open text-lg text-blue-600 group-hover:text-blue-400 transition-all duration-200"></i>
       <span class="text-blue-600 font-medium group-hover:text-blue-400 transition-all duration-200">
         Search & click 
         <span class="text-gray-500 text-sm font-normal">(opzionale)</span>
-        <i class="fas fa-info-circle text-gray-400 text-sm ml-1" 
-           title="Cerca, seleziona e... boom! La scheda si completa al volo! Se preferisci, puoi inserire i dati manualmente."></i>
+        <span class="relative group">
+          <i class="fas fa-info-circle text-gray-400 text-sm ml-1 cursor-pointer"></i>
+          <span class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-black rounded hidden group-hover:block">
+            Cerca, seleziona e... boom! La scheda si completa al volo! Se preferisci, puoi inserire i dati manualmente.
+          </span>
+        </span>
       </span>
     </label>
   </div>
 
 </div>
+
 
 
 
