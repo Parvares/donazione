@@ -596,19 +596,8 @@ document.head.appendChild(style);
     }
 }
 
-
-
-  /* Adjust text width and wrapping */
-  .group:hover .group-hover\:visible {
-    max-width: 300px !important;
-    white-space: normal !important;
-    line-height: 1.4 !important;
-  }
-
-
-	
-	
-/* Tooltip visibile al passaggio del mouse */
+/* Modified Search & Click tooltip */
+  /* Tooltip visibile al passaggio del mouse */
   .group:hover .tooltip {
     visibility: visible;
     opacity: 1;
@@ -632,6 +621,15 @@ document.head.appendChild(style);
     border-radius: 4px; /* Angoli leggermente arrotondati */
     transition: opacity 0.2s ease-in-out;
   }
+
+	
+  /* Adjust text width and wrapping */
+  .group:hover .group-hover\:visible {
+    max-width: 300px !important;
+    white-space: normal !important;
+    line-height: 1.4 !important;
+  }
+
 
 
 	
@@ -1333,6 +1331,7 @@ window.createBookEntry = function() {
 
  
 
+<!-- Sostituisci il div esistente con questo nuovo codice -->
 <div class="mb-5">
   <div class="flex items-center gap-2 mb-2">
     <label class="group flex items-center gap-2">
@@ -1347,10 +1346,6 @@ window.createBookEntry = function() {
     </label>
   </div>
 </div>
-
-
-
-
 
 
 
