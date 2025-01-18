@@ -30,19 +30,6 @@
 }
 
 
-	
-	    
-.location-icon {
-    transition: all 0.3s ease;
-    /* Rosso molto scuro, quasi bordeaux */
-    filter: invert(9%) sepia(38%) saturate(6611%) hue-rotate(345deg) brightness(63%) contrast(99%);
-}
-
-.location-icon:hover {
-    /* Rosso brillante e luminoso */
-    filter: invert(21%) sepia(99%) saturate(7402%) hue-rotate(356deg) brightness(141%) contrast(124%);
-    transform: scale(1.1);  /* Aggiunto un leggero effetto di ingrandimento */
-}
 
 /* Stile base per tutti gli input */
 input[type="text"],
@@ -109,7 +96,7 @@ select.error {
 
 .required-asterisk {
     color: #970a2c !important;
-    
+    font-weight: 900 !important;
     font-size: 1.25em !important;
     display: inline-block !important;
     margin-left: 4px !important;
@@ -232,24 +219,13 @@ select.error {
 
         
         
-.top-banner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.8rem 2rem; 
-    background-color: white;
-    position: relative;
-    z-index: 1;
-}
-.top-banner a {
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-}
-
-.top-banner a img {
-    height: 40px;
-}
+        .top-banner {
+            background-color: white;
+            padding: 0.8rem 2rem; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
         .roma-logo {
             height: 40px;
@@ -507,12 +483,66 @@ document.head.appendChild(style);
 
 
 
-
-/* Rimuovi le regole dei tooltip per i social */
-.social-icons a::before {
-    content: none !important;
+/* Base tooltip container */
+.tooltip-container {
+    position: relative;
+    display: inline-block;
 }
 
+/* Base tooltip style */
+.tooltip-container::before {
+    content: "Questo link si apre in una nuova finestra";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 4px;
+    font-size: 14px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+    z-index: 1000;
+}
+
+/* Show tooltip on hover */
+.tooltip-container:hover::before {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Social icons tooltips */
+.social-icons .tooltip-container::before {
+    bottom: -30px; /* Ridotto l'offset in basso */
+    left: -200%; /* Lasciato invariato l'offset a sinistra */
+    background-color: white;
+    color: black;
+    border: 1px solid #ddd;
+    white-space: nowrap;
+    width: max-content;
+    padding: 3px 8px; /* Ridotto il padding per una tooltip più compatta */
+    font-size: 12px; /* Font più piccolo per una tooltip più snella */
+    font-style: italic; /* Impostato il testo in corsivo */
+}
+
+
+/* Specific targeting for Roma logo tooltip */
+.top-banner > a.tooltip-container::before {
+    bottom: -20px; /* Posizione ancora più in alto */
+    left: 0;
+    transform: translateX(0);
+    background-color: white;
+    color: black;
+    border: 1px solid #ddd;
+    white-space: nowrap;
+    width: max-content;
+    padding: 5px 10px; /* Aumentato il padding per maggiore altezza */
+    font-size: 14px; /* Aumentato il font per aumentare l'altezza */
+    font-style: italic; /* Impostato il testo in corsivo */
+}
 
 
 
@@ -535,7 +565,19 @@ document.head.appendChild(style);
     color: #e06b8e; /* Colore rosso più chiaro */
 }
 
-
+.biblioteca-link:hover::before {
+    content: "Clicca qui per vedere gli appuntamenti della biblioteca";
+    position: absolute;
+    top: -40px; /* Tooltip sopra il link */
+    left: 0;
+    background: white;
+    border: 1px solid #ddd;
+    padding: 2px 10px; /* Padding ridotto per altezza più contenuta */
+    white-space: nowrap;
+    z-index: 1000;
+    color: grey; /* Colore grigio del testo */
+    font-size: 14px; /* Testo leggermente ridotto */
+}
 
 
 /* Aggiungi questo CSS dopo lo stile esistente, prima della chiusura del tag style */
@@ -599,41 +641,19 @@ document.head.appendChild(style);
     }
 }
 
-/* Tooltip style for the info icon */
-.group:hover .group-hover\:visible {
-  visibility: visible !important;
-  opacity: 1 !important;
-  background-color: white !important;
-  color: black !important;
-  border: 1px solid #ddd !important;
-  white-space: nowrap !important;
-  width: max-content !important;
-  padding: 3px 8px !important;
-  font-size: 12px !important;
-  font-style: italic !important;
-  font-family: inherit !important;
-  box-shadow: none !important;
-  border-radius: 5px !important;
-}
 
-/* Remove tooltip arrow */
-.group:hover .group-hover\:visible .transform {
-  display: none;
-}
-
-/* Position tooltip for info icon */
-.group:hover .group-hover\:visible {
-  top: -25px !important;
-  left: 50%;
-  transform: translateX(-50%) !important;
-  max-width: 300px !important;
-  white-space: normal !important;
-  line-height: 1.4 !important;
-}
-
-
-
-	
+/* Tablet (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  footer .container {
+    width: 95%;
+    justify-content: center;
+   
+  }
+  
+  footer .info {
+    justify-content: center;
+  }
+}	
     </style>
 
 
@@ -687,39 +707,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
-
-
-	
 </script>
 	
-<body> 
-<div class="top-banner">
-    <a href="https://culture.roma.it/" target="_blank" title="Questo link si apre in una nuova finestra">
-        <img src="roma.png" alt="Logo Roma" class="roma-logo">
+<body>
+    <div class="top-banner">
+  <a href="https://culture.roma.it/" class="tooltip-container" target="_blank">
+    <img src="roma.png" alt="Logo Roma" class="roma-logo">
+  </a>
+  <div class="social-icons">
+    <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" class="tooltip-container">
+      <i class="fab fa-facebook"></i>
     </a>
-    <div class="social-icons">
-        <a href="https://www.bibliotechediroma.it/opac" target="_blank" title="Cerca nel catalogo delle biblioteche di Roma">
-            <div style="background-color: #970a2c; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 4px;">
-                <i class="fas fa-search" style="color: white; font-size: 14px;"></i>
-            </div>
-        </a>
-        <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" title="Questo link si apre in una nuova finestra">
-            <i class="fab fa-facebook"></i>
-        </a>
-        <a href="https://www.instagram.com/bibliotecaelsamorante/" target="_blank" title="Questo link si apre in una nuova finestra">
-            <i class="fab fa-instagram"></i>
-        </a>
-        <a href="https://x.com/bibliomorante" target="_blank" title="Questo link si apre in una nuova finestra">
-            <i class="fab fa-x-twitter"></i>
-        </a>
-        <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank" title="Questo link si apre in una nuova finestra">
-            <i class="fab fa-youtube"></i>
-        </a>
-    </div>
+    <a href="https://www.instagram.com/bibliotecaelsamorante/" target="_blank" class="tooltip-container">
+      <i class="fab fa-instagram"></i>
+    </a>
+    <a href="https://x.com/bibliomorante" target="_blank" class="tooltip-container">
+      <i class="fab fa-x-twitter"></i>
+    </a>
+    <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank" class="tooltip-container">
+      <i class="fab fa-youtube"></i>
+    </a>
+  </div>
 </div>
-
-	
 
     
     
@@ -754,22 +763,16 @@ document.addEventListener('DOMContentLoaded', () => {
        <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg mt-2"> <!-- Removed shadow-md class -->
             <div class="flex flex-col mb-10 text-left space-y-4 px-4">
                 <div class="flex items-center gap-2 mb-2">
-			
-<a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" 
-   target="_blank" 
-   title="Visualizza la posizione sulla mappa">
-    <img alt="Posizione" 
-         src="location.svg" 
-         class="location-icon h-5 w-5">
-</a>
-			
-<a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" 
+                    <a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" 
+                       target="_blank" 
+                       title="Visualizza la posizione sulla mappa">
+                        <img src="location.svg" alt="Posizione" class="h-5 w-5 text-gray-600">
+                    </a>
+                   <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" 
    target="_blank"
-   class="biblioteca-link"
-   title="Clicca qui per vedere gli appuntamenti della biblioteca">
+   class="biblioteca-link">
    Biblioteca Elsa Morante
 </a>
-
 
                 </div>
                 <h1 class="text-3xl md:text-4xl text-slate-700 font-bold leading-tight text-left">
@@ -784,8 +787,6 @@ document.addEventListener('DOMContentLoaded', () => {
 <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r">
     Compila il modulo per donare i tuoi libri alla biblioteca. I campi contrassegnati con <span class="required-asterisk">*</span> sono obbligatori. E' raccomandato compilare anche il campo ISBN per garantire una più accurata identificazione dei volumi.
 </div>
-
-	    
 
             
             <form id="donationForm" novalidate>
@@ -1050,86 +1051,40 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-
-function validateISBN(input) {
-    const value = input.value.trim();
-    const errorElement = input.parentElement.querySelector('.error-message');
-    
-    // Clear any existing errors first
-    hideError(input);
-    
-    // Only validate if there's a value and the field isn't focused
-    if (!input.matches(':focus') && value.length > 0) {
-        // Check if it's the correct length
-        if (!/^(?:\d{10}|\d{13})$/.test(value)) {
-            showError(input, 'ISBN deve essere di 10 o 13 cifre');
-            // Ensure error message is red
-            errorElement.classList.remove('text-gray-500');
-            errorElement.classList.add('text-red-500');
-            return false;
-        }
-        
-        // If it's ISBN-13, check the prefix
-        if (value.length === 13 && !value.startsWith('978') && !value.startsWith('979')) {
-            showError(input, 'ISBN-13 deve iniziare con 978 o 979');
-            // Ensure error message is red
-            errorElement.classList.remove('text-gray-500');
-            errorElement.classList.add('text-red-500');
-            return false;
-        }
-    }
-    
-    return true;
-}
-
-// Update the existing handleISBNInput function
+// AGGIUNGI QUESTA NUOVA FUNZIONE QUI
 function handleISBNInput(input) {
-    // Remove non-numeric characters
+    const prevValue = input.value;
+    // Rimuovi caratteri non numerici
     input.value = input.value.replace(/\D/g, '');
     
-    // Limit to 13 characters
+    // Limita a 13 caratteri
     if (input.value.length > 13) {
         input.value = input.value.slice(0, 13);
     }
     
-    // Validate the ISBN and ensure error is red
-    const errorElement = input.parentElement.querySelector('.error-message');
-    if (errorElement && !errorElement.classList.contains('hidden')) {
-        errorElement.classList.remove('text-gray-500');
-        errorElement.classList.add('text-red-500');
-    }
+    const errorElement = input.nextElementSibling;
     
-    validateISBN(input);
-}
-
-// Update the showError function to ensure error is always red
-function showError(input, message) {
-    const errorElement = input.parentElement.querySelector('.error-message');
-    if (errorElement) {
-        errorElement.textContent = message;
-        errorElement.classList.remove('hidden', 'text-gray-500');
-        errorElement.classList.add('text-red-500');
-        input.classList.add('border-red-500');
-        input.classList.remove('border-gray-300', 'focus:border-blue-500');
+    // Se sono stati inseriti caratteri non numerici o il campo è focalizzato
+    if (prevValue !== input.value || input.matches(':focus')) {
+        if (input.value.length > 0 || prevValue !== input.value) {
+            errorElement.textContent = 'Inserisci un numero di 10 o 13 cifre senza trattini';
+            errorElement.classList.remove('hidden', 'text-red-500');
+            errorElement.classList.add('text-gray-500');
+        } else {
+            errorElement.classList.add('hidden');
+        }
+    } 
+    // Se il campo non è focalizzato, valida e mostra errore in rosso se necessario
+    else {
+        if (input.value.length > 0 && !/^(?:\d{10}|\d{13})$/.test(input.value)) {
+            errorElement.textContent = 'ISBN deve essere di 10 o 13 cifre';
+            errorElement.classList.remove('hidden', 'text-gray-500');
+            errorElement.classList.add('text-red-500');
+        } else {
+            errorElement.classList.add('hidden');
+        }
     }
 }
-
-// Add event listeners for ISBN fields
-document.addEventListener('DOMContentLoaded', function() {
-    document.addEventListener('blur', function(e) {
-        if (e.target.classList.contains('book-isbn')) {
-            validateISBN(e.target);
-        }
-    });
-    
-    document.addEventListener('input', function(e) {
-        if (e.target.classList.contains('book-isbn')) {
-            handleISBNInput(e.target);
-        }
-    });
-});
-
-
         
 
 // Aggiorna la funzione validateBookField
@@ -1252,53 +1207,8 @@ function validateCheckbox(checkbox) {
     }
 }
 
-
-
-
-// Aggiungere questa funzione per gestire la duplicazione
-window.duplicateBook = function(button) {
-    const originalEntry = button.closest('.book-entry');
-    const newEntry = originalEntry.cloneNode(true);
-    
-    // Incrementa il contatore globale dei libri
-    bookCount++;
-    
-    // Aggiorna il numero del nuovo libro
-    const counter = newEntry.querySelector('.book-counter');
-    if (counter) {
-        counter.textContent = bookCount;
-    }
-    
-    // Resetta la sezione di ricerca
-    const searchSection = newEntry.querySelector('.mb-5:has(.quick-search)');
-    if (searchSection) {
-        const searchInput = searchSection.querySelector('.quick-search');
-        if (searchInput) {
-            searchInput.value = '';
-        }
-        const searchResults = searchSection.querySelector('.search-results');
-        if (searchResults) {
-            searchResults.classList.add('hidden');
-        }
-        searchSection.style.display = ''; // Mostra di nuovo la sezione di ricerca
-    }
-    
-    // Reinizializza gli event listener per la nuova entry
-    const inputs = newEntry.querySelectorAll('input');
-    inputs.forEach(input => {
-        if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
-            input.addEventListener('input', () => validateBookField(input));
-            input.addEventListener('blur', () => validateBookField(input));
-        }
-    });
-    
-    // Inserisci la nuova entry dopo quella originale
-    originalEntry.after(newEntry);
-    updateBookCounters();
-};	
         
-// Modifica la funzione createBookEntry per aggiungere il pulsante duplica
-window.createBookEntry = function() {
+    window.createBookEntry = function() {
     const bookDiv = document.createElement('div');
     bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
     bookCount++;
@@ -1308,9 +1218,6 @@ window.createBookEntry = function() {
             <span class="book-counter flex items-center justify-center w-6 h-6 rounded-full text-white font-semibold text-sm" style="background-color: rgb(34, 197, 94)">${bookCount}</span>
             <div class="flex gap-2">
                 ${bookCount > 1 ? `
-                    <button type="button" class="duplicate-book-btn text-green-500 hover:text-green-700" title="Duplica libro" onclick="duplicateBook(this)">
-                        <i class="fas fa-copy"></i>
-                    </button>
                     <button type="button" class="reset-book-btn text-blue-500 hover:text-blue-700" title="Azzera campi" onclick="resetBookFields(this)">
                         <i class="fas fa-undo"></i>
                     </button>
@@ -1318,43 +1225,33 @@ window.createBookEntry = function() {
                         <i class="fas fa-trash"></i>
                     </button>
                 ` : `
-                    <button type="button" class="duplicate-book-btn text-green-500 hover:text-green-700" title="Duplica libro" onclick="duplicateBook(this)">
-                        <i class="fas fa-copy"></i>
-                    </button>
                     <button type="button" class="reset-book-btn text-blue-500 hover:text-blue-700" title="Azzera campi" onclick="resetBookFields(this)">
                         <i class="fas fa-undo"></i>
                     </button>
                 `}
             </div>
         </div>
-        
+
 
 
  
 
-<!-- Sostituisci il div esistente con questo nuovo codice -->
-<div class="mb-5">
-  <div class="flex items-center gap-2 mb-2">
-    <label class="flex items-center gap-2">
-      <i class="fas fa-book-open text-lg text-blue-600 transition-all duration-200"></i>
-      <span class="text-blue-600 font-medium transition-all duration-200">
-        Search & click 
+        <div class="mb-5">
+	
+<div class="flex items-center gap-2 mb-2">
+    <label class="flex items-center gap-2 text-blue-600 font-medium">
+        <i class="fas fa-book-open text-lg"></i>
+        Search & click
         <span class="text-gray-500 text-sm font-normal">(opzionale)</span>
-      </span>
-      <span class="group relative cursor-help">
-        <i class="fas fa-info-circle text-gray-500 hover:text-gray-700 transition-all duration-200"></i>
-        <div class="invisible group-hover:visible absolute left-1/2 -translate-x-1/2 top-6 w-72 p-3 bg-white border border-gray-200 text-gray-500 text-sm rounded-lg shadow-lg z-10">
-          Cerca, seleziona e... boom! La scheda si completa al volo! Se preferisci, puoi inserire i dati manualmente.
-        </div>
-      </span>
     </label>
-  </div>
+    <div class="relative group">
+        <i class="fas fa-info-circle text-blue-400 hover:text-blue-600 cursor-help"></i>
+        <div class="invisible group-hover:visible absolute right-0 sm:left-0 top-6 w-64 sm:w-72 p-3 bg-white border border-gray-200 rounded-lg shadow-lg z-10 text-sm text-gray-700">
+            <div class="absolute -top-2 right-2 sm:right-auto sm:left-2 w-4 h-4 bg-white border-t border-l border-gray-200 transform rotate-45"></div>
+            Cerca, seleziona e... boom! La scheda si completa al volo! Se preferisci, puoi inserire i dati manualmente. 
+        </div>
+    </div>
 </div>
-
-
-
-
-
 
             <div class="flex gap-2">
                 <input type="text" 
@@ -1387,23 +1284,21 @@ window.createBookEntry = function() {
             <input type="number" min="1400" max="2024" class="book-year w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
             <p class="hidden error-message text-sm text-red-500 mt-1">Anno non valido</p>
         </div>
-
- 
-<div class="mb-5">
-    <div class="flex items-center gap-1">
-        <label class="block text-slate-700 font-medium">ISBN <span class="text-gray-500 font-normal">(raccomandato)</span></label>
-        <div class="relative group -mt-1">
-            <i class="fa-solid fa-circle-info text-gray-500 hover:text-gray-700 transition-colors text-sm"></i>
-            <div class="invisible group-hover:visible absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-white border border-gray-200 text-gray-700 text-sm rounded-lg w-64 shadow-lg z-10">
-                <div class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full w-0 h-0 border-8 border-transparent border-t-white"></div>
-                <div class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full w-0 h-0 border-[9px] border-transparent border-t-gray-200"></div>
-                Lo trovi sul retro del libro sopra al codice a barre o nella pagina del copyright.
+        <div class="mb-5">
+            <div class="flex items-center gap-1">
+                <label class="block text-slate-700 font-medium">ISBN <span class="text-gray-500 font-normal">(raccomandato)</span></label>
+                <div class="relative group -mt-1">
+                    <i class="fa-solid fa-circle-info text-gray-500 hover:text-gray-700 transition-colors text-sm"></i>
+                    <div class="invisible group-hover:visible absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-white border border-gray-200 text-gray-700 text-sm rounded-lg w-64 shadow-lg z-10">
+                        <div class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full w-0 h-0 border-8 border-transparent border-t-white"></div>
+                        <div class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full w-0 h-0 border-[9px] border-transparent border-t-gray-200"></div>
+                        L'ISBN è un codice numerico di 10 o 13 cifre che identifica univocamente un libro. Lo trovi sul retro del libro sopra al codice a barre o nella pagina del copyright.
+                    </div>
+                </div>
             </div>
+            <input type="tel" inputmode="numeric" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" maxlength="13">
+            <p class="hidden error-message text-sm text-red-500 mt-1">ISBN non valido</p>
         </div>
-    </div>
-    <input type="tel" inputmode="numeric" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" maxlength="13" placeholder="Inserisci un numero di 10 o 13 cifre senza trattini">
-    <p class="hidden error-message text-sm text-red-500 mt-1">ISBN non valido</p>
-</div>
         
         <button type="button" class="add-book-btn" onclick="createBookEntry()">+ Aggiungi Libro</button>
     `;
@@ -1797,40 +1692,51 @@ if (response.ok) {
 
 
 
-<footer class="bg-[#970a2c] text-white mt-16 py-8">
-  <div class="container mx-auto px-4 md:px-6 flex flex-col sm:flex-row md:flex-col lg:flex-row items-center justify-between">
-    <div class="mb-4 md:mb-6 lg:mb-0">
-      <img src="footermorante.png" alt="Logo Biblioteca Morante" class="h-8 md:h-10" style="cursor: pointer;" onclick="window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');">
-    </div>
-    <div class="flex flex-col sm:flex-row md:flex-row lg:flex-row space-x-0 sm:space-x-8 md:space-x-8 lg:space-x-8 space-y-2 sm:space-y-0 text-center sm:text-left text-sm">
-      <div class="flex items-center justify-center space-x-2">
-        <i class="fas fa-location-dot w-4"></i>
-        <span class="flex flex-col">
-          <span>Via Adolfo Cozza 7</span>
-          <span>Municipio X, 00121 Roma</span>
-        </span>
-      </div>
-      <div class="flex items-center justify-center space-x-4">
-        <div class="flex items-center space-x-2">
-          <a href="tel:+390645460481" style="text-decoration: none; color: inherit;">
-            <i class="fas fa-phone w-4"></i>
-          </a>
-          <span>
-            <a href="tel:+390645460481" style="text-decoration: none; color: inherit;"> 06 4546 0481 </a> / 
-            <a href="tel:+390645460483" style="text-decoration: none; color: inherit;"> 0483 </a>
-          </span>
+<footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
+    <div class="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
+        <div class="mb-4 md:mb-0">
+            <!-- Logo -->
+            <img src="footermorante.png" alt="Logo Biblioteca Morante" class="h-8 md:h-10" 
+                 style="cursor: pointer;" 
+                 onclick="window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');">
         </div>
-        <div class="flex items-center space-x-2">
-          <i class="fas fa-clock w-4"></i>
-          <span class="flex flex-col">
-            <span>Lunedì-Venerdì 09:00-18:30</span>
-            <span>Sabato 09:00-13:00</span>
-          </span>
+        
+        <div class="flex flex-col md:flex-row md:space-x-8 space-y-2 md:space-y-0 text-center md:text-left text-sm">
+            <div class="flex items-center justify-center md:justify-start space-x-2">
+                <i class="fas fa-location-dot w-4"></i>
+                <span class="flex flex-col">
+                    <span>Via Adolfo Cozza 7</span>
+                    <span>Municipio X, 00121 Roma</span>
+                </span>
+            </div>
+            
+            <div class="flex items-center justify-center md:justify-start space-x-4">
+                <div class="flex items-center space-x-2">
+                    <a href="tel:+390645460481" style="text-decoration: none; color: inherit;">
+                        <i class="fas fa-phone w-4"></i>
+                    </a>
+                    <span>
+                        <a href="tel:+390645460481" style="text-decoration: none; color: inherit;">
+                            06 4546 0481
+                        </a> 
+                        / 
+                        <a href="tel:+390645460483" style="text-decoration: none; color: inherit;">
+                            0483
+                        </a>
+                    </span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-clock w-4"></i>
+                    <span class="flex flex-col">
+                        <span>Lunedì-Venerdì 09:00-18:30</span>
+                        <span>Sabato 09:00-13:00</span>
+                    </span>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </footer>
+
 
 
 
