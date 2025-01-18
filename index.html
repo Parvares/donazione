@@ -606,6 +606,33 @@ document.head.appendChild(style);
   }
 
 
+	
+	
+/* Tooltip visibile al passaggio del mouse */
+  .group:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  /* Stile Tooltip */
+  .tooltip {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 30px; /* Posizionata sotto l'icona */
+    left: 0;
+    background-color: white;
+    color: black;
+    border: 1px solid #ddd;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-family: Arial, sans-serif; /* Font semplice */
+    white-space: nowrap;
+    z-index: 10;
+    border-radius: 4px; /* Angoli leggermente arrotondati */
+    transition: opacity 0.2s ease-in-out;
+  }
+
 
 	
     </style>
@@ -1307,24 +1334,20 @@ window.createBookEntry = function() {
  
 
 <div class="mb-5">
-
   <div class="flex items-center gap-2 mb-2">
     <label class="group flex items-center gap-2">
       <i class="fas fa-book-open text-lg text-blue-600 group-hover:text-blue-400 transition-all duration-200"></i>
-      <span class="text-blue-600 font-medium group-hover:text-blue-400 transition-all duration-200">
+      <span class="text-blue-600 font-medium group-hover:text-blue-400 transition-all duration-200 relative">
         Search & click 
         <span class="text-gray-500 text-sm font-normal">(opzionale)</span>
-        <span class="relative group">
-          <i class="fas fa-info-circle text-gray-400 text-sm ml-1 cursor-pointer"></i>
-          <span class="absolute top-full left-0 transform mt-2 px-3 py-2 text-sm text-black bg-white border border-gray-300 rounded shadow-md hidden group-hover:block w-max">
-            Cerca, seleziona e... boom! La scheda si completa al volo! Se preferisci, puoi inserire i dati manualmente.
-          </span>
+        <span class="tooltip">
+          Cerca, seleziona e... boom! La scheda si completa al volo! Se preferisci, puoi inserire i dati manualmente.
         </span>
       </span>
     </label>
   </div>
-
 </div>
+
 
 
 
