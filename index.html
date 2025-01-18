@@ -1405,6 +1405,12 @@ const performSearch = async () => {
     return;
   }
 
+ // Aggiungi qui il nuovo controllo della lunghezza minima
+  if (query.length < 3) {
+    resultsDiv.classList.add('hidden');
+    return;
+  }	
+
   // First check cache
   const cachedResults = searchCache.get(query);
   if (cachedResults) {
@@ -1497,7 +1503,7 @@ const showError = (message) => {
 
 // Debounce setup with a longer delay to reduce API calls
 let debounceTimer;
-const DEBOUNCE_DELAY = 2500; // Increased to 500ms
+const DEBOUNCE_DELAY = 600; // Increased to 500ms
 
 searchInput.addEventListener('input', () => {
   clearTimeout(debounceTimer);
