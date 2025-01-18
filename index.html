@@ -599,33 +599,35 @@ document.head.appendChild(style);
     }
 }
 
-/* Modified Search & Click tooltip */
-  .group:hover .group-hover\:visible {
-    visibility: visible !important;
-    opacity: 1 !important;
-    background-color: white !important;
-    color: black !important;
-    border: 1px solid #ddd !important;
-    white-space: nowrap !important;
-    width: max-content !important;
-    padding: 3px 8px !important;
-    font-size: 12px !important;
-    font-style: italic !important;
-    box-shadow: none !important;
-    font-family: inherit !important;
-  }
+/* Tooltip style for the info icon */
+.group:hover .group-hover\:visible {
+  visibility: visible !important;
+  opacity: 1 !important;
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid #ddd !important;
+  white-space: nowrap !important;
+  width: max-content !important;
+  padding: 3px 8px !important;
+  font-size: 12px !important;
+  font-style: italic !important;
+  font-family: inherit !important;
+  box-shadow: none !important;
+  border-radius: 5px !important;
+}
 
-  /* Remove arrow from tooltip */
-  .group:hover .group-hover\:visible .transform {
-    display: none;
-  }
+/* Remove tooltip arrow */
+.group:hover .group-hover\:visible .transform {
+  display: none;
+}
 
-  /* Position the tooltip like title */
-  .group:hover .group-hover\:visible {
-    top: -25px !important;
-    left: 0 !important;
-    transform: none !important;
-  }
+/* Position tooltip for info icon */
+.group:hover .group-hover\:visible {
+  top: -25px !important;
+  left: 50%;
+  transform: translateX(-50%) !important;
+}
+
 
   /* Adjust text width and wrapping */
   .group:hover .group-hover\:visible {
@@ -1337,23 +1339,23 @@ window.createBookEntry = function() {
 
 <!-- Sostituisci il div esistente con questo nuovo codice -->
 <div class="mb-5">
-
-<div class="flex items-center gap-2 mb-2">
-    <label class="group flex items-center gap-2 cursor-help">
-        <i class="fas fa-book-open text-lg text-blue-600 group-hover:text-blue-400 transition-all duration-200"></i>
-        <span class="text-blue-600 font-medium group-hover:text-blue-400 transition-all duration-200 relative">
-            Search & click 
-            <span class="text-gray-500 text-sm font-normal">(opzionale)</span>
-            <div class="invisible group-hover:visible absolute left-0 top-6 w-72 p-3 bg-white border border-gray-200 text-gray-500 text-sm rounded-lg shadow-lg z-10">
-                <div class="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-0 h-0 border-8 border-transparent border-b-white"></div>
-                <div class="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-0 h-0 border-[9px] border-transparent border-b-gray-200"></div>
-                Cerca, seleziona e... boom! La scheda si completa al volo! Se preferisci, puoi inserire i dati manualmente.
-            </div>
-        </span>
+  <div class="flex items-center gap-2 mb-2">
+    <label class="flex items-center gap-2">
+      <i class="fas fa-book-open text-lg text-blue-600 transition-all duration-200"></i>
+      <span class="text-blue-600 font-medium transition-all duration-200">
+        Search & click 
+        <span class="text-gray-500 text-sm font-normal">(opzionale)</span>
+      </span>
+      <span class="group relative cursor-help">
+        <i class="fas fa-info-circle text-gray-500 hover:text-gray-700 transition-all duration-200"></i>
+        <div class="invisible group-hover:visible absolute left-1/2 -translate-x-1/2 top-6 w-72 p-3 bg-white border border-gray-200 text-gray-500 text-sm rounded-lg shadow-lg z-10">
+          Cerca, seleziona e... boom! La scheda si completa al volo! Se preferisci, puoi inserire i dati manualmente.
+        </div>
+      </span>
     </label>
+  </div>
 </div>
 
-</div>
 
 
 
