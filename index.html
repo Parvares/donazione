@@ -932,39 +932,42 @@ function removeLoadingOverlay() {
         
 
 // Update the validateField function to handle email validation
-function validateField(input, isKeyEvent = false) {
-    // Se è un evento da tastiera, non validare
-    if (isKeyEvent) {
-        return true;
-    }
-
+function validateField(input, showErrors = true) {
     const value = input.value.trim();
     let isValid = true;
 
-    // Non validare se il campo è in focus
+    // Non mostrare errori se il campo è focused
     if (input.matches(':focus')) {
+        hideError(input);
         return true;
     }
 
+    // Handle required fields except email (handled separately)
     if (input.hasAttribute('required') && !value && input.id !== 'email') {
-        showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
+        if (showErrors) {
+            showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
+        }
         isValid = false;
     } else {
         switch (input.id) {
             case 'telefono':
                 if (value && !/^[0-9]{6,15}$/.test(value)) {
-                    showError(input, 'Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)');
+                    if (showErrors) {
+                        showError(input, 'Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)');
+                    }
                     isValid = false;
                 }
                 break;
             case 'email':
-                if (value) {
-                    if (!emailValidator.validateSyntax(value)) {
+                if (value && !emailValidator.validateSyntax(value)) {
+                    if (showErrors) {
                         showError(input, 'Formato email non valido');
-                        isValid = false;
                     }
-                } else if (input.hasAttribute('required')) {
-                    showError(input, 'L\'email è obbligatoria');
+                    isValid = false;
+                } else if (!value && input.hasAttribute('required')) {
+                    if (showErrors) {
+                        showError(input, 'L\'email è obbligatoria');
+                    }
                     isValid = false;
                 }
                 break;
@@ -1083,42 +1086,41 @@ document.addEventListener('DOMContentLoaded', function() {
         
 
 // Aggiorna la funzione validateBookField
-// 3. Modifica la funzione validateBookField in modo simile
-function validateBookField(input, isKeyEvent = false) {
-    // Se è un evento da tastiera, non validare
-    if (isKeyEvent) {
-        return true;
-    }
-
-    // Non validare se il campo è in focus
-    if (input.matches(':focus')) {
-        return true;
-    }
-
+function validateBookField(input, showErrors = true) {
     const value = input.value.trim();
     let isValid = true;
 
+    // Non mostrare errori se il campo è focused
+    if (input.matches(':focus')) {
+        hideError(input);
+        return true;
+    }
+
     if (input.hasAttribute('required') && !value) {
-        if (input.classList.contains('book-title')) {
-            showError(input, 'Il campo Titolo* è obbligatorio');
-        } else {
-            showError(input, 'Questo campo è obbligatorio');
+        if (showErrors) {
+            if (input.classList.contains('book-title')) {
+                showError(input, 'Il campo Titolo* è obbligatorio');
+            } else {
+                showError(input, 'Questo campo è obbligatorio');
+            }
         }
         isValid = false;
     } else if (input.classList.contains('book-year')) {
         const currentYear = new Date().getFullYear();
         if (value) {
             if (value.length !== 4 || !Number.isInteger(Number(value)) || Number(value) < 1900 || Number(value) > currentYear) {
-                showError(input, `L'anno deve essere compreso tra 1900 e ${currentYear}`);
+                if (showErrors) {
+                    showError(input, `L'anno deve essere compreso tra 1900 e ${currentYear}`);
+                }
                 isValid = false;
             }
         }
     } else if (input.classList.contains('book-isbn')) {
-        if (value) {
-            if (!/^(?:\d{10}|\d{13})$/.test(value)) {
+        if (value && !/^(?:\d{10}|\d{13})$/.test(value)) {
+            if (showErrors) {
                 showError(input, 'ISBN deve essere di 10 o 13 cifre');
-                isValid = false;
             }
+            isValid = false;
         }
     }
 
@@ -1127,24 +1129,18 @@ function validateBookField(input, isKeyEvent = false) {
     }
     return isValid;
 }
-	
 
-// 4. Aggiorna gli event listener per i campi libro
-document.addEventListener('DOMContentLoaded', () => {
-    document.addEventListener('keydown', (e) => {
-        if (e.target.classList.contains('book-year') || e.target.classList.contains('book-isbn')) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                validateBookField(e.target, true);
-            }
-        }
-    });
+// MANTIENI QUESTI EVENT LISTENER ESISTENTI PER IL CAMPO ANNO
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('book-year')) {
+        hideError(e.target);
+    }
+});
 
-    document.addEventListener('blur', (e) => {
-        if (e.target.classList.contains('book-year') || e.target.classList.contains('book-isbn')) {
-            validateBookField(e.target, false);
-        }
-    });
+document.addEventListener('blur', function(e) {
+    if (e.target.classList.contains('book-year')) {
+        validateBookField(e.target);
+    }
 });
 
 // AGGIUNGI QUESTO NUOVO EVENT LISTENER PER L'ISBN
@@ -1630,33 +1626,17 @@ window.resetBookFields = function(button) {
             });
         }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const inputs = document.querySelectorAll('input');
-    inputs.forEach(input => {
-        if (input.id) {
-            // Rimuovi gli event listener esistenti
-            input.removeEventListener('input', () => validateField(input));
-            input.removeEventListener('blur', () => validateField(input));
-            
-            // Aggiungi i nuovi event listener
-            input.addEventListener('blur', () => validateField(input, false));
-            input.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    validateField(input, true);
-                    
-                    // Trova il prossimo input
-                    const form = input.closest('form');
-                    const inputs = Array.from(form.querySelectorAll('input:not([type="hidden"])'));
-                    const currentIndex = inputs.indexOf(input);
-                    if (currentIndex > -1 && currentIndex < inputs.length - 1) {
-                        inputs[currentIndex + 1].focus();
-                    }
+        document.addEventListener('DOMContentLoaded', () => {
+            createBookEntry();
+
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                if (input.id) {
+                    input.addEventListener('input', () => validateField(input));
+                    input.addEventListener('blur', () => validateField(input));
                 }
             });
-        }
-    });
-});
+        });
 
 
 
@@ -1730,40 +1710,48 @@ document.addEventListener('DOMContentLoaded', () => {
 	    
 
 
-    document.getElementById('donationForm').addEventListener('submit', async (event) => {
+// Aggiorna il listener del form submit
+document.getElementById('donationForm').addEventListener('submit', async (event) => {
     event.preventDefault();
-    
+
+    // Se c'è un campo focused, non fare nulla
+    if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+        return;
+    }
+
     let isValid = true;
     
     // Validate required fields
     const requiredFields = event.target.querySelectorAll('[required]');
     requiredFields.forEach(field => {
-        if (!validateField(field)) {
+        if (!validateField(field, true)) {
             isValid = false;
         }
     });
-    
+
     // Validate books
     const bookEntries = document.querySelectorAll('.book-entry');
     bookEntries.forEach(entry => {
         const inputs = entry.querySelectorAll('input');
         inputs.forEach(input => {
-            if (!validateBookField(input)) {
+            if (!validateBookField(input, true)) {
                 isValid = false;
             }
         });
     });
-    
+
     // Validate terms checkbox
     const acceptCheckbox = document.getElementById('accept');
     if (!validateCheckbox(acceptCheckbox)) {
         isValid = false;
     }
 
-	       if (!isValid) {
+    if (!isValid) {
         showGlobalErrorPopup('Per favore, compila correttamente tutti i campi obbligatori.');
         return;
     }
+
+	
  
     // Get form data
     const nome = document.getElementById('nome').value.trim();
