@@ -1360,21 +1360,17 @@ const apiState = {
   QUOTA_THRESHOLD: 800,
   
   incrementRequests: function() {
-    // Resetta il contatore se è un nuovo giorno
     const today = new Date().toDateString();
     if (this.lastResetDate !== today) {
       this.dailyRequests = 0;
       this.lastResetDate = today;
     }
     this.dailyRequests++;
-    
-    // Salva lo stato nel localStorage
     this.saveState();
     return this.dailyRequests;
   },
   
   isOverThreshold: function() {
-    // Controlla se è un nuovo giorno
     const today = new Date().toDateString();
     if (this.lastResetDate !== today) {
       this.dailyRequests = 0;
@@ -1396,12 +1392,10 @@ const apiState = {
     const saved = localStorage.getItem('apiState');
     if (saved) {
       const state = JSON.parse(saved);
-      // Carica solo se è dello stesso giorno
       if (state.lastResetDate === new Date().toDateString()) {
         this.dailyRequests = state.dailyRequests;
         this.lastResetDate = state.lastResetDate;
       } else {
-        // Se è un nuovo giorno, resetta
         this.dailyRequests = 0;
         this.lastResetDate = new Date().toDateString();
         this.saveState();
@@ -1410,36 +1404,26 @@ const apiState = {
   }
 };
 
-// Carica lo stato salvato all'avvio
 apiState.loadState();
 
 const performSearch = async (forceSearch = false) => {
   const query = searchInput.value.trim();
   
-  if (!query) {
+  if (!query || query.length < 3) {
     resultsDiv.classList.add('hidden');
     return;
   }
 
-  if (query.length < 3) {
-    resultsDiv.classList.add('hidden');
-    return;
-  }
-
-  // Se siamo oltre la soglia e non è una ricerca forzata, non procedere
   if (apiState.isOverThreshold() && !forceSearch) {
-    showSearchModeMessage();
-    return;
+    return; // Non mostrare messaggi, semplicemente esci
   }
 
   try {
     const response = await fetch(
       `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&key=${config.googleBooks.apiKey}&maxResults=5`
     );
-    
-    // Incrementa il contatore solo per le richieste riuscite
     apiState.incrementRequests();
-    
+
     if (response.status === 429) {
       showError('Limite giornaliero delle ricerche raggiunto. Riprova domani o inserisci i dati manualmente.');
       return;
@@ -1485,21 +1469,6 @@ const performSearch = async (forceSearch = false) => {
   }
 };
 
-const showSearchModeMessage = () => {
-  resultsDiv.innerHTML = `
-    <div class="p-3 text-amber-600">
-      <div class="mb-2">
-        <strong>Modalità di ricerca manuale attiva</strong>
-      </div>
-      <div class="text-sm text-gray-600">
-        Per preservare la quota giornaliera, la ricerca automatica è stata disattivata.
-        Usa il tasto Invio o il pulsante di ricerca per cercare.
-      </div>
-    </div>
-  `;
-  resultsDiv.classList.remove('hidden');
-};
-
 const showError = (message) => {
   resultsDiv.innerHTML = `
     <div class="p-3 text-red-600">
@@ -1516,26 +1485,21 @@ const showError = (message) => {
 let debounceTimer;
 const DEBOUNCE_DELAY = 500;
 
-// Event listener per input con controllo della soglia
 searchInput.addEventListener('input', () => {
   clearTimeout(debounceTimer);
   if (!apiState.isOverThreshold()) {
     debounceTimer = setTimeout(() => performSearch(false), DEBOUNCE_DELAY);
-  } else {
-    showSearchModeMessage();
   }
 });
 
-// Event listener per click sul bottone
 searchBtn.addEventListener('click', () => performSearch(true));
-
-// Event listener per il tasto Invio
 searchInput.addEventListener('keypress', (e) => {
   if (e.key === 'Enter') {
     clearTimeout(debounceTimer);
     performSearch(true);
   }
 });
+
 
 
 
