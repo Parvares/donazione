@@ -1510,11 +1510,11 @@ const apiMonitoring = {
 	
 
 let debounceTimer;
-	
+
 // Sistema di gestione stato API
 const performSearch = async () => {
     const query = searchInput.value.trim();
-    if (!query) {
+    if (!query || query.length < 3) { // Aggiunta la condizione per la lunghezza minima
         resultsDiv.classList.add('hidden');
         return;
     }
@@ -1549,7 +1549,7 @@ const performSearch = async () => {
 // Add input event with debounce
 searchInput.addEventListener('input', () => {
     clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(performSearch, 300); // Delay of 300ms
+    debounceTimer = setTimeout(performSearch, 800); // Delay of 800ms 
 });
 
 searchBtn.addEventListener('click', performSearch);
@@ -1557,6 +1557,7 @@ searchBtn.addEventListener('click', performSearch);
 searchInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') performSearch();
 });
+
 
 
 	
