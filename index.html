@@ -1510,154 +1510,52 @@ const apiMonitoring = {
 	
 
 	
-// Configurazione
-const DEBOUNCE_DELAY = 800;
-const MAX_RESULTS = 5;
-const BASE_URL = 'https://www.googleapis.com/books/v1/volumes';
-
-class GoogleBooksSearch {
-  constructor(config) {
-    this.apiKey = config.googleBooks.apiKey;
-    this.searchInput = document.querySelector('#searchInput');
-    this.resultsDiv = document.querySelector('#resultsDiv');
-    this.searchBtn = document.querySelector('#searchBtn');
-    this.debounceTimer = null;
-    
-    this.initializeEventListeners();
-  }
-
-  initializeEventListeners() {
-    this.searchInput.addEventListener('input', () => {
-      clearTimeout(this.debounceTimer);
-      this.debounceTimer = setTimeout(() => this.performSearch(), DEBOUNCE_DELAY);
-    });
-
-    this.searchBtn.addEventListener('click', () => this.performSearch());
-    
-    this.searchInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        this.performSearch();
-      }
-    });
-
-    // Chiudi i risultati quando si clicca fuori
-    document.addEventListener('click', (e) => {
-      if (!this.resultsDiv.contains(e.target) && !this.searchInput.contains(e.target)) {
-        this.hideResults();
-      }
-    });
-  }
-
-  hideResults() {
-    this.resultsDiv.classList.add('hidden');
-  }
-
-  showResults() {
-    this.resultsDiv.classList.remove('hidden');
-  }
-
-  async performSearch() {
-    const query = this.searchInput.value.trim();
-    
+let debounceTimer;
+const performSearch = async () => {
+    const query = searchInput.value.trim();
     if (!query) {
-      this.hideResults();
-      return;
+        resultsDiv.classList.add('hidden');
+        return;
     }
-
     try {
-      const searchParams = new URLSearchParams({
-        q: query,
-        key: this.apiKey,
-        maxResults: MAX_RESULTS,
-        langRestrict: 'it'  // Restringe i risultati in italiano
-      });
-
-      const response = await fetch(`${BASE_URL}?${searchParams}`);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      this.displayResults(data);
-    } catch (error) {
-      console.error('Error searching Google Books:', error);
-      this.displayError();
-    }
-  }
-
-  displayResults(data) {
-    if (!data.items || data.items.length === 0) {
-      this.resultsDiv.innerHTML = `
-        <div class="p-4 text-gray-600 text-center">
-          Nessun risultato trovato
-        </div>`;
-    } else {
-      this.resultsDiv.innerHTML = data.items
-        .map(book => this.createBookElement(book))
-        .join('');
-    }
-    
-    this.showResults();
-  }
-
-  createBookElement(book) {
-    const info = book.volumeInfo;
-    const bookData = {
-      title: info.title || 'Titolo sconosciuto',
-      authors: info.authors ? info.authors.join(', ') : 'Autore sconosciuto',
-      publisher: info.publisher || '',
-      year: info.publishedDate ? info.publishedDate.substring(0, 4) : '',
-      isbn: this.extractIsbn(info),
-      thumbnail: info.imageLinks?.thumbnail || ''
-    };
-
-    return `
-      <div class="p-4 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 transition-colors duration-150 flex items-start gap-4"
-           onclick="selectBook(this, ${JSON.stringify(bookData).replace(/"/g, '&quot;')})">
-        ${bookData.thumbnail ? 
-          `<img src="${bookData.thumbnail}" alt="${bookData.title}" class="w-16 h-auto object-cover rounded shadow-sm"/>` : 
-          '<div class="w-16 h-24 bg-gray-100 flex items-center justify-center rounded"><span class="text-gray-400">No image</span></div>'
+        const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&key=${config.googleBooks.apiKey}&maxResults=5`);
+        const data = await response.json();
+        if (data.items && data.items.length > 0) {
+            resultsDiv.innerHTML = data.items.map(book => {
+                const info = book.volumeInfo;
+                return `
+                    <div class="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 transition-colors duration-150" onclick="selectBook(this, ${JSON.stringify({ title: info.title || '', authors: info.authors ? info.authors.join(', ') : '', publisher: info.publisher || '', year: info.publishedDate ? info.publishedDate.substring(0, 4) : '', isbn: info.industryIdentifiers ? info.industryIdentifiers.find(id => id.type === 'ISBN_13')?.identifier || info.industryIdentifiers.find(id => id.type === 'ISBN_10')?.identifier || '' : '' }).replace(/"/g, '&quot;')})">
+                        <div class="font-medium text-blue-600">${info.title || 'Titolo sconosciuto'}</div>
+                        <div class="text-sm text-gray-600">
+                            ${info.authors ? info.authors.join(', ') : 'Autore sconosciuto'}
+                            ${info.publishedDate ? `(${info.publishedDate.substring(0, 4)})` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            resultsDiv.classList.remove('hidden');
+        } else {
+            resultsDiv.innerHTML = '<div class="p-3 text-gray-600">Nessun risultato trovato</div>';
+            resultsDiv.classList.remove('hidden');
         }
-        <div class="flex-1">
-          <div class="font-medium text-blue-600 mb-1">${bookData.title}</div>
-          <div class="text-sm text-gray-600">
-            ${bookData.authors}
-            ${bookData.year ? `<span class="ml-2">(${bookData.year})</span>` : ''}
-          </div>
-          ${bookData.publisher ? 
-            `<div class="text-sm text-gray-500 mt-1">${bookData.publisher}</div>` : ''}
-          ${bookData.isbn ? 
-            `<div class="text-xs text-gray-400 mt-1">ISBN: ${bookData.isbn}</div>` : ''}
-        </div>
-      </div>
-    `;
-  }
+    } catch (error) {
+        console.error('Error searching Google Books:', error);
+        resultsDiv.innerHTML = '<div class="p-3 text-red-600">Errore durante la ricerca</div>';
+        resultsDiv.classList.remove('hidden');
+    }
+};
 
-  extractIsbn(info) {
-    if (!info.industryIdentifiers) return '';
-    
-    const isbn13 = info.industryIdentifiers.find(id => id.type === 'ISBN_13');
-    const isbn10 = info.industryIdentifiers.find(id => id.type === 'ISBN_10');
-    
-    return isbn13?.identifier || isbn10?.identifier || '';
-  }
+// Add input event with debounce
+searchInput.addEventListener('input', () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(performSearch, 800); // Delay of 800ms
+});
 
-  displayError() {
-    this.resultsDiv.innerHTML = `
-      <div class="p-4 text-red-600 text-center">
-        Si è verificato un errore durante la ricerca.
-        <button class="mt-2 text-sm text-blue-600 hover:underline" onclick="performSearch()">
-          Riprova
-        </button>
-      </div>`;
-    this.showResults();
-  }
-}
+searchBtn.addEventListener('click', performSearch);
 
-// Inizializzazione
-const bookSearch = new GoogleBooksSearch(config);
+searchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') performSearch();
+});
 
 
 	
