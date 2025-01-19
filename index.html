@@ -1357,7 +1357,7 @@ window.createBookEntry = function() {
 const apiState = {
   dailyRequests: 0,
   lastResetDate: new Date().toDateString(),
-  QUOTA_THRESHOLD: 60,
+  QUOTA_THRESHOLD: 800,
   
   incrementRequests: function() {
     const today = new Date().toDateString();
@@ -1368,7 +1368,7 @@ const apiState = {
     this.dailyRequests++;
     
     this.saveState();
-    this.updatePlaceholder(); // Add placeholder update when incrementing
+    this.updatePlaceholder();
     return this.dailyRequests;
   },
   
@@ -1403,7 +1403,6 @@ const apiState = {
         this.saveState();
       }
     }
-    this.updatePlaceholder(); // Update placeholder when loading state
   },
   
   updatePlaceholder: function() {
@@ -1413,6 +1412,11 @@ const apiState = {
         ? "Cerca per titolo, autore o ISBN usando il tasto Invio o il pulsante di ricerca"
         : "Cerca per titolo, autore o ISBN...";
     }
+  },
+
+  init: function() {
+    this.loadState();
+    this.updatePlaceholder();
   }
 };
 
@@ -1430,7 +1434,7 @@ const performSearch = async (forceSearch = false) => {
   }
 
   if (apiState.isOverThreshold() && !forceSearch) {
-    resultsDiv.classList.add('hidden'); // Hide results instead of showing message
+    resultsDiv.classList.add('hidden');
     return;
   }
 
@@ -1505,9 +1509,15 @@ searchInput.addEventListener('keypress', (e) => {
   }
 });
 
-// Initialize state and placeholder on load
-apiState.loadState();
+// Wait for DOM to be fully loaded before initializing
+document.addEventListener('DOMContentLoaded', () => {
+  apiState.init();
+});
 
+// Also initialize immediately in case the script runs after DOM is already loaded
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+  apiState.init();
+}
 
 
 
