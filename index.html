@@ -936,6 +936,12 @@ function validateField(input) {
     const value = input.value.trim();
     let isValid = true;
 
+    // Non validare se l'input è stato triggerato da INVIO
+    if (input.dataset.enterPressed === 'true') {
+        input.dataset.enterPressed = 'false';
+        return true;
+    }
+
     // Handle required fields except email (handled separately)
     if (input.hasAttribute('required') && !value && input.id !== 'email') {
         showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
@@ -948,17 +954,12 @@ function validateField(input) {
                     isValid = false;
                 }
                 break;
-                
             case 'email':
-                // Show error only if the field is populated and not focused
                 if (value && !input.matches(':focus')) {
                     if (!emailValidator.validateSyntax(value)) {
                         showError(input, 'Formato email non valido');
                         isValid = false;
                     }
-                } else if (!value && !input.matches(':focus') && input.hasAttribute('required')) {
-                    showError(input, 'L\'email è obbligatoria');
-                    isValid = false;
                 }
                 break;
         }
@@ -967,9 +968,27 @@ function validateField(input) {
     if (isValid) {
         hideError(input);
     }
-
     return isValid;
 }
+
+// Aggiungi event listener per il tasto INVIO su tutti gli input
+document.addEventListener('DOMContentLoaded', () => {
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => {
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                input.dataset.enterPressed = 'true';
+                e.preventDefault(); // Previene il submit del form
+                const form = input.closest('form');
+                const inputs = Array.from(form.querySelectorAll('input:not([type="hidden"])'));
+                const index = inputs.indexOf(input);
+                if (index > -1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus(); // Passa al campo successivo
+                }
+            }
+        });
+    });
+});	
 
 // Add event listeners for email field focus handling
 document.addEventListener('DOMContentLoaded', function() {
@@ -1694,10 +1713,17 @@ window.resetBookFields = function(button) {
 	    
 
 
-    document.getElementById('donationForm').addEventListener('submit', async (event) => {
+document.getElementById('donationForm').addEventListener('submit', async (event) => {
     event.preventDefault();
     
+    // Controlla se l'evento è stato triggerato da un tasto INVIO in un campo input
+    if (event.submitter === null && document.activeElement.tagName === 'INPUT') {
+        return; // Esci dalla funzione senza validare
+    }
+    
     let isValid = true;
+
+	
     
     // Validate required fields
     const requiredFields = event.target.querySelectorAll('[required]');
