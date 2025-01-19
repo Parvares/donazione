@@ -1353,28 +1353,94 @@ window.createBookEntry = function() {
    
 	
 	
- // Cache e contatore delle richieste
+// Sistema di monitoraggio API
+const apiMonitoring = {
+  logs: [],
+  MAX_LOGS: 1000,
+  
+  logRequest: function(data) {
+    const logEntry = {
+      timestamp: new Date().toISOString(),
+      query: data.query,
+      status: data.status,
+      responseTime: data.responseTime,
+      userAgent: navigator.userAgent,
+      page: window.location.pathname,
+      dailyCount: data.dailyCount
+    };
+    
+    this.logs.unshift(logEntry);
+    
+    if (this.logs.length > this.MAX_LOGS) {
+      this.logs = this.logs.slice(0, this.MAX_LOGS);
+    }
+    
+    this.saveLogs();
+    console.log('API Request Log:', logEntry);
+  },
+  
+  saveLogs: function() {
+    try {
+      localStorage.setItem('apiLogs', JSON.stringify(this.logs));
+    } catch (e) {
+      console.error('Error saving logs to localStorage:', e);
+    }
+  },
+  
+  loadLogs: function() {
+    try {
+      const savedLogs = localStorage.getItem('apiLogs');
+      if (savedLogs) {
+        this.logs = JSON.parse(savedLogs);
+      }
+    } catch (e) {
+      console.error('Error loading logs from localStorage:', e);
+    }
+  },
+  
+  getDailyStats: function() {
+    const today = new Date().toISOString().split('T')[0];
+    const todayLogs = this.logs.filter(log => log.timestamp.startsWith(today));
+    
+    return {
+      totalRequests: todayLogs.length,
+      successRate: (todayLogs.filter(log => log.status === 'success').length / todayLogs.length) * 100 || 0,
+      averageResponseTime: todayLogs.reduce((acc, log) => acc + log.responseTime, 0) / todayLogs.length || 0,
+      mostSearchedTerms: this.getMostSearchedTerms(todayLogs)
+    };
+  },
+  
+  getMostSearchedTerms: function(logs) {
+    const terms = {};
+    logs.forEach(log => {
+      terms[log.query] = (terms[log.query] || 0) + 1;
+    });
+    
+    return Object.entries(terms)
+      .sort(([,a], [,b]) => b - a)
+      .slice(0, 10)
+      .map(([term, count]) => ({ term, count }));
+  }
+};
+
+// Sistema di gestione stato API
 const apiState = {
   dailyRequests: 0,
   lastResetDate: new Date().toDateString(),
-  QUOTA_THRESHOLD: 20,
+  QUOTA_THRESHOLD: 800,
   
   incrementRequests: function() {
-    // Resetta il contatore se è un nuovo giorno
     const today = new Date().toDateString();
     if (this.lastResetDate !== today) {
       this.dailyRequests = 0;
       this.lastResetDate = today;
     }
     this.dailyRequests++;
-    
-    // Salva lo stato nel localStorage
     this.saveState();
     return this.dailyRequests;
   },
   
   isOverThreshold: function() {
-    // Controlla se è un nuovo giorno
     const today = new Date().toDateString();
     if (this.lastResetDate !== today) {
       this.dailyRequests = 0;
@@ -1396,12 +1462,10 @@ const apiState = {
     const saved = localStorage.getItem('apiState');
     if (saved) {
       const state = JSON.parse(saved);
-      // Carica solo se è dello stesso giorno
       if (state.lastResetDate === new Date().toDateString()) {
         this.dailyRequests = state.dailyRequests;
         this.lastResetDate = state.lastResetDate;
       } else {
-        // Se è un nuovo giorno, resetta
         this.dailyRequests = 0;
         this.lastResetDate = new Date().toDateString();
         this.saveState();
@@ -1410,11 +1474,14 @@ const apiState = {
   }
 };
 
-// Carica lo stato salvato all'avvio
+// Carica gli stati salvati all'avvio
+apiMonitoring.loadLogs();
 apiState.loadState();
 
+// Funzione principale di ricerca
 const performSearch = async (forceSearch = false) => {
   const query = searchInput.value.trim();
+  const startTime = performance.now();
   
   if (!query) {
     resultsDiv.classList.add('hidden');
@@ -1426,7 +1493,6 @@ const performSearch = async (forceSearch = false) => {
     return;
   }
 
-  // Se siamo oltre la soglia e non è una ricerca forzata, non procedere
   if (apiState.isOverThreshold() && !forceSearch) {
     showSearchModeMessage();
     return;
@@ -1437,7 +1503,16 @@ const performSearch = async (forceSearch = false) => {
       `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&key=${config.googleBooks.apiKey}&maxResults=5`
     );
     
-    // Incrementa il contatore solo per le richieste riuscite
+    const responseTime = performance.now() - startTime;
+    
+    // Log della richiesta
+    apiMonitoring.logRequest({
+      query: query,
+      status: response.ok ? 'success' : 'error',
+      responseTime: responseTime,
+      dailyCount: apiState.dailyRequests
+    });
+    
     apiState.incrementRequests();
     
     if (response.status === 429) {
@@ -1480,11 +1555,21 @@ const performSearch = async (forceSearch = false) => {
       resultsDiv.classList.remove('hidden');
     }
   } catch (error) {
+    const responseTime = performance.now() - startTime;
+    
+    apiMonitoring.logRequest({
+      query: query,
+      status: 'error',
+      responseTime: responseTime,
+      dailyCount: apiState.dailyRequests
+    });
+    
     console.error('Error searching Google Books:', error);
     showError('Errore durante la ricerca. Riprova più tardi o inserisci i dati manualmente.');
   }
 };
 
+// Funzioni di utilità
 const showSearchModeMessage = () => {
   resultsDiv.innerHTML = `
     <div class="p-3 text-amber-600">
@@ -1512,11 +1597,10 @@ const showError = (message) => {
   resultsDiv.classList.remove('hidden');
 };
 
-// Gestione eventi con debounce
+// Event listeners
 let debounceTimer;
 const DEBOUNCE_DELAY = 500;
 
-// Event listener per input con controllo della soglia
 searchInput.addEventListener('input', () => {
   clearTimeout(debounceTimer);
   if (!apiState.isOverThreshold()) {
@@ -1526,16 +1610,28 @@ searchInput.addEventListener('input', () => {
   }
 });
 
-// Event listener per click sul bottone
 searchBtn.addEventListener('click', () => performSearch(true));
 
-// Event listener per il tasto Invio
 searchInput.addEventListener('keypress', (e) => {
   if (e.key === 'Enter') {
     clearTimeout(debounceTimer);
     performSearch(true);
   }
 });
+
+// Funzione per visualizzare le statistiche
+function showAPIStats() {
+  const stats = apiMonitoring.getDailyStats();
+  console.log('Daily API Statistics:', {
+    'Total Requests': stats.totalRequests,
+    'Success Rate': `${stats.successRate.toFixed(2)}%`,
+    'Average Response Time': `${stats.averageResponseTime.toFixed(2)}ms`,
+    'Most Searched Terms': stats.mostSearchedTerms
+  });
+}
+
+// Mostra statistiche ogni ora
+setInterval(showAPIStats, 3600000);
 	
 
 
