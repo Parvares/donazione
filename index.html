@@ -1357,7 +1357,7 @@ window.createBookEntry = function() {
 const apiState = {
   dailyRequests: 0,
   lastResetDate: new Date().toDateString(),
-  QUOTA_THRESHOLD: 80,
+  QUOTA_THRESHOLD: 800,
   
   incrementRequests: function() {
     const today = new Date().toDateString();
@@ -1403,20 +1403,45 @@ const apiState = {
         this.saveState();
       }
     }
+    // Aggiorna immediatamente il placeholder dopo il caricamento dello stato
+    this.updatePlaceholder();
   },
   
   updatePlaceholder: function() {
-    const searchInput = document.querySelector('.quick-search');
+    // Cerca l'input in modo più specifico e robusto
+    const searchInput = document.querySelector('input.quick-search');
     if (searchInput) {
-      searchInput.placeholder = this.isOverThreshold() 
-        ? "Cerca per titolo, autore o ISBN usando il tasto Invio o il pulsante di ricerca"
-        : "Cerca per titolo, autore o ISBN...";
+      const isOver = this.isOverThreshold();
+      if (isOver) {
+        searchInput.placeholder = "Cerca per titolo, autore o ISBN usando il tasto Invio o il pulsante di ricerca";
+      } else {
+        searchInput.placeholder = "Cerca per titolo, autore o ISBN...";
+      }
+      // Debug per verificare lo stato
+      console.log('Threshold check:', isOver, 'Daily requests:', this.dailyRequests);
+    } else {
+      console.warn('Search input not found');
     }
   },
 
   init: function() {
+    // Carica lo stato
     this.loadState();
-    this.updatePlaceholder();
+    
+    // Configura un observer per assicurarsi che l'input esista
+    const observer = new MutationObserver((mutations, obs) => {
+      const searchInput = document.querySelector('input.quick-search');
+      if (searchInput) {
+        this.updatePlaceholder();
+        obs.disconnect(); // Ferma l'observer una volta trovato l'input
+        console.log('Input found and placeholder updated');
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
   }
 };
 
@@ -1493,32 +1518,40 @@ const performSearch = async (forceSearch = false) => {
 let debounceTimer;
 const DEBOUNCE_DELAY = 500;
 
-searchInput.addEventListener('input', () => {
-  clearTimeout(debounceTimer);
-  if (!apiState.isOverThreshold()) {
-    debounceTimer = setTimeout(() => performSearch(false), DEBOUNCE_DELAY);
-  }
-});
-
-searchBtn.addEventListener('click', () => performSearch(true));
-
-searchInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') {
-    clearTimeout(debounceTimer);
-    performSearch(true);
-  }
-});
-
-// Wait for DOM to be fully loaded before initializing
+// Aggiungi gestione eventi dopo che il DOM è caricato
 document.addEventListener('DOMContentLoaded', () => {
+  const searchInput = document.querySelector('input.quick-search');
+  const searchBtn = document.querySelector('.search-btn');
+  const resultsDiv = document.querySelector('.search-results');
+
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      if (!apiState.isOverThreshold()) {
+        debounceTimer = setTimeout(() => performSearch(false), DEBOUNCE_DELAY);
+      }
+    });
+
+    searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        clearTimeout(debounceTimer);
+        performSearch(true);
+      }
+    });
+  }
+
+  if (searchBtn) {
+    searchBtn.addEventListener('click', () => performSearch(true));
+  }
+
+  // Inizializza lo stato
   apiState.init();
 });
 
-// Also initialize immediately in case the script runs after DOM is already loaded
+// Assicurati che lo stato venga inizializzato anche se il DOM è già caricato
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
   apiState.init();
 }
-
 
 
 
