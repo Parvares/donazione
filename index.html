@@ -1354,11 +1354,6 @@ window.createBookEntry = function() {
 	
 	
 // Cache e contatore delle richieste
-// Dichiara le variabili per gli elementi DOM
-const searchInput = document.querySelector('.quick-search');
-const searchBtn = document.querySelector('.search-btn');
-const resultsDiv = document.querySelector('.search-results');
-
 const apiState = {
   dailyRequests: 0,
   lastResetDate: new Date().toDateString(),
@@ -1411,6 +1406,7 @@ const apiState = {
   },
   
   updatePlaceholder: function() {
+    const searchInput = bookDiv.querySelector('.quick-search');
     if (searchInput) {
       if (this.isOverThreshold()) {
         searchInput.placeholder = "Cerca per titolo, autore o ISBN usando il tasto Invio o il pulsante di ricerca";
@@ -1422,6 +1418,7 @@ const apiState = {
 };
 
 const showError = (message) => {
+  const resultsDiv = bookDiv.querySelector('.search-results');
   resultsDiv.innerHTML = `
     <div class="p-3 text-red-600">
       ${message}
@@ -1434,6 +1431,8 @@ const showError = (message) => {
 };
 
 const performSearch = async (forceSearch = false) => {
+  const searchInput = bookDiv.querySelector('.quick-search');
+  const resultsDiv = bookDiv.querySelector('.search-results');
   const query = searchInput.value.trim();
   
   if (!query) {
@@ -1506,35 +1505,30 @@ const performSearch = async (forceSearch = false) => {
 let debounceTimer;
 const DEBOUNCE_DELAY = 500;
 
-// Funzione di inizializzazione
-const initializeSearch = () => {
-  // Carica lo stato iniziale
-  apiState.loadState();
-  
-  // Event listeners
-  if (searchInput) {
-    searchInput.addEventListener('input', () => {
-      clearTimeout(debounceTimer);
-      if (!apiState.isOverThreshold()) {
-        debounceTimer = setTimeout(() => performSearch(false), DEBOUNCE_DELAY);
-      }
-    });
+// Add search functionality with debounce
+const searchInput = bookDiv.querySelector('.quick-search');
+const searchBtn = bookDiv.querySelector('.search-btn');
+const resultsDiv = bookDiv.querySelector('.search-results');
 
-    searchInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        clearTimeout(debounceTimer);
-        performSearch(true);
-      }
-    });
+// Inizializza lo stato
+apiState.loadState();
+
+// Event listeners
+searchInput.addEventListener('input', () => {
+  clearTimeout(debounceTimer);
+  if (!apiState.isOverThreshold()) {
+    debounceTimer = setTimeout(() => performSearch(false), DEBOUNCE_DELAY);
   }
+});
 
-  if (searchBtn) {
-    searchBtn.addEventListener('click', () => performSearch(true));
+searchBtn.addEventListener('click', () => performSearch(true));
+
+searchInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    clearTimeout(debounceTimer);
+    performSearch(true);
   }
-};
-
-// Gestione del caricamento della pagina
-document.addEventListener('DOMContentLoaded', initializeSearch);
+});
 
 	
 
