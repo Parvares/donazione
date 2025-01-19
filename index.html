@@ -1354,65 +1354,66 @@ window.createBookEntry = function() {
 	
 	
 const apiState = {
-  dailyRequests: 0,
-  lastResetDate: new Date().toDateString(),
-  QUOTA_THRESHOLD: 800,
-  
-  incrementRequests: function() {
-    const today = new Date().toDateString();
-    if (this.lastResetDate !== today) {
-      this.dailyRequests = 0;
-      this.lastResetDate = today;
-    }
-    this.dailyRequests++;
+    dailyRequests: 0,
+    lastResetDate: new Date().toDateString(),
+    QUOTA_THRESHOLD: 800,
     
-    this.saveState();
-    this.updatePlaceholder(); // Add placeholder update when incrementing
-    return this.dailyRequests;
-  },
-  
-  isOverThreshold: function() {
-    const today = new Date().toDateString();
-    if (this.lastResetDate !== today) {
-      this.dailyRequests = 0;
-      this.lastResetDate = today;
-      this.saveState();
-      return false;
-    }
-    return this.dailyRequests >= this.QUOTA_THRESHOLD;
-  },
-  
-  saveState: function() {
-    localStorage.setItem('apiState', JSON.stringify({
-      dailyRequests: this.dailyRequests,
-      lastResetDate: this.lastResetDate
-    }));
-  },
-  
-  loadState: function() {
-    const saved = localStorage.getItem('apiState');
-    if (saved) {
-      const state = JSON.parse(saved);
-      if (state.lastResetDate === new Date().toDateString()) {
-        this.dailyRequests = state.dailyRequests;
-        this.lastResetDate = state.lastResetDate;
-      } else {
-        this.dailyRequests = 0;
-        this.lastResetDate = new Date().toDateString();
+    incrementRequests: function() {
+        const today = new Date().toDateString();
+        if (this.lastResetDate !== today) {
+            this.dailyRequests = 0;
+            this.lastResetDate = today;
+        }
+        this.dailyRequests++;
         this.saveState();
-      }
+        this.updatePlaceholder();
+        return this.dailyRequests;
+    },
+    
+    isOverThreshold: function() {
+        const today = new Date().toDateString();
+        if (this.lastResetDate !== today) {
+            this.dailyRequests = 0;
+            this.lastResetDate = today;
+            this.saveState();
+            return false;
+        }
+        return this.dailyRequests >= this.QUOTA_THRESHOLD;
+    },
+    
+    saveState: function() {
+        localStorage.setItem('apiState', JSON.stringify({
+            dailyRequests: this.dailyRequests,
+            lastResetDate: this.lastResetDate
+        }));
+    },
+    
+    loadState: function() {
+        const saved = localStorage.getItem('apiState');
+        if (saved) {
+            const state = JSON.parse(saved);
+            const today = new Date().toDateString();
+            if (state.lastResetDate === today) {
+                this.dailyRequests = state.dailyRequests;
+                this.lastResetDate = state.lastResetDate;
+            } else {
+                this.dailyRequests = 0;
+                this.lastResetDate = today;
+                this.saveState();
+            }
+        }
+        // Always update placeholder after loading state
+        this.updatePlaceholder();
+    },
+    
+    updatePlaceholder: function() {
+        if (!searchInput) return; // Guard clause in case element isn't found
+        
+        const isOver = this.isOverThreshold();
+        searchInput.placeholder = isOver 
+            ? "Cerca per titolo, autore o ISBN usando il tasto Invio o il pulsante di ricerca"
+            : "Cerca per titolo, autore o ISBN...";
     }
-    this.updatePlaceholder(); // Update placeholder when loading state
-  },
-  
-  updatePlaceholder: function() {
-    const searchInput = document.querySelector('.quick-search');
-    if (searchInput) {
-      searchInput.placeholder = this.isOverThreshold() 
-        ? "Cerca per titolo, autore o ISBN usando il tasto Invio o il pulsante di ricerca"
-        : "Cerca per titolo, autore o ISBN...";
-    }
-  }
 };
 
 const performSearch = async (forceSearch = false) => {
@@ -1504,12 +1505,18 @@ searchInput.addEventListener('keypress', (e) => {
   }
 });
 
-// Initialize state and placeholder on load
+// Make sure DOM is loaded before initializing
+document.addEventListener('DOMContentLoaded', () => {
+    apiState.loadState();
+});
+
+// Also initialize immediately in case the script runs after DOM is already loaded
 apiState.loadState();
 
 	
 
 
+	
 
 
 	
