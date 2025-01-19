@@ -1354,6 +1354,11 @@ window.createBookEntry = function() {
 	
 	
 // Cache e contatore delle richieste
+// Dichiara le variabili per gli elementi DOM
+const searchInput = document.querySelector('.quick-search');
+const searchBtn = document.querySelector('.search-btn');
+const resultsDiv = document.querySelector('.search-results');
+
 const apiState = {
   dailyRequests: 0,
   lastResetDate: new Date().toDateString(),
@@ -1366,7 +1371,6 @@ const apiState = {
       this.lastResetDate = today;
     }
     this.dailyRequests++;
-    
     this.saveState();
     this.updatePlaceholder();
     return this.dailyRequests;
@@ -1403,46 +1407,30 @@ const apiState = {
         this.saveState();
       }
     }
-    // Aggiorna immediatamente il placeholder dopo il caricamento dello stato
     this.updatePlaceholder();
   },
   
   updatePlaceholder: function() {
-    // Cerca l'input in modo più specifico e robusto
-    const searchInput = document.querySelector('input.quick-search');
     if (searchInput) {
-      const isOver = this.isOverThreshold();
-      if (isOver) {
+      if (this.isOverThreshold()) {
         searchInput.placeholder = "Cerca per titolo, autore o ISBN usando il tasto Invio o il pulsante di ricerca";
       } else {
         searchInput.placeholder = "Cerca per titolo, autore o ISBN...";
       }
-      // Debug per verificare lo stato
-      console.log('Threshold check:', isOver, 'Daily requests:', this.dailyRequests);
-    } else {
-      console.warn('Search input not found');
     }
-  },
-
-  init: function() {
-    // Carica lo stato
-    this.loadState();
-    
-    // Configura un observer per assicurarsi che l'input esista
-    const observer = new MutationObserver((mutations, obs) => {
-      const searchInput = document.querySelector('input.quick-search');
-      if (searchInput) {
-        this.updatePlaceholder();
-        obs.disconnect(); // Ferma l'observer una volta trovato l'input
-        console.log('Input found and placeholder updated');
-      }
-    });
-
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true
-    });
   }
+};
+
+const showError = (message) => {
+  resultsDiv.innerHTML = `
+    <div class="p-3 text-red-600">
+      ${message}
+      <div class="mt-2 text-sm text-gray-600">
+        Puoi continuare a inserire i dati manualmente nei campi sottostanti.
+      </div>
+    </div>
+  `;
+  resultsDiv.classList.remove('hidden');
 };
 
 const performSearch = async (forceSearch = false) => {
@@ -1518,12 +1506,12 @@ const performSearch = async (forceSearch = false) => {
 let debounceTimer;
 const DEBOUNCE_DELAY = 500;
 
-// Aggiungi gestione eventi dopo che il DOM è caricato
-document.addEventListener('DOMContentLoaded', () => {
-  const searchInput = document.querySelector('input.quick-search');
-  const searchBtn = document.querySelector('.search-btn');
-  const resultsDiv = document.querySelector('.search-results');
-
+// Funzione di inizializzazione
+const initializeSearch = () => {
+  // Carica lo stato iniziale
+  apiState.loadState();
+  
+  // Event listeners
   if (searchInput) {
     searchInput.addEventListener('input', () => {
       clearTimeout(debounceTimer);
@@ -1543,16 +1531,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (searchBtn) {
     searchBtn.addEventListener('click', () => performSearch(true));
   }
+};
 
-  // Inizializza lo stato
-  apiState.init();
-});
+// Gestione del caricamento della pagina
+document.addEventListener('DOMContentLoaded', initializeSearch);
 
-// Assicurati che lo stato venga inizializzato anche se il DOM è già caricato
-if (document.readyState === 'complete' || document.readyState === 'interactive') {
-  apiState.init();
-}
-
+	
 
 
 
