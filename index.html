@@ -1516,38 +1516,33 @@ const apiMonitoring = {
 const apiState = {
   dailyRequests: 0,
   lastResetDate: null,
-  QUOTA_THRESHOLD: 705,
+  QUOTA_THRESHOLD: 750,
+  lastKnownQuota: null,
   
   getPTDate: function() {
-    // Ottiene la data corrente in PT (Pacific Time)
     return new Date().toLocaleString("en-US", {
       timeZone: "America/Los_Angeles",
       dateStyle: "short"
     });
   },
   
-  incrementRequests: function() {
-    // Resetta il contatore se è un nuovo giorno in PT
-    const ptToday = this.getPTDate();
-    if (this.lastResetDate !== ptToday) {
-      this.dailyRequests = 0;
-      this.lastResetDate = ptToday;
+  updateQuota: function(quotaData) {
+    if (quotaData) {
+      this.lastKnownQuota = quotaData;
+      this.dailyRequests = quotaData.remaining ? 
+        (1000 - quotaData.remaining) : // Assumendo una quota totale di 1000
+        this.dailyRequests;
+      
+      this.saveState();
     }
-    this.dailyRequests++;
-    
-    console.log(`Requests today (PT): ${this.dailyRequests}`); // Debug info
-    
-    // Salva lo stato nel localStorage
-    this.saveState();
-    return this.dailyRequests;
   },
   
   isOverThreshold: function() {
-    // Controlla se è un nuovo giorno in PT
     const ptToday = this.getPTDate();
     if (this.lastResetDate !== ptToday) {
       this.dailyRequests = 0;
       this.lastResetDate = ptToday;
+      this.lastKnownQuota = null;
       this.saveState();
       return false;
     }
@@ -1557,7 +1552,8 @@ const apiState = {
   saveState: function() {
     localStorage.setItem('apiState', JSON.stringify({
       dailyRequests: this.dailyRequests,
-      lastResetDate: this.lastResetDate
+      lastResetDate: this.lastResetDate,
+      lastKnownQuota: this.lastKnownQuota
     }));
   },
   
@@ -1566,23 +1562,20 @@ const apiState = {
     if (saved) {
       const state = JSON.parse(saved);
       const ptToday = this.getPTDate();
-      // Carica solo se è dello stesso giorno in PT
       if (state.lastResetDate === ptToday) {
         this.dailyRequests = state.dailyRequests;
         this.lastResetDate = state.lastResetDate;
+        this.lastKnownQuota = state.lastKnownQuota;
       } else {
-        // Se è un nuovo giorno in PT, resetta
         this.dailyRequests = 0;
         this.lastResetDate = ptToday;
+        this.lastKnownQuota = null;
         this.saveState();
       }
     } else {
-      // Inizializzazione se non c'è stato salvato
       this.lastResetDate = this.getPTDate();
       this.saveState();
     }
-    
-    console.log(`Loaded state - Requests: ${this.dailyRequests}, Last Reset: ${this.lastResetDate}`); // Debug info
   },
   
   getCurrentCount: function() {
@@ -1606,15 +1599,15 @@ const performSearch = async (forceSearch = false) => {
     return;
   }
 
-  // Controlla se siamo oltre la soglia solo per ricerche non forzate
   if (apiState.isOverThreshold() && !forceSearch) {
     showSearchModeMessage();
     return;
   }
 
   try {
+    // Aggiungiamo il parametro quotaUser per tracciare meglio l'uso della quota
     const response = await fetch(
-      `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&key=${config.googleBooks.apiKey}&maxResults=5`
+      `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&key=${config.googleBooks.apiKey}&maxResults=5&quotaUser=${encodeURIComponent(config.quotaUser || 'default')}`
     );
     
     if (response.status === 429) {
@@ -1626,10 +1619,15 @@ const performSearch = async (forceSearch = false) => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    // Incrementa il contatore solo per le richieste riuscite
-    apiState.incrementRequests();
-    
     const data = await response.json();
+    
+    // Aggiorna il conteggio della quota basandosi sui dati della risposta
+    if (data.quota) {
+      apiState.updateQuota(data.quota);
+    } else {
+      apiState.dailyRequests++;
+      apiState.saveState();
+    }
     
     if (data.items && data.items.length > 0) {
       resultsDiv.innerHTML = data.items.map(book => {
@@ -1652,7 +1650,8 @@ const performSearch = async (forceSearch = false) => {
               ${info.publishedDate ? `(${info.publishedDate.substring(0, 4)})` : ''}
             </div>
             <div class="text-xs text-gray-500 mt-1">
-              Richieste oggi: ${apiState.getCurrentCount()}/${apiState.QUOTA_THRESHOLD}
+              Richieste API: ${apiState.getCurrentCount()}/${apiState.QUOTA_THRESHOLD}
+              ${apiState.lastKnownQuota ? ` (Quota rimanente: ${apiState.lastKnownQuota.remaining})` : ''}
             </div>
           </div>
         `;
@@ -1668,63 +1667,6 @@ const performSearch = async (forceSearch = false) => {
   }
 };
 
-const showSearchModeMessage = () => {
-  resultsDiv.innerHTML = `
-    <div class="p-3 text-amber-600">
-      <div class="mb-2">
-        <strong>Modalità di ricerca manuale attiva</strong>
-      </div>
-      <div class="text-sm text-gray-600">
-        Per preservare la quota giornaliera, la ricerca automatica è stata disattivata.
-        Usa il tasto Invio o il pulsante di ricerca per cercare.
-        <div class="mt-1">
-          Richieste oggi: ${apiState.getCurrentCount()}/${apiState.QUOTA_THRESHOLD}
-        </div>
-      </div>
-    </div>
-  `;
-  resultsDiv.classList.remove('hidden');
-};
-
-const showError = (message) => {
-  resultsDiv.innerHTML = `
-    <div class="p-3 text-red-600">
-      ${message}
-      <div class="mt-2 text-sm text-gray-600">
-        Puoi continuare a inserire i dati manualmente nei campi sottostanti.
-        <div class="mt-1">
-          Richieste oggi: ${apiState.getCurrentCount()}/${apiState.QUOTA_THRESHOLD}
-        </div>
-      </div>
-    </div>
-  `;
-  resultsDiv.classList.remove('hidden');
-};
-
-// Gestione eventi con debounce
-let debounceTimer;
-const DEBOUNCE_DELAY = 500;
-
-// Event listener per input con controllo della soglia
-searchInput.addEventListener('input', () => {
-  clearTimeout(debounceTimer);
-  if (!apiState.isOverThreshold()) {
-    debounceTimer = setTimeout(() => performSearch(false), DEBOUNCE_DELAY);
-  } else {
-    showSearchModeMessage();
-  }
-});
-
-// Event listener per click sul bottone
-searchBtn.addEventListener('click', () => performSearch(true));
-
-// Event listener per il tasto Invio
-searchInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') {
-    clearTimeout(debounceTimer);
-    performSearch(true);
-  }
-});
 
 	
 
