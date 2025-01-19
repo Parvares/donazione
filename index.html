@@ -1437,67 +1437,63 @@ window.createBookEntry = function() {
 	
 // Update the Google Books API call
 const apiState = {
-    dailyRequests: 0,
-    lastResetDate: new Date().toDateString(),
-    QUOTA_THRESHOLD: 470,
-    
-    incrementRequests: function() {
-        const today = new Date().toDateString();
-        if (this.lastResetDate !== today) {
-            this.dailyRequests = 0;
-            this.lastResetDate = today;
-        }
-        this.dailyRequests++;
-        this.saveState();
-        this.updatePlaceholder();
-        return this.dailyRequests;
-    },
-    
-    isOverThreshold: function() {
-        const today = new Date().toDateString();
-        if (this.lastResetDate !== today) {
-            this.dailyRequests = 0;
-            this.lastResetDate = today;
-            this.saveState();
-            return false;
-        }
-        return this.dailyRequests >= this.QUOTA_THRESHOLD;
-    },
-    
-    saveState: function() {
-        localStorage.setItem('apiState', JSON.stringify({
-            dailyRequests: this.dailyRequests,
-            lastResetDate: this.lastResetDate
-        }));
-    },
-    
-    loadState: function() {
-        const saved = localStorage.getItem('apiState');
-        if (saved) {
-            const state = JSON.parse(saved);
-            const today = new Date().toDateString();
-            if (state.lastResetDate === today) {
-                this.dailyRequests = state.dailyRequests;
-                this.lastResetDate = state.lastResetDate;
-            } else {
-                this.dailyRequests = 0;
-                this.lastResetDate = today;
-                this.saveState();
-            }
-        }
-        // Always update placeholder after loading state
-        this.updatePlaceholder();
-    },
-    
-    updatePlaceholder: function() {
-        if (!searchInput) return; // Guard clause in case element isn't found
-        
-        const isOver = this.isOverThreshold();
-        searchInput.placeholder = isOver 
-            ? "Cerca per titolo, autore o ISBN usando il tasto Invio o il pulsante di ricerca"
-            : "Cerca per titolo, autore o ISBN...";
+  dailyRequests: 0,
+  lastResetDate: new Date().toDateString(),
+  QUOTA_THRESHOLD: 800,
+  
+  incrementRequests: function() {
+    // Resetta il contatore se è un nuovo giorno
+    const today = new Date().toDateString();
+    if (this.lastResetDate !== today) {
+      this.dailyRequests = 0;
+      this.lastResetDate = today;
     }
+    this.dailyRequests++;
+    
+    // Salva lo stato nel localStorage
+    this.saveState();
+    return this.dailyRequests;
+  },
+  
+  isOverThreshold: function() {
+    // Controlla se è un nuovo giorno
+    const today = new Date().toDateString();
+    if (this.lastResetDate !== today) {
+      this.dailyRequests = 0;
+      this.lastResetDate = today;
+      this.saveState();
+      return false;
+    }
+    return this.dailyRequests >= this.QUOTA_THRESHOLD;
+  },
+  
+  saveState: function() {
+    localStorage.setItem('apiState', JSON.stringify({
+      dailyRequests: this.dailyRequests,
+      lastResetDate: this.lastResetDate
+    }));
+  },
+  
+  loadState: function() {
+    const saved = localStorage.getItem('apiState');
+    if (saved) {
+      const state = JSON.parse(saved);
+      // Carica solo se è dello stesso giorno
+      if (state.lastResetDate === new Date().toDateString()) {
+        this.dailyRequests = state.dailyRequests;
+        this.lastResetDate = state.lastResetDate;
+      } else {
+        // Se è un nuovo giorno, resetta
+        this.dailyRequests = 0;
+        this.lastResetDate = new Date().toDateString();
+        this.saveState();
+      }
+    }
+  }
 };
+
+// Carica lo stato salvato all'avvio
+apiState.loadState();
 
 const performSearch = async (forceSearch = false) => {
   const query = searchInput.value.trim();
@@ -1512,8 +1508,9 @@ const performSearch = async (forceSearch = false) => {
     return;
   }
 
+  // Se siamo oltre la soglia e non è una ricerca forzata, non procedere
   if (apiState.isOverThreshold() && !forceSearch) {
-    resultsDiv.classList.add('hidden'); // Hide results instead of showing message
+    showSearchModeMessage();
     return;
   }
 
@@ -1522,6 +1519,7 @@ const performSearch = async (forceSearch = false) => {
       `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&key=${config.googleBooks.apiKey}&maxResults=5`
     );
     
+    // Incrementa il contatore solo per le richieste riuscite
     apiState.incrementRequests();
     
     if (response.status === 429) {
@@ -1569,32 +1567,57 @@ const performSearch = async (forceSearch = false) => {
   }
 };
 
+const showSearchModeMessage = () => {
+  resultsDiv.innerHTML = `
+    <div class="p-3 text-amber-600">
+      <div class="mb-2">
+        <strong>Modalità di ricerca manuale attiva</strong>
+      </div>
+      <div class="text-sm text-gray-600">
+        Per preservare la quota giornaliera, la ricerca automatica è stata disattivata.
+        Usa il tasto Invio o il pulsante di ricerca per cercare.
+      </div>
+    </div>
+  `;
+  resultsDiv.classList.remove('hidden');
+};
+
+const showError = (message) => {
+  resultsDiv.innerHTML = `
+    <div class="p-3 text-red-600">
+      ${message}
+      <div class="mt-2 text-sm text-gray-600">
+        Puoi continuare a inserire i dati manualmente nei campi sottostanti.
+      </div>
+    </div>
+  `;
+  resultsDiv.classList.remove('hidden');
+};
+
+// Gestione eventi con debounce
 let debounceTimer;
 const DEBOUNCE_DELAY = 500;
 
+// Event listener per input con controllo della soglia
 searchInput.addEventListener('input', () => {
   clearTimeout(debounceTimer);
   if (!apiState.isOverThreshold()) {
     debounceTimer = setTimeout(() => performSearch(false), DEBOUNCE_DELAY);
+  } else {
+    showSearchModeMessage();
   }
 });
 
+// Event listener per click sul bottone
 searchBtn.addEventListener('click', () => performSearch(true));
 
+// Event listener per il tasto Invio
 searchInput.addEventListener('keypress', (e) => {
   if (e.key === 'Enter') {
     clearTimeout(debounceTimer);
     performSearch(true);
   }
 });
-
-// Make sure DOM is loaded before initializing
-document.addEventListener('DOMContentLoaded', () => {
-    apiState.loadState();
-});
-
-// Also initialize immediately in case the script runs after DOM is already loaded
-apiState.loadState();
 
 	
 
