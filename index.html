@@ -1353,11 +1353,10 @@ window.createBookEntry = function() {
    
 	
 	
-// Cache e contatore delle richieste
 const apiState = {
   dailyRequests: 0,
   lastResetDate: new Date().toDateString(),
-  QUOTA_THRESHOLD: 90,
+  QUOTA_THRESHOLD: 800,
   
   incrementRequests: function() {
     const today = new Date().toDateString();
@@ -1366,8 +1365,9 @@ const apiState = {
       this.lastResetDate = today;
     }
     this.dailyRequests++;
+    
     this.saveState();
-    this.updatePlaceholder();
+    this.updatePlaceholder(); // Add placeholder update when incrementing
     return this.dailyRequests;
   },
   
@@ -1402,37 +1402,20 @@ const apiState = {
         this.saveState();
       }
     }
-    this.updatePlaceholder();
+    this.updatePlaceholder(); // Update placeholder when loading state
   },
   
   updatePlaceholder: function() {
-    const searchInput = bookDiv.querySelector('.quick-search');
+    const searchInput = document.querySelector('.quick-search');
     if (searchInput) {
-      if (this.isOverThreshold()) {
-        searchInput.placeholder = "Cerca per titolo, autore o ISBN usando il tasto Invio o il pulsante di ricerca";
-      } else {
-        searchInput.placeholder = "Cerca per titolo, autore o ISBN...";
-      }
+      searchInput.placeholder = this.isOverThreshold() 
+        ? "Cerca per titolo, autore o ISBN usando il tasto Invio o il pulsante di ricerca"
+        : "Cerca per titolo, autore o ISBN...";
     }
   }
 };
 
-const showError = (message) => {
-  const resultsDiv = bookDiv.querySelector('.search-results');
-  resultsDiv.innerHTML = `
-    <div class="p-3 text-red-600">
-      ${message}
-      <div class="mt-2 text-sm text-gray-600">
-        Puoi continuare a inserire i dati manualmente nei campi sottostanti.
-      </div>
-    </div>
-  `;
-  resultsDiv.classList.remove('hidden');
-};
-
 const performSearch = async (forceSearch = false) => {
-  const searchInput = bookDiv.querySelector('.quick-search');
-  const resultsDiv = bookDiv.querySelector('.search-results');
   const query = searchInput.value.trim();
   
   if (!query) {
@@ -1446,7 +1429,7 @@ const performSearch = async (forceSearch = false) => {
   }
 
   if (apiState.isOverThreshold() && !forceSearch) {
-    resultsDiv.classList.add('hidden');
+    resultsDiv.classList.add('hidden'); // Hide results instead of showing message
     return;
   }
 
@@ -1505,15 +1488,6 @@ const performSearch = async (forceSearch = false) => {
 let debounceTimer;
 const DEBOUNCE_DELAY = 500;
 
-// Add search functionality with debounce
-const searchInput = bookDiv.querySelector('.quick-search');
-const searchBtn = bookDiv.querySelector('.search-btn');
-const resultsDiv = bookDiv.querySelector('.search-results');
-
-// Inizializza lo stato
-apiState.loadState();
-
-// Event listeners
 searchInput.addEventListener('input', () => {
   clearTimeout(debounceTimer);
   if (!apiState.isOverThreshold()) {
@@ -1529,6 +1503,9 @@ searchInput.addEventListener('keypress', (e) => {
     performSearch(true);
   }
 });
+
+// Initialize state and placeholder on load
+apiState.loadState();
 
 	
 
