@@ -1512,160 +1512,51 @@ const apiMonitoring = {
 
 	
 // Sistema di gestione stato API
-// Cache e contatore delle richieste
-const apiState = {
-  dailyRequests: 0,
-  lastResetDate: null,
-  QUOTA_THRESHOLD: 740,
-  lastKnownQuota: null,
-  
-  getPTDate: function() {
-    return new Date().toLocaleString("en-US", {
-      timeZone: "America/Los_Angeles",
-      dateStyle: "short"
-    });
-  },
-  
-  updateQuota: function(quotaData) {
-    if (quotaData) {
-      this.lastKnownQuota = quotaData;
-      this.dailyRequests = quotaData.remaining ? 
-        (1000 - quotaData.remaining) : // Assumendo una quota totale di 1000
-        this.dailyRequests;
-      
-      this.saveState();
+const performSearch = async () => {
+    const query = searchInput.value.trim();
+    if (!query) {
+        resultsDiv.classList.add('hidden');
+        return;
     }
-  },
-  
-  isOverThreshold: function() {
-    const ptToday = this.getPTDate();
-    if (this.lastResetDate !== ptToday) {
-      this.dailyRequests = 0;
-      this.lastResetDate = ptToday;
-      this.lastKnownQuota = null;
-      this.saveState();
-      return false;
+    try {
+        const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&key=${config.googleBooks.apiKey}&maxResults=5`);
+        const data = await response.json();
+        if (data.items && data.items.length > 0) {
+            resultsDiv.innerHTML = data.items.map(book => {
+                const info = book.volumeInfo;
+                return `
+                    <div class="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 transition-colors duration-150" onclick="selectBook(this, ${JSON.stringify({ title: info.title || '', authors: info.authors ? info.authors.join(', ') : '', publisher: info.publisher || '', year: info.publishedDate ? info.publishedDate.substring(0, 4) : '', isbn: info.industryIdentifiers ? info.industryIdentifiers.find(id => id.type === 'ISBN_13')?.identifier || info.industryIdentifiers.find(id => id.type === 'ISBN_10')?.identifier || '' : '' }).replace(/"/g, '&quot;')})">
+                        <div class="font-medium text-blue-600">${info.title || 'Titolo sconosciuto'}</div>
+                        <div class="text-sm text-gray-600">
+                            ${info.authors ? info.authors.join(', ') : 'Autore sconosciuto'}
+                            ${info.publishedDate ? `(${info.publishedDate.substring(0, 4)})` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            resultsDiv.classList.remove('hidden');
+        } else {
+            resultsDiv.innerHTML = '<div class="p-3 text-gray-600">Nessun risultato trovato</div>';
+            resultsDiv.classList.remove('hidden');
+        }
+    } catch (error) {
+        console.error('Error searching Google Books:', error);
+        resultsDiv.innerHTML = '<div class="p-3 text-red-600">Errore durante la ricerca</div>';
+        resultsDiv.classList.remove('hidden');
     }
-    return this.dailyRequests >= this.QUOTA_THRESHOLD;
-  },
-  
-  saveState: function() {
-    localStorage.setItem('apiState', JSON.stringify({
-      dailyRequests: this.dailyRequests,
-      lastResetDate: this.lastResetDate,
-      lastKnownQuota: this.lastKnownQuota
-    }));
-  },
-  
-  loadState: function() {
-    const saved = localStorage.getItem('apiState');
-    if (saved) {
-      const state = JSON.parse(saved);
-      const ptToday = this.getPTDate();
-      if (state.lastResetDate === ptToday) {
-        this.dailyRequests = state.dailyRequests;
-        this.lastResetDate = state.lastResetDate;
-        this.lastKnownQuota = state.lastKnownQuota;
-      } else {
-        this.dailyRequests = 0;
-        this.lastResetDate = ptToday;
-        this.lastKnownQuota = null;
-        this.saveState();
-      }
-    } else {
-      this.lastResetDate = this.getPTDate();
-      this.saveState();
-    }
-  },
-  
-  getCurrentCount: function() {
-    return this.dailyRequests;
-  }
 };
 
-// Carica lo stato salvato all'avvio
-apiState.loadState();
+// Add input event with debounce
+searchInput.addEventListener('input', () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(performSearch, 300); // Delay of 300ms
+});
 
-const performSearch = async (forceSearch = false) => {
-  const query = searchInput.value.trim();
-  
-  if (!query) {
-    resultsDiv.classList.add('hidden');
-    return;
-  }
+searchBtn.addEventListener('click', performSearch);
 
-  if (query.length < 3) {
-    resultsDiv.classList.add('hidden');
-    return;
-  }
-
-  if (apiState.isOverThreshold() && !forceSearch) {
-    showSearchModeMessage();
-    return;
-  }
-
-  try {
-    // Aggiungiamo il parametro quotaUser per tracciare meglio l'uso della quota
-    const response = await fetch(
-      `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&key=${config.googleBooks.apiKey}&maxResults=5&quotaUser=${encodeURIComponent(config.quotaUser || 'default')}`
-    );
-    
-    if (response.status === 429) {
-      showError('Limite giornaliero delle ricerche raggiunto. Riprova domani o inserisci i dati manualmente.');
-      return;
-    }
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    
-    // Aggiorna il conteggio della quota basandosi sui dati della risposta
-    if (data.quota) {
-      apiState.updateQuota(data.quota);
-    } else {
-      apiState.dailyRequests++;
-      apiState.saveState();
-    }
-    
-    if (data.items && data.items.length > 0) {
-      resultsDiv.innerHTML = data.items.map(book => {
-        const info = book.volumeInfo;
-        return `
-          <div class="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 transition-colors duration-150"
-               onclick="selectBook(this, ${JSON.stringify({
-                 title: info.title || '',
-                 authors: info.authors ? info.authors.join(', ') : '',
-                 publisher: info.publisher || '',
-                 year: info.publishedDate ? info.publishedDate.substring(0, 4) : '',
-                 isbn: info.industryIdentifiers ? 
-                       info.industryIdentifiers.find(id => id.type === 'ISBN_13')?.identifier || 
-                       info.industryIdentifiers.find(id => id.type === 'ISBN_10')?.identifier || 
-                       '' : ''
-               }).replace(/"/g, '&quot;')})">
-            <div class="font-medium text-blue-600">${info.title || 'Titolo sconosciuto'}</div>
-            <div class="text-sm text-gray-600">
-              ${info.authors ? info.authors.join(', ') : 'Autore sconosciuto'}
-              ${info.publishedDate ? `(${info.publishedDate.substring(0, 4)})` : ''}
-            </div>
-            <div class="text-xs text-gray-500 mt-1">
-              Richieste API: ${apiState.getCurrentCount()}/${apiState.QUOTA_THRESHOLD}
-              ${apiState.lastKnownQuota ? ` (Quota rimanente: ${apiState.lastKnownQuota.remaining})` : ''}
-            </div>
-          </div>
-        `;
-      }).join('');
-      resultsDiv.classList.remove('hidden');
-    } else {
-      resultsDiv.innerHTML = '<div class="p-3 text-gray-600">Nessun risultato trovato</div>';
-      resultsDiv.classList.remove('hidden');
-    }
-  } catch (error) {
-    console.error('Error searching Google Books:', error);
-    showError('Errore durante la ricerca. Riprova più tardi o inserisci i dati manualmente.');
-  }
-};
+searchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') performSearch();
+});
 
 
 	
