@@ -1508,7 +1508,7 @@ const apiMonitoring = {
 
 
 	
-
+let debounceTimer;
 const performSearch = async () => {
     const query = searchInput.value.trim();
     if (!query) {
