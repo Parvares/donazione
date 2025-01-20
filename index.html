@@ -1510,11 +1510,86 @@ const apiMonitoring = {
 	
 
 	
+// DOM Elements - using bookDiv context
+const searchInput = bookDiv.querySelector('.quick-search');
+const searchBtn = bookDiv.querySelector('.search-btn');
+const resultsDiv = bookDiv.querySelector('.search-results');
+
 let debounceTimer;
 let selectedIndex = -1; // Track currently selected item
-const resultsDiv = document.querySelector('#resultsDiv'); // Make sure to update this selector
-const searchInput = document.querySelector('#searchInput'); // Make sure to update this selector
-const searchBtn = document.querySelector('#searchBtn'); // Make sure to update this selector
+
+// API Monitoring implementation
+const apiMonitoring = {
+    logs: [],
+    MAX_LOGS: 1000,
+    
+    logRequest: function(data) {
+        const logEntry = {
+            timestamp: new Date().toISOString(),
+            query: data.query,
+            status: data.status,
+            responseTime: data.responseTime,
+            userAgent: navigator.userAgent,
+            page: window.location.pathname,
+            dailyCount: data.dailyCount
+        };
+        
+        this.logs.unshift(logEntry);
+        
+        if (this.logs.length > this.MAX_LOGS) {
+            this.logs = this.logs.slice(0, this.MAX_LOGS);
+        }
+        
+        this.saveLogs();
+        console.log('API Request Log:', logEntry);
+    },
+    
+    saveLogs: function() {
+        try {
+            localStorage.setItem('apiLogs', JSON.stringify(this.logs));
+        } catch (e) {
+            console.error('Error saving logs to localStorage:', e);
+        }
+    },
+    
+    loadLogs: function() {
+        try {
+            const savedLogs = localStorage.getItem('apiLogs');
+            if (savedLogs) {
+                this.logs = JSON.parse(savedLogs);
+            }
+        } catch (e) {
+            console.error('Error loading logs from localStorage:', e);
+        }
+    },
+    
+    getDailyStats: function() {
+        const today = new Date().toISOString().split('T')[0];
+        const todayLogs = this.logs.filter(log => log.timestamp.startsWith(today));
+        
+        return {
+            totalRequests: todayLogs.length,
+            successRate: (todayLogs.filter(log => log.status === 'success').length / todayLogs.length) * 100 || 0,
+            averageResponseTime: todayLogs.reduce((acc, log) => acc + log.responseTime, 0) / todayLogs.length || 0,
+            mostSearchedTerms: this.getMostSearchedTerms(todayLogs)
+        };
+    },
+    
+    getMostSearchedTerms: function(logs) {
+        const terms = {};
+        logs.forEach(log => {
+            terms[log.query] = (terms[log.query] || 0) + 1;
+        });
+        
+        return Object.entries(terms)
+            .sort(([,a], [,b]) => b - a)
+            .slice(0, 10)
+            .map(([term, count]) => ({ term, count }));
+    }
+};
+
+// Initialize API monitoring
+apiMonitoring.loadLogs();
 
 const performSearch = async () => {
     const query = searchInput.value.trim();
@@ -1523,9 +1598,20 @@ const performSearch = async () => {
         return;
     }
     
+    const startTime = Date.now();
+    
     try {
         const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&key=${config.googleBooks.apiKey}&maxResults=5`);
         const data = await response.json();
+        const responseTime = Date.now() - startTime;
+        
+        // Log the API request
+        apiMonitoring.logRequest({
+            query,
+            status: response.ok ? 'success' : 'error',
+            responseTime,
+            dailyCount: apiMonitoring.getDailyStats().totalRequests + 1
+        });
         
         if (data.items && data.items.length > 0) {
             resultsDiv.innerHTML = data.items.map((book, index) => {
@@ -1555,6 +1641,13 @@ const performSearch = async () => {
         console.error('Error searching Google Books:', error);
         resultsDiv.innerHTML = '<div class="error">Errore durante la ricerca</div>';
         resultsDiv.classList.remove('hidden');
+        
+        apiMonitoring.logRequest({
+            query,
+            status: 'error',
+            responseTime: Date.now() - startTime,
+            dailyCount: apiMonitoring.getDailyStats().totalRequests + 1
+        });
     }
 };
 
@@ -1581,7 +1674,7 @@ const updateSelection = (newIndex) => {
     items[selectedIndex].focus();
 };
 
-// Handle keyboard navigation
+// Event Listeners
 document.addEventListener('keydown', (e) => {
     const items = resultsDiv.querySelectorAll('.result-item');
     if (items.length === 0 || resultsDiv.classList.contains('hidden')) return;
@@ -1611,11 +1704,7 @@ searchInput.addEventListener('input', () => {
 
 searchBtn.addEventListener('click', performSearch);
 
-searchInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') performSearch();
-});
-
-// Add some basic styles
+// Add styles
 const styles = `
     .result-item {
         padding: 10px;
@@ -1639,11 +1728,9 @@ const styles = `
     }
 `;
 
-// Add styles to document
 const styleSheet = document.createElement('style');
 styleSheet.textContent = styles;
 document.head.appendChild(styleSheet);
-
 
 	
 
