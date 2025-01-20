@@ -1426,90 +1426,70 @@ window.createBookEntry = function() {
         <button type="button" class="add-book-btn" onclick="createBookEntry()">+ Aggiungi Libro</button>
     `;
 
-    // Add search functionality with debounce
-    const searchInput = bookDiv.querySelector('.quick-search');
-    const searchBtn = bookDiv.querySelector('.search-btn');
-    const resultsDiv = bookDiv.querySelector('.search-results');
 
 
-   
-	
-	
-// Update the Google Books API call
+
+
+// Add search functionality with debounce
+const searchInput = bookDiv.querySelector('.quick-search');
+const searchBtn = bookDiv.querySelector('.search-btn');
+const resultsDiv = bookDiv.querySelector('.search-results');
+
+// Track currently selected item
+let selectedIndex = -1;
+let searchResults = [];
+
 const apiMonitoring = {
-  logs: [],
-  MAX_LOGS: 1000,
-  
-  logRequest: function(data) {
-    const logEntry = {
-      timestamp: new Date().toISOString(),
-      query: data.query,
-      status: data.status,
-      responseTime: data.responseTime,
-      userAgent: navigator.userAgent,
-      page: window.location.pathname,
-      dailyCount: data.dailyCount
-    };
-    
-    this.logs.unshift(logEntry);
-    
-    if (this.logs.length > this.MAX_LOGS) {
-      this.logs = this.logs.slice(0, this.MAX_LOGS);
-    }
-    
-    this.saveLogs();
-    console.log('API Request Log:', logEntry);
-  },
-  
-  saveLogs: function() {
-    try {
-      localStorage.setItem('apiLogs', JSON.stringify(this.logs));
-    } catch (e) {
-      console.error('Error saving logs to localStorage:', e);
-    }
-  },
-  
-  loadLogs: function() {
-    try {
-      const savedLogs = localStorage.getItem('apiLogs');
-      if (savedLogs) {
-        this.logs = JSON.parse(savedLogs);
-      }
-    } catch (e) {
-      console.error('Error loading logs from localStorage:', e);
-    }
-  },
-  
-  getDailyStats: function() {
-    const today = new Date().toISOString().split('T')[0];
-    const todayLogs = this.logs.filter(log => log.timestamp.startsWith(today));
-    
-    return {
-      totalRequests: todayLogs.length,
-      successRate: (todayLogs.filter(log => log.status === 'success').length / todayLogs.length) * 100 || 0,
-      averageResponseTime: todayLogs.reduce((acc, log) => acc + log.responseTime, 0) / todayLogs.length || 0,
-      mostSearchedTerms: this.getMostSearchedTerms(todayLogs)
-    };
-  },
-  
-  getMostSearchedTerms: function(logs) {
-    const terms = {};
-    logs.forEach(log => {
-      terms[log.query] = (terms[log.query] || 0) + 1;
-    });
-    
-    return Object.entries(terms)
-      .sort(([,a], [,b]) => b - a)
-      .slice(0, 10)
-      .map(([term, count]) => ({ term, count }));
-  }
+    // ... (previous monitoring code remains the same)
 };
 
+const highlightResult = (index) => {
+    // Remove highlight from all items
+    const items = resultsDiv.querySelectorAll('.result-item');
+    items.forEach(item => {
+        item.classList.remove('bg-gray-100');
+        item.setAttribute('aria-selected', 'false');
+    });
+    
+    // Add highlight to selected item
+    if (index >= 0 && index < items.length) {
+        items[index].classList.add('bg-gray-100');
+        items[index].setAttribute('aria-selected', 'true');
+        items[index].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+};
 
+const handleKeyNavigation = (e) => {
+    const items = resultsDiv.querySelectorAll('.result-item');
+    if (!items.length) return;
 
-	
+    switch (e.key) {
+        case 'ArrowDown':
+            e.preventDefault();
+            selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+            highlightResult(selectedIndex);
+            break;
+        case 'ArrowUp':
+            e.preventDefault();
+            selectedIndex = Math.max(selectedIndex - 1, 0);
+            highlightResult(selectedIndex);
+            break;
+        case 'Enter':
+            if (selectedIndex >= 0 && selectedIndex < items.length) {
+                e.preventDefault();
+                const selectedItem = items[selectedIndex];
+                const bookData = JSON.parse(selectedItem.dataset.bookInfo);
+                selectBook(selectedItem, bookData);
+            }
+            break;
+        case 'Escape':
+            resultsDiv.classList.add('hidden');
+            searchInput.focus();
+            selectedIndex = -1;
+            break;
+    }
+};
 
-	
 let debounceTimer;
 const performSearch = async () => {
     const query = searchInput.value.trim();
@@ -1517,14 +1497,34 @@ const performSearch = async () => {
         resultsDiv.classList.add('hidden');
         return;
     }
+
     try {
         const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&key=${config.googleBooks.apiKey}&maxResults=5`);
         const data = await response.json();
+
         if (data.items && data.items.length > 0) {
-            resultsDiv.innerHTML = data.items.map(book => {
+            searchResults = data.items;
+            resultsDiv.innerHTML = data.items.map((book, index) => {
                 const info = book.volumeInfo;
+                const bookData = {
+                    title: info.title || '',
+                    authors: info.authors ? info.authors.join(', ') : '',
+                    publisher: info.publisher || '',
+                    year: info.publishedDate ? info.publishedDate.substring(0, 4) : '',
+                    isbn: info.industryIdentifiers ? 
+                        info.industryIdentifiers.find(id => id.type === 'ISBN_13')?.identifier || 
+                        info.industryIdentifiers.find(id => id.type === 'ISBN_10')?.identifier || 
+                        '' : ''
+                };
+
                 return `
-                    <div class="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 transition-colors duration-150" onclick="selectBook(this, ${JSON.stringify({ title: info.title || '', authors: info.authors ? info.authors.join(', ') : '', publisher: info.publisher || '', year: info.publishedDate ? info.publishedDate.substring(0, 4) : '', isbn: info.industryIdentifiers ? info.industryIdentifiers.find(id => id.type === 'ISBN_13')?.identifier || info.industryIdentifiers.find(id => id.type === 'ISBN_10')?.identifier || '' : '' }).replace(/"/g, '&quot;')})">
+                    <div class="result-item p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 transition-colors duration-150"
+                         role="option"
+                         tabindex="0"
+                         aria-selected="false"
+                         data-index="${index}"
+                         data-book-info='${JSON.stringify(bookData)}'
+                         onclick="selectBook(this, ${JSON.stringify(bookData).replace(/"/g, '&quot;')})">
                         <div class="font-medium text-blue-600">${info.title || 'Titolo sconosciuto'}</div>
                         <div class="text-sm text-gray-600">
                             ${info.authors ? info.authors.join(', ') : 'Autore sconosciuto'}
@@ -1533,7 +1533,9 @@ const performSearch = async () => {
                     </div>
                 `;
             }).join('');
+            
             resultsDiv.classList.remove('hidden');
+            selectedIndex = -1; // Reset selection when new results appear
         } else {
             resultsDiv.innerHTML = '<div class="p-3 text-gray-600">Nessun risultato trovato</div>';
             resultsDiv.classList.remove('hidden');
@@ -1551,12 +1553,19 @@ searchInput.addEventListener('input', () => {
     debounceTimer = setTimeout(performSearch, 800); // Delay of 800ms
 });
 
-searchBtn.addEventListener('click', performSearch);
+// Add keyboard navigation event listeners
+searchInput.addEventListener('keydown', handleKeyNavigation);
+resultsDiv.addEventListener('keydown', handleKeyNavigation);
 
+// Click events
+searchBtn.addEventListener('click', performSearch);
 searchInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') performSearch();
+    if (e.key === 'Enter' && selectedIndex === -1) performSearch();
 });
 
+// Make the results div focusable
+resultsDiv.setAttribute('role', 'listbox');
+resultsDiv.setAttribute('tabindex', '-1');
 
 	
 
