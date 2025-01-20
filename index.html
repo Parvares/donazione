@@ -1595,7 +1595,6 @@ resultsDiv.setAttribute('tabindex', '-1');
 
 
 	    
-
 // Modified selectBook function
 window.selectBook = function(element, bookData) {
     const bookEntry = element.closest('.book-entry');
@@ -1606,12 +1605,17 @@ window.selectBook = function(element, bookData) {
     bookEntry.querySelector('.book-isbn').value = bookData.isbn;
     bookEntry.querySelector('.search-results').classList.add('hidden');
     
+    // Clear the search input
+    bookEntry.querySelector('.quick-search').value = '';
+    
     // Hide the quick search section
     const quickSearchSection = bookEntry.querySelector('.mb-5:has(.quick-search)');
     if (quickSearchSection) {
         quickSearchSection.style.display = 'none';
     }
 };
+
+	
 
 
 	    
