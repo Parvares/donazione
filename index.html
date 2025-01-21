@@ -1501,7 +1501,7 @@ window.selectBookAndClear = function(element, bookData) {
 // Event Listeners
 searchInput.addEventListener('input', () => {
     clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(performSearch, 800);
+    debounceTimer = setTimeout(performSearch, 600);
 });
 
 searchInput.addEventListener('keydown', handleKeyNavigation);
@@ -1514,21 +1514,15 @@ document.addEventListener('click', (e) => {
         selectedIndex = -1;
     }
 });
-	
-
 
 	
 
 
 	
-    // Close results when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.quick-search') && !e.target.closest('.search-results')) {
-            resultsDiv.classList.add('hidden');
-        }
-    });
 
-    const inputs = bookDiv.querySelectorAll('input');
+
+	
+const inputs = bookDiv.querySelectorAll('input');
     inputs.forEach(input => {
         if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
             input.addEventListener('input', () => validateBookField(input));
