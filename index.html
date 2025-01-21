@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
    <meta name="description" content="Dona libri a Ostia e supporta la cultura con libri usati o nuovi. Scopri come fare la differenza!">
 
 
@@ -29,9 +28,6 @@
     --accent: #700f0a;     /* Darker bordeaux */
 }
 
-
-	
-	    
 .location-icon {
     transition: all 0.3s ease;
     /* Rosso molto scuro, quasi bordeaux */
@@ -109,8 +105,7 @@ select.error {
 
 .required-asterisk {
     color: #970a2c !important;
-    
-    font-size: 1.25em !important;
+        font-size: 1.25em !important;
     display: inline-block !important;
     margin-left: 4px !important;
     vertical-align: middle !important;
@@ -232,24 +227,13 @@ select.error {
 
         
         
-.top-banner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.8rem 2rem; 
-    background-color: white;
-    position: relative;
-    z-index: 1;
-}
-.top-banner a {
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-}
-
-.top-banner a img {
-    height: 40px;
-}
+        .top-banner {
+            background-color: white;
+            padding: 0.8rem 2rem; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
         .roma-logo {
             height: 40px;
@@ -508,11 +492,11 @@ document.head.appendChild(style);
 
 
 
-/* Rimuovi le regole dei tooltip per i social */
+
 .social-icons a::before {
     content: none !important;
 }
-
+	    
 
 
 
@@ -599,6 +583,7 @@ document.head.appendChild(style);
     }
 }
 
+
 /* Tooltip style for the info icon */
 .group:hover .group-hover\:visible {
   visibility: visible !important;
@@ -629,12 +614,9 @@ document.head.appendChild(style);
   max-width: 300px !important;
   white-space: normal !important;
   line-height: 1.4 !important;
-}
-
-
-
+}	
 	
-    </style>
+</style>
 
 
 
@@ -687,13 +669,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
-
-
-	
 </script>
 	
-<body> 
+<body>
 <div class="top-banner">
     <a href="https://culture.roma.it/" target="_blank" title="Questo link si apre in una nuova finestra">
         <img src="roma.png" alt="Logo Roma" class="roma-logo">
@@ -718,10 +696,6 @@ document.addEventListener('DOMContentLoaded', () => {
         </a>
     </div>
 </div>
-
-	
-
-    
     
   <header>
     <div class="container-header">
@@ -754,7 +728,6 @@ document.addEventListener('DOMContentLoaded', () => {
        <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg mt-2"> <!-- Removed shadow-md class -->
             <div class="flex flex-col mb-10 text-left space-y-4 px-4">
                 <div class="flex items-center gap-2 mb-2">
-			
 <a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" 
    target="_blank" 
    title="Visualizza la posizione sulla mappa">
@@ -762,6 +735,7 @@ document.addEventListener('DOMContentLoaded', () => {
          src="location.svg" 
          class="location-icon h-5 w-5">
 </a>
+
 			
 <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" 
    target="_blank"
@@ -784,8 +758,6 @@ document.addEventListener('DOMContentLoaded', () => {
 <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r">
     Compila il modulo per donare i tuoi libri alla biblioteca. I campi contrassegnati con <span class="required-asterisk">*</span> sono obbligatori. E' raccomandato compilare anche il campo ISBN per garantire una più accurata identificazione dei volumi.
 </div>
-
-	    
 
             
             <form id="donationForm" novalidate>
@@ -908,51 +880,24 @@ function showGlobalErrorPopup(message) {
         
 
 function showSuccessPopup(message) {
-    // Remove any existing popups
     const existingPopups = document.querySelectorAll('.success-popup');
     existingPopups.forEach(popup => document.body.removeChild(popup));
 
-    // Create the popup
     const popup = document.createElement('div');
-    popup.className = 'success-popup fixed top-4 left-1/2 transform -translate-x-1/2 px-6 py-4 rounded shadow-lg flex items-center gap-3';
-    popup.style.backgroundColor = '#22c55e'; // Green background
-    popup.style.color = '#ffffff'; // White text
+    popup.className = 'success-popup fixed top-4 left-1/2 transform -translate-x-1/2 px-6 py-4 rounded shadow-lg';
+    popup.style.backgroundColor = '#22c55e';
+    popup.style.color = 'white';
     popup.style.zIndex = '50';
-    popup.style.fontFamily = '"Space Grotesk", sans-serif';
-    popup.style.fontSize = '16px';
-    popup.style.lineHeight = '1.6';
+    popup.innerHTML = message;
 
-    // Add the checkmark icon
-    const icon = document.createElement('span');
-    icon.innerHTML = '✔️';
-    icon.style.fontSize = '20px';
-    popup.appendChild(icon);
-
-    // Add the message with styled email
-    const textContainer = document.createElement('div');
-    // Extract email from the message using regex
-    const messageText = message.replace(
-        /(.+)<br>(.+) ([\w.-]+@[\w.-]+\.\w+)(.*)/, 
-        '<strong style="font-weight: 700; font-size: 1.1em; display: block; margin-bottom: 6px;">$1</strong>' +
-        '<span style="display: block; opacity: 0.95;">$2 <span style="color: #155e75; font-weight: 900; text-decoration: underline;">$3</span>$4</span>'
-    );
-    textContainer.innerHTML = messageText;
-    popup.appendChild(textContainer);
-
-    // Remove automatically after 5 seconds
     setTimeout(() => {
         if (document.body.contains(popup)) {
             document.body.removeChild(popup);
         }
     }, 5000);
 
-    // Add the popup to the body
     document.body.appendChild(popup);
 }
-
-
-
-	
 
 function showLoadingOverlay() {
     const overlay = document.createElement('div');
@@ -1034,7 +979,6 @@ function validateField(input, showErrors = true) {
     }
     return isValid;
 }
-
 	
 
 // Add event listeners for email field focus handling
@@ -1061,7 +1005,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-
+// AGGIUNGI QUESTA NUOVA FUNZIONE QUI
 function validateISBN(input) {
     const value = input.value.trim();
     const errorElement = input.parentElement.querySelector('.error-message');
@@ -1139,8 +1083,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
-
-
         
 
 // Aggiorna la funzione validateBookField
@@ -1187,7 +1129,6 @@ function validateBookField(input, showErrors = true) {
     }
     return isValid;
 }
-	
 
 // MANTIENI QUESTI EVENT LISTENER ESISTENTI PER IL CAMPO ANNO
 document.addEventListener('click', function(e) {
@@ -1270,9 +1211,7 @@ function validateCheckbox(checkbox) {
     }
 }
 
-
-
-
+        
 // Aggiungere questa funzione per gestire la duplicazione
 window.duplicateBook = function(button) {
     const originalEntry = button.closest('.book-entry');
@@ -1345,12 +1284,11 @@ window.createBookEntry = function() {
                 `}
             </div>
         </div>
-        
+
 
 
  
 
-<!-- Sostituisci il div esistente con questo nuovo codice -->
 <div class="mb-5">
   <div class="flex items-center gap-2 mb-2">
     <label class="flex items-center gap-2">
@@ -1368,9 +1306,6 @@ window.createBookEntry = function() {
     </label>
   </div>
 </div>
-
-
-
 
 
 
@@ -1406,7 +1341,6 @@ window.createBookEntry = function() {
             <p class="hidden error-message text-sm text-red-500 mt-1">Anno non valido</p>
         </div>
 
- 
 <div class="mb-5">
     <div class="flex items-center gap-1">
         <label class="block text-slate-700 font-medium">ISBN <span class="text-gray-500 font-normal">(raccomandato)</span></label>
@@ -1426,105 +1360,65 @@ window.createBookEntry = function() {
         <button type="button" class="add-book-btn" onclick="createBookEntry()">+ Aggiungi Libro</button>
     `;
 
-    // Add search functionality with debounce
-    const searchInput = bookDiv.querySelector('.quick-search');
-    const searchBtn = bookDiv.querySelector('.search-btn');
-    const resultsDiv = bookDiv.querySelector('.search-results');
 
 
-   
+
 	
-	
-// Update the Google Books API call
-const apiMonitoring = {
-  logs: [],
-  MAX_LOGS: 1000,
-  
-  logRequest: function(data) {
-    const logEntry = {
-      timestamp: new Date().toISOString(),
-      query: data.query,
-      status: data.status,
-      responseTime: data.responseTime,
-      userAgent: navigator.userAgent,
-      page: window.location.pathname,
-      dailyCount: data.dailyCount
-    };
-    
-    this.logs.unshift(logEntry);
-    
-    if (this.logs.length > this.MAX_LOGS) {
-      this.logs = this.logs.slice(0, this.MAX_LOGS);
-    }
-    
-    this.saveLogs();
-    console.log('API Request Log:', logEntry);
-  },
-  
-  saveLogs: function() {
-    try {
-      localStorage.setItem('apiLogs', JSON.stringify(this.logs));
-    } catch (e) {
-      console.error('Error saving logs to localStorage:', e);
-    }
-  },
-  
-  loadLogs: function() {
-    try {
-      const savedLogs = localStorage.getItem('apiLogs');
-      if (savedLogs) {
-        this.logs = JSON.parse(savedLogs);
-      }
-    } catch (e) {
-      console.error('Error loading logs from localStorage:', e);
-    }
-  },
-  
-  getDailyStats: function() {
-    const today = new Date().toISOString().split('T')[0];
-    const todayLogs = this.logs.filter(log => log.timestamp.startsWith(today));
-    
-    return {
-      totalRequests: todayLogs.length,
-      successRate: (todayLogs.filter(log => log.status === 'success').length / todayLogs.length) * 100 || 0,
-      averageResponseTime: todayLogs.reduce((acc, log) => acc + log.responseTime, 0) / todayLogs.length || 0,
-      mostSearchedTerms: this.getMostSearchedTerms(todayLogs)
-    };
-  },
-  
-  getMostSearchedTerms: function(logs) {
-    const terms = {};
-    logs.forEach(log => {
-      terms[log.query] = (terms[log.query] || 0) + 1;
+// Add search functionality with debounce
+const searchInput = bookDiv.querySelector('.quick-search');
+const searchBtn = bookDiv.querySelector('.search-btn');
+const resultsDiv = bookDiv.querySelector('.search-results');
+
+let debounceTimer;
+let selectedIndex = -1;
+let searchResults = [];
+
+const highlightResult = (index) => {
+    // Remove previous highlight
+    resultsDiv.querySelectorAll('.search-result').forEach(result => {
+        result.classList.remove('bg-gray-100');
+        result.setAttribute('aria-selected', 'false');
     });
     
-    return Object.entries(terms)
-      .sort(([,a], [,b]) => b - a)
-      .slice(0, 10)
-      .map(([term, count]) => ({ term, count }));
-  }
+    // Add new highlight
+    if (index >= 0 && index < searchResults.length) {
+        const resultElement = resultsDiv.querySelectorAll('.search-result')[index];
+        resultElement.classList.add('bg-gray-100');
+        resultElement.setAttribute('aria-selected', 'true');
+        resultElement.scrollIntoView({ block: 'nearest' });
+    }
 };
 
-
-
-	
-
-	
-let debounceTimer;
 const performSearch = async () => {
     const query = searchInput.value.trim();
     if (!query) {
         resultsDiv.classList.add('hidden');
+        selectedIndex = -1;
+        searchResults = [];
         return;
     }
+    
     try {
         const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&key=${config.googleBooks.apiKey}&maxResults=5`);
         const data = await response.json();
+        
         if (data.items && data.items.length > 0) {
-            resultsDiv.innerHTML = data.items.map(book => {
+            searchResults = data.items;
+            resultsDiv.innerHTML = searchResults.map((book, index) => {
                 const info = book.volumeInfo;
                 return `
-                    <div class="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 transition-colors duration-150" onclick="selectBook(this, ${JSON.stringify({ title: info.title || '', authors: info.authors ? info.authors.join(', ') : '', publisher: info.publisher || '', year: info.publishedDate ? info.publishedDate.substring(0, 4) : '', isbn: info.industryIdentifiers ? info.industryIdentifiers.find(id => id.type === 'ISBN_13')?.identifier || info.industryIdentifiers.find(id => id.type === 'ISBN_10')?.identifier || '' : '' }).replace(/"/g, '&quot;')})">
+                    <div class="search-result p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 transition-colors duration-150"
+                         role="option"
+                         aria-selected="false"
+                         tabindex="-1"
+                         data-index="${index}"
+                         onclick="selectBook(this, ${JSON.stringify({ 
+                             title: info.title || '', 
+                             authors: info.authors ? info.authors.join(', ') : '', 
+                             publisher: info.publisher || '', 
+                             year: info.publishedDate ? info.publishedDate.substring(0, 4) : '', 
+                             isbn: info.industryIdentifiers ? info.industryIdentifiers.find(id => id.type === 'ISBN_13')?.identifier || info.industryIdentifiers.find(id => id.type === 'ISBN_10')?.identifier || '' : '' 
+                         }).replace(/"/g, '&quot;')})">
                         <div class="font-medium text-blue-600">${info.title || 'Titolo sconosciuto'}</div>
                         <div class="text-sm text-gray-600">
                             ${info.authors ? info.authors.join(', ') : 'Autore sconosciuto'}
@@ -1533,38 +1427,87 @@ const performSearch = async () => {
                     </div>
                 `;
             }).join('');
+            
             resultsDiv.classList.remove('hidden');
+            selectedIndex = -1; // Reset selection
+            
+            // Add role for accessibility
+            resultsDiv.setAttribute('role', 'listbox');
+            resultsDiv.setAttribute('aria-label', 'Risultati ricerca libri');
         } else {
             resultsDiv.innerHTML = '<div class="p-3 text-gray-600">Nessun risultato trovato</div>';
             resultsDiv.classList.remove('hidden');
+            searchResults = [];
+            selectedIndex = -1;
         }
     } catch (error) {
         console.error('Error searching Google Books:', error);
         resultsDiv.innerHTML = '<div class="p-3 text-red-600">Errore durante la ricerca</div>';
         resultsDiv.classList.remove('hidden');
+        searchResults = [];
+        selectedIndex = -1;
     }
 };
 
-// Add input event with debounce
+const handleKeyNavigation = (e) => {
+    if (!searchResults.length || resultsDiv.classList.contains('hidden')) {
+        return;
+    }
+
+    switch (e.key) {
+        case 'ArrowDown':
+            e.preventDefault();
+            selectedIndex = Math.min(selectedIndex + 1, searchResults.length - 1);
+            highlightResult(selectedIndex);
+            break;
+            
+        case 'ArrowUp':
+            e.preventDefault();
+            selectedIndex = Math.max(selectedIndex - 1, 0);
+            highlightResult(selectedIndex);
+            break;
+            
+        case 'Enter':
+            e.preventDefault();
+            if (selectedIndex >= 0 && selectedIndex < searchResults.length) {
+                const selectedResult = resultsDiv.querySelectorAll('.search-result')[selectedIndex];
+                selectedResult.click();
+            }
+            break;
+            
+        case 'Escape':
+            e.preventDefault();
+            resultsDiv.classList.add('hidden');
+            searchInput.blur();
+            selectedIndex = -1;
+            break;
+    }
+};
+
+// Event Listeners
 searchInput.addEventListener('input', () => {
     clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(performSearch, 800); // Delay of 800ms
+    debounceTimer = setTimeout(performSearch, 800);
 });
 
+searchInput.addEventListener('keydown', handleKeyNavigation);
 searchBtn.addEventListener('click', performSearch);
 
-searchInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') performSearch();
-});
-
-
-	
-
-    
-	
-	
-	
 // Close results when clicking outside
+document.addEventListener('click', (e) => {
+    if (!resultsDiv.contains(e.target) && e.target !== searchInput) {
+        resultsDiv.classList.add('hidden');
+        selectedIndex = -1;
+    }
+});
+	
+
+
+	
+
+
+	
+    // Close results when clicking outside
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.quick-search') && !e.target.closest('.search-results')) {
             resultsDiv.classList.add('hidden');
@@ -1738,6 +1681,7 @@ window.resetBookFields = function(button) {
 	    
 
 
+// Aggiorna il listener del form submit
 document.getElementById('donationForm').addEventListener('submit', async (event) => {
     event.preventDefault();
 
@@ -1777,6 +1721,7 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
         showGlobalErrorPopup('Per favore, compila correttamente tutti i campi obbligatori.');
         return;
     }
+
 	
  
     // Get form data
@@ -1826,61 +1771,46 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
         </table>`
     ).join('');
 
-    const emailData = {
-        service_id: config.emailjs.serviceId,
-        template_id: config.emailjs.templateId,
-        user_id: config.emailjs.publicKey,
-        template_params: {
-            to_email: config.library.email,
-            from_name: `${nome} ${cognome}`,
-            from_email: email,
-            reply_to: email,
-            tessera: tessera || 'Non specificata',
-            telefono: telefono || 'Non specificato',
-            books: formattedBooks,
-            notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
-        }
-    };
-
-    // console.log('Request Data:', JSON.stringify(emailData, null, 2));
-
     showLoadingOverlay();
 
     try {
-        const response = await fetch('https://donation-limiterjs.bibliotecamorante.workers.dev/api/donate', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
+        const response = await emailjs.send(
+            config.emailjs.serviceId,
+            config.emailjs.templateId,
+            {
+                to_email: config.library.email,
+                from_name: `${nome} ${cognome}`,
+                from_email: email,
+                reply_to: email,
+                tessera: tessera || 'Non specificata',
+                telefono: telefono || 'Non specificato',
+                books: formattedBooks,
+                notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
             },
-            body: JSON.stringify(emailData)
-        });
+            config.emailjs.publicKey
+        );
 
-        console.log('Response status:', response.status);
-        const result = await response.json();
-        console.log('Response data:', result);
-
-if (response.ok) {
-    const userEmail = document.getElementById('email').value.trim();
-    showSuccessPopup(`Donazione inviata con successo!<br>Riceverai presto una risposta a <span style="color: #D5E5F6; font-weight: 500;">${userEmail}</span>`);
-            
-    // Reset form
-    event.target.reset();
-    document.getElementById('bookList').innerHTML = '';
-    bookCount = 0;
-    createBookEntry();
-
-            // Reset errors
-            const errorMessages = document.querySelectorAll('.error-message');
-            errorMessages.forEach(msg => msg.classList.add('hidden'));
-        } else {
-            throw new Error(result.error || 'Si è verificato un errore durante l\'invio della donazione.');
-        }
-    } catch (error) {
-        console.error('Full error:', error);
-        showGlobalErrorPopup(error.message || 'Si è verificato un errore durante l\'invio. Riprova più tardi.');
-    } finally {
         removeLoadingOverlay();
-    }
+        showSuccessPopup('La tua donazione è stata inviata con successo!');
+        
+        // Reset form
+        event.target.reset();
+        document.getElementById('bookList').innerHTML = '';
+        bookCount = 0;
+        createBookEntry();
+
+        // Reset errors
+        const errorMessages = document.querySelectorAll('.error-message');
+        errorMessages.forEach(msg => {
+            msg.classList.add('hidden');
+        });
+   } catch (error) {
+    console.error('Error:', error);
+    removeLoadingOverlay();
+    showGlobalErrorPopup('Si è verificato un errore durante l\'invio. Riprova più tardi.');
+} finally {
+    removeLoadingOverlay();
+}
 });
         
     </script>
@@ -1927,10 +1857,21 @@ if (response.ok) {
 </footer>
 
 
+	
+
+<style>
+    /* Cambia il colore del numero quando viene cliccato o "tappato" */
+    .phone-link:active {
+        color: rgba(255, 255, 255, 0.7); /* Bianco più leggero */
+    }
+</style>
+
+
+
+
+
 
     
-
-
 
     
 </body>
