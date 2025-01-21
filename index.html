@@ -726,72 +726,34 @@ document.addEventListener('DOMContentLoaded', () => {
         
 
 	    
-<div class="max-w-4xl mx-auto bg-white p-8 rounded-lg mt-2">
-    <div class="flex flex-col mb-10 text-left space-y-4 px-4">
-        <div class="flex items-center gap-2 mb-2">
-            <a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" target="_blank" title="Visualizza la posizione sulla mappa">
-                <img alt="Posizione" src="location.svg" class="location-icon h-5 w-5">
-            </a>
-        </div>
-        <div id="map" style="height: 400px; width: 100%;"></div>
-    </div>
-</div>
+    <script>
+        const map = L.map('map').setView([41.7325117, 12.2718834], 13);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
 
-<!-- Includere Leaflet.js -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        // Aggiunge il marker della biblioteca
+        L.marker([41.7325117, 12.2718834])
+            .addTo(map)
+            .bindPopup('Biblioteca');
 
-<script>
-// Inizializzare la mappa
-var map = L.map('map').setView([41.7325117, 12.2718834], 18);
+        // Area approssimativa del Municipio X (questo è un esempio semplificato)
+        const municipioX = [
+            [41.705, 12.225],
+            [41.705, 12.315],
+            [41.765, 12.315],
+            [41.765, 12.225]
+        ];
 
-// Aggiungere il layer di OpenStreetMap
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
-
-// Aggiungere il marker per la posizione
-L.marker([41.7325117, 12.2718834]).addTo(map)
-    .bindPopup("Posizione della biblioteca")
-    .openPopup();
-
-// Aggiungere i confini del municipio X di Roma (GeoJSON esempio)
-var municipioXGeoJson = {
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [12.258, 41.726],
-            [12.281, 41.726],
-            [12.281, 41.741],
-            [12.258, 41.741],
-            [12.258, 41.726]
-          ]
-        ]
-      },
-      "properties": {
-        "name": "Municipio X di Roma"
-      }
-    }
-  ]
-};
-
-// Aggiungere il confine del municipio X
-L.geoJSON(municipioXGeoJson, {
-    style: {
-        color: 'blue',
-        weight: 3,
-        opacity: 0.6
-    },
-    onEachFeature: function (feature, layer) {
-        layer.bindPopup('Confini del Municipio X');
-    }
-}).addTo(map);
-</script>
+        L.polygon(municipioX, {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.2,
+            weight: 2
+        }).addTo(map);
+    </script>
 
 
 
