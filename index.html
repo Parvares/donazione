@@ -1389,6 +1389,13 @@ const highlightResult = (index) => {
     }
 };
 
+const clearSearchState = () => {
+    searchInput.value = '';
+    resultsDiv.classList.add('hidden');
+    selectedIndex = -1;
+    searchResults = [];
+};
+
 const performSearch = async () => {
     const query = searchInput.value.trim();
     if (!query) {
@@ -1406,19 +1413,21 @@ const performSearch = async () => {
             searchResults = data.items;
             resultsDiv.innerHTML = searchResults.map((book, index) => {
                 const info = book.volumeInfo;
+                const bookData = {
+                    title: info.title || '',
+                    authors: info.authors ? info.authors.join(', ') : '',
+                    publisher: info.publisher || '',
+                    year: info.publishedDate ? info.publishedDate.substring(0, 4) : '',
+                    isbn: info.industryIdentifiers ? info.industryIdentifiers.find(id => id.type === 'ISBN_13')?.identifier || info.industryIdentifiers.find(id => id.type === 'ISBN_10')?.identifier || '' : ''
+                };
+                
                 return `
                     <div class="search-result p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 transition-colors duration-150"
                          role="option"
                          aria-selected="false"
                          tabindex="-1"
                          data-index="${index}"
-                         onclick="selectBook(this, ${JSON.stringify({ 
-                             title: info.title || '', 
-                             authors: info.authors ? info.authors.join(', ') : '', 
-                             publisher: info.publisher || '', 
-                             year: info.publishedDate ? info.publishedDate.substring(0, 4) : '', 
-                             isbn: info.industryIdentifiers ? info.industryIdentifiers.find(id => id.type === 'ISBN_13')?.identifier || info.industryIdentifiers.find(id => id.type === 'ISBN_10')?.identifier || '' : '' 
-                         }).replace(/"/g, '&quot;')})">
+                         onclick="selectBookAndClear(this, ${JSON.stringify(bookData).replace(/"/g, '&quot;')})">
                         <div class="font-medium text-blue-600">${info.title || 'Titolo sconosciuto'}</div>
                         <div class="text-sm text-gray-600">
                             ${info.authors ? info.authors.join(', ') : 'Autore sconosciuto'}
@@ -1477,11 +1486,16 @@ const handleKeyNavigation = (e) => {
             
         case 'Escape':
             e.preventDefault();
-            resultsDiv.classList.add('hidden');
+            clearSearchState();
             searchInput.blur();
-            selectedIndex = -1;
             break;
     }
+};
+
+// Define the selectBookAndClear function (make sure it's accessible globally)
+window.selectBookAndClear = function(element, bookData) {
+    selectBook(element, bookData);
+    clearSearchState();
 };
 
 // Event Listeners
