@@ -724,17 +724,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
         
+    
+        // Inizializza la mappa centrando su Municipio X
+        const map = L.map('map').setView([41.7325117, 12.2718834], 12);
 
-       <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg mt-2"> <!-- Removed shadow-md class -->
-            <div class="flex flex-col mb-10 text-left space-y-4 px-4">
-                <div class="flex items-center gap-2 mb-2">
-<a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" 
-   target="_blank" 
-   title="Visualizza la posizione sulla mappa">
-    <img alt="Posizione" 
-         src="location.svg" 
-         class="location-icon h-5 w-5">
-</a>
+        // Aggiungi il layer di OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Aggiungi il marker per la posizione specificata
+        L.marker([41.7325117, 12.2718834]).addTo(map)
+            .bindPopup('Posizione selezionata')
+            .openPopup();
+
+        // Carica i confini del Municipio X usando l'API Overpass
+        fetch('https://overpass-api.de/api/interpreter', {
+            method: 'POST',
+            body: `[out:json];
+                   area["name"="Roma"]["admin_level"="8"]->.roma;
+                   rel(area.roma)["name"="Municipio X"]["admin_level"="10"];
+                   out geom;`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.elements.length > 0) {
+                const municipio = data.elements[0];
+                const coordinates = municipio.members
+                    .filter(member => member.type === "way")
+                    .map(way => way.geometry.map(point => [point.lat, point.lon]));
+
+                L.polygon(coordinates, {
+                    color: 'red',
+                    weight: 2,
+                    fillColor: '#f03',
+                    fillOpacity: 0.2
+                }).addTo(map);
+            }
+        });
+    
+
 
 			
 <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" 
