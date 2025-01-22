@@ -36,13 +36,19 @@
             line-height: 1.5;
         }
         .municipio-label {
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.7);
             border: none;
-            border-radius: 4px;
-            padding: 4px 8px;
-            font-size: 12px;
-            font-weight: bold;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            border-radius: 2px;
+            padding: 2px 6px;
+            font-size: 11px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        .municipio-popup .leaflet-popup-content-wrapper {
+            background: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        .municipio-popup .leaflet-popup-tip {
+            display: none;
         }
     </style>
 </head>
@@ -61,7 +67,6 @@
                 attribution: '© OpenStreetMap contributors'
             }).addTo(map);
 
-            // Marker della biblioteca
             const marker = L.marker(biblioCoords).addTo(map);
             marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7");
 
@@ -112,7 +117,6 @@
                         return null;
                     }
 
-                    // Crea la legenda
                     const legend = L.control({position: 'bottomright'});
                     legend.onAdd = function(map) {
                         const div = L.DomUtil.create('div', 'legend');
@@ -124,39 +128,44 @@
                     };
                     legend.addTo(map);
 
-                    // Disegna i confini di ogni municipio
+                    // Organizza i ways per relazione
+                    const relationWays = {};
+                    relations.forEach(rel => {
+                        relationWays[rel.id] = rel.members
+                            .filter(m => m.type === "way")
+                            .map(m => ways.find(w => w.id === m.ref))
+                            .filter(w => w);
+                    });
+
                     relations.forEach(rel => {
                         const municipioNum = getMunicipioNumber(rel);
                         const isDecimo = municipioNum === 10;
                         const color = isDecimo ? '#ff0000' : '#000000';
 
-                        const municipioWays = rel.members
-                            .filter(m => m.type === "way")
-                            .map(m => ways.find(w => w.id === m.ref));
-
-                        let municipioPolygonPoints = [];
-                        municipioWays.forEach(way => {
+                        // Crea un array di coordinate per ogni way
+                        const boundarySegments = [];
+                        relationWays[rel.id].forEach(way => {
                             if (way && way.nodes) {
                                 const coordinates = way.nodes.map(nodeId => {
                                     const node = nodes.find(n => n.id === nodeId);
                                     return [node.lat, node.lon];
                                 });
-                                municipioPolygonPoints = municipioPolygonPoints.concat(coordinates);
+                                boundarySegments.push(coordinates);
                             }
                         });
 
-                        if (municipioPolygonPoints.length > 0) {
-                            const polygon = L.polygon(municipioPolygonPoints, {
+                        // Disegna ogni segmento del confine
+                        boundarySegments.forEach(coordinates => {
+                            const line = L.polyline(coordinates, {
                                 color: color,
-                                weight: 3,
-                                opacity: 0.7,
-                                fillOpacity: 0.1
+                                weight: 2,
+                                opacity: 0.8,
+                                smoothFactor: 1
                             }).addTo(map);
 
                             const nome = rel.tags.name || `Municipio ${municipioNum}`;
                             
                             if (isDecimo) {
-                                // Per il Municipio X, manteniamo il click per il popup
                                 const zona = rel.tags.zona || '';
                                 const quartieri = rel.tags.quartieri || '';
                                 
@@ -164,47 +173,42 @@
                                 if (zona) popupContent += `<br>Zona: ${zona}`;
                                 if (quartieri) popupContent += `<br>Quartieri: ${quartieri}`;
                                 
-                                polygon.bindPopup(popupContent);
+                                line.bindPopup(popupContent);
                             } else {
-                                // Per gli altri municipi, implementiamo l'hover
-                                const label = L.DomUtil.create('div', 'municipio-label');
-                                label.textContent = nome;
-                                
                                 let municipioLabel = null;
                                 
-                                polygon.on('mouseover', function(e) {
+                                line.on('mouseover', function(e) {
                                     if (!municipioLabel) {
                                         municipioLabel = L.popup({
                                             closeButton: false,
-                                            className: 'municipio-label',
-                                            offset: [0, 0]
+                                            offset: [0, -10],
+                                            className: 'municipio-popup'
                                         })
                                         .setLatLng(e.latlng)
-                                        .setContent(label)
+                                        .setContent(`<div class="municipio-label">${nome}</div>`)
                                         .openOn(map);
                                     }
                                 });
 
-                                polygon.on('mousemove', function(e) {
+                                line.on('mousemove', function(e) {
                                     if (municipioLabel) {
                                         municipioLabel.setLatLng(e.latlng);
                                     }
                                 });
 
-                                polygon.on('mouseout', function() {
+                                line.on('mouseout', function() {
                                     if (municipioLabel) {
                                         map.closePopup(municipioLabel);
                                         municipioLabel = null;
                                     }
                                 });
                             }
-                        }
+                        });
                     });
                 }
             })
             .catch(error => console.error('Errore nel caricamento dei municipi:', error));
 
-            // Info box
             const info = L.control({position: 'topleft'});
             info.onAdd = function() {
                 const div = L.DomUtil.create('div', 'info-box');
