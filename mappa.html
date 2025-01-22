@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mappa Municipi Roma - Biblioteca Elsa Morante</title>
+    <title>Mappa Municipio X - Biblioteca Elsa Morante</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <link rel="icon" href="favicon.png" type="image/png">
     <style>
         body, html {
             margin: 0;
@@ -20,20 +21,13 @@
             padding: 6px 8px;
             font: 14px/16px Arial, Helvetica, sans-serif;
             background: white;
-            background: rgba(255,255,255,0.9);
+            background: rgba(255,255,255,0.8);
             box-shadow: 0 0 15px rgba(0,0,0,0.2);
             border-radius: 5px;
         }
         .info-box h4 {
             margin: 0 0 5px;
             color: #777;
-        }
-        .legend {
-            background: white;
-            background: rgba(255,255,255,0.9);
-            padding: 10px;
-            border-radius: 5px;
-            line-height: 1.5;
         }
     </style>
 </head>
@@ -43,131 +37,41 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const biblioCoords = [41.7325117, 12.2718834];
-            const romaCenter = [41.9028, 12.4964];
             
-            const map = L.map('map').setView(romaCenter, 11);
+            const map = L.map('map').setView(biblioCoords, 16);
             
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
                 attribution: '© OpenStreetMap contributors'
             }).addTo(map);
-
-            // Marker della biblioteca
+            
+            // Aggiungi il marker della biblioteca
             const marker = L.marker(biblioCoords).addTo(map);
-            marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7");
+            marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7").openPopup();
 
-            // Definizione dei colori per i municipi
-            const colors = [
-                "#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF",
-                "#00FFFF", "#FFA500", "#800080", "#008000", "#970a2c",
-                "#4B0082", "#FFD700", "#8B4513", "#48D1CC", "#FF6347"
+            // Aggiungi il percorso principale
+            const percorso = [
+                [41.733125, 12.271883], // Partenza da Via del Mare
+                [41.732897, 12.271948], // Svolta su Via Adolfo Cozza
+                [41.732512, 12.271883]  // Biblioteca
             ];
 
-            // Carica tutti i municipi usando la query fornita
-            const query = `
-                [out:json][timeout:25];
-                area["name"="Roma"]["admin_level"="8"]->.searchArea;
-                (
-                  relation["admin_level"="10"](area.searchArea);
-                );
-                out body;
-                >;
-                out skel qt;
-            `;
+            // Disegna il percorso
+            L.polyline(percorso, {
+                color: '#0000FF',
+                weight: 4,
+                opacity: 0.8,
+                dashArray: '10, 10'
+            }).addTo(map);
 
-            fetch('https://overpass-api.de/api/interpreter', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'data=' + encodeURIComponent(query)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.elements) {
-                    const relations = data.elements.filter(e => e.type === "relation")
-                        .sort((a, b) => {
-                            const numA = parseInt(a.tags.name?.match(/\d+/) || '0');
-                            const numB = parseInt(b.tags.name?.match(/\d+/) || '0');
-                            return numA - numB;
-                        });
-                    const ways = data.elements.filter(e => e.type === "way");
-                    const nodes = data.elements.filter(e => e.type === "node");
-
-                    // Crea la legenda
-                    const legend = L.control({position: 'bottomright'});
-                    legend.onAdd = function(map) {
-                        const div = L.DomUtil.create('div', 'legend');
-                        div.innerHTML = '<h4>Municipi di Roma</h4>';
-                        relations.forEach((rel, index) => {
-                            const nome = rel.tags.name || `Municipio ${index + 1}`;
-                            div.innerHTML += `<div><span style="background:${colors[index % colors.length]};width:20px;height:20px;display:inline-block;"></span> ${nome}</div>`;
-                        });
-                        return div;
-                    };
-                    legend.addTo(map);
-
-                    // Disegna i municipi
-                    relations.forEach((rel, index) => {
-                        // Organizza i ways in anelli (outer e inner)
-                        const outerRings = [];
-                        const innerRings = [];
-                        
-                        rel.members.forEach(member => {
-                            if (member.type === "way" && member.role) {
-                                const way = ways.find(w => w.id === member.ref);
-                                if (way) {
-                                    const coordinates = way.nodes.map(nodeId => {
-                                        const node = nodes.find(n => n.id === nodeId);
-                                        return [node.lat, node.lon];
-                                    });
-                                    
-                                    if (member.role === 'outer') {
-                                        outerRings.push(coordinates);
-                                    } else if (member.role === 'inner') {
-                                        innerRings.push(coordinates);
-                                    }
-                                }
-                            }
-                        });
-
-                        // Disegna i confini
-                        [...outerRings, ...innerRings].forEach(ring => {
-                            L.polyline(ring, {
-                                color: colors[index % colors.length],
-                                weight: 3,
-                                opacity: 0.7
-                            }).addTo(map);
-                        });
-
-                        // Crea il poligono interattivo
-                        if (outerRings.length > 0) {
-                            const nome = rel.tags.name || `Municipio ${index + 1}`;
-                            L.polygon(outerRings, {
-                                color: 'transparent',
-                                fillColor: 'transparent',
-                                weight: 0,
-                                fillOpacity: 0,
-                                interactive: true
-                            }).bindPopup(nome).addTo(map);
-                        }
-                    });
-                }
-            })
-            .catch(error => console.error('Errore nel caricamento dei municipi:', error));
-
-            // Info box
-            const info = L.control({position: 'topleft'});
+            // Aggiungi box informativo
+            const info = L.control();
             info.onAdd = function() {
-                const div = L.DomUtil.create('div', 'info-box');
-                div.innerHTML = '<h4>Municipi di Roma</h4>' +
-                    'Clicca all\'interno dei municipi per vedere il nome<br>' +
-                    '<br>' +
-                    '<b>Punto di interesse:</b><br>' +
-                    'Biblioteca Elsa Morante<br>' +
+                this._div = L.DomUtil.create('div', 'info-box');
+                this._div.innerHTML = '<h4>Biblioteca Elsa Morante</h4>' +
                     'Via Adolfo Cozza, 7<br>' +
-                    'Municipio X';
-                return div;
+                    'Percorso evidenziato in blu';
+                return this._div;
             };
             info.addTo(map);
         });
