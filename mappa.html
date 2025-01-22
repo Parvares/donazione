@@ -6,8 +6,6 @@
     <title>Mappa Municipio X - Biblioteca Elsa Morante</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
     <link rel="icon" href="favicon.png" type="image/png">
-    <!-- Aggiungi FontAwesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">    
     <style>
         body, html {
             margin: 0;
@@ -33,112 +31,114 @@
         }
 
     .custom-popup .leaflet-popup-content-wrapper {
-        background: rgba(255, 255, 255, 0.8); /* Trasparenza del popup */
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Bordo ombra */
-        border-radius: 5px; /* Bordo arrotondato */
+        background: rgba(255, 255, 255, 0.8);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
     }
     .custom-popup .leaflet-popup-tip {
-        background: rgba(255, 255, 255, 0.8); /* Punta del popup */
+        background: rgba(255, 255, 255, 0.8);
     }
 
     </style>
 </head>
 <body>
     <div id="map"></div>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const biblioCoords = [41.7325117, 12.2718834];
-        
-        const map = L.map('map').setView(biblioCoords, 14);
-        
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
-        
-        const newCoords = [41.732092, 12.270980]; // Ultima coordinata del percorso blu
-        const marker = L.marker(newCoords).addTo(map);
-        marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7", {
-            className: 'custom-popup'
-        }).openPopup();
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const biblioCoords = [41.7325117, 12.2718834];
+            
+            const map = L.map('map').setView(biblioCoords, 14);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+            
+            const newCoords = [41.732092, 12.270980];
+            const marker = L.marker(newCoords).addTo(map);
+            marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7", {
+                className: 'custom-popup'
+            }).openPopup();
 
-        // Aggiungi il percorso
-        const percorso = [
-            biblioCoords,
-            [41.732154, 12.271675],
-            [41.732282, 12.271254],
-            [41.732240, 12.271230],
-            [41.732276, 12.271090],
-            [41.732092, 12.270980],
-        ];
+            // Aggiungi l'icona dell'ufficio tecnico
+            const templeIcon = L.divIcon({
+                html: `<svg width="24" height="24" viewBox="0 0 24 24" fill="#333">
+                    <path d="M12 3L2 12h3v8h14v-8h3L12 3zm0 2.7L19.7 12H4.3L12 5.7z"/>
+                </svg>`,
+                className: 'custom-temple-icon',
+                iconSize: [24, 24],
+                iconAnchor: [12, 12]
+            });
 
-        L.polyline(percorso, {
-            color: '#0000FF',
-            weight: 4,
-            opacity: 0.8,
-            dashArray: '10, 10'
-        }).addTo(map);
+            const municipioCoords = [41.731731, 12.271812];
+            const municipioMarker = L.marker(municipioCoords, {icon: templeIcon}).addTo(map);
+            municipioMarker.bindPopup("<b>Ufficio Tecnico Municipio X</b>", {
+                className: 'custom-popup'
+            });
 
-        // Aggiungi icona per l'ufficio tecnico
-        const technicalOfficeCoords = [41.731731, 12.271812];
-        const templeIcon = L.divIcon({
-            html: '<i class="fas fa-landmark" style="color:#970a2c; font-size:24px;"></i>', // Usa FontAwesome
-            className: 'custom-div-icon',
-            iconSize: [32, 32],
-            iconAnchor: [16, 32] // Punto centrale dell'icona
-        });
+            const percorso = [
+                biblioCoords,
+                [41.732154, 12.271675],
+                [41.732282, 12.271254],
+                [41.732240, 12.271230],
+                [41.732276, 12.271090],
+                [41.732092, 12.270980],
+            ];
 
-        const technicalOfficeMarker = L.marker(technicalOfficeCoords, { icon: templeIcon }).addTo(map);
-        technicalOfficeMarker.bindPopup("<b>Ufficio Tecnico</b><br>Municipio Roma X");
+            L.polyline(percorso, {
+                color: '#0000FF',
+                weight: 4,
+                opacity: 0.8,
+                dashArray: '10, 10'
+            }).addTo(map);
 
-        // Fetch confini e aggiungi info box
-        fetch('https://overpass-api.de/api/interpreter', {
-            method: 'POST',
-            body: `[out:json][timeout:25];
-                   relation(1460885);
-                   out body;
-                   >;
-                   out skel qt;`
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.elements.length > 0) {
-                const ways = data.elements.filter(e => e.type === "way");
-                const nodes = data.elements.filter(e => e.type === "node");
+            fetch('https://overpass-api.de/api/interpreter', {
+                method: 'POST',
+                body: [out:json][timeout:25];
+                       relation(1460885);
+                       out body;
+                       >;
+                       out skel qt;
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.elements.length > 0) {
+                    const ways = data.elements.filter(e => e.type === "way");
+                    const nodes = data.elements.filter(e => e.type === "node");
 
-                const boundaries = ways.map(way => {
-                    return way.nodes.map(nodeId => {
-                        const node = nodes.find(n => n.id === nodeId);
-                        return [node.lat, node.lon];
+                    const boundaries = ways.map(way => {
+                        return way.nodes.map(nodeId => {
+                            const node = nodes.find(n => n.id === nodeId);
+                            return [node.lat, node.lon];
+                        });
                     });
-                });
 
-                boundaries.forEach(boundary => {
-                    L.polyline(boundary, {
-                        color: '#970a2c',
-                        weight: 3,
-                        opacity: 0.7
-                    }).addTo(map);
-                });
+                    boundaries.forEach(boundary => {
+                        L.polyline(boundary, {
+                            color: '#970a2c',
+                            weight: 3,
+                            opacity: 0.7
+                        }).addTo(map);
+                    });
 
-                const info = L.control();
-                info.onAdd = function() {
-                    this._div = L.DomUtil.create('div', 'info-box');
-                    this._div.innerHTML = '<h4>Municipio Roma X</h4>' +
-                        'Biblioteca Elsa Morante<br>' +
-                        'Via Adolfo Cozza, 7<br>' +
-                        'Percorso evidenziato in blu';
-                    return this._div;
-                };
-                info.addTo(map);
+                    const info = L.control();
+                    info.onAdd = function() {
+                        this._div = L.DomUtil.create('div', 'info-box');
+                        this._div.innerHTML = '<h4>Municipio Roma X</h4>' +
+                            'Biblioteca Elsa Morante<br>' +
+                            'Via Adolfo Cozza, 7<br>' +
+                            'Percorso evidenziato in blu';
+                        return this._div;
+                    };
+                    info.addTo(map);
 
-                const bounds = L.latLngBounds(boundaries.flat());
-                map.fitBounds(bounds);
-            }
-        })
-        .catch(error => console.error('Errore nel caricamento dei confini:', error));
-    });
-</script>
-
+                    const bounds = L.latLngBounds(boundaries.flat());
+                    map.fitBounds(bounds);
+                }
+            })
+            .catch(error => console.error('Errore nel caricamento dei confini:', error));
+        });
+    </script>
 </body>
 </html>
