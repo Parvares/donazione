@@ -29,10 +29,6 @@
             margin: 0 0 5px;
             color: #777;
         }
-        .leaflet-div-icon {
-            background: transparent;
-            border: none;
-        }
     </style>
 </head>
 <body>
@@ -49,59 +45,42 @@
                 attribution: '© OpenStreetMap contributors'
             }).addTo(map);
             
-            // Marker biblioteca
+            // Aggiungi il marker della biblioteca
             const marker = L.marker(biblioCoords).addTo(map);
             marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7").openPopup();
 
-            // Percorso verso l'alto
-            const percorsoSu = [
-                [41.733125, 12.271883],
-                [41.732897, 12.271948],
-                [41.732512, 12.271883]
+            // Aggiungi il percorso principale
+            const percorso = [
+                [41.733125, 12.271883], // Partenza da Via del Mare
+                [41.732850, 12.272200], // Nuova coordinata per scendere verso sinistra
+                [41.7325117, 12.2718834]  // Biblioteca
             ];
 
-            // Percorso verso il basso (simmetrico)
-            const percorsoGiu = [
-                [41.731899, 12.271883], // Punto iniziale simmetrico
-                [41.732127, 12.271948], // Punto medio simmetrico
-                [41.732512, 12.271883]  // Biblioteca (stesso punto finale)
-            ];
-
-            // Disegna i percorsi
-            L.polyline(percorsoSu, {
+            // Disegna il percorso
+            L.polyline(percorso, {
                 color: '#0000FF',
                 weight: 4,
                 opacity: 0.8,
                 dashArray: '10, 10'
             }).addTo(map);
 
-            L.polyline(percorsoGiu, {
-                color: '#0000FF',
-                weight: 4,
-                opacity: 0.8,
-                dashArray: '10, 10'
-            }).addTo(map);
-
-            // Aggiungi freccia alla fine del percorso inferiore
+            // Aggiungi freccia per indicare la direzione verso la biblioteca
             const arrowIcon = L.divIcon({
-                html: '➤',
-                className: 'arrow-icon',
-                iconSize: [20, 20],
-                iconAnchor: [10, 10]
+                className: 'leaflet-div-icon',
+                html: '<div style="transform: rotate(-45deg); font-size: 20px; color: red;">&#8595;</div>',
+                iconSize: [20, 20]
             });
 
-            L.marker(percorsoGiu[0], {
-                icon: arrowIcon,
-                rotationAngle: 90
-            }).addTo(map);
+            // Aggiungi marker con freccia
+            L.marker([41.732850, 12.272200], {icon: arrowIcon}).addTo(map);
 
-            // Box informativo
+            // Aggiungi box informativo
             const info = L.control();
             info.onAdd = function() {
                 this._div = L.DomUtil.create('div', 'info-box');
                 this._div.innerHTML = '<h4>Biblioteca Elsa Morante</h4>' +
                     'Via Adolfo Cozza, 7<br>' +
-                    'Percorsi evidenziati in blu';
+                    'Percorso evidenziato in blu con freccia rossa';
                 return this._div;
             };
             info.addTo(map);
