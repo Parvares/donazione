@@ -93,51 +93,51 @@
                 dashArray: '10, 10'
             }).addTo(map);
 
-            fetch('https://overpass-api.de/api/interpreter', {
-                method: 'POST',
-                body: [out:json][timeout:25];
-                       relation(1460885);
-                       out body;
-                       >;
-                       out skel qt;
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.elements.length > 0) {
-                    const ways = data.elements.filter(e => e.type === "way");
-                    const nodes = data.elements.filter(e => e.type === "node");
+fetch('https://overpass-api.de/api/interpreter', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: 'data=[out:json][timeout:25];relation(1460885);out body;>;out skel qt;'
+})
+.then(response => response.json())
+.then(data => {
+    if (data.elements.length > 0) {
+        const ways = data.elements.filter(e => e.type === "way");
+        const nodes = data.elements.filter(e => e.type === "node");
 
-                    const boundaries = ways.map(way => {
-                        return way.nodes.map(nodeId => {
-                            const node = nodes.find(n => n.id === nodeId);
-                            return [node.lat, node.lon];
-                        });
-                    });
+        const boundaries = ways.map(way => {
+            return way.nodes.map(nodeId => {
+                const node = nodes.find(n => n.id === nodeId);
+                return [node.lat, node.lon];
+            });
+        });
 
-                    boundaries.forEach(boundary => {
-                        L.polyline(boundary, {
-                            color: '#970a2c',
-                            weight: 3,
-                            opacity: 0.7
-                        }).addTo(map);
-                    });
+        boundaries.forEach(boundary => {
+            L.polyline(boundary, {
+                color: '#970a2c',
+                weight: 3,
+                opacity: 0.7
+            }).addTo(map);
+        });
 
-                    const info = L.control();
-                    info.onAdd = function() {
-                        this._div = L.DomUtil.create('div', 'info-box');
-                        this._div.innerHTML = '<h4>Municipio Roma X</h4>' +
-                            'Biblioteca Elsa Morante<br>' +
-                            'Via Adolfo Cozza, 7<br>' +
-                            'Percorso evidenziato in blu';
-                        return this._div;
-                    };
-                    info.addTo(map);
+        const info = L.control();
+        info.onAdd = function() {
+            this._div = L.DomUtil.create('div', 'info-box');
+            this._div.innerHTML = '<h4>Municipio Roma X</h4>' +
+                'Biblioteca Elsa Morante<br>' +
+                'Via Adolfo Cozza, 7<br>' +
+                'Percorso evidenziato in blu';
+            return this._div;
+        };
+        info.addTo(map);
 
-                    const bounds = L.latLngBounds(boundaries.flat());
-                    map.fitBounds(bounds);
-                }
-            })
-            .catch(error => console.error('Errore nel caricamento dei confini:', error));
+        const bounds = L.latLngBounds(boundaries.flat());
+        map.fitBounds(bounds);
+    }
+})
+.catch(error => console.error('Errore nel caricamento dei confini:', error));
+
         });
     </script>
 </body>
