@@ -89,11 +89,21 @@
 
             // Funzione per caricare i confini di un municipio
             function caricaMunicipio(municipio) {
-                const query = `[out:json][timeout:25];relation(${municipio.id});out body;>;out skel qt;`;
+                const query = `
+                    [out:json][timeout:25];
+                    area[name="Roma"]["admin_level"="4"]->.roma;
+                    relation(area.roma)["ref"="${municipio.id}"]["admin_level"="9"];
+                    out body;
+                    >;
+                    out skel qt;
+                `;
                 
                 fetch('https://overpass-api.de/api/interpreter', {
                     method: 'POST',
-                    body: query
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'data=' + encodeURIComponent(query)
                 })
                 .then(response => response.json())
                 .then(data => {
