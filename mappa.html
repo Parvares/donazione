@@ -55,7 +55,7 @@
             fetch('https://overpass-api.de/api/interpreter', {
                 method: 'POST',
                 body: `[out:json];
-                       area["name"="Roma"]["admin_level"="8"]->.roma;
+                       area["name"="Roma"]["admin_level"="10"]->.roma;
                        rel(area.roma)["name"="Municipio Roma X"]["admin_level"="10"];
                        out geom;`
             })
