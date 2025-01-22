@@ -31,12 +31,12 @@
         }
 
     .custom-popup .leaflet-popup-content-wrapper {
-        background: rgba(255, 255, 255, 0.8);
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.8); /* Trasparenza del popup */
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Bordo ombra */
+        border-radius: 5px; /* Bordo arrotondato */
     }
     .custom-popup .leaflet-popup-tip {
-        background: rgba(255, 255, 255, 0.8);
+        background: rgba(255, 255, 255, 0.8); /* Punta del popup */
     }
 
     </style>
@@ -55,28 +55,25 @@
                 attribution: '© OpenStreetMap contributors'
             }).addTo(map);
             
-            const newCoords = [41.732092, 12.270980];
-            const marker = L.marker(newCoords).addTo(map);
-            marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7", {
-                className: 'custom-popup'
-            }).openPopup();
+const newCoords = [41.732092, 12.270980]; // Ultima coordinata del percorso blu
+const marker = L.marker(newCoords).addTo(map);
+marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7", {
+    className: 'custom-popup'
+}).openPopup();
 
-            // Aggiungi l'icona dell'ufficio tecnico
-            const templeIcon = L.divIcon({
-                html: `<svg width="24" height="24" viewBox="0 0 24 24" fill="#333">
-                    <path d="M12 3L2 12h3v8h14v-8h3L12 3zm0 2.7L19.7 12H4.3L12 5.7z"/>
-                </svg>`,
-                className: 'custom-temple-icon',
-                iconSize: [24, 24],
-                iconAnchor: [12, 12]
-            });
+// Aggiungi l'icona personalizzata per l'ufficio tecnico
+const tecnicoCoords = [41.731731, 12.271812];
+const iconTecnico = L.icon({
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2933/2933188.png', // URL dell'icona (ad esempio un tempio stilizzato)
+    iconSize: [32, 32], // Dimensione dell'icona
+    iconAnchor: [16, 32], // Punto dell'icona che corrisponde alla posizione
+    popupAnchor: [0, -32] // Posizione del popup rispetto all'icona
+});
 
-            const municipioCoords = [41.731731, 12.271812];
-            const municipioMarker = L.marker(municipioCoords, {icon: templeIcon}).addTo(map);
-            municipioMarker.bindPopup("<b>Ufficio Tecnico Municipio X</b>", {
-                className: 'custom-popup'
-            });
+const tecnicoMarker = L.marker(tecnicoCoords, { icon: iconTecnico }).addTo(map);
+tecnicoMarker.bindPopup("<b>Ufficio Tecnico del Municipio</b>").openPopup();
 
+            // Aggiungi il percorso
             const percorso = [
                 biblioCoords,
                 [41.732154, 12.271675],
