@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mappa Municipio X e Biblioteca</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 100vh; /* Mappa a schermo intero */
+            width: 100vw;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Crea la mappa e centrarla su una posizione approssimativa del Municipio X
+        const map = L.map('map').setView([41.735, 12.276], 13);
+
+        // Aggiungi il layer delle mappe
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Aggiungi il confine del Municipio X tramite il suo GeoJSON
+        const municipioX = L.geoJSON(null, {
+            style: {
+                color: '#ff7800',
+                weight: 2
+            }
+        }).addTo(map);
+
+        // Carica i dati GeoJSON
+        fetch('https://raw.githubusercontent.com/username/repository/branch/municipioX.geojson') // Sostituisci con il link corretto al file GeoJSON
+            .then(response => response.json())
+            .then(data => {
+                municipioX.addData(data);
+                map.fitBounds(municipioX.getBounds()); // Adatta la mappa ai confini del Municipio X
+            });
+
+        // Aggiungi un marker per la biblioteca
+        const bibliotecaMarker = L.marker([41.7325117, 12.2718834]).addTo(map)
+            .bindPopup('<b>Biblioteca</b><br>Via Adolfo Cozza, 7').openPopup();
+    </script>
+</body>
+</html>
