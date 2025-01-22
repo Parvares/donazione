@@ -107,39 +107,49 @@
                     };
                     legend.addTo(map);
 
-                    // Disegna i confini e i poligoni per ogni municipio
+                    // Disegna i municipi
                     relations.forEach((rel, index) => {
-                        const municipioWays = rel.members
-                            .filter(m => m.type === "way")
-                            .map(m => ways.find(w => w.id === m.ref));
-
-                        const polygonCoordinates = [];
-                        municipioWays.forEach(way => {
-                            if (way && way.nodes) {
-                                const coordinates = way.nodes.map(nodeId => {
-                                    const node = nodes.find(n => n.id === nodeId);
-                                    return [node.lat, node.lon];
-                                });
-                                polygonCoordinates.push(coordinates);
-
-                                // Disegna il confine
-                                L.polyline(coordinates, {
-                                    color: colors[index % colors.length],
-                                    weight: 3,
-                                    opacity: 0.7
-                                }).addTo(map);
+                        // Organizza i ways in anelli (outer e inner)
+                        const outerRings = [];
+                        const innerRings = [];
+                        
+                        rel.members.forEach(member => {
+                            if (member.type === "way" && member.role) {
+                                const way = ways.find(w => w.id === member.ref);
+                                if (way) {
+                                    const coordinates = way.nodes.map(nodeId => {
+                                        const node = nodes.find(n => n.id === nodeId);
+                                        return [node.lat, node.lon];
+                                    });
+                                    
+                                    if (member.role === 'outer') {
+                                        outerRings.push(coordinates);
+                                    } else if (member.role === 'inner') {
+                                        innerRings.push(coordinates);
+                                    }
+                                }
                             }
                         });
 
-                        if (polygonCoordinates.length > 0) {
+                        // Disegna i confini
+                        [...outerRings, ...innerRings].forEach(ring => {
+                            L.polyline(ring, {
+                                color: colors[index % colors.length],
+                                weight: 3,
+                                opacity: 0.7
+                            }).addTo(map);
+                        });
+
+                        // Crea il poligono interattivo
+                        if (outerRings.length > 0) {
                             const nome = rel.tags.name || `Municipio ${index + 1}`;
-                            // Aggiungi il poligono invisibile e interattivo
-                            L.polygon(polygonCoordinates, {
+                            L.polygon(outerRings, {
                                 color: 'transparent',
                                 fillColor: 'transparent',
                                 weight: 0,
-                                fillOpacity: 0
-                            }).addTo(map).bindPopup(nome);
+                                fillOpacity: 0,
+                                interactive: true
+                            }).bindPopup(nome).addTo(map);
                         }
                     });
                 }
