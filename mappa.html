@@ -44,7 +44,7 @@
             box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
         .municipio-popup .leaflet-popup-content-wrapper {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.7);
             box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
         .municipio-popup .leaflet-popup-tip {
@@ -57,172 +57,173 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const biblioCoords = [41.7325117, 12.2718834];
-            const romaCenter = [41.9028, 12.4964];
-            
-            const map = L.map('map').setView(romaCenter, 11);
-            
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '© OpenStreetMap contributors'
-            }).addTo(map);
+    const biblioCoords = [41.7325117, 12.2718834];
+    const romaCenter = [41.9028, 12.4964];
+    
+    const map = L.map('map').setView(romaCenter, 11);
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
 
-            const marker = L.marker(biblioCoords).addTo(map);
-            marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7");
+    const marker = L.marker(biblioCoords).addTo(map);
+    marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7");
 
-            const query = `
-                [out:json][timeout:25];
-                area["name"="Roma"]["admin_level"="8"]->.searchArea;
-                (
-                  relation["admin_level"="10"](area.searchArea);
-                );
-                out body;
-                >;
-                out skel qt;
-            `;
+    const query = 
+        [out:json][timeout:25];
+        area["name"="Roma"]["admin_level"="8"]->.searchArea;
+        (
+          relation["admin_level"="10"](area.searchArea);
+        );
+        out body;
+        >;
+        out skel qt;
+    ;
 
-            fetch('https://overpass-api.de/api/interpreter', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'data=' + encodeURIComponent(query)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.elements) {
-                    const relations = data.elements.filter(e => e.type === "relation");
-                    const ways = data.elements.filter(e => e.type === "way");
-                    const nodes = data.elements.filter(e => e.type === "node");
+    fetch('https://overpass-api.de/api/interpreter', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'data=' + encodeURIComponent(query)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.elements) {
+            const relations = data.elements.filter(e => e.type === "relation");
+            const ways = data.elements.filter(e => e.type === "way");
+            const nodes = data.elements.filter(e => e.type === "node");
 
-                    function getMunicipioNumber(relation) {
-                        if (relation.tags['ref:mun']) {
-                            return parseInt(relation.tags['ref:mun']);
-                        }
-                        
-                        const name = relation.tags.name || '';
-                        const match = name.match(/municipio\s+([IVX]+|\d+)/i);
-                        if (match) {
-                            const num = match[1];
-                            if (/^[IVX]+$/i.test(num)) {
-                                const romanNumerals = {
-                                    'I': 1, 'II': 2, 'III': 3, 'IV': 4, 'V': 5,
-                                    'VI': 6, 'VII': 7, 'VIII': 8, 'IX': 9, 'X': 10,
-                                    'XI': 11, 'XII': 12, 'XIII': 13, 'XIV': 14, 'XV': 15
-                                };
-                                return romanNumerals[num.toUpperCase()] || null;
-                            }
-                            return parseInt(num);
-                        }
-                        return null;
+            function getMunicipioNumber(relation) {
+                if (relation.tags['ref:mun']) {
+                    return parseInt(relation.tags['ref:mun']);
+                }
+                
+                const name = relation.tags.name || '';
+                const match = name.match(/municipio\s+([IVX]+|\d+)/i);
+                if (match) {
+                    const num = match[1];
+                    if (/^[IVX]+$/i.test(num)) {
+                        const romanNumerals = {
+                            'I': 1, 'II': 2, 'III': 3, 'IV': 4, 'V': 5,
+                            'VI': 6, 'VII': 7, 'VIII': 8, 'IX': 9, 'X': 10,
+                            'XI': 11, 'XII': 12, 'XIII': 13, 'XIV': 14, 'XV': 15
+                        };
+                        return romanNumerals[num.toUpperCase()] || null;
                     }
+                    return parseInt(num);
+                }
+                return null;
+            }
 
-                    const legend = L.control({position: 'bottomright'});
-                    legend.onAdd = function(map) {
-                        const div = L.DomUtil.create('div', 'legend');
-                        div.innerHTML = '<h4>Municipi di Roma</h4>' +
-                            '<div><span style="background:#ff0000;width:20px;height:20px;display:inline-block;"></span> Municipio X</div>' +
-                            '<div><span style="background:#000000;width:20px;height:20px;display:inline-block;"></span> Altri Municipi</div>';
-                        return div;
-                    };
-                    legend.addTo(map);
+            const legend = L.control({position: 'bottomright'});
+            legend.onAdd = function(map) {
+                const div = L.DomUtil.create('div', 'legend');
+                div.innerHTML = '<h4>Municipi di Roma</h4>';
+                div.innerHTML += 
+                    '<div><span style="background:#ff0000;width:20px;height:20px;display:inline-block;"></span> Municipio X</div>' +
+                    '<div><span style="background:#ff0000;width:20px;height:20px;display:inline-block;"></span> Altri Municipi</div>';
+                return div;
+            };
+            legend.addTo(map);
 
-                    // Organizza i ways per relazione
-                    const relationWays = {};
-                    relations.forEach(rel => {
-                        relationWays[rel.id] = rel.members
-                            .filter(m => m.type === "way")
-                            .map(m => ways.find(w => w.id === m.ref))
-                            .filter(w => w);
-                    });
+            // Organizza i ways per relazione
+            const relationWays = {};
+            relations.forEach(rel => {
+                relationWays[rel.id] = rel.members
+                    .filter(m => m.type === "way")
+                    .map(m => ways.find(w => w.id === m.ref))
+                    .filter(w => w);
+            });
 
-                    relations.forEach(rel => {
-                        const municipioNum = getMunicipioNumber(rel);
-                        const isDecimo = municipioNum === 10;
-                        const color = isDecimo ? '#ff0000' : '#000000';
+            relations.forEach(rel => {
+                const municipioNum = getMunicipioNumber(rel);
+                const isDecimo = municipioNum === 10;
+                const color = '#ff0000'; // Changed to red for all municipalities
 
-                        // Create polygon coordinates
-                        const polygonCoords = [];
-                        const processedNodes = new Set();
+                // Crea un array di coordinate per ogni way
+                const boundarySegments = [];
+                relationWays[rel.id].forEach(way => {
+                    if (way && way.nodes) {
+                        const coordinates = way.nodes.map(nodeId => {
+                            const node = nodes.find(n => n.id === nodeId);
+                            return [node.lat, node.lon];
+                        });
+                        boundarySegments.push(coordinates);
+                    }
+                });
+
+                // Disegna ogni segmento del confine
+                boundarySegments.forEach(coordinates => {
+                    const line = L.polyline(coordinates, {
+                        color: color,
+                        weight: 2,
+                        opacity: 0.8,
+                        smoothFactor: 1
+                    }).addTo(map);
+
+                    const nome = rel.tags.name || `Municipio ${municipioNum}`;
+                    
+                    if (isDecimo) {
+                        const zona = rel.tags.zona || '';
+                        const quartieri = rel.tags.quartieri || '';
                         
-                        relationWays[rel.id].forEach(way => {
-                            if (way && way.nodes) {
-                                const coordinates = way.nodes.map(nodeId => {
-                                    const node = nodes.find(n => n.id === nodeId);
-                                    return [node.lat, node.lon];
-                                });
-                                polygonCoords.push(...coordinates);
+                        let popupContent = `<b>${nome}</b>`;
+                        if (zona) popupContent += `<br>Zona: ${zona}`;
+                        if (quartieri) popupContent += `<br>Quartieri: ${quartieri}`;
+                        
+                        line.bindPopup(popupContent);
+                    } else {
+                        let municipioLabel = null;
+                        
+                        line.on('mouseover', function(e) {
+                            if (!municipioLabel) {
+                                municipioLabel = L.popup({
+                                    closeButton: false,
+                                    offset: [0, -10],
+                                    className: 'municipio-popup'
+                                })
+                                .setLatLng(e.latlng)
+                                .setContent(`<div class="municipio-label">${nome}</div>`)
+                                .openOn(map);
                             }
                         });
 
-                        const nome = rel.tags.name || `Municipio ${municipioNum}`;
-                        
-                        // Create polygon instead of lines
-                        const polygon = L.polygon(polygonCoords, {
-                            color: color,
-                            weight: 2,
-                            opacity: 0.8,
-                            fillOpacity: 0.1
-                        }).addTo(map);
+                        line.on('mousemove', function(e) {
+                            if (municipioLabel) {
+                                municipioLabel.setLatLng(e.latlng);
+                            }
+                        });
 
-                        if (isDecimo) {
-                            const zona = rel.tags.zona || '';
-                            const quartieri = rel.tags.quartieri || '';
-                            
-                            let popupContent = `<b>${nome}</b>`;
-                            if (zona) popupContent += `<br>Zona: ${zona}`;
-                            if (quartieri) popupContent += `<br>Quartieri: ${quartieri}`;
-                            
-                            polygon.bindPopup(popupContent);
-                        } else {
-                            let municipioLabel = null;
-                            
-                            polygon.on('mouseover', function(e) {
-                                if (!municipioLabel) {
-                                    municipioLabel = L.popup({
-                                        closeButton: false,
-                                        offset: [0, -10],
-                                        className: 'municipio-popup'
-                                    })
-                                    .setLatLng(e.latlng)
-                                    .setContent(`<div class="municipio-label">${nome}</div>`)
-                                    .openOn(map);
-                                }
-                            });
+                        line.on('mouseout', function() {
+                            if (municipioLabel) {
+                                map.closePopup(municipioLabel);
+                                municipioLabel = null;
+                            }
+                        });
+                    }
+                });
+            });
+        }
+    })
+    .catch(error => console.error('Errore nel caricamento dei municipi:', error));
 
-                            polygon.on('mousemove', function(e) {
-                                if (municipioLabel) {
-                                    municipioLabel.setLatLng(e.latlng);
-                                }
-                            });
-
-                            polygon.on('mouseout', function() {
-                                if (municipioLabel) {
-                                    map.closePopup(municipioLabel);
-                                    municipioLabel = null;
-                                }
-                            });
-                        }
-                    });
-                }
-            })
-            .catch(error => console.error('Errore nel caricamento dei municipi:', error));
-
-            const info = L.control({position: 'topleft'});
-            info.onAdd = function() {
-                const div = L.DomUtil.create('div', 'info-box');
-                div.innerHTML = '<h4>Municipi di Roma</h4>' +
-                    'Passa il mouse sui municipi per vederne il nome<br>' +
-                    'Il Municipio X è evidenziato in rosso<br>' +
-                    '<br>' +
-                    '<b>Punto di interesse:</b><br>' +
-                    'Biblioteca Elsa Morante<br>' +
-                    'Via Adolfo Cozza, 7<br>' +
-                    'Municipio X';
-                return div;
-            };
-            info.addTo(map);
-        });
+    const info = L.control({position: 'topleft'});
+    info.onAdd = function() {
+        const div = L.DomUtil.create('div', 'info-box');
+        div.innerHTML = '<h4>Municipi di Roma</h4>' +
+            'Passa il mouse sui municipi per vederne il nome<br>' +
+            'Clicca sul Municipio X per maggiori informazioni<br>' +
+            '<br>' +
+            '<b>Punto di interesse:</b><br>' +
+            'Biblioteca Elsa Morante<br>' +
+            'Via Adolfo Cozza, 7<br>' +
+            'Municipio X';
+        return div;
+    };
+    info.addTo(map);
+});
     </script>
 </body>
 </html>
