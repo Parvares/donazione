@@ -43,15 +43,16 @@
         /* Personalizzazione dell'icona con la scritta sotto */
         .custom-municipio-icon {
             text-align: center;
-            font-size: 12px;
+            font-size: 10px;  /* Ridotto il font */
             color: #333;
         }
 
         .municipio-icon-text {
             display: block;
-            margin-top: 5px;
-            font-size: 12px;
+            margin-top: 3px;  /* Spazio ridotto tra icona e scritta */
+            font-size: 10px;  /* Font ancora più piccolo */
             color: #333;
+            line-height: 1; /* Interlinea ridotto */
         }
     </style>
 </head>
@@ -86,8 +87,8 @@
                     </div>
                 `,
                 className: '',
-                iconSize: [24, 40],  // Cambiato per permettere spazio per il testo
-                iconAnchor: [12, 35]  // Allineato al centro del testo
+                iconSize: [24, 30],  // Modificato per adattarsi alla scritta più piccola
+                iconAnchor: [12, 30]  // Allineato correttamente con la scritta sotto
             });
 
             const municipioCoords = [41.731731, 12.271812];
