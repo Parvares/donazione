@@ -36,7 +36,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const biblioCoords = [41.7325117, 12.2718834];
+            const biblioCoords = [41.7325117, 12.2718834];  // Coordinate della biblioteca
             
             const map = L.map('map').setView(biblioCoords, 16);
             
@@ -49,10 +49,10 @@
             const marker = L.marker(biblioCoords).addTo(map);
             marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7").openPopup();
 
-            // Aggiungi il percorso principale (modificato con i nuovi punti)
+            // Aggiungi il percorso (partenza dalla biblioteca)
             const percorso = [
-                [41.732574, 12.271914], // Punto di partenza
-                [41.732007, 12.270994]  // Punto di arrivo
+                biblioCoords,                    // Punto di partenza: Biblioteca Elsa Morante
+                [41.732007, 12.270994]          // Punto di arrivo
             ];
 
             // Disegna il percorso
