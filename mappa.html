@@ -85,7 +85,12 @@
             .then(response => response.json())
             .then(data => {
                 if (data.elements) {
-                    const relations = data.elements.filter(e => e.type === "relation");
+                    const relations = data.elements.filter(e => e.type === "relation")
+                        .sort((a, b) => {
+                            const numA = parseInt(a.tags.name?.match(/\d+/) || '0');
+                            const numB = parseInt(b.tags.name?.match(/\d+/) || '0');
+                            return numA - numB;
+                        });
                     const ways = data.elements.filter(e => e.type === "way");
                     const nodes = data.elements.filter(e => e.type === "node");
 
@@ -102,29 +107,34 @@
                     };
                     legend.addTo(map);
 
-                    // Disegna i confini di ogni municipio
+                    // Disegna i poligoni per ogni municipio
                     relations.forEach((rel, index) => {
                         const municipioWays = rel.members
                             .filter(m => m.type === "way")
                             .map(m => ways.find(w => w.id === m.ref));
 
+                        const polygonCoordinates = [];
                         municipioWays.forEach(way => {
                             if (way && way.nodes) {
                                 const coordinates = way.nodes.map(nodeId => {
                                     const node = nodes.find(n => n.id === nodeId);
                                     return [node.lat, node.lon];
                                 });
-
-                                const polyline = L.polyline(coordinates, {
-                                    color: colors[index % colors.length],
-                                    weight: 3,
-                                    opacity: 0.7
-                                }).addTo(map);
-
-                                const nome = rel.tags.name || `Municipio ${index + 1}`;
-                                polyline.bindPopup(nome);
+                                polygonCoordinates.push(coordinates);
                             }
                         });
+
+                        if (polygonCoordinates.length > 0) {
+                            const polygon = L.polygon(polygonCoordinates, {
+                                color: colors[index % colors.length],
+                                weight: 2,
+                                opacity: 0.7,
+                                fillOpacity: 0.3
+                            }).addTo(map);
+
+                            const nome = rel.tags.name || `Municipio ${index + 1}`;
+                            polygon.bindPopup(nome);
+                        }
                     });
                 }
             })
@@ -135,7 +145,7 @@
             info.onAdd = function() {
                 const div = L.DomUtil.create('div', 'info-box');
                 div.innerHTML = '<h4>Municipi di Roma</h4>' +
-                    'Clicca sui confini per vedere il nome del municipio<br>' +
+                    'Clicca all\'interno dei municipi per vedere il nome<br>' +
                     '<br>' +
                     '<b>Punto di interesse:</b><br>' +
                     'Biblioteca Elsa Morante<br>' +
