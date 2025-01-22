@@ -35,6 +35,15 @@
             border-radius: 5px;
             line-height: 1.5;
         }
+        .municipio-label {
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
     </style>
 </head>
 <body>
@@ -81,18 +90,14 @@
                     const ways = data.elements.filter(e => e.type === "way");
                     const nodes = data.elements.filter(e => e.type === "node");
 
-                    // Funzione per determinare il numero del municipio
                     function getMunicipioNumber(relation) {
-                        // Controlla prima il tag ref:mun se disponibile
                         if (relation.tags['ref:mun']) {
                             return parseInt(relation.tags['ref:mun']);
                         }
                         
-                        // Cerca il numero nel nome del municipio
                         const name = relation.tags.name || '';
                         const match = name.match(/municipio\s+([IVX]+|\d+)/i);
                         if (match) {
-                            // Converti numeri romani in arabi se necessario
                             const num = match[1];
                             if (/^[IVX]+$/i.test(num)) {
                                 const romanNumerals = {
@@ -113,7 +118,7 @@
                         const div = L.DomUtil.create('div', 'legend');
                         div.innerHTML = '<h4>Municipi di Roma</h4>';
                         div.innerHTML += `
-                            <div><span style="background:#970a2c;width:20px;height:20px;display:inline-block;"></span> Municipio X</div>
+                            <div><span style="background:#ff0000;width:20px;height:20px;display:inline-block;"></span> Municipio X</div>
                             <div><span style="background:#000000;width:20px;height:20px;display:inline-block;"></span> Altri Municipi</div>`;
                         return div;
                     };
@@ -123,27 +128,35 @@
                     relations.forEach(rel => {
                         const municipioNum = getMunicipioNumber(rel);
                         const isDecimo = municipioNum === 10;
-                        const color = isDecimo ? '#970a2c' : '#000000';
+                        const color = isDecimo ? '#ff0000' : '#000000';
 
                         const municipioWays = rel.members
                             .filter(m => m.type === "way")
                             .map(m => ways.find(w => w.id === m.ref));
 
+                        let municipioPolygonPoints = [];
                         municipioWays.forEach(way => {
                             if (way && way.nodes) {
                                 const coordinates = way.nodes.map(nodeId => {
                                     const node = nodes.find(n => n.id === nodeId);
                                     return [node.lat, node.lon];
                                 });
+                                municipioPolygonPoints = municipioPolygonPoints.concat(coordinates);
+                            }
+                        });
 
-                                const polyline = L.polyline(coordinates, {
-                                    color: color,
-                                    weight: 3,
-                                    opacity: 0.7
-                                }).addTo(map);
+                        if (municipioPolygonPoints.length > 0) {
+                            const polygon = L.polygon(municipioPolygonPoints, {
+                                color: color,
+                                weight: 3,
+                                opacity: 0.7,
+                                fillOpacity: 0.1
+                            }).addTo(map);
 
-                                // Prepara il popup con le informazioni del municipio
-                                const nome = rel.tags.name || `Municipio ${municipioNum}`;
+                            const nome = rel.tags.name || `Municipio ${municipioNum}`;
+                            
+                            if (isDecimo) {
+                                // Per il Municipio X, manteniamo il click per il popup
                                 const zona = rel.tags.zona || '';
                                 const quartieri = rel.tags.quartieri || '';
                                 
@@ -151,9 +164,41 @@
                                 if (zona) popupContent += `<br>Zona: ${zona}`;
                                 if (quartieri) popupContent += `<br>Quartieri: ${quartieri}`;
                                 
-                                polyline.bindPopup(popupContent);
+                                polygon.bindPopup(popupContent);
+                            } else {
+                                // Per gli altri municipi, implementiamo l'hover
+                                const label = L.DomUtil.create('div', 'municipio-label');
+                                label.textContent = nome;
+                                
+                                let municipioLabel = null;
+                                
+                                polygon.on('mouseover', function(e) {
+                                    if (!municipioLabel) {
+                                        municipioLabel = L.popup({
+                                            closeButton: false,
+                                            className: 'municipio-label',
+                                            offset: [0, 0]
+                                        })
+                                        .setLatLng(e.latlng)
+                                        .setContent(label)
+                                        .openOn(map);
+                                    }
+                                });
+
+                                polygon.on('mousemove', function(e) {
+                                    if (municipioLabel) {
+                                        municipioLabel.setLatLng(e.latlng);
+                                    }
+                                });
+
+                                polygon.on('mouseout', function() {
+                                    if (municipioLabel) {
+                                        map.closePopup(municipioLabel);
+                                        municipioLabel = null;
+                                    }
+                                });
                             }
-                        });
+                        }
                     });
                 }
             })
@@ -164,7 +209,8 @@
             info.onAdd = function() {
                 const div = L.DomUtil.create('div', 'info-box');
                 div.innerHTML = '<h4>Municipi di Roma</h4>' +
-                    'Clicca sui confini per vedere le informazioni del municipio<br>' +
+                    'Passa il mouse sui municipi per vederne il nome<br>' +
+                    'Clicca sul Municipio X per maggiori informazioni<br>' +
                     '<br>' +
                     '<b>Punto di interesse:</b><br>' +
                     'Biblioteca Elsa Morante<br>' +
