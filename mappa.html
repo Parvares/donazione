@@ -54,26 +54,37 @@
             // Carica i confini del Municipio X tramite Overpass API
             fetch('https://overpass-api.de/api/interpreter', {
                 method: 'POST',
-                body: `[out:json];
-                       area["name"="Roma"]["admin_level"="10"]->.roma;
-                       rel(area.roma)["name"="Municipio Roma X"]["admin_level"="10"];
-                       out geom;`
+                body: `[out:json][timeout:25];
+                       area["admin_level"="8"]["name"="Roma"]->.roma;
+                       rel(area.roma)["ref"="X"]["admin_level"="10"];
+                       out body;
+                       >;
+                       out skel qt;`
             })
             .then(response => response.json())
             .then(data => {
                 if (data.elements.length > 0) {
-                    const municipioCoords = data.elements[0].members
-                        .filter(m => m.type === "way")
-                        .flatMap(w => w.geometry.map(p => [p.lat, p.lon]));
+                    // Trova la relazione del Municipio X
+                    const municipio = data.elements.find(e => e.type === "relation");
+                    const ways = data.elements.filter(e => e.type === "way");
+                    const nodes = data.elements.filter(e => e.type === "node");
+
+                    // Costruisci i confini
+                    const boundaries = ways.map(way => {
+                        return way.nodes.map(nodeId => {
+                            const node = nodes.find(n => n.id === nodeId);
+                            return [node.lat, node.lon];
+                        });
+                    });
 
                     // Disegna il confine del municipio
-                    L.polygon(municipioCoords, {
-                        color: '#970a2c',
-                        weight: 3,
-                        opacity: 0.7,
-                        fillColor: '#970a2c',
-                        fillOpacity: 0.1
-                    }).addTo(map);
+                    boundaries.forEach(boundary => {
+                        L.polyline(boundary, {
+                            color: '#970a2c',
+                            weight: 3,
+                            opacity: 0.7
+                        }).addTo(map);
+                    });
 
                     // Aggiungi box informativo
                     const info = L.control();
@@ -85,6 +96,10 @@
                         return this._div;
                     };
                     info.addTo(map);
+
+                    // Adatta la vista per mostrare tutti i confini
+                    const bounds = L.latLngBounds(boundaries.flat());
+                    map.fitBounds(bounds);
                 }
             })
             .catch(error => console.error('Errore nel caricamento dei confini:', error));
