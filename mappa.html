@@ -45,8 +45,10 @@
                 attribution: '© OpenStreetMap contributors'
             }).addTo(map);
             
-            const marker = L.marker(biblioCoords).addTo(map);
-            marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7").openPopup();
+const newCoords = [41.732092, 12.270980]; // Ultima coordinata del percorso blu
+const marker = L.marker(newCoords).addTo(map);
+marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7").openPopup();
+
 
             // Aggiungi il percorso
             const percorso = [
