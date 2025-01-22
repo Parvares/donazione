@@ -36,47 +36,80 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const biblioCoords = [41.7325117, 12.2718834];  // Coordinate della biblioteca
+            const biblioCoords = [41.7325117, 12.2718834];
             
-            const map = L.map('map').setView(biblioCoords, 16);
+            const map = L.map('map').setView(biblioCoords, 14);
             
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
                 attribution: '© OpenStreetMap contributors'
             }).addTo(map);
             
-            // Aggiungi il marker della biblioteca
             const marker = L.marker(biblioCoords).addTo(map);
             marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7").openPopup();
 
-            // Punti intermedi per il percorso
+            // Aggiungi il percorso
             const percorso = [
-                biblioCoords,                    // Punto di partenza: Biblioteca Elsa Morante
+                biblioCoords,
                 [41.732154, 12.271675],
                 [41.732282, 12.271254],
                 [41.732240, 12.271230],
                 [41.732276, 12.271090],
-                [41.732092, 12.270980],        // Punto di arrivo
+                [41.732092, 12.270980],
             ];
 
-            // Disegna il percorso
             L.polyline(percorso, {
                 color: '#0000FF',
                 weight: 4,
                 opacity: 0.8,
-                dashArray: '10, 10'  // Linea tratteggiata
+                dashArray: '10, 10'
             }).addTo(map);
 
-            // Aggiungi box informativo
-            const info = L.control();
-            info.onAdd = function() {
-                this._div = L.DomUtil.create('div', 'info-box');
-                this._div.innerHTML = '<h4>Biblioteca Elsa Morante</h4>' +
-                    'Via Adolfo Cozza, 7<br>' +
-                    'Percorso evidenziato in blu';
-                return this._div;
-            };
-            info.addTo(map);
+            fetch('https://overpass-api.de/api/interpreter', {
+                method: 'POST',
+                body: `[out:json][timeout:25];
+                       relation(1460885);
+                       out body;
+                       >;
+                       out skel qt;`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.elements.length > 0) {
+                    const ways = data.elements.filter(e => e.type === "way");
+                    const nodes = data.elements.filter(e => e.type === "node");
+
+                    const boundaries = ways.map(way => {
+                        return way.nodes.map(nodeId => {
+                            const node = nodes.find(n => n.id === nodeId);
+                            return [node.lat, node.lon];
+                        });
+                    });
+
+                    boundaries.forEach(boundary => {
+                        L.polyline(boundary, {
+                            color: '#970a2c',
+                            weight: 3,
+                            opacity: 0.7
+                        }).addTo(map);
+                    });
+
+                    const info = L.control();
+                    info.onAdd = function() {
+                        this._div = L.DomUtil.create('div', 'info-box');
+                        this._div.innerHTML = '<h4>Municipio Roma X</h4>' +
+                            'Biblioteca Elsa Morante<br>' +
+                            'Via Adolfo Cozza, 7<br>' +
+                            'Percorso evidenziato in blu';
+                        return this._div;
+                    };
+                    info.addTo(map);
+
+                    const bounds = L.latLngBounds(boundaries.flat());
+                    map.fitBounds(bounds);
+                }
+            })
+            .catch(error => console.error('Errore nel caricamento dei confini:', error));
         });
     </script>
 </body>
