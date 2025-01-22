@@ -29,6 +29,16 @@
             margin: 0 0 5px;
             color: #777;
         }
+
+    .custom-popup .leaflet-popup-content-wrapper {
+        background: rgba(255, 255, 255, 0.8); /* Trasparenza del popup */
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Bordo ombra */
+        border-radius: 5px; /* Bordo arrotondato */
+    }
+    .custom-popup .leaflet-popup-tip {
+        background: rgba(255, 255, 255, 0.8); /* Punta del popup */
+    }
+
     </style>
 </head>
 <body>
@@ -47,7 +57,10 @@
             
 const newCoords = [41.732092, 12.270980]; // Ultima coordinata del percorso blu
 const marker = L.marker(newCoords).addTo(map);
-marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7").openPopup();
+marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7", {
+    className: 'custom-popup'
+}).openPopup();
+
 
 
             // Aggiungi il percorso
