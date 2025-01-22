@@ -1,49 +1,94 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mappa Municipio X e Biblioteca</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <title>Mappa Municipio X - Biblioteca Elsa Morante</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
     <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
         #map {
-            height: 100vh; /* Mappa a schermo intero */
-            width: 100vw;
+            height: 100vh;
+            width: 100%;
+        }
+        .info-box {
+            padding: 6px 8px;
+            font: 14px/16px Arial, Helvetica, sans-serif;
+            background: white;
+            background: rgba(255,255,255,0.8);
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            border-radius: 5px;
+        }
+        .info-box h4 {
+            margin: 0 0 5px;
+            color: #777;
         }
     </style>
 </head>
 <body>
     <div id="map"></div>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
     <script>
-        // Crea la mappa e centrarla su una posizione approssimativa del Municipio X
-        const map = L.map('map').setView([41.735, 12.276], 13);
+        document.addEventListener('DOMContentLoaded', function() {
+            // Coordinate della Biblioteca Elsa Morante
+            const biblioCoords = [41.7325117, 12.2718834];
+            
+            // Inizializza la mappa
+            const map = L.map('map').setView(biblioCoords, 14);
+            
+            // Aggiungi il layer di OpenStreetMap
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+            
+            // Aggiungi il marker della biblioteca
+            const marker = L.marker(biblioCoords).addTo(map);
+            marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7").openPopup();
 
-        // Aggiungi il layer delle mappe
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-
-        // Aggiungi il confine del Municipio X tramite il suo GeoJSON
-        const municipioX = L.geoJSON(null, {
-            style: {
-                color: '#ff7800',
-                weight: 2
-            }
-        }).addTo(map);
-
-        // Carica i dati GeoJSON
-        fetch('https://raw.githubusercontent.com/username/repository/branch/municipioX.geojson') // Sostituisci con il link corretto al file GeoJSON
+            // Carica i confini del Municipio X tramite Overpass API
+            fetch('https://overpass-api.de/api/interpreter', {
+                method: 'POST',
+                body: `[out:json];
+                       area["name"="Roma"]["admin_level"="8"]->.roma;
+                       rel(area.roma)["name"="Municipio Roma X"]["admin_level"="10"];
+                       out geom;`
+            })
             .then(response => response.json())
             .then(data => {
-                municipioX.addData(data);
-                map.fitBounds(municipioX.getBounds()); // Adatta la mappa ai confini del Municipio X
-            });
+                if (data.elements.length > 0) {
+                    const municipioCoords = data.elements[0].members
+                        .filter(m => m.type === "way")
+                        .flatMap(w => w.geometry.map(p => [p.lat, p.lon]));
 
-        // Aggiungi un marker per la biblioteca
-        const bibliotecaMarker = L.marker([41.7325117, 12.2718834]).addTo(map)
-            .bindPopup('<b>Biblioteca</b><br>Via Adolfo Cozza, 7').openPopup();
+                    // Disegna il confine del municipio
+                    L.polygon(municipioCoords, {
+                        color: '#970a2c',
+                        weight: 3,
+                        opacity: 0.7,
+                        fillColor: '#970a2c',
+                        fillOpacity: 0.1
+                    }).addTo(map);
+
+                    // Aggiungi box informativo
+                    const info = L.control();
+                    info.onAdd = function() {
+                        this._div = L.DomUtil.create('div', 'info-box');
+                        this._div.innerHTML = '<h4>Municipio Roma X</h4>' +
+                            'Biblioteca Elsa Morante<br>' +
+                            'Via Adolfo Cozza, 7';
+                        return this._div;
+                    };
+                    info.addTo(map);
+                }
+            })
+            .catch(error => console.error('Errore nel caricamento dei confini:', error));
+        });
     </script>
 </body>
 </html>
