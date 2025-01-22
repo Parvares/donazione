@@ -49,9 +49,13 @@
             const marker = L.marker(biblioCoords).addTo(map);
             marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7").openPopup();
 
-            // Aggiungi il percorso (partenza dalla biblioteca)
+            // Aggiungi il percorso (stradina di servizio)
             const percorso = [
                 biblioCoords,                    // Punto di partenza: Biblioteca Elsa Morante
+                [41.732210, 12.271703],          // Punti intermedi lungo la stradina
+                [41.732315, 12.271511],          
+                [41.732400, 12.271400],         
+                [41.732500, 12.271200],          
                 [41.732007, 12.270994]          // Punto di arrivo
             ];
 
@@ -69,7 +73,7 @@
                 this._div = L.DomUtil.create('div', 'info-box');
                 this._div.innerHTML = '<h4>Biblioteca Elsa Morante</h4>' +
                     'Via Adolfo Cozza, 7<br>' +
-                    'Percorso evidenziato in blu';
+                    'Percorso evidenziato in blu (stradina di servizio)';
                 return this._div;
             };
             info.addTo(map);
