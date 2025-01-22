@@ -56,14 +56,6 @@
             const marker = L.marker(biblioCoords).addTo(map);
             marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7");
 
-            // Definizione dei colori per i municipi
-            const colors = [
-                "#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF",
-                "#00FFFF", "#FFA500", "#800080", "#008000", "#970a2c",
-                "#4B0082", "#FFD700", "#8B4513", "#48D1CC", "#FF6347"
-            ];
-
-            // Carica tutti i municipi usando la query fornita
             const query = `
                 [out:json][timeout:25];
                 area["name"="Roma"]["admin_level"="8"]->.searchArea;
@@ -89,21 +81,50 @@
                     const ways = data.elements.filter(e => e.type === "way");
                     const nodes = data.elements.filter(e => e.type === "node");
 
+                    // Funzione per determinare il numero del municipio
+                    function getMunicipioNumber(relation) {
+                        // Controlla prima il tag ref:mun se disponibile
+                        if (relation.tags['ref:mun']) {
+                            return parseInt(relation.tags['ref:mun']);
+                        }
+                        
+                        // Cerca il numero nel nome del municipio
+                        const name = relation.tags.name || '';
+                        const match = name.match(/municipio\s+([IVX]+|\d+)/i);
+                        if (match) {
+                            // Converti numeri romani in arabi se necessario
+                            const num = match[1];
+                            if (/^[IVX]+$/i.test(num)) {
+                                const romanNumerals = {
+                                    'I': 1, 'II': 2, 'III': 3, 'IV': 4, 'V': 5,
+                                    'VI': 6, 'VII': 7, 'VIII': 8, 'IX': 9, 'X': 10,
+                                    'XI': 11, 'XII': 12, 'XIII': 13, 'XIV': 14, 'XV': 15
+                                };
+                                return romanNumerals[num.toUpperCase()] || null;
+                            }
+                            return parseInt(num);
+                        }
+                        return null;
+                    }
+
                     // Crea la legenda
                     const legend = L.control({position: 'bottomright'});
                     legend.onAdd = function(map) {
                         const div = L.DomUtil.create('div', 'legend');
                         div.innerHTML = '<h4>Municipi di Roma</h4>';
-                        relations.forEach((rel, index) => {
-                            const nome = rel.tags.name || `Municipio ${index + 1}`;
-                            div.innerHTML += `<div><span style="background:${colors[index % colors.length]};width:20px;height:20px;display:inline-block;"></span> ${nome}</div>`;
-                        });
+                        div.innerHTML += `
+                            <div><span style="background:#970a2c;width:20px;height:20px;display:inline-block;"></span> Municipio X</div>
+                            <div><span style="background:#000000;width:20px;height:20px;display:inline-block;"></span> Altri Municipi</div>`;
                         return div;
                     };
                     legend.addTo(map);
 
                     // Disegna i confini di ogni municipio
-                    relations.forEach((rel, index) => {
+                    relations.forEach(rel => {
+                        const municipioNum = getMunicipioNumber(rel);
+                        const isDecimo = municipioNum === 10;
+                        const color = isDecimo ? '#970a2c' : '#000000';
+
                         const municipioWays = rel.members
                             .filter(m => m.type === "way")
                             .map(m => ways.find(w => w.id === m.ref));
@@ -116,13 +137,21 @@
                                 });
 
                                 const polyline = L.polyline(coordinates, {
-                                    color: colors[index % colors.length],
+                                    color: color,
                                     weight: 3,
                                     opacity: 0.7
                                 }).addTo(map);
 
-                                const nome = rel.tags.name || `Municipio ${index + 1}`;
-                                polyline.bindPopup(nome);
+                                // Prepara il popup con le informazioni del municipio
+                                const nome = rel.tags.name || `Municipio ${municipioNum}`;
+                                const zona = rel.tags.zona || '';
+                                const quartieri = rel.tags.quartieri || '';
+                                
+                                let popupContent = `<b>${nome}</b>`;
+                                if (zona) popupContent += `<br>Zona: ${zona}`;
+                                if (quartieri) popupContent += `<br>Quartieri: ${quartieri}`;
+                                
+                                polyline.bindPopup(popupContent);
                             }
                         });
                     });
@@ -135,7 +164,7 @@
             info.onAdd = function() {
                 const div = L.DomUtil.create('div', 'info-box');
                 div.innerHTML = '<h4>Municipi di Roma</h4>' +
-                    'Clicca sui confini per vedere il nome del municipio<br>' +
+                    'Clicca sui confini per vedere le informazioni del municipio<br>' +
                     '<br>' +
                     '<b>Punto di interesse:</b><br>' +
                     'Biblioteca Elsa Morante<br>' +
