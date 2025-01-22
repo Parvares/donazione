@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mappa Municipio X - Biblioteca Elsa Morante</title>
+    <title>Mappa Municipio X e Via Adolfo Cozza 7</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
     <style>
         body, html {
@@ -35,72 +35,65 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Coordinate della Biblioteca Elsa Morante
-            const biblioCoords = [41.7325117, 12.2718834];
-            
-            // Inizializza la mappa
+            const biblioCoords = [41.7325117, 12.2718834]; // Coordinate di Via Adolfo Cozza 7
             const map = L.map('map').setView(biblioCoords, 14);
-            
+
             // Aggiungi il layer di OpenStreetMap
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
                 attribution: '© OpenStreetMap contributors'
             }).addTo(map);
-            
-            // Aggiungi il marker della biblioteca
-            const marker = L.marker(biblioCoords).addTo(map);
-            marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7").openPopup();
 
-            // Carica i confini del Municipio X tramite Overpass API
+            // Aggiungi marker per Via Adolfo Cozza 7
+            L.marker(biblioCoords).addTo(map)
+                .bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7")
+                .openPopup();
+
+            // Query per ottenere i confini del Municipio X
+            const overpassQuery = `
+                [out:json][timeout:25];
+                area["name"="Roma"]["admin_level"="8"]->.roma;
+                rel(area.roma)["ref"="X"]["admin_level"="10"];
+                (._;>;);
+                out body;
+            `;
+
             fetch('https://overpass-api.de/api/interpreter', {
                 method: 'POST',
-                body: `[out:json][timeout:25];
-                       area["admin_level"="8"]["name"="Roma"]->.roma;
-                       rel(area.roma)["ref"="X"]["admin_level"="10"];
-                       out body;
-                       >;
-                       out skel qt;`
+                body: overpassQuery
             })
             .then(response => response.json())
             .then(data => {
-                if (data.elements.length > 0) {
-                    // Trova la relazione del Municipio X
-                    const municipio = data.elements.find(e => e.type === "relation");
-                    const ways = data.elements.filter(e => e.type === "way");
-                    const nodes = data.elements.filter(e => e.type === "node");
+                const nodes = {};
+                const boundaries = [];
 
-                    // Costruisci i confini
-                    const boundaries = ways.map(way => {
-                        return way.nodes.map(nodeId => {
-                            const node = nodes.find(n => n.id === nodeId);
-                            return [node.lat, node.lon];
-                        });
-                    });
+                // Organizza i nodi
+                data.elements.forEach(el => {
+                    if (el.type === 'node') {
+                        nodes[el.id] = [el.lat, el.lon];
+                    }
+                });
 
-                    // Disegna il confine del municipio
-                    boundaries.forEach(boundary => {
-                        L.polyline(boundary, {
-                            color: '#970a2c',
-                            weight: 3,
-                            opacity: 0.7
-                        }).addTo(map);
-                    });
+                // Costruisci i confini
+                data.elements.forEach(el => {
+                    if (el.type === 'way') {
+                        const wayCoords = el.nodes.map(nodeId => nodes[nodeId]);
+                        boundaries.push(wayCoords);
+                    }
+                });
 
-                    // Aggiungi box informativo
-                    const info = L.control();
-                    info.onAdd = function() {
-                        this._div = L.DomUtil.create('div', 'info-box');
-                        this._div.innerHTML = '<h4>Municipio Roma X</h4>' +
-                            'Biblioteca Elsa Morante<br>' +
-                            'Via Adolfo Cozza, 7';
-                        return this._div;
-                    };
-                    info.addTo(map);
+                // Disegna i confini del Municipio X
+                boundaries.forEach(boundary => {
+                    L.polyline(boundary, {
+                        color: '#970a2c',
+                        weight: 3,
+                        opacity: 0.7
+                    }).addTo(map);
+                });
 
-                    // Adatta la vista per mostrare tutti i confini
-                    const bounds = L.latLngBounds(boundaries.flat());
-                    map.fitBounds(bounds);
-                }
+                // Adatta la mappa per mostrare tutto
+                const bounds = L.latLngBounds(boundaries.flat());
+                map.fitBounds(bounds);
             })
             .catch(error => console.error('Errore nel caricamento dei confini:', error));
         });
