@@ -182,12 +182,13 @@
             // Mostra il popup iniziale
             createPopup();
 
-          // Rimuovi il popup quando lo zoom è manuale
-           map.on('zoomstart', function(e) {
-          if (popup && e.originalEvent) {  // Controlla se l'evento ha un originalEvent (zoom manuale)
-        map.closePopup(popup);
-        }
-       });
+// Rimuovi il popup durante lo zoom
+map.on('zoomstart', function() {
+    if (popup) {
+        map.removeLayer(popup);
+        popup = null;
+    }
+});
 
             let routingControl = null;
             
