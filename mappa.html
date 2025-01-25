@@ -8,10 +8,48 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
     <link rel="icon" href="favicon.png" type="image/png">
     <style>
-        /* Previous CSS remains the same */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+        #map {
+            height: 100vh;
+            width: 100%;
+        }
+        .search-box {
+            position: absolute;
+            top: 10px;
+            left: 50px;
+            z-index: 1000;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+        }
+        .search-box input {
+            width: 250px;
+            margin-right: 10px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+        .search-box button {
+            background-color: #4285F4;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+        }
         .legend {
             background-color: rgba(255, 255, 255, 0.8);
-            padding: 10px;
+            padding: 6px 8px;
             font: 14px/16px Arial, Helvetica, sans-serif;
             box-shadow: 0 0 15px rgba(0,0,0,0.2);
             border-radius: 5px;
@@ -19,7 +57,6 @@
             bottom: 10px;
             right: 10px;
             z-index: 1000;
-            max-width: 250px;
         }
         .legend-item {
             display: flex;
@@ -27,15 +64,40 @@
             margin-bottom: 5px;
         }
         .legend-item img {
-            width: 24px;
-            height: 24px;
-            margin-right: 8px;
+            width: 20px;
+            height: 20px;
+            margin-right: 4px;
         }
         .legend-item span {
             width: 16px;
             height: 16px;
-            margin-right: 8px;
+            margin-right: 4px;
             background-color: #970a2c;
+        }
+        .leaflet-routing-container {
+            position: relative;
+        }
+        .routing-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            z-index: 1000;
+            transition: background-color 0.3s;
+        }
+        .routing-close-btn:hover {
+            background-color: #ff1a1a;
         }
     </style>
 </head>
@@ -52,7 +114,7 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const biblioCoords = [41.732522, 12.271879]; // punto di origine del percorso tratteggiato
+            const biblioCoords = [41.732522, 12.271879];
             
             const map = L.map('map').setView(biblioCoords, 14);
             
@@ -82,9 +144,7 @@
                 iconUrl: 'marker.png',
                 iconSize: [32, 32],
                 iconAnchor: [16, 32],
-                popupAnchor: [0, -32]
             });
-
             const marker = L.marker(markerCoords, {icon: markerIcon}).addTo(map);
             
             let routingControl = null;
@@ -133,7 +193,6 @@
                                     map.removeControl(routingControl);
                                 };
 
-                                // Append close button to routing container
                                 setTimeout(() => {
                                     const container = document.querySelector('.leaflet-routing-container');
                                     if (container) {
@@ -141,7 +200,7 @@
                                     }
                                 }, 100);
 
-                                return null; // No markers for waypoints
+                                return null;
                             }
                         }).addTo(map);
                     } else {
@@ -195,7 +254,8 @@
                         this._div = L.DomUtil.create('div', 'legend');
                         this._div.innerHTML = `
                             <div class="legend-item">
-                                <span></span>Confini Municipio X
+                                <span></span>
+                                Confini Municipio X
                             </div>
                             <div class="legend-item">
                                 <img src="marker.png" alt="Biblioteca">
