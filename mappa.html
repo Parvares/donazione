@@ -100,6 +100,9 @@
         .custom-popup .leaflet-popup-tip {
             background-color: rgba(255, 255, 255, 0.7);
         }
+        .custom-popup {
+            margin-bottom: 30px;
+        }
     </style>
 </head>
 <body>
@@ -142,9 +145,15 @@
             }).addTo(map);
 
             // Add marker at the LAST point of the dashed path
-            const marker = L.marker(percorso[percorso.length - 1]).addTo(map);
-            const popup = L.popup({className: 'custom-popup'})
-                .setLatLng(percorso[percorso.length - 1])
+            const markerCoords = percorso[percorso.length - 1];
+            const marker = L.marker(markerCoords).addTo(map);
+            
+            const popup = L.popup({
+                className: 'custom-popup',
+                offset: [0, -10],
+                closeButton: false
+            })
+                .setLatLng(markerCoords)
                 .setContent("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7")
                 .openOn(map);
 
