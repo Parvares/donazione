@@ -143,9 +143,10 @@
 
             // Add marker at the LAST point of the dashed path
             const marker = L.marker(percorso[percorso.length - 1]).addTo(map);
-            marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7", {
-                className: 'custom-popup'
-            });
+            const popup = L.popup({className: 'custom-popup'})
+                .setLatLng(percorso[percorso.length - 1])
+                .setContent("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7")
+                .openOn(map);
 
             let routingControl = null;
             
