@@ -72,27 +72,24 @@
         .leaflet-routing-container {
             position: relative;
         }
-        .routing-close-btn {
+.routing-close-btn {
             position: absolute;
             top: 10px;
             right: 10px;
-            width: 30px;
-            height: 30px;
-            background-color: #ff4d4d;
-            color: white;
+            width: 20px;
+            height: 20px;
+            color: black;
+            background: none;
             border: none;
-            border-radius: 50%;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-size: 16px;
             font-weight: bold;
-            font-size: 18px;
+            opacity: 0.5;
+            transition: opacity 0.3s;
             z-index: 1000;
-            transition: background-color 0.3s;
         }
         .routing-close-btn:hover {
-            background-color: #ff1a1a;
+            opacity: 1;
         }
     </style>
 </head>
@@ -106,10 +103,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-
-
     
-     <script>
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             const biblioCoords = [41.7325117, 12.2718834];
             
@@ -126,13 +121,18 @@
             }).openPopup();
 
             let routingControl = null;
+            let routeLayer = null;
             let dashedPath = null;
 
             window.searchRoute = async function() {
                 const startPoint = document.getElementById('start-point').value;
                 
+                // Remove existing routing control and route layer
                 if (routingControl) {
                     map.removeControl(routingControl);
+                }
+                if (routeLayer) {
+                    map.removeLayer(routeLayer);
                 }
 
                 try {
@@ -181,6 +181,13 @@
                                 }, 100);
 
                                 return null;
+                            },
+                            // Store the route layer separately
+                            lineOptions: {
+                                styles: [{color: '#0000FF', opacity: 0.8, weight: 5}],
+                                addedToMap: function(line) {
+                                    routeLayer = line;
+                                }
                             }
                         }).addTo(map);
 
