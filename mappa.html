@@ -68,7 +68,6 @@
             margin-right: 4px;
             background-color: #970a2c;
         }
-        /* New styles for close button */
         .leaflet-routing-container {
             position: relative;
         }
@@ -124,16 +123,29 @@
             }).openPopup();
 
             let routingControl = null;
-            let dashedPath = null;
+            
+            // Create dashed path BEFORE search function
+            const percorso = [
+                biblioCoords,
+                [41.732154, 12.271675],
+                [41.732282, 12.271254],
+                [41.732240, 12.271230],
+                [41.732276, 12.271090],
+                [41.732092, 12.270980],
+            ];
+
+            const dashedPath = L.polyline(percorso, {
+                color: '#0000FF',
+                weight: 4,
+                opacity: 0.8,
+                dashArray: '10, 10'
+            }).addTo(map);
 
             window.searchRoute = async function() {
                 const startPoint = document.getElementById('start-point').value;
                 
                 if (routingControl) {
                     map.removeControl(routingControl);
-                }
-                if (dashedPath) {
-                    map.removeLayer(dashedPath);
                 }
 
                 try {
@@ -171,9 +183,6 @@
                                 closeBtn.className = 'routing-close-btn';
                                 closeBtn.onclick = function() {
                                     map.removeControl(routingControl);
-                                    if (dashedPath) {
-                                        map.removeLayer(dashedPath);
-                                    }
                                 };
 
                                 // Append close button to routing container
@@ -186,22 +195,6 @@
 
                                 return null; // No markers for waypoints
                             }
-                        }).addTo(map);
-
-                        const percorso = [
-                            biblioCoords,
-                            [41.732154, 12.271675],
-                            [41.732282, 12.271254],
-                            [41.732240, 12.271230],
-                            [41.732276, 12.271090],
-                            [41.732092, 12.270980],
-                        ];
-
-                        dashedPath = L.polyline(percorso, {
-                            color: '#0000FF',
-                            weight: 4,
-                            opacity: 0.8,
-                            dashArray: '10, 10'
                         }).addTo(map);
                     } else {
                         alert('Indirizzo non trovato. Riprova.');
