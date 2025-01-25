@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
     <link rel="icon" href="favicon.png" type="image/png">
-    <style>
+ <style>
         body, html {
             margin: 0;
             padding: 0;
@@ -64,17 +64,21 @@
             margin-bottom: 4px;
         }
         .legend-item span {
-            width: 16px;
-            height: 16px;
             margin-right: 4px;
         }
         .legend-border span {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
             background-color: #970a2c;
         }
         .legend-path span {
-            background-color: #0000FF;
-            height: 4px;
+            display: inline-block;
             width: 20px;
+            height: 4px;
+            background-image: linear-gradient(to right, #0000FF 50%, transparent 50%);
+            background-size: 10px 4px;
+            background-repeat: repeat-x;
         }
         .leaflet-routing-container {
             position: relative;
