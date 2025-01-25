@@ -72,17 +72,16 @@
             height: 16px;
             background-color: #970a2c;
         }
- .legend-path span {
+        /* Previous styles remain the same */
+        .legend-path span {
             display: inline-block;
             width: 20px;
             height: 4px;
-            background: repeating-linear-gradient(
-                to right,
-                #0000FF,
-                #0000FF 5px,
-                transparent 5px,
-                transparent 10px
-            );
+            background-color: #0000FF;
+            background-image: linear-gradient(to right, transparent 0%, transparent 50%, #0000FF 50%, #0000FF 100%);
+            background-size: 10px 4px;
+            background-repeat: repeat-x;
+        }
         .leaflet-routing-container {
             position: relative;
         }
