@@ -6,37 +6,107 @@
     <title>Mappa Municipio X - Biblioteca Elsa Morante</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+    <link rel="icon" href="favicon.png" type="image/png">
     <style>
-        .custom-close-button {
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+        #map {
+            height: 100vh;
+            width: 100%;
+        }
+        .search-box {
             position: absolute;
-            top: 5px;
-            right: 5px;
-            width: 40px;
-            height: 40px;
-            background: rgba(255,65,54,0.8);
+            top: 10px;
+            left: 50px;
+            z-index: 1000;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+        }
+        .search-box input {
+            width: 250px;
+            margin-right: 10px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+        .search-box button {
+            background-color: #4285F4;
             color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .legend {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 6px 8px;
+            font: 14px/16px Arial, Helvetica, sans-serif;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            border-radius: 5px;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            z-index: 1000;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+        }
+        .legend-item span {
+            width: 16px;
+            height: 16px;
+            margin-right: 4px;
+            background-color: #970a2c;
+        }
+        /* New styles for close button */
+        .leaflet-routing-container {
+            position: relative;
+        }
+        .routing-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
             border-radius: 50%;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            font-size: 24px;
-            transition: all 0.3s ease;
+            font-weight: bold;
+            font-size: 18px;
             z-index: 1000;
-            border: 2px solid white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: background-color 0.3s;
         }
-        .custom-close-button:hover {
-            background: rgba(255,65,54,1);
-            transform: scale(1.1);
-        }
-        .leaflet-routing-container {
-            position: relative;
+        .routing-close-btn:hover {
+            background-color: #ff1a1a;
         }
     </style>
 </head>
 <body>
-    <!-- Previous HTML remains the same -->
+    <div class="search-box">
+        <input type="text" id="start-point" placeholder="Inserisci punto di partenza">
+        <button onclick="searchRoute()">Trova Percorso</button>
+    </div>
+    <div id="map"></div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const biblioCoords = [41.7325117, 12.2718834];
@@ -95,31 +165,28 @@
                             lineOptions: {
                                 styles: [{color: '#0000FF', opacity: 0.8, weight: 5}]
                             },
-                            createMarker: function() {
-                                return null;
+                            createMarker: function(i, waypoint, n) {
+                                const closeBtn = document.createElement('button');
+                                closeBtn.innerHTML = '✕';
+                                closeBtn.className = 'routing-close-btn';
+                                closeBtn.onclick = function() {
+                                    map.removeControl(routingControl);
+                                    if (dashedPath) {
+                                        map.removeLayer(dashedPath);
+                                    }
+                                };
+
+                                // Append close button to routing container
+                                setTimeout(() => {
+                                    const container = document.querySelector('.leaflet-routing-container');
+                                    if (container) {
+                                        container.appendChild(closeBtn);
+                                    }
+                                }, 100);
+
+                                return null; // No markers for waypoints
                             }
                         }).addTo(map);
-
-                        // Add custom close button to routing control
-                        const container = routingControl.getContainer();
-                        const closeButton = L.DomUtil.create('div', 'custom-close-button', container);
-                        closeButton.innerHTML = '✕';
-                        closeButton.title = 'Chiudi percorso';
-                        
-                        L.DomEvent.addListener(closeButton, 'click', function(e) {
-                            L.DomEvent.stopPropagation(e);
-                            if (routingControl) {
-                                map.removeControl(routingControl);
-                                routingControl = null;
-                            }
-                            if (dashedPath) {
-                                map.removeLayer(dashedPath);
-                                dashedPath = null;
-                            }
-                            document.getElementById('start-point').value = '';
-                        });
-
-                        L.DomEvent.addListener(closeButton, 'mousedown', L.DomEvent.stopPropagation);
 
                         const percorso = [
                             biblioCoords,
