@@ -63,6 +63,11 @@
             align-items: center;
             margin-bottom: 4px;
         }
+        .legend-item img {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+        }
         .legend-item span {
             width: 16px;
             height: 16px;
@@ -70,9 +75,6 @@
         }
         .boundary-color {
             background-color: #970a2c;
-        }
-        .library-color {
-            background-color: #0000FF;
         }
         .leaflet-routing-container {
             position: relative;
@@ -114,11 +116,9 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            console.log("DOM fully loaded and parsed");
-            const biblioCoords = [41.732522, 12.271879]; // punto di origine del percorso tratteggiato
+            const biblioCoords = [41.732522, 12.271879];
             
             const map = L.map('map').setView(biblioCoords, 14);
-            console.log("Map initialized with coordinates:", biblioCoords);
             
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
@@ -140,23 +140,14 @@
                 opacity: 0.8,
                 dashArray: '10, 10'
             }).addTo(map);
-            console.log("Dashed path added to map");
 
             const markerCoords = percorso[percorso.length - 1];
-            const marker = L.marker(markerCoords, {
-                icon: L.icon({
-                    iconUrl: 'marker.png',
-                    iconSize: [32, 32],
-                    iconAnchor: [16, 32]
-                })
-            }).addTo(map);
-            console.log("Marker added at coordinates:", markerCoords);
+            const marker = L.marker(markerCoords).addTo(map);
 
             let routingControl = null;
             
             window.searchRoute = async function() {
                 const startPoint = document.getElementById('start-point').value;
-                console.log("Searching route from:", startPoint);
                 
                 if (routingControl) {
                     map.removeControl(routingControl);
@@ -170,8 +161,6 @@
                             limit: 1
                         }
                     });
-
-                    console.log("Geocoding response:", response.data);
 
                     if (response.data.length > 0) {
                         const startCoords = [
@@ -212,10 +201,7 @@
                                 return null; // No markers for waypoints
                             }
                         }).addTo(map);
-
-                        console.log("Routing control added");
                     } else {
-                        console.warn('Indirizzo non trovato');
                         alert('Indirizzo non trovato. Riprova.');
                     }
                 } catch (error) {
@@ -242,7 +228,6 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log("Overpass API response:", data);
                 if (data.elements.length > 0) {
                     const ways = data.elements.filter(e => e.type === "way");
                     const nodes = data.elements.filter(e => e.type === "node");
@@ -270,21 +255,18 @@
                                 <span class="boundary-color"></span>Confini Municipio X
                             </div>
                             <div class="legend-item">
-                                <span class="library-color"></span>Biblioteca Elsa Morante<br>Via Adolfo Cozza, 7
+                                <img src="marker.png" alt="Library">Biblioteca Elsa Morante<br>Via Adolfo Cozza, 7
                             </div>
                         `;
                         return this._div;
                     };
                     legend.addTo(map);
-                    console.log("Legend added to map");
 
                     const bounds = L.latLngBounds(boundaries.flat());
                     map.fitBounds(bounds);
                 }
             })
-            .catch(error => {
-                console.error('Errore nel caricamento dei confini:', error);
-            });
+            .catch(error => console.error('Errore nel caricamento dei confini:', error));
         });
     </script>
 </body>
