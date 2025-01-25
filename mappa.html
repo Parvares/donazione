@@ -103,8 +103,7 @@
         .custom-popup {
             margin-bottom: 30px;
         }
-
-          .custom-popup .leaflet-popup-close-button {
+        .custom-popup .leaflet-popup-close-button {
             color: #ff4d4d;
             font-size: 20px;
             font-weight: bold;
@@ -114,6 +113,11 @@
         }
         .custom-popup .leaflet-popup-close-button:hover {
             color: #ff1a1a;
+        }
+        .hours-info {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #333;
         }
     </style>
 </head>
@@ -164,7 +168,15 @@
                 closeButton: true
             })
                 .setLatLng(markerCoords)
-                .setContent("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7")
+                .setContent(`
+                    <b>Biblioteca Elsa Morante</b><br>
+                    Via Adolfo Cozza, 7
+                    <div class="hours-info">
+                        <strong>Orari di apertura:</strong><br>
+                        Lunedì-Venerdì: 09:00-18:30<br>
+                        Sabato: 09:00-13:00
+                    </div>
+                `)
                 .openOn(map);
 
             let routingControl = null;
