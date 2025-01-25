@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
     <link rel="icon" href="favicon.png" type="image/png">
-    <style>
+  <style>
         body, html {
             margin: 0;
             padding: 0;
@@ -39,18 +39,19 @@
             font-size: 14px;
         }
         .search-box button {
-            background-color: #f0f0f0;
-            color: black;
-            border: 1px solid #ccc;
-            padding: 5px 10px;
-            border-radius: 3px;
+            background: none;
+            border: none;
             cursor: pointer;
+            display: flex;
+            align-items: center;
             margin-left: 5px;
-            font-size: 14px;
         }
-        .search-box button:first-of-type {
-            background-color: #4285F4;
-            color: white;
+        .search-box button svg {
+            stroke: #4285F4;
+        }
+        .search-box button:nth-child(3) {
+            color: black;
+            opacity: 0.6;
         }
         .legend {
             background-color: rgba(255, 255, 255, 0.8);
