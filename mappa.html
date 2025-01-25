@@ -168,15 +168,11 @@
                 closeButton: true
             })
                 .setLatLng(markerCoords)
-                .setContent(`
-                    <b>Biblioteca Elsa Morante</b><br>
-                    Via Adolfo Cozza, 7
-                    <div class="hours-info">
-                        <strong>Orari di apertura:</strong><br>
-                        Lunedì-Venerdì: 09:00-18:30<br>
-                        Sabato: 09:00-13:00
-                    </div>
-                `)
+.setContent(`
+    <b>Biblioteca Elsa Morante</b><br>
+    Via Adolfo Cozza, 7<br>
+    <small>Lun-Ven 09:00-18:30 • Sab 09:00-13:00</small>
+`)
                 .openOn(map);
 
             let routingControl = null;
