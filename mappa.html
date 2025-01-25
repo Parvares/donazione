@@ -68,6 +68,24 @@
             margin-right: 4px;
             background-color: #970a2c;
         }
+        .routing-close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            background: rgba(255,255,255,0.8);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: background-color 0.3s ease;
+        }
+        .routing-close-button:hover {
+            background-color: rgba(200,200,200,0.5);
+        }
     </style>
 </head>
 <body>
@@ -138,6 +156,28 @@
                             fitSelectedRoutes: true,
                             lineOptions: {
                                 styles: [{color: '#0000FF', opacity: 0.8, weight: 5}]
+                            },
+                            createMarker: function(i, wp, nWps) {
+                                if (i === nWps - 1) {
+                                    const marker = L.marker(wp.latLng);
+                                    
+                                    const closeButton = L.DomUtil.create('div', 'routing-close-button');
+                                    closeButton.innerHTML = '✕';
+                                    closeButton.addEventListener('click', function() {
+                                        if (routingControl) {
+                                            map.removeControl(routingControl);
+                                            routingControl = null;
+                                        }
+                                        if (dashedPath) {
+                                            map.removeLayer(dashedPath);
+                                            dashedPath = null;
+                                        }
+                                        document.getElementById('start-point').value = '';
+                                    });
+
+                                    return marker.bindPopup(closeButton);
+                                }
+                                return L.marker(wp.latLng);
                             }
                         }).addTo(map);
 
