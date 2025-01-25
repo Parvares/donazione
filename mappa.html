@@ -63,6 +63,23 @@
         .custom-popup .leaflet-popup-tip {
             background: rgba(255, 255, 255, 0.8);
         }
+        .legend {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 6px 8px;
+            font: 14px/16px Arial, Helvetica, sans-serif;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            border-radius: 5px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+        }
+        .legend-item span {
+            width: 16px;
+            height: 16px;
+            margin-right: 4px;
+            background-color: #970a2c;
+        }
     </style>
 </head>
 <body>
@@ -136,7 +153,6 @@
                             }
                         }).addTo(map);
 
-                        // Add the dashed path after the routing path
                         const percorso = [
                             biblioCoords,
                             [41.732154, 12.271675],
@@ -197,16 +213,13 @@
                         }).addTo(map);
                     });
 
-                    const info = L.control();
-                    info.onAdd = function() {
-                        this._div = L.DomUtil.create('div', 'info-box');
-                        this._div.innerHTML = '<h4>Municipio Roma X</h4>' +
-                            'Biblioteca Elsa Morante<br>' +
-                            'Via Adolfo Cozza, 7<br>' +
-                            'Trova il tuo percorso';
+                    const legend = L.control({position: 'bottomright'});
+                    legend.onAdd = function() {
+                        this._div = L.DomUtil.create('div', 'legend');
+                        this._div.innerHTML = '<div class="legend-item"><span></span>Confini Municipio X</div>';
                         return this._div;
                     };
-                    info.addTo(map);
+                    legend.addTo(map);
 
                     const bounds = L.latLngBounds(boundaries.flat());
                     map.fitBounds(bounds);
