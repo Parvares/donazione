@@ -18,37 +18,35 @@
             height: calc(100vh - 50px);
             width: 100%;
         }
-        .search-container {
-            background-color: #f1f1f1;
+        .search-box {
+            position: absolute;
+            top: 10px;
+            left: 50px;
+            z-index: 1000;
+            background: white;
             padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
             display: flex;
             align-items: center;
-            border-bottom: 1px solid #ddd;
         }
-
-        .search-input {
-            flex-grow: 1;
-            padding: 8px 12px;
+        .search-box input {
+            width: 250px;
+            margin-right: 10px;
+            padding: 5px 10px;
             border: 1px solid #ccc;
-            border-radius: 4px;
+            border-radius: 3px;
             font-size: 14px;
         }
-
-        .search-button {
-            background-color: #4285f4;
+        .search-box button {
+            background-color: #4285F4;
             color: white;
             border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
+            padding: 5px 10px;
+            border-radius: 3px;
             cursor: pointer;
             font-size: 14px;
-            margin-left: 10px;
         }
-
-        .search-button:hover {
-            background-color: #3367d6;
-        }
-
         .info-box {
             padding: 6px 8px;
             font: 14px/16px Arial, Helvetica, sans-serif;
@@ -68,9 +66,9 @@
     </style>
 </head>
 <body>
-    <div class="search-container">
-        <input type="text" id="start-point" class="search-input" placeholder="Inserisci punto di partenza">
-        <button onclick="searchRoute()" class="search-button">Trova Percorso</button>
+    <div class="search-box">
+        <input type="text" id="start-point" placeholder="Inserisci punto di partenza">
+        <button onclick="searchRoute()">Trova Percorso</button>
     </div>
     <div id="map"></div>
     
@@ -94,17 +92,15 @@
                 className: 'custom-popup'
             }).openPopup();
 
-            // Ripristina il percorso tratteggiato originale
-            const dashedPath = [
+            const percorso = [
                 biblioCoords,
                 [41.732154, 12.271675],
                 [41.732282, 12.271254],
                 [41.732240, 12.271230],
-                [41.732276, 12.271090],
                 [41.732092, 12.270980],
             ];
 
-            L.polyline(dashedPath, {
+            L.polyline(percorso, {
                 color: '#0000FF',
                 weight: 4,
                 opacity: 0.8,
@@ -150,25 +146,6 @@
                                 styles: [{color: '#0000FF', opacity: 0.8, weight: 5}]
                             }
                         }).addTo(map);
-
-                        routingControl.on('routesfound', function(e) {
-                            const routes = e.routes;
-                            const newRoute = routes[0].coordinates;
-                            newRoute.push(dashedPath[1]);
-
-                            L.polyline(newRoute, {
-                                color: '#0000FF',
-                                weight: 4,
-                                opacity: 0.8
-                            }).addTo(map);
-
-                            L.polyline(dashedPath.slice(1), {
-                                color: '#0000FF',
-                                weight: 4,
-                                opacity: 0.8,
-                                dashArray: '10, 10'
-                            }).addTo(map);
-                        });
                     } else {
                         alert('Indirizzo non trovato. Riprova.');
                     }
@@ -176,19 +153,16 @@
                     console.error('Errore nella ricerca del percorso:', error);
                     alert('Errore nel trovare il percorso. Riprova.');
                 }
-            };
+            }
 
-            // Aggiungi evento per la ricerca su pressione Enter
             document.getElementById('start-point').addEventListener('keypress', function(event) {
                 if (event.key === 'Enter') {
                     searchRoute();
                 }
             });
 
-            // Focus sul campo di input all'avvio
             document.getElementById('start-point').focus();
 
-            // Caricamento confini Municipio
             fetch('https://overpass-api.de/api/interpreter', {
                 method: 'POST',
                 body: `[out:json][timeout:25];
