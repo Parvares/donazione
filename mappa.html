@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
     <link rel="icon" href="favicon.png" type="image/png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body, html {
             margin: 0;
@@ -40,20 +39,13 @@
             font-size: 14px;
         }
         .search-box button {
-            background-color: #4285F4; /* Colore di sfondo per il bottone */
-            border-radius: 50%; /* Bottone rotondo */
-            padding: 8px;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
+            background-color: #4285F4;
+            color: white;
             border: none;
-        }
-        .search-box button i {
-            color: white; /* Colore dell'icona */
-            font-size: 20px; /* Dimensione dell'icona */
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
         }
         .legend {
             background-color: rgba(255, 255, 255, 0.8);
@@ -76,32 +68,38 @@
             margin-right: 4px;
             background-color: #970a2c;
         }
+        /* New styles for close button */
+        .leaflet-routing-container {
+            position: relative;
+        }
         .routing-close-btn {
             position: absolute;
             top: 10px;
             right: 10px;
-            width: 20px;
-            height: 20px;
-            color: black;
-            background: none;
+            width: 30px;
+            height: 30px;
+            background-color: #ff4d4d;
+            color: white;
             border: none;
+            border-radius: 50%;
             cursor: pointer;
-            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-weight: bold;
-            opacity: 0.5;
-            transition: opacity 0.3s;
+            font-size: 18px;
             z-index: 1000;
+            transition: background-color 0.3s;
         }
         .routing-close-btn:hover {
-            opacity: 1;
+            background-color: #ff1a1a;
         }
     </style>
 </head>
 <body>
     <div class="search-box">
         <input type="text" id="start-point" placeholder="Inserisci punto di partenza">
-        <button onclick="searchRoute()">🔍</button>
-        <button onclick="resetMap()">✖</button>
+        <button onclick="searchRoute()">Trova Percorso</button>
     </div>
     <div id="map"></div>
     
@@ -126,41 +124,16 @@
             }).openPopup();
 
             let routingControl = null;
-            let routeLayer = null;
             let dashedPath = null;
-
-            window.resetMap = function() {
-                // Clear search input
-                document.getElementById('start-point').value = '';
-
-                // Remove routing control if exists
-                if (routingControl) {
-                    map.removeControl(routingControl);
-                    routingControl = null;
-                }
-
-                // Remove route layer if exists
-                if (routeLayer) {
-                    map.removeLayer(routeLayer);
-                    routeLayer = null;
-                }
-
-                // Remove dashed path if exists
-                if (dashedPath) {
-                    map.removeLayer(dashedPath);
-                    dashedPath = null;
-                }
-
-                // Reset map view
-                map.setView(biblioCoords, 14);
-            };
 
             window.searchRoute = async function() {
                 const startPoint = document.getElementById('start-point').value;
                 
-                // Remove existing routing control
                 if (routingControl) {
                     map.removeControl(routingControl);
+                }
+                if (dashedPath) {
+                    map.removeLayer(dashedPath);
                 }
 
                 try {
@@ -189,17 +162,21 @@
                             addWaypoints: false,
                             draggableWaypoints: false,
                             fitSelectedRoutes: true,
+                            lineOptions: {
+                                styles: [{color: '#0000FF', opacity: 0.8, weight: 5}]
+                            },
                             createMarker: function(i, waypoint, n) {
                                 const closeBtn = document.createElement('button');
-                                closeBtn.innerHTML = '×';
+                                closeBtn.innerHTML = '✕';
                                 closeBtn.className = 'routing-close-btn';
                                 closeBtn.onclick = function() {
-                                    const container = document.querySelector('.leaflet-routing-container');
-                                    if (container) {
-                                        container.remove();
+                                    map.removeControl(routingControl);
+                                    if (dashedPath) {
+                                        map.removeLayer(dashedPath);
                                     }
                                 };
 
+                                // Append close button to routing container
                                 setTimeout(() => {
                                     const container = document.querySelector('.leaflet-routing-container');
                                     if (container) {
@@ -207,16 +184,9 @@
                                     }
                                 }, 100);
 
-                                return null;
-                            },
-                            lineOptions: {
-                                styles: [{color: '#0000FF', opacity: 0.8, weight: 5}]
+                                return null; // No markers for waypoints
                             }
                         }).addTo(map);
-
-                        if (dashedPath) {
-                            map.removeLayer(dashedPath);
-                        }
 
                         const percorso = [
                             biblioCoords,
