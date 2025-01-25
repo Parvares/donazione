@@ -77,6 +77,23 @@
                 className: 'custom-popup'
             }).openPopup();
 
+            // Ripristina il percorso tratteggiato originale
+            const percorso = [
+                biblioCoords,
+                [41.732154, 12.271675],
+                [41.732282, 12.271254],
+                [41.732240, 12.271230],
+                [41.732276, 12.271090],
+                [41.732092, 12.270980],
+            ];
+
+            L.polyline(percorso, {
+                color: '#0000FF',
+                weight: 4,
+                opacity: 0.8,
+                dashArray: '10, 10'
+            }).addTo(map);
+
             let routingControl = null;
 
             window.searchRoute = async function() {
@@ -124,6 +141,9 @@
                     alert('Errore nel trovare il percorso. Riprova.');
                 }
             }
+
+            // Focus sul campo di input all'avvio
+            document.getElementById('start-point').focus();
 
             // Caricamento confini Municipio
             fetch('https://overpass-api.de/api/interpreter', {
