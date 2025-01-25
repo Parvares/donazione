@@ -67,12 +67,15 @@
             width: 16px;
             height: 16px;
             margin-right: 4px;
+            display: inline-block;
+            border: 2px solid white;
+            border-radius: 50%;
         }
         .boundary-color {
             background-color: #970a2c;
         }
         .library-color {
-            background-color: #0000FF;
+            background-color: #970a2c;
         }
         .leaflet-routing-container {
             position: relative;
@@ -140,7 +143,21 @@
             }).addTo(map);
 
             const markerCoords = percorso[percorso.length - 1];
-            const marker = L.marker(markerCoords).addTo(map);
+            const marker = L.marker(markerCoords, {
+                icon: L.divIcon({
+                    className: 'custom-marker',
+                    html: `<span style="
+                        width: 16px;
+                        height: 16px;
+                        display: inline-block;
+                        background-color: #970a2c;
+                        border-radius: 50%;
+                        border: 2px solid white;
+                    "></span>`,
+                    iconSize: [16, 16],
+                    iconAnchor: [8, 8]
+                })
+            }).addTo(map);
             
             let routingControl = null;
             
@@ -255,7 +272,8 @@
                             </div>
                             <div class="legend-item">
                                 <span class="library-color"></span>
-                                Biblioteca Elsa Morante (Via Adolfo Cozza, 7)
+                                Biblioteca Elsa Morante
+                                <br>&nbsp;&nbsp;&nbsp;&nbsp;Via Adolfo Cozza, 7
                             </div>
                         `;
                         return this._div;
