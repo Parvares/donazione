@@ -19,16 +19,11 @@
             width: 100%;
         }
         .search-container {
-            position: absolute;
-            top: 10px;
-            left: 50px;
-            z-index: 1000;
             background-color: #f1f1f1;
             padding: 10px;
             display: flex;
             align-items: center;
-            border-radius: 5px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            border-bottom: 1px solid #ddd;
         }
 
         .search-input {
@@ -75,7 +70,7 @@
 <body>
     <div class="search-container">
         <input type="text" id="start-point" class="search-input" placeholder="Inserisci punto di partenza">
-        <button class="search-button" onclick="searchRoute()">Trova Percorso</button>
+        <button onclick="searchRoute()" class="search-button">Trova Percorso</button>
     </div>
     <div id="map"></div>
     
@@ -100,7 +95,7 @@
             }).openPopup();
 
             // Ripristina il percorso tratteggiato originale
-            const percorso = [
+            const dashedPath = [
                 biblioCoords,
                 [41.732154, 12.271675],
                 [41.732282, 12.271254],
@@ -109,7 +104,7 @@
                 [41.732092, 12.270980],
             ];
 
-            L.polyline(percorso, {
+            L.polyline(dashedPath, {
                 color: '#0000FF',
                 weight: 4,
                 opacity: 0.8,
@@ -155,6 +150,25 @@
                                 styles: [{color: '#0000FF', opacity: 0.8, weight: 5}]
                             }
                         }).addTo(map);
+
+                        routingControl.on('routesfound', function(e) {
+                            const routes = e.routes;
+                            const newRoute = routes[0].coordinates;
+                            newRoute.push(dashedPath[1]);
+
+                            L.polyline(newRoute, {
+                                color: '#0000FF',
+                                weight: 4,
+                                opacity: 0.8
+                            }).addTo(map);
+
+                            L.polyline(dashedPath.slice(1), {
+                                color: '#0000FF',
+                                weight: 4,
+                                opacity: 0.8,
+                                dashArray: '10, 10'
+                            }).addTo(map);
+                        });
                     } else {
                         alert('Indirizzo non trovato. Riprova.');
                     }
@@ -162,7 +176,7 @@
                     console.error('Errore nella ricerca del percorso:', error);
                     alert('Errore nel trovare il percorso. Riprova.');
                 }
-            }
+            };
 
             // Aggiungi evento per la ricerca su pressione Enter
             document.getElementById('start-point').addEventListener('keypress', function(event) {
