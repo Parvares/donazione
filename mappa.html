@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mappa Municipio X - Biblioteca Elsa Morante</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-control-geocoder/1.14.0/Control.Geocoder.css" />
     <link rel="icon" href="favicon.png" type="image/png">
     <style>
         body, html {
@@ -29,25 +30,17 @@
             margin: 0 0 5px;
             color: #777;
         }
-
-    .custom-popup .leaflet-popup-content-wrapper {
-        background: rgba(255, 255, 255, 0.8); /* Trasparenza del popup */
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Bordo ombra */
-        border-radius: 5px; /* Bordo arrotondato */
-    }
-    .custom-popup .leaflet-popup-tip {
-        background: rgba(255, 255, 255, 0.8); /* Punta del popup */
-    }
-
     </style>
 </head>
 <body>
     <div id="map"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-control-geocoder/1.14.0/Control.Geocoder.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const biblioCoords = [41.7325117, 12.2718834];
             
+            // Inizializza la mappa
             const map = L.map('map').setView(biblioCoords, 14);
             
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -55,76 +48,46 @@
                 attribution: '© OpenStreetMap contributors'
             }).addTo(map);
             
-const newCoords = [41.732092, 12.270980]; // Ultima coordinata del percorso blu
-const marker = L.marker(newCoords).addTo(map);
-marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7", {
-    className: 'custom-popup'
-}).openPopup();
+            // Marker per la biblioteca
+            const marker = L.marker(biblioCoords).addTo(map);
+            marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7", {
+                className: 'custom-popup'
+            }).openPopup();
 
-
-
-            // Aggiungi il percorso
-            const percorso = [
-                biblioCoords,
-                [41.732154, 12.271675],
-                [41.732282, 12.271254],
-                [41.732240, 12.271230],
-                [41.732276, 12.271090],
-                [41.732092, 12.270980],
-            ];
-
-            L.polyline(percorso, {
-                color: '#0000FF',
-                weight: 4,
-                opacity: 0.8,
-                dashArray: '10, 10'
+            // Aggiungi controllo di ricerca
+            const geocoder = L.Control.geocoder({
+                defaultMarkGeocode: false
             }).addTo(map);
 
-            fetch('https://overpass-api.de/api/interpreter', {
-                method: 'POST',
-                body: `[out:json][timeout:25];
-                       relation(1460885);
-                       out body;
-                       >;
-                       out skel qt;`
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.elements.length > 0) {
-                    const ways = data.elements.filter(e => e.type === "way");
-                    const nodes = data.elements.filter(e => e.type === "node");
+            geocoder.on('markgeocode', function(e) {
+                const startCoords = e.geocode.center;
 
-                    const boundaries = ways.map(way => {
-                        return way.nodes.map(nodeId => {
-                            const node = nodes.find(n => n.id === nodeId);
-                            return [node.lat, node.lon];
-                        });
-                    });
+                // Aggiungi un marker per il punto di partenza
+                const startMarker = L.marker(startCoords, { icon: L.icon({ iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png' }) });
+                startMarker.addTo(map).bindPopup("Punto di partenza").openPopup();
 
-                    boundaries.forEach(boundary => {
-                        L.polyline(boundary, {
-                            color: '#970a2c',
-                            weight: 3,
-                            opacity: 0.7
-                        }).addTo(map);
-                    });
+                // Disegna un percorso dal punto di partenza alla biblioteca
+                const route = [startCoords, biblioCoords];
+                L.polyline(route, {
+                    color: 'green',
+                    weight: 4,
+                    opacity: 0.8
+                }).addTo(map);
 
-                    const info = L.control();
-                    info.onAdd = function() {
-                        this._div = L.DomUtil.create('div', 'info-box');
-                        this._div.innerHTML = '<h4>Municipio Roma X</h4>' +
-                            'Biblioteca Elsa Morante<br>' +
-                            'Via Adolfo Cozza, 7<br>' +
-                            'Percorso tratteggiato in blu';
-                        return this._div;
-                    };
-                    info.addTo(map);
+                // Centra la mappa sul percorso
+                map.fitBounds(L.latLngBounds(route));
+            });
 
-                    const bounds = L.latLngBounds(boundaries.flat());
-                    map.fitBounds(bounds);
-                }
-            })
-            .catch(error => console.error('Errore nel caricamento dei confini:', error));
+            // Info Box
+            const info = L.control();
+            info.onAdd = function() {
+                this._div = L.DomUtil.create('div', 'info-box');
+                this._div.innerHTML = '<h4>Municipio Roma X</h4>' +
+                    'Inserisci il punto di partenza<br>' +
+                    'Percorso verde verso la Biblioteca Elsa Morante';
+                return this._div;
+            };
+            info.addTo(map);
         });
     </script>
 </body>
