@@ -106,8 +106,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+
+
     
-    <script>
+     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const biblioCoords = [41.7325117, 12.2718834];
             
@@ -131,9 +133,6 @@
                 
                 if (routingControl) {
                     map.removeControl(routingControl);
-                }
-                if (dashedPath) {
-                    map.removeLayer(dashedPath);
                 }
 
                 try {
@@ -167,13 +166,10 @@
                             },
                             createMarker: function(i, waypoint, n) {
                                 const closeBtn = document.createElement('button');
-                                closeBtn.innerHTML = '✕';
+                                closeBtn.innerHTML = '×';
                                 closeBtn.className = 'routing-close-btn';
                                 closeBtn.onclick = function() {
                                     map.removeControl(routingControl);
-                                    if (dashedPath) {
-                                        map.removeLayer(dashedPath);
-                                    }
                                 };
 
                                 // Append close button to routing container
@@ -184,9 +180,13 @@
                                     }
                                 }, 100);
 
-                                return null; // No markers for waypoints
+                                return null;
                             }
                         }).addTo(map);
+
+                        if (dashedPath) {
+                            map.removeLayer(dashedPath);
+                        }
 
                         const percorso = [
                             biblioCoords,
@@ -211,6 +211,8 @@
                     alert('Errore nel trovare il percorso. Riprova.');
                 }
             }
+
+            
 
             document.getElementById('start-point').addEventListener('keypress', function(event) {
                 if (event.key === 'Enter') {
