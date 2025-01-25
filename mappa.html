@@ -183,8 +183,8 @@
             createPopup();
 
 // Rimuovi il popup durante lo zoom
-map.on('zoomstart', function() {
-    if (popup) {
+map.on('zoomstart', function(e) {
+    if (popup && e.originalEvent) {  // Solo se lo zoom è fatto manualmente
         map.removeLayer(popup);
         popup = null;
     }
