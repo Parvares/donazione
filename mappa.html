@@ -73,12 +73,13 @@
             background-color: #970a2c;
         }
         /* Previous styles remain the same */
-    .legend-path span {
+     .legend-path span {
             display: inline-block;
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 20px;
             background-color: #0000FF;
-            border-radius: 50%;
+            clip-path: path('M6 0 L12 20 Q6 25, 0 20 Z');
+            transform: rotate(180deg);
         }
         .leaflet-routing-container {
             position: relative;
