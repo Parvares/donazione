@@ -140,13 +140,21 @@
             }).addTo(map);
 
             const markerCoords = percorso[percorso.length - 1];
-  const markerIcon = L.icon({
-                iconUrl: 'marker.png',
-                iconSize: [50, 82],     // Exact dimensions you mentioned
-                iconAnchor: [25, 82],   // Half of width, full height for proper positioning
-                popupAnchor: [0, -82]   // Optional: adjust popup position if needed
+ const markerIcon = L.icon({
+                iconUrl: 'https://raw.githubusercontent.com/Parvares/donazione/main/marker.png',
+                iconSize: [50, 82],
+                iconAnchor: [25, 82]
             });
-            const marker = L.marker(markerCoords, {icon: markerIcon}).addTo(map);
+
+            const marker = L.marker(biblioCoords, {icon: markerIcon}).addTo(map);
+
+            // Optional: Add a console log to check marker loading
+            marker.on('add', function() {
+                console.log('Marker added to map');
+            });
+            marker.on('error', function(e) {
+                console.error('Marker loading error:', e);
+            });
             
             let routingControl = null;
             
