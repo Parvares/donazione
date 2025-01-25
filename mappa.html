@@ -105,129 +105,125 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const biblioCoords = [41.7325117, 12.2718834];
-            
-            const map = L.map('map').setView(biblioCoords, 14);
-            
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '© OpenStreetMap contributors'
-            }).addTo(map);
-            
-            const marker = L.marker(biblioCoords).addTo(map);
-            marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7", {
-                className: 'custom-popup'
-            }).openPopup();
+document.addEventListener('DOMContentLoaded', function() {
+    const biblioCoords = [41.7325117, 12.2718834];
+    
+    const map = L.map('map').setView(biblioCoords, 14);
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+    
+    const marker = L.marker(biblioCoords).addTo(map);
+    marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7", {
+        className: 'custom-popup'
+    }).openPopup();
 
-            let routingControl = null;
-            let routeLayer = null;
-            let dashedPath = null;
+    let routingControl = null;
+    let routeLayer = null;
+    let dashedPath = null;
 
-            window.searchRoute = async function() {
-                const startPoint = document.getElementById('start-point').value;
-                
-                // Remove existing routing control and route layer
-                if (routingControl) {
-                    map.removeControl(routingControl);
-                }
-                if (routeLayer) {
-                    map.removeLayer(routeLayer);
-                }
+    window.searchRoute = async function() {
+        const startPoint = document.getElementById('start-point').value;
+        
+        // Remove existing routing control but keep route layer
+        if (routingControl) {
+            map.removeControl(routingControl);
+            routingControl = null;
+        }
 
-                try {
-                    const response = await axios.get('https://nominatim.openstreetmap.org/search', {
-                        params: {
-                            q: startPoint,
-                            format: 'json',
-                            limit: 1
-                        }
-                    });
-
-                    if (response.data.length > 0) {
-                        const startCoords = [
-                            parseFloat(response.data[0].lat), 
-                            parseFloat(response.data[0].lon)
-                        ];
-
-                        routingControl = L.Routing.control({
-                            waypoints: [
-                                L.latLng(startCoords[0], startCoords[1]),
-                                L.latLng(biblioCoords[0], biblioCoords[1])
-                            ],
-                            routeWhileDragging: true,
-                            language: 'it',
-                            show: true,
-                            addWaypoints: false,
-                            draggableWaypoints: false,
-                            fitSelectedRoutes: true,
-                            lineOptions: {
-                                styles: [{color: '#0000FF', opacity: 0.8, weight: 5}]
-                            },
-                            createMarker: function(i, waypoint, n) {
-                                const closeBtn = document.createElement('button');
-                                closeBtn.innerHTML = '×';
-                                closeBtn.className = 'routing-close-btn';
-                                closeBtn.onclick = function() {
-                                    map.removeControl(routingControl);
-                                };
-
-                                // Append close button to routing container
-                                setTimeout(() => {
-                                    const container = document.querySelector('.leaflet-routing-container');
-                                    if (container) {
-                                        container.appendChild(closeBtn);
-                                    }
-                                }, 100);
-
-                                return null;
-                            },
-                            // Store the route layer separately
-                            lineOptions: {
-                                styles: [{color: '#0000FF', opacity: 0.8, weight: 5}],
-                                addedToMap: function(line) {
-                                    routeLayer = line;
-                                }
-                            }
-                        }).addTo(map);
-
-                        if (dashedPath) {
-                            map.removeLayer(dashedPath);
-                        }
-
-                        const percorso = [
-                            biblioCoords,
-                            [41.732154, 12.271675],
-                            [41.732282, 12.271254],
-                            [41.732240, 12.271230],
-                            [41.732276, 12.271090],
-                            [41.732092, 12.270980],
-                        ];
-
-                        dashedPath = L.polyline(percorso, {
-                            color: '#0000FF',
-                            weight: 4,
-                            opacity: 0.8,
-                            dashArray: '10, 10'
-                        }).addTo(map);
-                    } else {
-                        alert('Indirizzo non trovato. Riprova.');
-                    }
-                } catch (error) {
-                    console.error('Errore nella ricerca del percorso:', error);
-                    alert('Errore nel trovare il percorso. Riprova.');
-                }
-            }
-
-            
-
-            document.getElementById('start-point').addEventListener('keypress', function(event) {
-                if (event.key === 'Enter') {
-                    searchRoute();
+        try {
+            const response = await axios.get('https://nominatim.openstreetmap.org/search', {
+                params: {
+                    q: startPoint,
+                    format: 'json',
+                    limit: 1
                 }
             });
 
-            document.getElementById('start-point').focus();
+            if (response.data.length > 0) {
+                const startCoords = [
+                    parseFloat(response.data[0].lat), 
+                    parseFloat(response.data[0].lon)
+                ];
+
+                // Modify routing control to not remove route layer automatically
+                routingControl = L.Routing.control({
+                    waypoints: [
+                        L.latLng(startCoords[0], startCoords[1]),
+                        L.latLng(biblioCoords[0], biblioCoords[1])
+                    ],
+                    routeWhileDragging: true,
+                    language: 'it',
+                    show: true,
+                    addWaypoints: false,
+                    draggableWaypoints: false,
+                    fitSelectedRoutes: true,
+                    createMarker: function(i, waypoint, n) {
+                        const closeBtn = document.createElement('button');
+                        closeBtn.innerHTML = '×';
+                        closeBtn.className = 'routing-close-btn';
+                        closeBtn.onclick = function() {
+                            // Only remove the routing container
+                            const container = document.querySelector('.leaflet-routing-container');
+                            if (container) {
+                                container.remove();
+                            }
+                        };
+
+                        // Append close button to routing container
+                        setTimeout(() => {
+                            const container = document.querySelector('.leaflet-routing-container');
+                            if (container) {
+                                container.appendChild(closeBtn);
+                            }
+                        }, 100);
+
+                        return null;
+                    },
+                    lineOptions: {
+                        styles: [{color: '#0000FF', opacity: 0.8, weight: 5}]
+                    }
+                }).addTo(map);
+
+                if (dashedPath) {
+                    map.removeLayer(dashedPath);
+                }
+
+                const percorso = [
+                    biblioCoords,
+                    [41.732154, 12.271675],
+                    [41.732282, 12.271254],
+                    [41.732240, 12.271230],
+                    [41.732276, 12.271090],
+                    [41.732092, 12.270980],
+                ];
+
+                dashedPath = L.polyline(percorso, {
+                    color: '#0000FF',
+                    weight: 4,
+                    opacity: 0.8,
+                    dashArray: '10, 10'
+                }).addTo(map);
+            } else {
+                alert('Indirizzo non trovato. Riprova.');
+            }
+        } catch (error) {
+            console.error('Errore nella ricerca del percorso:', error);
+            alert('Errore nel trovare il percorso. Riprova.');
+        }
+    }
+
+    document.getElementById('start-point').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            searchRoute();
+        }
+    });
+
+    document.getElementById('start-point').focus();
+
+            
 
             fetch('https://overpass-api.de/api/interpreter', {
                 method: 'POST',
