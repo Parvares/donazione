@@ -64,9 +64,18 @@
             margin-bottom: 4px;
         }
         .legend-item img {
-            width: 20px;
-            height: 20px;
+            width: 50px;
+            height: 82px;
             margin-right: 8px;
+            object-fit: contain;
+        }
+        .boundary-line {
+            display: inline-block;
+            width: 20px;
+            height: 3px;
+            background-color: #970a2c;
+            margin-right: 8px;
+            vertical-align: middle;
         }
         .legend-item span {
             width: 16px;
@@ -247,19 +256,19 @@
                         }).addTo(map);
                     });
 
-                    const legend = L.control({position: 'bottomright'});
-                    legend.onAdd = function() {
-                        this._div = L.DomUtil.create('div', 'legend');
-                        this._div.innerHTML = `
-                            <div class="legend-item">
-                                <span class="boundary-color"></span>Confini Municipio X
-                            </div>
-                            <div class="legend-item">
-                                <img src="marker.png" alt="Library">Biblioteca Elsa Morante<br>Via Adolfo Cozza, 7
-                            </div>
-                        `;
-                        return this._div;
-                    };
+        const legend = L.control({position: 'bottomright'});
+        legend.onAdd = function() {
+            this._div = L.DomUtil.create('div', 'legend');
+            this._div.innerHTML = `
+                <div class="legend-item">
+                    <span class="boundary-line"></span>Confini Municipio X
+                </div>
+                <div class="legend-item">
+                    <img src="marker.png" alt="Library">Biblioteca Elsa Morante<br>Via Adolfo Cozza, 7
+                </div>
+            `;
+            return this._div;
+        };
                     legend.addTo(map);
 
                     const bounds = L.latLngBounds(boundaries.flat());
