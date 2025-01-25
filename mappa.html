@@ -184,7 +184,8 @@
 
 // Rimuovi il popup durante lo zoom
 map.on('zoomstart', function(e) {
-    if (popup && e.originalEvent) {  // Solo se lo zoom è fatto manualmente
+    // Verifica se l'evento è stato causato da un'azione manuale dell'utente
+    if (popup && e.originalEvent && !e.originalEvent.automatic) {
         map.removeLayer(popup);
         popup = null;
     }
