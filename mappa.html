@@ -140,10 +140,11 @@
             }).addTo(map);
 
             const markerCoords = percorso[percorso.length - 1];
-            const markerIcon = L.icon({
+  const markerIcon = L.icon({
                 iconUrl: 'marker.png',
-                iconSize: [32, 32],
-                iconAnchor: [16, 32],
+                iconSize: [50, 82],     // Exact dimensions you mentioned
+                iconAnchor: [25, 82],   // Half of width, full height for proper positioning
+                popupAnchor: [0, -82]   // Optional: adjust popup position if needed
             });
             const marker = L.marker(markerCoords, {icon: markerIcon}).addTo(map);
             
