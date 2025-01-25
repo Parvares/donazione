@@ -6,7 +6,7 @@
     <title>Mappa Municipio X - Biblioteca Elsa Morante</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
-    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="icon" href="marker.png" type="image/png">
     <style>
         body, html {
             margin: 0;
@@ -61,18 +61,18 @@
         .legend-item {
             display: flex;
             align-items: center;
-            margin-bottom: 5px;
-        }
-        .legend-item img {
-            width: 20px;
-            height: 20px;
-            margin-right: 4px;
+            margin-bottom: 4px;
         }
         .legend-item span {
             width: 16px;
             height: 16px;
             margin-right: 4px;
+        }
+        .boundary-color {
             background-color: #970a2c;
+        }
+        .library-color {
+            background-color: #0000FF;
         }
         .leaflet-routing-container {
             position: relative;
@@ -114,9 +114,11 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const biblioCoords = [41.732522, 12.271879];
+            console.log("DOM fully loaded and parsed");
+            const biblioCoords = [41.732522, 12.271879]; // punto di origine del percorso tratteggiato
             
             const map = L.map('map').setView(biblioCoords, 14);
+            console.log("Map initialized with coordinates:", biblioCoords);
             
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
@@ -138,28 +140,23 @@
                 opacity: 0.8,
                 dashArray: '10, 10'
             }).addTo(map);
+            console.log("Dashed path added to map");
 
             const markerCoords = percorso[percorso.length - 1];
- const markerIcon = L.icon({
-                iconUrl: 'https://raw.githubusercontent.com/Parvares/donazione/main/marker.png',
-                iconSize: [50, 82],
-                iconAnchor: [25, 82]
-            });
+            const marker = L.marker(markerCoords, {
+                icon: L.icon({
+                    iconUrl: 'marker.png',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 32]
+                })
+            }).addTo(map);
+            console.log("Marker added at coordinates:", markerCoords);
 
-            const marker = L.marker(biblioCoords, {icon: markerIcon}).addTo(map);
-
-            // Optional: Add a console log to check marker loading
-            marker.on('add', function() {
-                console.log('Marker added to map');
-            });
-            marker.on('error', function(e) {
-                console.error('Marker loading error:', e);
-            });
-            
             let routingControl = null;
             
             window.searchRoute = async function() {
                 const startPoint = document.getElementById('start-point').value;
+                console.log("Searching route from:", startPoint);
                 
                 if (routingControl) {
                     map.removeControl(routingControl);
@@ -173,6 +170,8 @@
                             limit: 1
                         }
                     });
+
+                    console.log("Geocoding response:", response.data);
 
                     if (response.data.length > 0) {
                         const startCoords = [
@@ -202,6 +201,7 @@
                                     map.removeControl(routingControl);
                                 };
 
+                                // Append close button to routing container
                                 setTimeout(() => {
                                     const container = document.querySelector('.leaflet-routing-container');
                                     if (container) {
@@ -209,10 +209,13 @@
                                     }
                                 }, 100);
 
-                                return null;
+                                return null; // No markers for waypoints
                             }
                         }).addTo(map);
+
+                        console.log("Routing control added");
                     } else {
+                        console.warn('Indirizzo non trovato');
                         alert('Indirizzo non trovato. Riprova.');
                     }
                 } catch (error) {
@@ -239,6 +242,7 @@
             })
             .then(response => response.json())
             .then(data => {
+                console.log("Overpass API response:", data);
                 if (data.elements.length > 0) {
                     const ways = data.elements.filter(e => e.type === "way");
                     const nodes = data.elements.filter(e => e.type === "node");
@@ -263,24 +267,24 @@
                         this._div = L.DomUtil.create('div', 'legend');
                         this._div.innerHTML = `
                             <div class="legend-item">
-                                <span></span>
-                                Confini Municipio X
+                                <span class="boundary-color"></span>Confini Municipio X
                             </div>
                             <div class="legend-item">
-                                <img src="marker.png" alt="Biblioteca">
-                                Biblioteca Elsa Morante<br>
-                                Via Adolfo Cozza, 7
+                                <span class="library-color"></span>Biblioteca Elsa Morante<br>Via Adolfo Cozza, 7
                             </div>
                         `;
                         return this._div;
                     };
                     legend.addTo(map);
+                    console.log("Legend added to map");
 
                     const bounds = L.latLngBounds(boundaries.flat());
                     map.fitBounds(bounds);
                 }
             })
-            .catch(error => console.error('Errore nel caricamento dei confini:', error));
+            .catch(error => {
+                console.error('Errore nel caricamento dei confini:', error);
+            });
         });
     </script>
 </body>
