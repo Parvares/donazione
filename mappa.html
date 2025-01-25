@@ -162,7 +162,7 @@
             // Funzione per creare e mostrare il popup
             function createPopup() {
                 if (popup) {
-                    map.closePopup(popup);
+                    map.removeLayer(popup);
                 }
                 
                 popup = L.popup({
@@ -171,8 +171,12 @@
                     closeButton: true
                 })
                     .setLatLng(markerCoords)
-                    .setContent("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7")
-                    .openOn(map);
+                    .setContent("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7");
+                
+                // Mostra il popup solo dopo un breve ritardo
+                setTimeout(() => {
+                    popup.addTo(map);
+                }, 500);
             }
 
             // Mostra il popup iniziale
@@ -181,7 +185,7 @@
             // Rimuovi il popup quando si fa zoom
             map.on('zoomstart', function() {
                 if (popup) {
-                    map.closePopup(popup);
+                    map.removeLayer(popup);
                 }
             });
 
@@ -297,7 +301,9 @@
                     legend.addTo(map);
 
                     const bounds = L.latLngBounds(boundaries.flat());
-                    map.fitBounds(bounds);
+                    map.fitBounds(bounds, {
+                        animate: false // Disabilita l'animazione per evitare problemi con il popup
+                    });
                 }
             })
             .catch(error => console.error('Errore nel caricamento dei confini:', error));
