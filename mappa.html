@@ -266,18 +266,19 @@
                     });
 
                     const legend = L.control({position: 'bottomright'});
-                    legend.onAdd = function() {
-                        this._div = L.DomUtil.create('div', 'legend');
-                        this._div.innerHTML = `
-                            <div class="legend-item legend-border">
-                                <span></span>Confini Municipio X
-                            </div>
-                            <div class="legend-item legend-path">
-                                <span></span>Percorso Biblioteca Elsa Morante<br>Via Adolfo Cozza, 7
-                            </div>
-                        `;
-                        return this._div;
-                    };
+  legend.onAdd = function() {
+            this._div = L.DomUtil.create('div', 'legend');
+            this._div.innerHTML = `
+                <div class="legend-item legend-border">
+                    <span></span>Confini Municipio X
+                </div>
+                <div class="legend-item legend-path">
+                    <img src="marker.png" alt="Marker">
+                    Biblioteca Elsa Morante<br>Via Adolfo Cozza, 7
+                </div>
+            `;
+            return this._div;
+        };
                     legend.addTo(map);
 
                     const bounds = L.latLngBounds(boundaries.flat());
