@@ -92,28 +92,17 @@
                 className: 'custom-popup'
             }).openPopup();
 
-            const percorso = [
-                biblioCoords,
-                [41.732154, 12.271675],
-                [41.732282, 12.271254],
-                [41.732240, 12.271230],
-                [41.732092, 12.270980],
-            ];
-
-            L.polyline(percorso, {
-                color: '#0000FF',
-                weight: 4,
-                opacity: 0.8,
-                dashArray: '10, 10'
-            }).addTo(map);
-
             let routingControl = null;
+            let dashedPath = null;
 
             window.searchRoute = async function() {
                 const startPoint = document.getElementById('start-point').value;
                 
                 if (routingControl) {
                     map.removeControl(routingControl);
+                }
+                if (dashedPath) {
+                    map.removeLayer(dashedPath);
                 }
 
                 try {
@@ -145,6 +134,22 @@
                             lineOptions: {
                                 styles: [{color: '#0000FF', opacity: 0.8, weight: 5}]
                             }
+                        }).addTo(map);
+
+                        // Add the dashed path after the routing path
+                        const percorso = [
+                            biblioCoords,
+                            [41.732154, 12.271675],
+                            [41.732282, 12.271254],
+                            [41.732240, 12.271230],
+                            [41.732092, 12.270980],
+                        ];
+
+                        dashedPath = L.polyline(percorso, {
+                            color: '#0000FF',
+                            weight: 4,
+                            opacity: 0.8,
+                            dashArray: '10, 10'
                         }).addTo(map);
                     } else {
                         alert('Indirizzo non trovato. Riprova.');
