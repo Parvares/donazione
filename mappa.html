@@ -61,12 +61,18 @@
         .legend-item {
             display: flex;
             align-items: center;
+            margin-bottom: 4px;
         }
         .legend-item span {
             width: 16px;
             height: 16px;
             margin-right: 4px;
+        }
+        .boundary-color {
             background-color: #970a2c;
+        }
+        .library-color {
+            background-color: #0000FF;
         }
         .leaflet-routing-container {
             position: relative;
@@ -92,27 +98,6 @@
         }
         .routing-close-btn:hover {
             background-color: #ff1a1a;
-        }
-        .custom-popup .leaflet-popup-content-wrapper {
-            background-color: white;
-            border-radius: 8px;
-        }
-        .custom-popup .leaflet-popup-tip {
-            background-color: white;
-        }
-        .custom-popup {
-            margin-bottom: 30px;
-        }
-        .custom-popup .leaflet-popup-close-button {
-            color: #ff4d4d;
-            font-size: 20px;
-            font-weight: bold;
-            opacity: 1;
-            right: 8px;
-            top: 8px;
-        }
-        .custom-popup .leaflet-popup-close-button:hover {
-            color: #ff1a1a;
         }
     </style>
 </head>
@@ -157,40 +142,6 @@
             const markerCoords = percorso[percorso.length - 1];
             const marker = L.marker(markerCoords).addTo(map);
             
-            let popup = null;
-
-            // Funzione per creare e mostrare il popup
-            function createPopup() {
-                if (popup) {
-                    map.removeLayer(popup);
-                }
-                
-                popup = L.popup({
-                    className: 'custom-popup',
-                    offset: [0, -10],
-                    closeButton: true
-                })
-                    .setLatLng(markerCoords)
-                    .setContent("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7");
-                
-                // Mostra il popup solo dopo un breve ritardo
-                setTimeout(() => {
-                    popup.addTo(map);
-                }, 500);
-            }
-
-            // Mostra il popup iniziale
-            createPopup();
-
-// Rimuovi il popup durante lo zoom
-map.on('zoomstart', function(e) {
-    // Verifica se l'evento è stato causato da un'azione manuale dell'utente
-    if (popup && e.originalEvent && !e.originalEvent.automatic) {
-        map.removeLayer(popup);
-        popup = null;
-    }
-});
-
             let routingControl = null;
             
             window.searchRoute = async function() {
@@ -297,15 +248,22 @@ map.on('zoomstart', function(e) {
                     const legend = L.control({position: 'bottomright'});
                     legend.onAdd = function() {
                         this._div = L.DomUtil.create('div', 'legend');
-                        this._div.innerHTML = '<div class="legend-item"><span></span>Confini Municipio X</div>';
+                        this._div.innerHTML = `
+                            <div class="legend-item">
+                                <span class="boundary-color"></span>
+                                Confini Municipio X
+                            </div>
+                            <div class="legend-item">
+                                <span class="library-color"></span>
+                                Biblioteca Elsa Morante (Via Adolfo Cozza, 7)
+                            </div>
+                        `;
                         return this._div;
                     };
                     legend.addTo(map);
 
                     const bounds = L.latLngBounds(boundaries.flat());
-                    map.fitBounds(bounds, {
-                        animate: false // Disabilita l'animazione per evitare problemi con il popup
-                    });
+                    map.fitBounds(bounds);
                 }
             })
             .catch(error => console.error('Errore nel caricamento dei confini:', error));
