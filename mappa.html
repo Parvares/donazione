@@ -93,6 +93,13 @@
         .routing-close-btn:hover {
             background-color: #ff1a1a;
         }
+        .custom-popup .leaflet-popup-content-wrapper {
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+        }
+        .custom-popup .leaflet-popup-tip {
+            background-color: rgba(255, 255, 255, 0.7);
+        }
     </style>
 </head>
 <body>
@@ -116,15 +123,8 @@
                 maxZoom: 19,
                 attribution: '© OpenStreetMap contributors'
             }).addTo(map);
-            
-            const marker = L.marker(biblioCoords).addTo(map);
-            marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7", {
-                className: 'custom-popup'
-            }).openPopup();
 
-            let routingControl = null;
-            
-            // Create dashed path BEFORE search function
+            // Create dashed path BEFORE marker and search function
             const percorso = [
                 biblioCoords,
                 [41.732154, 12.271675],
@@ -141,6 +141,14 @@
                 dashArray: '10, 10'
             }).addTo(map);
 
+            // Add marker at the LAST point of the dashed path
+            const marker = L.marker(percorso[percorso.length - 1]).addTo(map);
+            marker.bindPopup("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7", {
+                className: 'custom-popup'
+            });
+
+            let routingControl = null;
+            
             window.searchRoute = async function() {
                 const startPoint = document.getElementById('start-point').value;
                 
