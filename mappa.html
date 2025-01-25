@@ -139,7 +139,6 @@
                 attribution: '© OpenStreetMap contributors'
             }).addTo(map);
 
-            // Create dashed path BEFORE marker and search function
             const percorso = [
                 biblioCoords,
                 [41.732154, 12.271675],
@@ -156,14 +155,13 @@
                 dashArray: '10, 10'
             }).addTo(map);
 
-            // Add marker at the LAST point of the dashed path
             const markerCoords = percorso[percorso.length - 1];
             const marker = L.marker(markerCoords).addTo(map);
             
             const popup = L.popup({
                 className: 'custom-popup',
                 offset: [0, -10],
-                closeButton: false
+                closeButton: true
             })
                 .setLatLng(markerCoords)
                 .setContent("<b>Biblioteca Elsa Morante</b><br>Via Adolfo Cozza, 7")
