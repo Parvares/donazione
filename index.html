@@ -1401,7 +1401,7 @@ window.createBookEntry = function() {
                 <h3 class="text-lg font-semibold text-slate-700">Scansiona il codice a barre</h3>
                 <button type="button" class="close-scanner text-gray-500 hover:text-gray-700 text-2xl leading-none">&times;</button>
             </div>
-            <div id="isbn-scanner-reader" class="w-full"></div>
+            <div class="isbn-scanner-reader w-full"></div>
             <p class="text-sm text-gray-600 mt-3 text-center">Posiziona il codice a barre del libro davanti alla fotocamera</p>
         </div>
     </div>
@@ -1582,68 +1582,75 @@ const inputs = bookDiv.querySelectorAll('input');
 
     // AGGIUNGI QUI IL CODICE DELLO SCANNER
     // Barcode scanner functionality
-    const scanBtn = bookDiv.querySelector('.scan-isbn-btn');
-    const scannerModal = bookDiv.querySelector('.isbn-scanner-modal');
-    const closeScanner = bookDiv.querySelector('.close-scanner');
-    const isbnInput = bookDiv.querySelector('.book-isbn');
-    let html5QrCode = null;
+    // Barcode scanner functionality
+const scanBtn = bookDiv.querySelector('.scan-isbn-btn');
+const scannerModal = bookDiv.querySelector('.isbn-scanner-modal');
+const closeScanner = bookDiv.querySelector('.close-scanner');
+const isbnInput = bookDiv.querySelector('.book-isbn');
+const scannerReader = bookDiv.querySelector('.isbn-scanner-reader');
+let html5QrCode = null;
 
-    scanBtn.addEventListener('click', async () => {
-        scannerModal.classList.remove('hidden');
+// Create unique ID for each scanner
+const scannerId = 'isbn-scanner-' + bookCount;
+scannerReader.id = scannerId;
+
+scanBtn.addEventListener('click', async () => {
+    scannerModal.classList.remove('hidden');
+    
+    try {
+        html5QrCode = new Html5Qrcode(scannerId);
         
-        try {
-            html5QrCode = new Html5Qrcode("isbn-scanner-reader");
-            
-            const config = {
-                fps: 10,
-                qrbox: { width: 250, height: 150 },
-                aspectRatio: 1.777778
-            };
-            
-            await html5QrCode.start(
-                { facingMode: "environment" },
-                config,
-                (decodedText) => {
-                    // Extract only numbers from the scanned text
-                    const numbers = decodedText.replace(/\D/g, '');
-                    
-                    // Check if it's a valid ISBN length
-                    if (numbers.length === 10 || numbers.length === 13) {
-                        isbnInput.value = numbers;
-                        validateISBN(isbnInput);
-                        stopScanner();
-                    }
-                },
-                (errorMessage) => {
-                    // Ignore errors during scanning
+        const config = {
+            fps: 10,
+            qrbox: { width: 250, height: 150 },
+            aspectRatio: 1.777778
+        };
+        
+        await html5QrCode.start(
+            { facingMode: "environment" },
+            config,
+            (decodedText) => {
+                // Extract only numbers from the scanned text
+                const numbers = decodedText.replace(/\D/g, '');
+                
+                // Check if it's a valid ISBN length
+                if (numbers.length === 10 || numbers.length === 13) {
+                    isbnInput.value = numbers;
+                    validateISBN(isbnInput);
+                    stopScanner();
                 }
-            );
-        } catch (err) {
-            console.error("Error starting scanner:", err);
-            alert("Impossibile avviare la fotocamera. Assicurati di aver dato i permessi necessari.");
+            },
+            (errorMessage) => {
+                // Ignore errors during scanning
+            }
+        );
+    } catch (err) {
+        console.error("Error starting scanner:", err);
+        alert("Impossibile avviare la fotocamera. Assicurati di aver dato i permessi necessari.");
+        scannerModal.classList.add('hidden');
+    }
+});
+
+const stopScanner = () => {
+    if (html5QrCode) {
+        html5QrCode.stop().then(() => {
+            html5QrCode.clear();
             scannerModal.classList.add('hidden');
-        }
-    });
+        }).catch(err => {
+            console.error("Error stopping scanner:", err);
+            scannerModal.classList.add('hidden');
+        });
+    }
+};
 
-    const stopScanner = () => {
-        if (html5QrCode) {
-            html5QrCode.stop().then(() => {
-                html5QrCode.clear();
-                scannerModal.classList.add('hidden');
-            }).catch(err => {
-                console.error("Error stopping scanner:", err);
-            });
-        }
-    };
+closeScanner.addEventListener('click', stopScanner);
 
-    closeScanner.addEventListener('click', stopScanner);
-
-    // Close scanner when clicking outside the modal content
-    scannerModal.addEventListener('click', (e) => {
-        if (e.target === scannerModal) {
-            stopScanner();
-        }
-    });
+// Close scanner when clicking outside the modal content
+scannerModal.addEventListener('click', (e) => {
+    if (e.target === scannerModal) {
+        stopScanner();
+    }
+});
     // FINE CODICE SCANNER
 
     document.getElementById('bookList').appendChild(bookDiv);
