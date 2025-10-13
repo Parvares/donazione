@@ -16,37 +16,41 @@
 
     <script type="module" src="scripts/config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <!-- NUOVO: Libreria per lo scanner di codici a barre -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
+
+
+        
 :root {
-    --primary: #970a2c;
-    --secondary: #540f26;
-    --accent: #700f0a;
+    --primary: #970a2c;    /* amaranto */
+    --secondary: #540f26;  /* Even darker red */
+    --accent: #700f0a;     /* Darker bordeaux */
 }
 
 .location-icon {
     transition: all 0.3s ease;
+    /* Rosso molto scuro, quasi bordeaux */
     filter: invert(9%) sepia(38%) saturate(6611%) hue-rotate(345deg) brightness(63%) contrast(99%);
 }
 
 .location-icon:hover {
+    /* Rosso brillante e luminoso */
     filter: invert(21%) sepia(99%) saturate(7402%) hue-rotate(356deg) brightness(141%) contrast(124%);
-    transform: scale(1.1);
+    transform: scale(1.1);  /* Aggiunto un leggero effetto di ingrandimento */
 }
 
+/* Stile base per tutti gli input */
 input[type="text"],
 input[type="email"],
 input[type="tel"],
 input[type="number"],
 textarea,
 select {
-    border-radius: 0.5rem !important;
+    border-radius: 0.5rem !important;  /* Bordi leggermente arrotondati */
     transition: all 0.2s ease-in-out !important;
 }
-
+/* Stile per il focus */
 input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="tel"]:focus,
@@ -54,110 +58,133 @@ input[type="number"]:focus,
 textarea:focus,
 select:focus {
     outline: none !important;
-    border-color: #0078d7 !important;
+    border-color: #0078d7 !important;  /* Colore azzurro coerente con il bottone di submit */
     box-shadow: 0 0 0 2px rgba(0, 120, 215, 0.1) !important;
 }
-
+/* Stile per gli input disabilitati */
 input:disabled,
 textarea:disabled,
 select:disabled {
     background-color: #f3f4f6 !important;
     cursor: not-allowed !important;
 }
-
+/* Stile per gli input con errore */
 input.error,
 textarea.error,
 select.error {
     border-color: #ef4444 !important;
     background-color: #fef2f2 !important;
 }
-
+/* Stile per il contenitore dei libri */
 .book-entry {
-    border-radius: 0.75rem !important;
+    border-radius: 0.75rem !important;  /* Bordi leggermente più arrotondati per i contenitori */
     overflow: hidden !important;
 }
-
+/* Stile per il pulsante di ricerca nei libri */
 .search-btn {
     border-radius: 0 0.5rem 0.5rem 0 !important;
 }
-
+/* Stile per l'input di ricerca rapida */
 .quick-search {
     border-radius: 0.5rem 0 0 0.5rem !important;
 }
-
+/* Stile per i risultati della ricerca */
 .search-results {
     border-radius: 0.5rem !important;
     margin-top: 0.5rem !important;
 }
-
+/* Stile per il textarea delle note */
 #notes {
     border-radius: 0.5rem !important;
     min-height: 75px !important;
 }
 
+
+	    
+
+
 .required-asterisk {
     color: #970a2c !important;
-    font-size: 1.25em !important;
+        font-size: 1.25em !important;
     display: inline-block !important;
     margin-left: 4px !important;
     vertical-align: middle !important;
 }
 
+/* Assicurati che il colore non venga sovrascritto */
 .text-slate-700 .required-asterisk {
     color: #970a2c !important;
 }
 
-.section-header {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #970a2c;
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid #970a2c;
-}
 
-.max-w-4xl.mx-auto.bg-white.p-8.rounded-lg.mt-2 {
-    margin-bottom: 0;
-    padding-bottom: 0;
-}
 
-.flex.flex-col.mb-10.text-left.space-y-4.px-4 {
-    margin-bottom: 0;
-    padding-bottom: 0;
-}
 
-.text-3xl.md\:text-4xl.text-slate-700.font-bold.leading-tight.text-left {
-    margin-bottom: 1rem;
-}
 
-.flex.items-center.gap-2.mb-2 {
-    margin-bottom: 0;
-}
+	    
+ /* Update the section header style */
+        .section-header {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #970a2c;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #970a2c;
+        }
 
-.bg-blue-50.border-l-4.border-blue-500.p-4.mb-6.rounded-r {
-    margin-top: 1rem;
-}
+        /* Remove excess margin from the main container */
+        .max-w-4xl.mx-auto.bg-white.p-8.rounded-lg.mt-2 {
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
 
-button[type="submit"] {
-    background-color: #0078d7 !important;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
+        /* Remove excess margin and spacing from the flex container */
+        .flex.flex-col.mb-10.text-left.space-y-4.px-4 {
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
 
-button[type="submit"]:hover {
-    background-color: #005a9e !important;
-}
+        /* Adjust title spacing */
+        .text-3xl.md\:text-4xl.text-slate-700.font-bold.leading-tight.text-left {
+            margin-bottom: 1rem;
+        }
 
+        /* Remove margin from location link container */
+        .flex.items-center.gap-2.mb-2 {
+            margin-bottom: 0;
+        }
+
+        /* Adjust spacing for the notice box */
+        .bg-blue-50.border-l-4.border-blue-500.p-4.mb-6.rounded-r {
+            margin-top: 1rem;
+        }	    
+	    
+
+/* Sostituisci il pulsante di invio con il colore amaranto dell'intestazione */
+ button[type="submit"] {
+        background-color: #0078d7 !important; /* Azzurro intenso */
+        color: white; /* Testo in bianco per leggibilità */
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    button[type="submit"]:hover {
+        background-color: #005a9e !important; /* Azzurro più scuro per effetto hover */
+    }
+
+
+
+
+
+/* Aggiorna il colore del contatore dei libri con una sfumatura di verde */
 .book-counter {
     background: linear-gradient(to bottom right, #34d399, #10b981);
 }
 
+/* Stile per il pulsante "Aggiungi Libro" con sfumatura verde */
 .book-entry > button[type="button"].add-book-btn {
     width: 100%;
     padding: 0.75rem 1rem;
@@ -176,6 +203,13 @@ button[type="submit"]:hover {
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
+
+
+
+
+        
+
+/* Stile per il pulsante di rimozione (x) */
 .book-entry > button[type="button"].remove-book-btn {
     background: none;
     border: none;
@@ -191,51 +225,53 @@ button[type="submit"]:hover {
     color: #d9292e;
 }
 
-.top-banner {
-    background-color: white;
-    padding: 0.8rem 2rem; 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+        
+        
+        .top-banner {
+            background-color: white;
+            padding: 0.8rem 2rem; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-.roma-logo {
-    height: 40px;
-}
+        .roma-logo {
+            height: 40px;
+        }
 
-.print-button {
-    background: none;
-    border: none;
-    color: var(--primary);
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0;
-    margin-right: 1rem;
-    transition: transform 0.3s ease;
-}
+        .print-button {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            margin-right: 1rem;
+            transition: transform 0.3s ease;
+        }
 
-.print-button:hover {
-    transform: scale(1.2);
-}
+        .print-button:hover {
+            transform: scale(1.2);
+        }
 
-.social-icons {
-    display: flex;
-    gap: 1rem;
-    justify-content: flex-end;
-    align-items: center;
-}
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            align-items: center;
+        }
 
-.social-icons a {
-    color: var(--primary);
-    font-size: 1.5rem;
-    transition: transform 0.3s ease;
-}
+        .social-icons a {
+            color: var(--primary);
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
 
-.social-icons a:hover {
-    transform: scale(1.2);
-}
-
-header {
+        .social-icons a:hover {
+            transform: scale(1.2);
+        }
+        
+        header {
     background-color: var(--primary);
     color: #fff;
     padding: 2rem 0;
@@ -248,19 +284,24 @@ header {
     text-align: center;
 }
 
-.container-header {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
 
-.content-wrapper {
+	    
+        .container-header {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+
+
+
+ .content-wrapper {
     max-width: 900px;
     width: 100%;
     margin: 2rem auto;
@@ -269,17 +310,21 @@ header {
     margin-top: 60px;
 }
 
+
+
+ 
 .nav-icons {
     position: absolute;
     top: -60px;
-    left: 50%;
-    transform: translateX(calc(-50% - 400px));
+    left: 50%; /* Centrato rispetto al contenitore */
+    transform: translateX(calc(-50% - 400px)); /* Spostato a sinistra della larghezza desiderata */
     display: flex;
     align-items: center;
     gap: 3rem;
     padding-top: 20px;
 }
 
+/* Responsive adjustments */
 @media (max-width: 1400px) {
     .nav-icons {
         transform: translateX(calc(-50% - 300px));
@@ -308,49 +353,58 @@ header {
     }
 }
 
-.nav-icons a {
-    color: #970a2c;
-    font-size: 1.25rem;
-    text-decoration: none;
-    transition: transform 0.3s ease;
-    display: flex;
-    align-items: center;
-    height: 100%;
-    padding: 5px;
-}
 
-.nav-icons a:hover {
-    transform: scale(1.1);
-}
+        
 
-.nav-icons a:first-child {
-    font-weight: bold;
-    font-size: 1.8rem;
-    position: relative;
-    letter-spacing: 0.5rem;
-}
+        .nav-icons a {
+            color: #970a2c;
+            font-size: 1.25rem;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            padding: 5px;  /* Added padding for better touch target */
+        }
 
-.nav-icons a:first-child::after {
-    content: '';
-    position: absolute;
-    left: calc(100% + 1.5rem);
-    top: 50%;
-    transform: translateY(-50%);
-    height: 20px;
-    width: 1px;
-    background-color: rgba(128, 128, 128, 0.3);
-}
+        .nav-icons a:hover {
+            transform: scale(1.1);
+        }
 
-header img {
-    height: 70px;
-    max-width: 100%;
-}
+        .nav-icons a:first-child {
+            font-weight: bold;
+            font-size: 1.8rem;
+            position: relative;
+            letter-spacing: 0.5rem;
+        }
 
-header .logo-morante {
-    height: 180px;
-    filter: none;
-    max-width: 100%;
-}
+        .nav-icons a:first-child::after {
+            content: '';
+            position: absolute;
+            left: calc(100% + 1.5rem);
+            top: 50%;
+            transform: translateY(-50%);
+            height: 20px;
+            width: 1px;
+            background-color: rgba(128, 128, 128, 0.3);
+        }
+
+
+
+        
+        
+        header img {
+            height: 70px;
+            max-width: 100%;
+        }
+
+        header .logo-morante {
+            height: 180px;
+            filter: none;
+            max-width: 100%;
+        }
+
+
 
 footer {
     box-shadow: 0 -2px 4px -1px rgba(0, 0, 0, 0.1);
@@ -366,6 +420,8 @@ footer i {
     }
 }
 
+
+/* Stile per la checkbox */
 input[type="checkbox"] {
     appearance: none;
     -webkit-appearance: none;
@@ -393,48 +449,65 @@ input[type="checkbox"]:checked::before {
     clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
 }
 
+/* Updated error popup style */
 .error-popup {
-    position: fixed;
-    top: 4;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 1.5rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    @apply fixed top-4 left-1/2 transform -translate-x-1/2 px-6 py-4 rounded shadow-lg;
     background-color: #ef4444;
     color: white;
     z-index: 50;
     animation: slideDown 0.5s ease-out;
 }
+	    
 
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
+// Add CSS to remove spinners from number input
+const style = document.createElement('style');
+style.textContent = `
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+`;
+document.head.appendChild(style);
 
-input[type=number] {
-    -moz-appearance: textfield;
-}
 
-input[type="number"].book-year::-webkit-inner-spin-button,
-input[type="number"].book-year::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
+	    // Add this style to remove spinner arrows
+const style = document.createElement('style');
+style.textContent = `
+    input[type="number"].book-year::-webkit-inner-spin-button,
+    input[type="number"].book-year::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type="number"].book-year {
+        -moz-appearance: textfield;
+    }
+`;
+document.head.appendChild(style);
 
-input[type="number"].book-year {
-    -moz-appearance: textfield;
-}
+
+
+
+
 
 .social-icons a::before {
     content: none !important;
 }
+	    
 
+
+
+/* Top banner positioning */
 .top-banner {
     position: relative;
     z-index: 1;
 }
+
+
+
 
 .biblioteca-link {
     color: #970a2c;
@@ -443,18 +516,25 @@ input[type="number"].book-year {
 }
 
 .biblioteca-link:hover {
-    color: #e06b8e;
+    color: #e06b8e; /* Colore rosso più chiaro */
 }
 
+
+
+
+/* Aggiungi questo CSS dopo lo stile esistente, prima della chiusura del tag style */
+
 @media screen and (max-width: 767px) {
+    /* Modifica dell'header per mobile */
     header {
-        background-color: #970a2c;
-        height: 130px;
+        background-color: #970a2c;  /* amaranto */
+        height: 130px;               /* altezza dimezzata */
         display: flex;
         align-items: center;
         justify-content: center;
     }
 
+    /* Gestione dei loghi nell'header */
     .container-header {
         height: 100%;
         display: flex;
@@ -462,12 +542,14 @@ input[type="number"].book-year {
         justify-content: center;
     }
 
+    /* Nascondi il logo Morante su mobile */
     .container-header img[src="logomorante.png"] {
         display: none;
     }
 
+    /* Ridimensiona il logo bianco per mobile */
     .container-header img[src="logobianco.png"] {
-        height: 35px;
+        height: 35px;  /* Altezza dimezzata rispetto ai 70px originali */
         width: auto;
         max-width: 100%;
     }
@@ -475,30 +557,34 @@ input[type="number"].book-year {
 
 @media (max-width: 768px) {
     .top-banner {
-        padding: 0.4rem 1rem;
-        min-height: 40px;
+        padding: 0.4rem 1rem; /* Reduced padding */
+        min-height: 40px; /* Reduced minimum height */
     }
-}
+	    
 
 @media screen and (max-width: 768px) {
     .nav-icons {
-        padding: 0.75rem 1rem;
-        margin-bottom: -0.5rem;
+        padding: 0.75rem 1rem; /* Spazio per le icone di navigazione */
+        margin-bottom: -0.5rem; /* Riduce lo spazio sotto le icone */
     }
     
     .content-wrapper {
         margin-top: -0.25rem;
     }
     
+    /* Aggiusta lo spazio dopo il banner per mobile */
     .top-banner + header {
         margin-bottom: 0.75rem;
     }
 
+    /* Riduce lo spazio superiore del contenitore principale su mobile */
     .max-w-4xl.mx-auto.bg-white.p-8.rounded-lg.mt-2 {
-        margin-top: 0.5rem;
+        margin-top: 0.5rem; /* Ridotto da 2 (0.5rem) */
     }
 }
 
+
+/* Tooltip style for the info icon */
 .group:hover .group-hover\:visible {
   visibility: visible !important;
   opacity: 1 !important;
@@ -515,10 +601,12 @@ input[type="number"].book-year {
   border-radius: 5px !important;
 }
 
+/* Remove tooltip arrow */
 .group:hover .group-hover\:visible .transform {
   display: none;
 }
 
+/* Position tooltip for info icon */
 .group:hover .group-hover\:visible {
   top: -25px !important;
   left: 50%;
@@ -526,142 +614,14 @@ input[type="number"].book-year {
   max-width: 300px !important;
   white-space: normal !important;
   line-height: 1.4 !important;
-}
-
-.phone-link:active {
-    color: rgba(255, 255, 255, 0.7);
-}
-
-/* NUOVO: Stili per lo scanner di codici a barre */
-#scanner-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.95);
-    z-index: 9999;
-    justify-content: center;
-    align-items: center;
-}
-
-#scanner-modal.active {
-    display: flex;
-}
-
-#scanner-container {
-    position: relative;
-    width: 90%;
-    max-width: 640px;
-    height: 480px;
-    background: #000;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-#scanner-container video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-#scanner-container canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.scanner-overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    height: 120px;
-    border: 3px solid #00ff00;
-    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6);
-    border-radius: 10px;
-}
-
-.scanner-controls {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 10px;
-}
-
-.scanner-controls button {
-    padding: 14px 28px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.close-scanner {
-    background: #ef4444;
-    color: white;
-}
-
-.close-scanner:hover {
-    background: #dc2626;
-    transform: scale(1.05);
-}
-
-.scanner-message {
-    position: absolute;
-    top: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(255, 255, 255, 0.95);
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 16px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-
-.scan-icon {
-    background: #0078d7;
-    color: white;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 0 0.5rem 0.5rem 0;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.scan-icon:hover {
-    background: #005a9e;
-    transform: scale(1.05);
-}
-
-.scan-icon i {
-    font-size: 1.2rem;
-}
-
-@media (max-width: 768px) {
-    #scanner-container {
-        width: 95%;
-        height: 400px;
-    }
-    
-    .scanner-overlay {
-        width: 85%;
-        height: 100px;
-    }
-}
+}	
+/* Cambia il colore del numero quando viene cliccato o "tappato" */
+    .phone-link:active {
+        color: rgba(255, 255, 255, 0.7); /* Bianco più leggero */
+    }	
 </style>
+
+
 
 <script>
 const emailValidator = {
@@ -689,6 +649,8 @@ function hideError(input) {
         input.classList.add('border-gray-300', 'focus:border-blue-500');
     }
 }
+
+
 </script>
 	
 <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
