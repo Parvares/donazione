@@ -17,6 +17,7 @@
     <script type="module" src="scripts/config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     
     <style>
 
@@ -618,7 +619,32 @@ document.head.appendChild(style);
 /* Cambia il colore del numero quando viene cliccato o "tappato" */
     .phone-link:active {
         color: rgba(255, 255, 255, 0.7); /* Bianco più leggero */
-    }	
+    }
+
+/* Scanner modal styles */
+.isbn-scanner-modal {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+#isbn-scanner-reader {
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+#isbn-scanner-reader video {
+    border-radius: 0.5rem;
+}
+
+	
 </style>
 
 
@@ -1348,6 +1374,7 @@ window.createBookEntry = function() {
             <p class="hidden error-message text-sm text-red-500 mt-1">Anno non valido</p>
         </div>
 
+
 <div class="mb-5">
     <div class="flex items-center gap-1">
         <label class="block text-slate-700 font-medium">ISBN <span class="text-gray-500 font-normal">(raccomandato)</span></label>
@@ -1360,9 +1387,30 @@ window.createBookEntry = function() {
             </div>
         </div>
     </div>
-    <input type="tel" inputmode="numeric" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" maxlength="13" placeholder="Inserisci un numero di 10 o 13 cifre senza trattini">
+    <div class="flex gap-2">
+        <input type="tel" inputmode="numeric" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" maxlength="13" placeholder="Inserisci un numero di 10 o 13 cifre senza trattini">
+        <button type="button" class="scan-isbn-btn bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors flex items-center gap-2" title="Scansiona codice a barre">
+            <i class="fas fa-barcode"></i>
+            <span class="hidden sm:inline">Scansiona</span>
+        </button>
+    </div>
     <p class="hidden error-message text-sm text-red-500 mt-1">ISBN non valido</p>
+    
+    <!-- Scanner modal -->
+    <div class="isbn-scanner-modal hidden fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-md w-full p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold text-slate-700">Scansiona il codice a barre</h3>
+                <button type="button" class="close-scanner text-gray-500 hover:text-gray-700 text-2xl leading-none">&times;</button>
+            </div>
+            <div id="isbn-scanner-reader" class="w-full"></div>
+            <p class="text-sm text-gray-600 mt-3 text-center">Posiziona il codice a barre del libro davanti alla fotocamera</p>
+        </div>
+    </div>
 </div>
+        
+        <button type="button" class="add-book-btn" onclick="createBookEntry()">+ Aggiungi Libro</button>
+    `;
         
         <button type="button" class="add-book-btn" onclick="createBookEntry()">+ Aggiungi Libro</button>
     `;
@@ -1536,6 +1584,72 @@ const inputs = bookDiv.querySelectorAll('input');
             input.addEventListener('blur', () => validateBookField(input));
         }
     });
+
+    // AGGIUNGI QUI IL CODICE DELLO SCANNER
+    // Barcode scanner functionality
+    const scanBtn = bookDiv.querySelector('.scan-isbn-btn');
+    const scannerModal = bookDiv.querySelector('.isbn-scanner-modal');
+    const closeScanner = bookDiv.querySelector('.close-scanner');
+    const isbnInput = bookDiv.querySelector('.book-isbn');
+    let html5QrCode = null;
+
+    scanBtn.addEventListener('click', async () => {
+        scannerModal.classList.remove('hidden');
+        
+        try {
+            html5QrCode = new Html5Qrcode("isbn-scanner-reader");
+            
+            const config = {
+                fps: 10,
+                qrbox: { width: 250, height: 150 },
+                aspectRatio: 1.777778
+            };
+            
+            await html5QrCode.start(
+                { facingMode: "environment" },
+                config,
+                (decodedText) => {
+                    // Extract only numbers from the scanned text
+                    const numbers = decodedText.replace(/\D/g, '');
+                    
+                    // Check if it's a valid ISBN length
+                    if (numbers.length === 10 || numbers.length === 13) {
+                        isbnInput.value = numbers;
+                        validateISBN(isbnInput);
+                        stopScanner();
+                    }
+                },
+                (errorMessage) => {
+                    // Ignore errors during scanning
+                }
+            );
+        } catch (err) {
+            console.error("Error starting scanner:", err);
+            alert("Impossibile avviare la fotocamera. Assicurati di aver dato i permessi necessari.");
+            scannerModal.classList.add('hidden');
+        }
+    });
+
+    const stopScanner = () => {
+        if (html5QrCode) {
+            html5QrCode.stop().then(() => {
+                html5QrCode.clear();
+                scannerModal.classList.add('hidden');
+            }).catch(err => {
+                console.error("Error stopping scanner:", err);
+            });
+        }
+    };
+
+    closeScanner.addEventListener('click', stopScanner);
+
+    // Close scanner when clicking outside the modal content
+    scannerModal.addEventListener('click', (e) => {
+        if (e.target === scannerModal) {
+            stopScanner();
+        }
+    });
+    // FINE CODICE SCANNER
 
     document.getElementById('bookList').appendChild(bookDiv);
     updateBookCounters();
