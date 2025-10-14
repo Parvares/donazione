@@ -29,6 +29,23 @@
     --accent: #700f0a;     /* Darker bordeaux */
 }
 
+
+/* Rimuove completamente gli highlight grigi sui dispositivi touch - REGOLA GLOBALE */
+* {
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
+}
+
+button, a, input, select, textarea {
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
+}
+
+.book-entry, .book-entry * {
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
+}
+		
 .location-icon {
     transition: all 0.3s ease;
     /* Rosso molto scuro, quasi bordeaux */
