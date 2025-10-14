@@ -78,9 +78,14 @@ select.error {
 }
 /* Stile per il contenitore dei libri */
 .book-entry {
-    border-radius: 0.75rem !important;  /* Bordi leggermente più arrotondati per i contenitori */
+    border-radius: 0.75rem !important;
     overflow: hidden !important;
+    /* Rimuove l'highlight grigio sul tap per i contenitori dei libri */
+    -webkit-tap-highlight-color: transparent !important;
+    tap-highlight-color: transparent !important;
 }
+
+
 /* Stile per il pulsante di ricerca nei libri */
 .search-btn {
     border-radius: 0 0.5rem 0.5rem 0 !important;
@@ -1323,7 +1328,7 @@ window.duplicateBook = function(button) {
 // Modifica la funzione createBookEntry per aggiungere il pulsante duplica
 window.createBookEntry = function() {
     const bookDiv = document.createElement('div');
-    bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
+    bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5';
     bookCount++;
 
     bookDiv.innerHTML = `
