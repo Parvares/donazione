@@ -199,6 +199,13 @@ select.error {
     /* Assicura un rendering pulito */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Rimuove highlight grigio sui dispositivi touch */
+    -webkit-tap-highlight-color: transparent;
+    tap-highlight-color: transparent;
+    /* Previene effetti di selezione indesiderati */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .book-entry > button[type="button"].add-book-btn:hover {
@@ -209,7 +216,8 @@ select.error {
 
 .book-entry > button[type="button"].add-book-btn:active {
     transform: translateY(0);
-    background-color: #047857; /* Verde ancora più scuro quando si clicca */
+    background-color: #10b981; /* Mantiene lo stesso colore verde quando si clicca */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 
