@@ -1600,8 +1600,6 @@ const inputs = bookDiv.querySelectorAll('input');
     });
 
     // AGGIUNGI QUI IL CODICE DELLO SCANNER
-    // Barcode scanner functionality
-    // Barcode scanner functionality
 // Barcode scanner functionality with QuaggaJS
 const scanBtn = bookDiv.querySelector('.scan-isbn-btn');
 const scannerModal = bookDiv.querySelector('.isbn-scanner-modal');
@@ -1614,6 +1612,38 @@ const scannerId = 'isbn-scanner-' + bookCount;
 scannerReader.id = scannerId;
 
 let isScanning = false;
+
+// Function to play success beep
+const playSuccessBeep = () => {
+    try {
+        // Create AudioContext for better browser support
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        // Configure beep sound
+        oscillator.frequency.value = 800; // Frequency in Hz
+        oscillator.type = 'sine'; // Sine wave for smooth sound
+        
+        // Volume envelope
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+        
+        // Play beep
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.2);
+        
+    } catch (error) {
+        console.log('Beep sound not available:', error);
+        // Fallback: try navigator.vibrate for mobile devices
+        if (navigator.vibrate) {
+            navigator.vibrate(200);
+        }
+    }
+};
 
 scanBtn.addEventListener('click', async () => {
     if (isScanning) return;
@@ -1673,9 +1703,8 @@ scanBtn.addEventListener('click', async () => {
                     // Add visual feedback
                     scannerReader.style.border = "3px solid #22c55e";
                     
-                    // Beep sound (optional)
-                    const beep = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIGGS57OihUBELTKXh8bllHgU2jdXty3MpBSl+zPLaizsIFmm98OypWBQLSKLf8sFuJAUufMzy2Ik2CBhku+zooVARC0yl4fG5ZR4FN43V7ct0KQUpfszy2os7CBVpvfDtqVkUC0ii3/LBbiQFL3zM8tiJNggYZLvs6KFQEQtMpeHxuWUeBTaN1e3LdCkFKX7M8tqLOwgVab3w7alZFAtIot/ywW4kBS98zPLYiTYIGGS77OihUBELTKXh8bllHgU2jdXty3QpBSl+zPLaizsIFWm98O2pWRQLSKLf8sFuJAUvfMzy2Ik2CBhku+zooVARC0yl4fG5ZR4FNo3V7ct0KQUpfszy2os7CBVpvfDtqVkUC0ii3/LBbiQFL3zM8tiJNggYZLvs6KFQEQtMpeHxuWUeBTaN1e3LdCkFKX7M8tqLOwgVab3w7alZFAtIot/ywW4kBS98zPLYiTYIGGS77OihUBELTKXh8bllHgU2jdXty3QpBSl+zPLaizsIFWm98O2pWRQLSKLf8sFuJAUvfMzy2Ik2CBhku+zoo==');
-                    beep.play().catch(e => console.log('Audio play failed:', e));
+                    // Play success beep sound
+                    playSuccessBeep();
                     
                     setTimeout(() => {
                         isbnInput.value = numbers;
@@ -1705,6 +1734,12 @@ scannerModal.addEventListener('click', (e) => {
         stopScanner();
     }
 });
+
+
+
+
+	
+    
     // FINE CODICE SCANNER
 
     document.getElementById('bookList').appendChild(bookDiv);
