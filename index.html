@@ -642,9 +642,12 @@ document.head.appendChild(style);
         color: rgba(255, 255, 255, 0.7); /* Bianco più leggero */
     }
 
-/* Scanner modal styles */
+
+	
+/* Scanner modal styles - VERSIONE CORRETTA */
 .isbn-scanner-modal {
     animation: fadeIn 0.3s ease-in-out;
+    -webkit-tap-highlight-color: transparent; /* IMPORTANTE: previene striature */
 }
 
 @keyframes fadeIn {
@@ -656,6 +659,7 @@ document.head.appendChild(style);
     }
 }
 
+	
 /* Scanner modal styles */
 .isbn-scanner-reader {
     border-radius: 0.5rem;
@@ -663,12 +667,16 @@ document.head.appendChild(style);
     position: relative;
     min-height: 300px;
     background: #000;
+    -webkit-transform: translateZ(0); /* IMPORTANTE: fix per striature su tablet */
+    transform: translateZ(0);
 }
 
 .isbn-scanner-reader video {
     width: 100%;
     height: auto;
     border-radius: 0.5rem;
+    -webkit-transform: translateZ(0); /* IMPORTANTE: fix per striature */
+    transform: translateZ(0);
 }
 
 .isbn-scanner-reader canvas {
@@ -677,11 +685,30 @@ document.head.appendChild(style);
     left: 0;
     width: 100%;
     height: 100%;
+    -webkit-transform: translateZ(0); /* IMPORTANTE: fix per striature */
+    transform: translateZ(0);
 }
 
 /* Overlay for better barcode detection visualization */
 .isbn-scanner-reader canvas.drawingBuffer {
     border-radius: 0.5rem;
+}
+
+/* FIX SPECIFICO PER TABLET - previene striature bianche */
+@media (hover: none) and (pointer: coarse) {
+    .isbn-scanner-modal {
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-perspective: 1000;
+        perspective: 1000;
+    }
+    
+    .isbn-scanner-reader,
+    .isbn-scanner-reader video,
+    .isbn-scanner-reader canvas {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
 }
 	
 </style>
@@ -1427,7 +1454,10 @@ window.createBookEntry = function() {
     </div>
     <div class="flex gap-2">
         <input type="tel" inputmode="numeric" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" maxlength="13" placeholder="Inserisci un numero di 10 o 13 cifre senza trattini">
-        <button type="button" class="scan-isbn-btn bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors flex items-center gap-2" title="Scansiona codice a barre">
+        <button type="button" class="scan-isbn-btn" title="Scansiona codice a barre">
+    <i class="fas fa-barcode"></i>
+    <span class="hidden sm:inline">Scansiona</span>
+</button>
             <i class="fas fa-barcode"></i>
             <span class="hidden sm:inline">Scansiona</span>
         </button>
@@ -1726,7 +1756,32 @@ scannerModal.addEventListener('click', (e) => {
         stopScanner();
     }
 });
+
+
+// Fix per il pulsante Scansiona su tablet
+scanBtn.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    this.style.backgroundColor = '#047857';
+    this.style.transform = 'scale(0.95)';
+});
+
+scanBtn.addEventListener('touchend', function(e) {
+    e.preventDefault();
+    setTimeout(() => {
+        this.style.backgroundColor = '';
+        this.style.transform = '';
+    }, 150);
+});
+
+scanBtn.addEventListener('click', function() {
+    setTimeout(() => {
+        this.style.backgroundColor = '';
+        this.style.transform = '';
+    }, 100);
+});	
     // FINE CODICE SCANNER
+
+	
 
     document.getElementById('bookList').appendChild(bookDiv);
     updateBookCounters();
