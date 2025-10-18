@@ -1930,39 +1930,35 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
     });
 
     // Format books for email
-// Format books as table rows
-const booksTable = books.map((book, index) => {
-    const titleAuthor = book.author !== 'Non specificato' 
-        ? `${book.title} / ${book.author}` 
-        : book.title;
-    
-    return `<tr>
-        <td>${index + 1}</td>
-        <td>${titleAuthor}</td>
-        <td>${book.publisher}</td>
-        <td>${book.year}</td>
-        <td>${book.isbn}</td>
-    </tr>`;
-}).join('');
+// Format books as table rows for email
+    const formattedBooks = books.map((book, index) => 
+        `<tr>
+            <td>${index + 1}</td>
+            <td>${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}</td>
+            <td>${book.publisher}</td>
+            <td>${book.year}</td>
+            <td>${book.isbn}</td>
+        </tr>`
+    ).join('');
 
     showLoadingOverlay();
 
     try {
         const response = await emailjs.send(
-    config.emailjs.serviceId,
-    config.emailjs.templateId,
-    {
-        to_email: config.library.email,
-        from_name: `${nome} ${cognome}`,
-        from_email: email,
-        reply_to: email,
-        tessera: tessera || 'Non specificata',
-        telefono: telefono || 'Non specificato',
-        books_table: booksTable,  // ← CAMBIATO: da books a books_table e da formattedBooks a booksTable
-        notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
-    },
-    config.emailjs.publicKey
-);
+            config.emailjs.serviceId,
+            config.emailjs.templateId,
+            {
+                to_email: config.library.email,
+                from_name: `${nome} ${cognome}`,
+                from_email: email,
+                reply_to: email,
+                tessera: tessera || 'Non specificata',
+                telefono: telefono || 'Non specificato',
+                books_table: formattedBooks,
+                notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
+            },
+            config.emailjs.publicKey
+        );
 
         removeLoadingOverlay();
         showSuccessPopup('La tua donazione è stata inviata con successo!');
