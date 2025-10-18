@@ -1931,40 +1931,41 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
 
     // Format books for email
 // Format books as table rows for email
-    const formattedBooks = books.map((book, index) => 
-        `<tr>
-            <td>${index + 1}</td>
-            <td>${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}</td>
-            <td>${book.publisher}</td>
-            <td>${book.year}</td>
-            <td>${book.isbn}</td>
-        </tr>`
-    ).join('');
+    // Create individual book parameters for EmailJS
+    const templateParams = {
+        to_email: config.library.email,
+        from_name: `${nome} ${cognome}`,
+        from_email: email,
+        reply_to: email,
+        tessera: tessera || 'Non specificata',
+        telefono: telefono || 'Non specificato',
+        notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
+    };
+
+    // Add each book as separate parameters
+    books.forEach((book, index) => {
+        const num = index + 1;
+        templateParams[`book${num}_num`] = num;
+        templateParams[`book${num}_title`] = book.title;
+        templateParams[`book${num}_author`] = book.author;
+        templateParams[`book${num}_publisher`] = book.publisher;
+        templateParams[`book${num}_year`] = book.year;
+        templateParams[`book${num}_isbn`] = book.isbn;
+    });
+    
+    templateParams.total_books = books.length;
+
+    console.log('Sending email with params:', templateParams); // Debug
 
     showLoadingOverlay();
 
     try {
-        // Prepare template parameters
-        const templateParams = {
-            to_email: config.library.email,
-            from_name: `${nome} ${cognome}`,
-            from_email: email,
-            reply_to: email,
-            tessera: tessera || 'Non specificata',
-            telefono: telefono || 'Non specificato',
-            books_table: formattedBooks,
-            notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
-        };
-
-        console.log('Sending email with params:', templateParams); // Debug
-
         const response = await emailjs.send(
             config.emailjs.serviceId,
             config.emailjs.templateId,
             templateParams,
             config.emailjs.publicKey
         );
-
         removeLoadingOverlay();
         showSuccessPopup('La tua donazione è stata inviata con successo!');
         
