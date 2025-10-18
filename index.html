@@ -185,44 +185,23 @@ select.error {
     background: linear-gradient(to bottom right, #34d399, #10b981);
 }
 
-
-/* STILE SEMPLIFICATO per pulsante Aggiungi Libro - NIENTE GRADIENTI */
+/* Stile per il pulsante "Aggiungi Libro" con sfumatura verde */
 .book-entry > button[type="button"].add-book-btn {
     width: 100%;
     padding: 0.75rem 1rem;
-    background-color: #10b981; /* VERDE SOLIDO - niente gradienti */
+    background: linear-gradient(to bottom right, #34d399, #10b981);
     color: white;
     border: none;
     border-radius: 0.375rem;
+    transition: transform 0.3s ease;
     margin-top: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    position: relative;
-    z-index: 1;
-    -webkit-tap-highlight-color: transparent; /* Importante: tocca il blu su mobile */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Solo per computer con mouse */
-@media (hover: hover) {
-    .book-entry > button[type="button"].add-book-btn:hover {
-        background-color: #059669; /* Verde più scuro */
-        transform: translateY(-1px);
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
-    }
-}
-
-/* Quando premi il pulsante su tablet/telefono */
-.book-entry > button[type="button"].add-book-btn:active {
-    background-color: #047857; /* Verde ancora più scuro */
-    transform: scale(0.98);
-}
-
-/* Assicurati che i numeri dei libri siano SEMPRE visibili */
-.book-counter {
-    background: #10b981;
-    position: relative;
-    z-index: 100; /* NUMERO ALTO = sta sopra a tutto */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+.book-entry > button[type="button"].add-book-btn:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(to bottom right, #10b981, #059669);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 
@@ -642,12 +621,9 @@ document.head.appendChild(style);
         color: rgba(255, 255, 255, 0.7); /* Bianco più leggero */
     }
 
-
-	
-/* Scanner modal styles - VERSIONE CORRETTA */
+/* Scanner modal styles */
 .isbn-scanner-modal {
     animation: fadeIn 0.3s ease-in-out;
-    -webkit-tap-highlight-color: transparent; /* IMPORTANTE: previene striature */
 }
 
 @keyframes fadeIn {
@@ -659,7 +635,6 @@ document.head.appendChild(style);
     }
 }
 
-	
 /* Scanner modal styles */
 .isbn-scanner-reader {
     border-radius: 0.5rem;
@@ -667,16 +642,12 @@ document.head.appendChild(style);
     position: relative;
     min-height: 300px;
     background: #000;
-    -webkit-transform: translateZ(0); /* IMPORTANTE: fix per striature su tablet */
-    transform: translateZ(0);
 }
 
 .isbn-scanner-reader video {
     width: 100%;
     height: auto;
     border-radius: 0.5rem;
-    -webkit-transform: translateZ(0); /* IMPORTANTE: fix per striature */
-    transform: translateZ(0);
 }
 
 .isbn-scanner-reader canvas {
@@ -685,30 +656,11 @@ document.head.appendChild(style);
     left: 0;
     width: 100%;
     height: 100%;
-    -webkit-transform: translateZ(0); /* IMPORTANTE: fix per striature */
-    transform: translateZ(0);
 }
 
 /* Overlay for better barcode detection visualization */
 .isbn-scanner-reader canvas.drawingBuffer {
     border-radius: 0.5rem;
-}
-
-/* FIX SPECIFICO PER TABLET - previene striature bianche */
-@media (hover: none) and (pointer: coarse) {
-    .isbn-scanner-modal {
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden;
-        -webkit-perspective: 1000;
-        perspective: 1000;
-    }
-    
-    .isbn-scanner-reader,
-    .isbn-scanner-reader video,
-    .isbn-scanner-reader canvas {
-        -webkit-transform: translate3d(0, 0, 0);
-        transform: translate3d(0, 0, 0);
-    }
 }
 	
 </style>
@@ -1454,10 +1406,7 @@ window.createBookEntry = function() {
     </div>
     <div class="flex gap-2">
         <input type="tel" inputmode="numeric" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" maxlength="13" placeholder="Inserisci un numero di 10 o 13 cifre senza trattini">
-        <button type="button" class="scan-isbn-btn" title="Scansiona codice a barre">
-    <i class="fas fa-barcode"></i>
-    <span class="hidden sm:inline">Scansiona</span>
-</button>
+        <button type="button" class="scan-isbn-btn bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors flex items-center gap-2" title="Scansiona codice a barre">
             <i class="fas fa-barcode"></i>
             <span class="hidden sm:inline">Scansiona</span>
         </button>
@@ -1756,32 +1705,7 @@ scannerModal.addEventListener('click', (e) => {
         stopScanner();
     }
 });
-
-
-// Fix per il pulsante Scansiona su tablet
-scanBtn.addEventListener('touchstart', function(e) {
-    e.preventDefault();
-    this.style.backgroundColor = '#047857';
-    this.style.transform = 'scale(0.95)';
-});
-
-scanBtn.addEventListener('touchend', function(e) {
-    e.preventDefault();
-    setTimeout(() => {
-        this.style.backgroundColor = '';
-        this.style.transform = '';
-    }, 150);
-});
-
-scanBtn.addEventListener('click', function() {
-    setTimeout(() => {
-        this.style.backgroundColor = '';
-        this.style.transform = '';
-    }, 100);
-});	
     // FINE CODICE SCANNER
-
-	
 
     document.getElementById('bookList').appendChild(bookDiv);
     updateBookCounters();
@@ -2006,50 +1930,39 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
     });
 
     // Format books for email
-    const formattedBooks = books.map((book, index) => 
-        `<br><em>Libro ${index + 1}:</em><br>` +
-        `<table style="width:100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed;">
-            <colgroup>
-                <col style="width: 100px;">
-                <col style="width: auto;">
-            </colgroup>
-            <tr>
-                <td style="padding:5px; border:1px solid #ddd;"><strong>Titolo:</strong></td>
-                <td style="padding:5px; border:1px solid #ddd;">${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}</td>
-            </tr>
-            <tr>
-                <td style="padding:5px; border:1px solid #ddd;"><strong>Editore:</strong></td>
-                <td style="padding:5px; border:1px solid #ddd;">${book.publisher}</td>
-            </tr>
-            <tr>
-                <td style="padding:5px; border:1px solid #ddd;"><strong>Anno:</strong></td>
-                <td style="padding:5px; border:1px solid #ddd;">${book.year}</td>
-            </tr>
-            <tr>
-                <td style="padding:5px; border:1px solid #ddd;"><strong>ISBN:</strong></td>
-                <td style="padding:5px; border:1px solid #ddd;">${book.isbn}</td>
-            </tr>
-        </table>`
-    ).join('');
+// Format books as table rows
+const booksTable = books.map((book, index) => {
+    const titleAuthor = book.author !== 'Non specificato' 
+        ? `${book.title} / ${book.author}` 
+        : book.title;
+    
+    return `<tr>
+        <td>${index + 1}</td>
+        <td>${titleAuthor}</td>
+        <td>${book.publisher}</td>
+        <td>${book.year}</td>
+        <td>${book.isbn}</td>
+    </tr>`;
+}).join('');
 
     showLoadingOverlay();
 
     try {
         const response = await emailjs.send(
-            config.emailjs.serviceId,
-            config.emailjs.templateId,
-            {
-                to_email: config.library.email,
-                from_name: `${nome} ${cognome}`,
-                from_email: email,
-                reply_to: email,
-                tessera: tessera || 'Non specificata',
-                telefono: telefono || 'Non specificato',
-                books: formattedBooks,
-                notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
-            },
-            config.emailjs.publicKey
-        );
+    config.emailjs.serviceId,
+    config.emailjs.templateId,
+    {
+        to_email: config.library.email,
+        from_name: `${nome} ${cognome}`,
+        from_email: email,
+        reply_to: email,
+        tessera: tessera || 'Non specificata',
+        telefono: telefono || 'Non specificato',
+        books_table: booksTable,  // ← CAMBIATO: da books a books_table e da formattedBooks a booksTable
+        notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
+    },
+    config.emailjs.publicKey
+);
 
         removeLoadingOverlay();
         showSuccessPopup('La tua donazione è stata inviata con successo!');
