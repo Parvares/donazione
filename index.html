@@ -1944,19 +1944,24 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
     showLoadingOverlay();
 
     try {
+        // Prepare template parameters
+        const templateParams = {
+            to_email: config.library.email,
+            from_name: `${nome} ${cognome}`,
+            from_email: email,
+            reply_to: email,
+            tessera: tessera || 'Non specificata',
+            telefono: telefono || 'Non specificato',
+            books_table: formattedBooks,
+            notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
+        };
+
+        console.log('Sending email with params:', templateParams); // Debug
+
         const response = await emailjs.send(
             config.emailjs.serviceId,
             config.emailjs.templateId,
-            {
-                to_email: config.library.email,
-                from_name: `${nome} ${cognome}`,
-                from_email: email,
-                reply_to: email,
-                tessera: tessera || 'Non specificata',
-                telefono: telefono || 'Non specificato',
-                books_table: formattedBooks,
-                notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
-            },
+            templateParams,
             config.emailjs.publicKey
         );
 
