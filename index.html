@@ -3,126 +3,226 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <meta name="description" content="Donazione libri Biblioteca Elsa Morante di Ostia Municipio Roma X">
-
-
+    <meta name="description" content="Donazione libri Biblioteca Elsa Morante di Ostia Municipio Roma X">
     <title>Modulo donazione</title>
-
-    <!-- Link to favicon -->
     <link rel="icon" href="favicon.png" type="image/png">
-    
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-
     <script type="module" src="scripts/config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
     
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        :root {
+            --primary: #970a2c;
+            --secondary: #540f26;
+            --accent: #700f0a;
+        }
 
-        
-:root {
-    --primary: #970a2c;    /* amaranto */
-    --secondary: #540f26;  /* Even darker red */
-    --accent: #700f0a;     /* Darker bordeaux */
-}
+        body {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #334155;
+        }
 
-.location-icon {
-    transition: all 0.3s ease;
-    /* Rosso molto scuro, quasi bordeaux */
-    filter: invert(9%) sepia(38%) saturate(6611%) hue-rotate(345deg) brightness(63%) contrast(99%);
-}
+        /* Utility classes - sostituiscono Tailwind */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
 
-.location-icon:hover {
-    /* Rosso brillante e luminoso */
-    filter: invert(21%) sepia(99%) saturate(7402%) hue-rotate(356deg) brightness(141%) contrast(124%);
-    transform: scale(1.1);  /* Aggiunto un leggero effetto di ingrandimento */
-}
+        .hidden {
+            display: none !important;
+        }
 
-/* Stile base per tutti gli input */
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="number"],
-textarea,
-select {
-    border-radius: 0.5rem !important;  /* Bordi leggermente arrotondati */
-    transition: all 0.2s ease-in-out !important;
-}
-/* Stile per il focus */
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="tel"]:focus,
-input[type="number"]:focus,
-textarea:focus,
-select:focus {
-    outline: none !important;
-    border-color: #0078d7 !important;  /* Colore azzurro coerente con il bottone di submit */
-    box-shadow: 0 0 0 2px rgba(0, 120, 215, 0.1) !important;
-}
-/* Stile per gli input disabilitati */
-input:disabled,
-textarea:disabled,
-select:disabled {
-    background-color: #f3f4f6 !important;
-    cursor: not-allowed !important;
-}
-/* Stile per gli input con errore */
-input.error,
-textarea.error,
-select.error {
-    border-color: #ef4444 !important;
-    background-color: #fef2f2 !important;
-}
-/* Stile per il contenitore dei libri */
-.book-entry {
-    border-radius: 0.75rem !important;  /* Bordi leggermente più arrotondati per i contenitori */
-    overflow: hidden !important;
-}
-/* Stile per il pulsante di ricerca nei libri */
-.search-btn {
-    border-radius: 0 0.5rem 0.5rem 0 !important;
-}
-/* Stile per l'input di ricerca rapida */
-.quick-search {
-    border-radius: 0.5rem 0 0 0.5rem !important;
-}
-/* Stile per i risultati della ricerca */
-.search-results {
-    border-radius: 0.5rem !important;
-    margin-top: 0.5rem !important;
-}
-/* Stile per il textarea delle note */
-#notes {
-    border-radius: 0.5rem !important;
-    min-height: 75px !important;
-}
+        .flex {
+            display: flex;
+        }
 
+        .items-center {
+            align-items: center;
+        }
 
-	    
+        .justify-between {
+            justify-content: space-between;
+        }
 
+        .justify-center {
+            justify-content: center;
+        }
 
-.required-asterisk {
-    color: #970a2c !important;
-        font-size: 1.25em !important;
-    display: inline-block !important;
-    margin-left: 4px !important;
-    vertical-align: middle !important;
-}
+        .gap-1 { gap: 0.25rem; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-3 { gap: 0.75rem; }
+        .gap-4 { gap: 1rem; }
 
-/* Assicurati che il colore non venga sovrascritto */
-.text-slate-700 .required-asterisk {
-    color: #970a2c !important;
-}
+        .w-full {
+            width: 100%;
+        }
 
+        .max-w-4xl {
+            max-width: 56rem;
+        }
 
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
 
+        .mb-1 { margin-bottom: 0.25rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-5 { margin-bottom: 1.25rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-10 { margin-bottom: 2.5rem; }
+        .mt-1 { margin-top: 0.25rem; }
+        .mt-2 { margin-top: 0.5rem; }
+        .mt-3 { margin-top: 0.75rem; }
+        .mt-16 { margin-top: 4rem; }
 
+        .p-3 { padding: 0.75rem; }
+        .p-4 { padding: 1rem; }
+        .p-5 { padding: 1.25rem; }
+        .p-6 { padding: 1.5rem; }
+        .p-8 { padding: 2rem; }
+        .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+        .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+        .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
 
-	    
- /* Update the section header style */
+        .text-sm { font-size: 0.875rem; }
+        .text-base { font-size: 1rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-3xl { font-size: 1.875rem; }
+
+        .font-medium { font-weight: 500; }
+        .font-semibold { font-weight: 600; }
+        .font-bold { font-weight: 700; }
+
+        .text-white { color: white; }
+        .text-gray-500 { color: #6b7280; }
+        .text-gray-600 { color: #4b5563; }
+        .text-gray-700 { color: #374151; }
+        .text-red-500 { color: #ef4444; }
+        .text-blue-500 { color: #3b82f6; }
+        .text-blue-600 { color: #2563eb; }
+        .text-green-500 { color: #22c55e; }
+        .text-slate-700 { color: #334155; }
+
+        .bg-white { background-color: white; }
+        .bg-gray-50 { background-color: #f9fafb; }
+        .bg-blue-50 { background-color: #eff6ff; }
+
+        .border { border: 1px solid #e5e7eb; }
+        .border-2 { border: 2px solid; }
+        .border-gray-200 { border-color: #e5e7eb; }
+        .border-gray-300 { border-color: #d1d5db; }
+        .border-blue-500 { border-color: #3b82f6; }
+        .border-red-500 { border-color: #ef4444; }
+        .border-l-4 { border-left: 4px solid; }
+
+        .rounded { border-radius: 0.25rem; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-r { border-radius: 0 0.25rem 0.25rem 0; }
+        .rounded-l { border-radius: 0.25rem 0 0 0.25rem; }
+        .rounded-full { border-radius: 9999px; }
+
+        .block {
+            display: block;
+        }
+
+        .relative {
+            position: relative;
+        }
+
+        .fixed {
+            position: fixed;
+        }
+
+        .inset-0 {
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+
+        .top-4 {
+            top: 1rem;
+        }
+
+        .z-50 {
+            z-index: 50;
+        }
+
+        .transform {
+            transform: translate(var(--tw-translate-x), var(--tw-translate-y));
+        }
+
+        .-translate-x-1\/2 {
+            --tw-translate-x: -50%;
+        }
+
+        .shadow-lg {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Form inputs */
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"],
+        textarea,
+        select {
+            border-radius: 0.5rem;
+            transition: all 0.2s ease-in-out;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="number"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #0078d7;
+            box-shadow: 0 0 0 2px rgba(0, 120, 215, 0.1);
+        }
+
+        input:disabled,
+        textarea:disabled,
+        select:disabled {
+            background-color: #f3f4f6;
+            cursor: not-allowed;
+        }
+
+        .location-icon {
+            transition: all 0.3s ease;
+            filter: invert(9%) sepia(38%) saturate(6611%) hue-rotate(345deg) brightness(63%) contrast(99%);
+        }
+
+        .location-icon:hover {
+            filter: invert(21%) sepia(99%) saturate(7402%) hue-rotate(356deg) brightness(141%) contrast(124%);
+            transform: scale(1.1);
+        }
+
+        .required-asterisk {
+            color: #970a2c;
+            font-size: 1.25em;
+            display: inline-block;
+            margin-left: 4px;
+            vertical-align: middle;
+        }
+
         .section-header {
             font-size: 1.5rem;
             font-weight: 600;
@@ -133,104 +233,69 @@ select.error {
             border-bottom: 2px solid #970a2c;
         }
 
-        /* Remove excess margin from the main container */
-        .max-w-4xl.mx-auto.bg-white.p-8.rounded-lg.mt-2 {
-            margin-bottom: 0;
-            padding-bottom: 0;
+        .book-entry {
+            border-radius: 0.75rem;
+            overflow: hidden;
+            transition: transform 0.3s ease;
         }
 
-        /* Remove excess margin and spacing from the flex container */
-        .flex.flex-col.mb-10.text-left.space-y-4.px-4 {
-            margin-bottom: 0;
-            padding-bottom: 0;
+        .book-entry:hover {
+            transform: translateY(-2px);
         }
 
-        /* Adjust title spacing */
-        .text-3xl.md\:text-4xl.text-slate-700.font-bold.leading-tight.text-left {
-            margin-bottom: 1rem;
+        .book-counter {
+            background: linear-gradient(to bottom right, #34d399, #10b981);
+            width: 1.5rem;
+            height: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
         }
 
-        /* Remove margin from location link container */
-        .flex.items-center.gap-2.mb-2 {
-            margin-bottom: 0;
+        button[type="submit"] {
+            background-color: #0078d7;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            max-width: 32rem;
+            margin: 0 auto;
+            display: block;
         }
 
-        /* Adjust spacing for the notice box */
-        .bg-blue-50.border-l-4.border-blue-500.p-4.mb-6.rounded-r {
-            margin-top: 1rem;
-        }	    
-	    
+        button[type="submit"]:hover {
+            background-color: #005a9e;
+        }
 
-/* Sostituisci il pulsante di invio con il colore amaranto dell'intestazione */
- button[type="submit"] {
-        background-color: #0078d7 !important; /* Azzurro intenso */
-        color: white; /* Testo in bianco per leggibilità */
-        border: none;
-        border-radius: 5px;
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-    button[type="submit"]:hover {
-        background-color: #005a9e !important; /* Azzurro più scuro per effetto hover */
-    }
+        .add-book-btn {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: linear-gradient(to bottom right, #34d399, #10b981);
+            color: white;
+            border: none;
+            border-radius: 0.375rem;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
 
+        .add-book-btn:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(to bottom right, #10b981, #059669);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
 
-
-
-
-/* Aggiorna il colore del contatore dei libri con una sfumatura di verde */
-.book-counter {
-    background: linear-gradient(to bottom right, #34d399, #10b981);
-}
-
-/* Stile per il pulsante "Aggiungi Libro" con sfumatura verde */
-.book-entry > button[type="button"].add-book-btn {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    background: linear-gradient(to bottom right, #34d399, #10b981);
-    color: white;
-    border: none;
-    border-radius: 0.375rem;
-    transition: transform 0.3s ease;
-    margin-top: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.book-entry > button[type="button"].add-book-btn:hover {
-    transform: translateY(-2px);
-    background: linear-gradient(to bottom right, #10b981, #059669);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-}
-
-
-
-
-
-        
-
-/* Stile per il pulsante di rimozione (x) */
-.book-entry > button[type="button"].remove-book-btn {
-    background: none;
-    border: none;
-    color: #ff4347;
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0;
-    transition: transform 0.3s ease, color 0.3s ease;
-}
-
-.book-entry > button[type="button"].remove-book-btn:hover {
-    transform: scale(1.2);
-    color: #d9292e;
-}
-
-        
-        
         .top-banner {
             background-color: white;
-            padding: 0.8rem 2rem; 
+            padding: 0.8rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -238,21 +303,6 @@ select.error {
 
         .roma-logo {
             height: 40px;
-        }
-
-        .print-button {
-            background: none;
-            border: none;
-            color: var(--primary);
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0;
-            margin-right: 1rem;
-            transition: transform 0.3s ease;
-        }
-
-        .print-button:hover {
-            transform: scale(1.2);
         }
 
         .social-icons {
@@ -271,22 +321,20 @@ select.error {
         .social-icons a:hover {
             transform: scale(1.2);
         }
-        
+
         header {
-    background-color: var(--primary);
-    color: #fff;
-    padding: 2rem 0;
-    min-height: 4cm;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    flex-direction: column;
-    text-align: center;
-}
+            background-color: var(--primary);
+            color: #fff;
+            padding: 2rem 0;
+            min-height: 4cm;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            flex-direction: column;
+            text-align: center;
+        }
 
-
-	    
         .container-header {
             max-width: 1200px;
             margin: 0 auto;
@@ -299,63 +347,25 @@ select.error {
             gap: 1rem;
         }
 
+        .content-wrapper {
+            max-width: 900px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            position: relative;
+            margin-top: 60px;
+        }
 
-
-
- .content-wrapper {
-    max-width: 900px;
-    width: 100%;
-    margin: 2rem auto;
-    padding: 0 1rem;
-    position: relative;
-    margin-top: 60px;
-}
-
-
-
- 
-.nav-icons {
-    position: absolute;
-    top: -60px;
-    left: 50%; /* Centrato rispetto al contenitore */
-    transform: translateX(calc(-50% - 400px)); /* Spostato a sinistra della larghezza desiderata */
-    display: flex;
-    align-items: center;
-    gap: 3rem;
-    padding-top: 20px;
-}
-
-/* Responsive adjustments */
-@media (max-width: 1400px) {
-    .nav-icons {
-        transform: translateX(calc(-50% - 300px));
-    }
-}
-
-@media (max-width: 1200px) {
-    .nav-icons {
-        transform: translateX(calc(-50% - 200px));
-    }
-}
-
-@media (max-width: 992px) {
-    .nav-icons {
-        transform: translateX(calc(-50% - 100px));
-    }
-}
-
-@media (max-width: 768px) {
-    .nav-icons {
-        position: relative;
-        left: 0;
-        top: 0;
-        transform: none;
-        justify-content: flex-start;
-    }
-}
-
-
-        
+        .nav-icons {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(calc(-50% - 400px));
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            padding-top: 20px;
+        }
 
         .nav-icons a {
             color: #970a2c;
@@ -365,35 +375,13 @@ select.error {
             display: flex;
             align-items: center;
             height: 100%;
-            padding: 5px;  /* Added padding for better touch target */
+            padding: 5px;
         }
 
         .nav-icons a:hover {
             transform: scale(1.1);
         }
 
-        .nav-icons a:first-child {
-            font-weight: bold;
-            font-size: 1.8rem;
-            position: relative;
-            letter-spacing: 0.5rem;
-        }
-
-        .nav-icons a:first-child::after {
-            content: '';
-            position: absolute;
-            left: calc(100% + 1.5rem);
-            top: 50%;
-            transform: translateY(-50%);
-            height: 20px;
-            width: 1px;
-            background-color: rgba(128, 128, 128, 0.3);
-        }
-
-
-
-        
-        
         header img {
             height: 70px;
             max-width: 100%;
@@ -405,357 +393,299 @@ select.error {
             max-width: 100%;
         }
 
+        footer {
+            background-color: #970a2c;
+            color: white;
+            margin-top: 4rem;
+            padding: 2rem 0;
+            box-shadow: 0 -2px 4px -1px rgba(0, 0, 0, 0.1);
+        }
 
+        input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid #000;
+            border-radius: 0.25rem;
+            margin-right: 0.5rem;
+            display: grid;
+            place-content: center;
+        }
 
-footer {
-    box-shadow: 0 -2px 4px -1px rgba(0, 0, 0, 0.1);
-}
+        input[type="checkbox"]:checked {
+            background-color: #0078d7;
+            border-color: #0078d7;
+        }
 
-footer i {
-    font-size: 1rem;
-}
+        input[type="checkbox"]:checked::before {
+            content: "";
+            width: 0.65em;
+            height: 0.65em;
+            transform: scale(1);
+            background-color: white;
+            transform-origin: bottom left;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
 
-@media (max-width: 768px) {
-    footer .container {
-        text-align: center;
-    }
-}
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
 
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
 
-/* Stile per la checkbox */
-input[type="checkbox"] {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 1.25rem;
-    height: 1.25rem;
-    border: 2px solid #000;
-    border-radius: 0.25rem;
-    margin-right: 0.5rem;
-    display: grid;
-    place-content: center;
-}
+        .error-popup {
+            position: fixed;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            background-color: #ef4444;
+            color: white;
+            z-index: 50;
+            animation: slideDown 0.5s ease-out;
+        }
 
-input[type="checkbox"]:checked {
-    background-color: #0078d7;
-    border-color: #0078d7;
-}
+        .success-popup {
+            position: fixed;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            background-color: #22c55e;
+            color: white;
+            z-index: 50;
+        }
 
-input[type="checkbox"]:checked::before {
-    content: "";
-    width: 0.65em;
-    height: 0.65em;
-    transform: scale(1);
-    background-color: white;
-    transform-origin: bottom left;
-    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
-}
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
 
-/* Updated error popup style */
-.error-popup {
-    @apply fixed top-4 left-1/2 transform -translate-x-1/2 px-6 py-4 rounded shadow-lg;
-    background-color: #ef4444;
-    color: white;
-    z-index: 50;
-    animation: slideDown 0.5s ease-out;
-}
-	    
+        .biblioteca-link {
+            color: #970a2c;
+            transition: color 0.3s;
+            text-decoration: none;
+        }
 
-// Add CSS to remove spinners from number input
-const style = document.createElement('style');
-style.textContent = `
-    input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-    input[type=number] {
-        -moz-appearance: textfield;
-    }
-`;
-document.head.appendChild(style);
+        .biblioteca-link:hover {
+            color: #e06b8e;
+        }
 
+        .group:hover .group-hover-visible {
+            visibility: visible;
+            opacity: 1;
+            background-color: white;
+            color: black;
+            border: 1px solid #ddd;
+            white-space: nowrap;
+            width: max-content;
+            padding: 3px 8px;
+            font-size: 12px;
+            font-style: italic;
+            font-family: inherit;
+            box-shadow: none;
+            border-radius: 5px;
+        }
 
-	    // Add this style to remove spinner arrows
-const style = document.createElement('style');
-style.textContent = `
-    input[type="number"].book-year::-webkit-inner-spin-button,
-    input[type="number"].book-year::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-    input[type="number"].book-year {
-        -moz-appearance: textfield;
-    }
-`;
-document.head.appendChild(style);
+        .tooltip {
+            position: absolute;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.2s;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 300px;
+            white-space: normal;
+            line-height: 1.4;
+            pointer-events: none;
+        }
 
+        .search-result {
+            padding: 0.75rem;
+            cursor: pointer;
+            border-bottom: 1px solid #e5e7eb;
+            transition: background-color 0.15s;
+        }
 
+        .search-result:hover,
+        .search-result.bg-gray-100 {
+            background-color: #f3f4f6;
+        }
 
+        .search-result:last-child {
+            border-bottom: none;
+        }
 
+        .isbn-scanner-modal {
+            animation: fadeIn 0.3s ease-in-out;
+        }
 
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
-.social-icons a::before {
-    content: none !important;
-}
-	    
+        .isbn-scanner-reader {
+            border-radius: 0.5rem;
+            overflow: hidden;
+            position: relative;
+            min-height: 300px;
+            background: #000;
+        }
 
+        .isbn-scanner-reader video {
+            width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+        }
 
+        .isbn-scanner-reader canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
 
-/* Top banner positioning */
-.top-banner {
-    position: relative;
-    z-index: 1;
-}
+        @media (max-width: 768px) {
+            .text-3xl {
+                font-size: 1.5rem;
+            }
 
+            header {
+                height: 130px;
+            }
 
+            .container-header img[src="logomorante.png"] {
+                display: none;
+            }
 
+            .container-header img[src="logobianco.png"] {
+                height: 35px;
+            }
 
-.biblioteca-link {
-    color: #970a2c;
-    transition: color 0.3s;
-    position: relative;
-}
+            .top-banner {
+                padding: 0.4rem 1rem;
+                min-height: 40px;
+            }
 
-.biblioteca-link:hover {
-    color: #e06b8e; /* Colore rosso più chiaro */
-}
+            .nav-icons {
+                position: relative;
+                left: 0;
+                top: 0;
+                transform: none;
+                justify-content: flex-start;
+                padding: 0.75rem 1rem;
+                margin-bottom: -0.5rem;
+            }
 
+            .content-wrapper {
+                margin-top: -0.25rem;
+            }
 
+            footer .container {
+                text-align: center;
+            }
+        }
 
+        @media (max-width: 1400px) {
+            .nav-icons {
+                transform: translateX(calc(-50% - 300px));
+            }
+        }
 
-/* Aggiungi questo CSS dopo lo stile esistente, prima della chiusura del tag style */
+        @media (max-width: 1200px) {
+            .nav-icons {
+                transform: translateX(calc(-50% - 200px));
+            }
+        }
 
-@media screen and (max-width: 767px) {
-    /* Modifica dell'header per mobile */
-    header {
-        background-color: #970a2c;  /* amaranto */
-        height: 130px;               /* altezza dimezzata */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+        @media (max-width: 992px) {
+            .nav-icons {
+                transform: translateX(calc(-50% - 100px));
+            }
+        }
+    </style>
 
-    /* Gestione dei loghi nell'header */
-    .container-header {
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+    <script>
+        const emailValidator = {
+            validateSyntax(email) {
+                const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+                return emailRegex.test(email);
+            }
+        };
 
-    /* Nascondi il logo Morante su mobile */
-    .container-header img[src="logomorante.png"] {
-        display: none;
-    }
+        function showError(input, message) {
+            const errorElement = input.parentElement.querySelector('.error-message');
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.classList.remove('hidden');
+                input.classList.add('border-red-500');
+                input.classList.remove('border-gray-300');
+            }
+        }
 
-    /* Ridimensiona il logo bianco per mobile */
-    .container-header img[src="logobianco.png"] {
-        height: 35px;  /* Altezza dimezzata rispetto ai 70px originali */
-        width: auto;
-        max-width: 100%;
-    }
-}
-
-@media (max-width: 768px) {
-    .top-banner {
-        padding: 0.4rem 1rem; /* Reduced padding */
-        min-height: 40px; /* Reduced minimum height */
-    }
-	    
-
-@media screen and (max-width: 768px) {
-    .nav-icons {
-        padding: 0.75rem 1rem; /* Spazio per le icone di navigazione */
-        margin-bottom: -0.5rem; /* Riduce lo spazio sotto le icone */
-    }
-    
-    .content-wrapper {
-        margin-top: -0.25rem;
-    }
-    
-    /* Aggiusta lo spazio dopo il banner per mobile */
-    .top-banner + header {
-        margin-bottom: 0.75rem;
-    }
-
-    /* Riduce lo spazio superiore del contenitore principale su mobile */
-    .max-w-4xl.mx-auto.bg-white.p-8.rounded-lg.mt-2 {
-        margin-top: 0.5rem; /* Ridotto da 2 (0.5rem) */
-    }
-}
-
-
-/* Tooltip style for the info icon */
-.group:hover .group-hover\:visible {
-  visibility: visible !important;
-  opacity: 1 !important;
-  background-color: white !important;
-  color: black !important;
-  border: 1px solid #ddd !important;
-  white-space: nowrap !important;
-  width: max-content !important;
-  padding: 3px 8px !important;
-  font-size: 12px !important;
-  font-style: italic !important;
-  font-family: inherit !important;
-  box-shadow: none !important;
-  border-radius: 5px !important;
-}
-
-/* Remove tooltip arrow */
-.group:hover .group-hover\:visible .transform {
-  display: none;
-}
-
-/* Position tooltip for info icon */
-.group:hover .group-hover\:visible {
-  top: -25px !important;
-  left: 50%;
-  transform: translateX(-50%) !important;
-  max-width: 300px !important;
-  white-space: normal !important;
-  line-height: 1.4 !important;
-}	
-/* Cambia il colore del numero quando viene cliccato o "tappato" */
-    .phone-link:active {
-        color: rgba(255, 255, 255, 0.7); /* Bianco più leggero */
-    }
-
-/* Scanner modal styles */
-.isbn-scanner-modal {
-    animation: fadeIn 0.3s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-/* Scanner modal styles */
-.isbn-scanner-reader {
-    border-radius: 0.5rem;
-    overflow: hidden;
-    position: relative;
-    min-height: 300px;
-    background: #000;
-}
-
-.isbn-scanner-reader video {
-    width: 100%;
-    height: auto;
-    border-radius: 0.5rem;
-}
-
-.isbn-scanner-reader canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-/* Overlay for better barcode detection visualization */
-.isbn-scanner-reader canvas.drawingBuffer {
-    border-radius: 0.5rem;
-}
-	
-</style>
-
-
-
-<script>
-const emailValidator = {
-    validateSyntax(email) {
-        const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-        return emailRegex.test(email);
-    }
-};
-
-function showError(input, message) {
-    const errorElement = input.parentElement.querySelector('.error-message');
-    if (errorElement) {
-        errorElement.textContent = message;
-        errorElement.classList.remove('hidden');
-        input.classList.add('border-red-500');
-        input.classList.remove('border-gray-300', 'focus:border-blue-500');
-    }
-}
-
-function hideError(input) {
-    const errorElement = input.parentElement.querySelector('.error-message');
-    if (errorElement) {
-        errorElement.classList.add('hidden');
-        input.classList.remove('border-red-500');
-        input.classList.add('border-gray-300', 'focus:border-blue-500');
-    }
-}
-
-
-</script>
-	
-<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-	
+        function hideError(input) {
+            const errorElement = input.parentElement.querySelector('.error-message');
+            if (errorElement) {
+                errorElement.classList.add('hidden');
+                input.classList.remove('border-red-500');
+                input.classList.add('border-gray-300');
+            }
+        }
+    </script>
 </head>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('email').addEventListener('blur', (e) => {
-        const email = e.target.value.trim();
-        if (!email) return;
-        
-        if (!emailValidator.validateSyntax(email)) {
-            showError(e.target, 'Formato email non valido');
-        } else {
-            hideError(e.target);
-        }
-    });
-});
-</script>
-	
 <body>
-<div class="top-banner">
-    <a href="https://culture.roma.it/" target="_blank" title="Questo link si apre in una nuova finestra">
-        <img src="roma.png" alt="Logo Roma" class="roma-logo">
-    </a>
-    <div class="social-icons">
-<a href="https://www.bibliotechediroma.it/opac" target="_blank" title="Cerca nel catalogo delle biblioteche di Roma">
-    <img src="search.svg" alt="Cerca" style="height: 26px; width: 26px;">
-</a>
-        <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" title="Questo link si apre in una nuova finestra">
-            <i class="fab fa-facebook"></i>
+    <div class="top-banner">
+        <a href="https://culture.roma.it/" target="_blank" title="Questo link si apre in una nuova finestra">
+            <img src="roma.png" alt="Logo Roma" class="roma-logo">
         </a>
-        <a href="https://www.instagram.com/bibliotecaelsamorante/" target="_blank" title="Questo link si apre in una nuova finestra">
-            <i class="fab fa-instagram"></i>
-        </a>
-        <a href="https://x.com/bibliomorante" target="_blank" title="Questo link si apre in una nuova finestra">
-            <i class="fab fa-x-twitter"></i>
-        </a>
-        <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank" title="Questo link si apre in una nuova finestra">
-            <i class="fab fa-youtube"></i>
-        </a>
+        <div class="social-icons">
+            <a href="https://www.bibliotechediroma.it/opac" target="_blank" title="Cerca nel catalogo delle biblioteche di Roma">
+                <img src="search.svg" alt="Cerca" style="height: 26px; width: 26px;">
+            </a>
+            <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" title="Questo link si apre in una nuova finestra">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="https://www.instagram.com/bibliotecaelsamorante/" target="_blank" title="Questo link si apre in una nuova finestra">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://x.com/bibliomorante" target="_blank" title="Questo link si apre in una nuova finestra">
+                <i class="fab fa-x-twitter"></i>
+            </a>
+            <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank" title="Questo link si apre in una nuova finestra">
+                <i class="fab fa-youtube"></i>
+            </a>
+        </div>
     </div>
-</div>
-    
-  <header>
-    <div class="container-header">
-        <a href="https://www.bibliotechediroma.it/opac/.do">
-            <img src="logobianco.png" alt="Logo Biblioteche di Roma" style="height: 70px; max-width: 100%;">
-        </a>
-        <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2">
-            <img src="logomorante.png" alt="Logo Biblioteca Morante" style="height: 180px; max-width: 100%;">
-        </a>
-    </div>
-</header>
 
-
-    
-   
+    <header>
+        <div class="container-header">
+            <a href="https://www.bibliotechediroma.it/opac/.do">
+                <img src="logobianco.png" alt="Logo Biblioteche di Roma" style="height: 70px; max-width: 100%;">
+            </a>
+            <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2">
+                <img src="logomorante.png" alt="Logo Biblioteca Morante" style="height: 180px; max-width: 100%;">
+            </a>
+        </div>
+    </header>
 
     <div class="content-wrapper">
         <div class="nav-icons">
@@ -767,1014 +697,442 @@ document.addEventListener('DOMContentLoaded', () => {
             </a>
         </div>
 
-
-        
-
-
-
-
-<div class="max-w-4xl mx-auto bg-white p-8 rounded-lg mt-2"> <!-- Removed shadow-md class -->
-<div class="flex flex-col mb-10 text-left space-y-4 px-4">
-<div class="flex items-center gap-2 mb-2">
-<a href="https://bibliotecamorante.github.io/mappa/"
-   target="_blank" 
-   title="Visualizza la posizione sulla mappa">
-    <img alt="Posizione" 
-         src="location.svg" 
-         class="location-icon h-5 w-5">
-</a>
-
-
-
-			
-			
-<a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" 
-   target="_blank"
-   class="biblioteca-link"
-   title="Clicca qui per vedere gli appuntamenti della biblioteca">
-   Biblioteca Elsa Morante
-</a>
-
-
+        <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg mt-2">
+            <div class="flex-col mb-10 text-left px-4" style="display: flex; gap: 1rem;">
+                <div class="flex items-center gap-2 mb-2">
+                    <a href="https://bibliotecamorante.github.io/mappa/" target="_blank" title="Visualizza la posizione sulla mappa">
+                        <img alt="Posizione" src="location.svg" class="location-icon" style="height: 20px; width: 20px;">
+                    </a>
+                    <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" class="biblioteca-link" title="Clicca qui per vedere gli appuntamenti della biblioteca">
+                        Biblioteca Elsa Morante
+                    </a>
                 </div>
-                <h1 class="text-3xl md:text-4xl text-slate-700 font-bold leading-tight text-left">
+                <h1 class="text-3xl text-slate-700 font-bold" style="line-height: 1.2;">
                     Donazione di libri
                 </h1>
             </div>
         </div>
 
-    
-
-       
-<div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r">
-    Compila il modulo per donare i tuoi libri alla biblioteca. I campi contrassegnati con <span class="required-asterisk">*</span> sono obbligatori. E' raccomandato compilare anche il campo ISBN per garantire una più accurata identificazione dei volumi.
-</div>
-
-            
-            <form id="donationForm" novalidate>
-		    <div id="error-root"></div>
-                <!-- Rest of the form remains the same as in the original document -->
-                <h3 class="section-header">Dati Personali</h3>
-                
-
-<div class="mb-5">
-    <label for="nome" class="block mb-1 text-slate-700 font-medium">Nome<span class="required-asterisk">*</span></label>
-    <input type="text" id="nome" name="nome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-    <p class="hidden error-message text-sm text-red-500 mt-1">Il nome è obbligatorio</p>
-</div>
-
-<div class="mb-5">
-    <label for="cognome" class="block mb-1 text-slate-700 font-medium">Cognome<span class="required-asterisk">*</span></label>
-    <input type="text" id="cognome" name="cognome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-    <p class="hidden error-message text-sm text-red-500 mt-1">Il cognome è obbligatorio</p>
-</div>
-                
-                <div class="mb-5">
-                    <label for="tessera" class="block mb-1 text-slate-700 font-medium">Numero Tessera</label>
-                    <input type="text" id="tessera" name="tessera" class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-                </div>
-
-                <div class="mb-5">
-                    <label for="telefono" class="block mb-1 text-slate-700 font-medium">Telefono</label>
-                    <input type="tel" id="telefono" name="telefono" class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-                    <p class="hidden error-message text-sm text-red-500 mt-1">Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)</p>
-                </div>
-                
-<div class="mb-5">
-    <label for="email" class="block mb-1 text-slate-700 font-medium">Email<span class="required-asterisk">*</span></label>
-    <input type="email" id="email" name="email" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-    <p class="hidden error-message text-sm text-red-500 mt-1">Inserire un indirizzo email valido</p>
-</div>
-
-
-
-		    
-
-                <h3 class="section-header">Libri da donare</h3>
-                <div id="bookList"></div>
-
-
-<div class="mb-5 bg-gray-50 p-4 rounded">
-    <div class="flex justify-between items-center mb-1">
-        <label for="notes" class="block text-slate-700 font-medium text-sm">Note aggiuntive</label>
-        <span id="charCount" class="text-sm text-gray-500">500 caratteri rimanenti</span>
-    </div>
-    <textarea 
-        id="notes" 
-        name="notes" 
-        rows="3" 
-        maxlength="500"
-        class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base resize-none bg-white"
-        placeholder="Aggiungi eventuali note o commenti sulla donazione..."></textarea>
-</div>
-
-
-
-
-
-		    
-                <div class="bg-gray-50 p-4 rounded mb-5">
-                    <label class="flex items-start gap-3">
-                        <input type="checkbox" id="accept" name="accept" required class="w-5 h-5 mt-1">
-                     <span>Ho letto e accetto <a href="termini.html" target="_blank" class="text-blue-500 hover:text-blue-300 transition-colors">termini e condizioni</a></span>                    </label>
-                    <p class="hidden error-message text-sm text-red-500 mt-1">Devi accettare termini e le condizioni</p>
-                </div>
-                
-                <button type="submit" class="w-full max-w-sm mx-auto block px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors font-medium text-base">
-                    Invia Donazione
-                </button>
-            </form>
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r">
+            Compila il modulo per donare i tuoi libri alla biblioteca. I campi contrassegnati con <span class="required-asterisk">*</span> sono obbligatori. È raccomandato compilare anche il campo ISBN per garantire una più accurata identificazione dei volumi.
         </div>
+
+        <form id="donationForm" novalidate>
+            <div id="error-root"></div>
+
+            <h3 class="section-header">Dati Personali</h3>
+
+            <div class="mb-5">
+                <label for="nome" class="block mb-1 text-slate-700 font-medium">Nome<span class="required-asterisk">*</span></label>
+                <input type="text" id="nome" name="nome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded text-base">
+                <p class="hidden error-message text-sm text-red-500 mt-1">Il nome è obbligatorio</p>
+            </div>
+
+            <div class="mb-5">
+                <label for="cognome" class="block mb-1 text-slate-700 font-medium">Cognome<span class="required-asterisk">*</span></label>
+                <input type="text" id="cognome" name="cognome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded text-base">
+                <p class="hidden error-message text-sm text-red-500 mt-1">Il cognome è obbligatorio</p>
+            </div>
+
+            <div class="mb-5">
+                <label for="tessera" class="block mb-1 text-slate-700 font-medium">Numero Tessera</label>
+                <input type="text" id="tessera" name="tessera" class="w-full px-3 py-2 border-2 border-gray-300 rounded text-base">
+            </div>
+
+            <div class="mb-5">
+                <label for="telefono" class="block mb-1 text-slate-700 font-medium">Telefono</label>
+                <input type="tel" id="telefono" name="telefono" class="w-full px-3 py-2 border-2 border-gray-300 rounded text-base">
+                <p class="hidden error-message text-sm text-red-500 mt-1">Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)</p>
+            </div>
+
+            <div class="mb-5">
+                <label for="email" class="block mb-1 text-slate-700 font-medium">Email<span class="required-asterisk">*</span></label>
+                <input type="email" id="email" name="email" required class="w-full px-3 py-2 border-2 border-gray-300 rounded text-base">
+                <p class="hidden error-message text-sm text-red-500 mt-1">Inserire un indirizzo email valido</p>
+            </div>
+
+            <h3 class="section-header">Libri da donare</h3>
+
+            <div id="bookList"></div>
+
+            <div class="mb-5 bg-gray-50 p-4 rounded">
+                <div class="flex justify-between items-center mb-1">
+                    <label for="notes" class="block text-slate-700 font-medium text-sm">Note aggiuntive</label>
+                    <span id="charCount" class="text-sm text-gray-500">500 caratteri rimanenti</span>
+                </div>
+                <textarea id="notes" name="notes" rows="3" maxlength="500" class="w-full px-3 py-2 border-2 border-gray-300 rounded text-base bg-white" style="resize: vertical; min-height: 75px;" placeholder="Aggiungi eventuali note o commenti sulla donazione..."></textarea>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded mb-5">
+                <label class="flex items-start gap-3" style="cursor: pointer;">
+                    <input type="checkbox" id="accept" name="accept" required style="margin-top: 4px;">
+                    <span>Ho letto e accetto <a href="termini.html" target="_blank" class="text-blue-500" style="text-decoration: underline;">termini e condizioni</a></span>
+                </label>
+                <p class="hidden error-message text-sm text-red-500 mt-1">Devi accettare i termini e le condizioni</p>
+            </div>
+
+            <button type="submit" class="w-full">
+                Invia Donazione
+            </button>
+        </form>
     </div>
 
+    <footer>
+        <div class="container" style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 1rem;">
+            <div class="mb-4">
+                <img src="footermorante.png" alt="Logo Biblioteca Morante" style="height: 2.5rem; cursor: pointer;" onclick="window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');">
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; font-size: 0.875rem;">
+                <div class="flex items-center gap-2">
+                    <a href="https://bibliotecamorante.github.io/mappa/" target="_blank" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-location-dot" style="width: 1rem;"></i>
+                        <span style="display: flex; flex-direction: column;">
+                            <span>Porto turistico di Roma</span>
+                            <span>Municipio X, 00121 Roma</span>
+                        </span>
+                    </a>
+                </div>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-phone" style="width: 1rem;"></i>
+                        <span>
+                            <a href="tel:+390645460481" style="text-decoration: none; color: inherit;">06 4546 0481</a>
+                            /
+                            <a href="tel:+390645460483" style="text-decoration: none; color: inherit;">0483</a>
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-clock" style="width: 1rem;"></i>
+                        <span style="display: flex; flex-direction: column;">
+                            <span>Lunedì-Venerdì 09:00-18:30</span>
+                            <span>Sabato 09:00-13:00</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
+    <script type="module">
+        import config from './scripts/config.js';
 
-    
-
-<!-- Nella sezione degli script del tuo HTML -->
-<script type="module">
-    import config from './scripts/config.js';
-    
-    // Initialize EmailJS
-    (function() {
-        emailjs.init(config.emailjs.publicKey);
-    })();
-
-	document.getElementById('accept').addEventListener('change', function() {
-    validateCheckbox(this);
-});
-
-
-        
-// Prima aggiungi questa funzione accanto alle altre funzioni di utility (dopo showGlobalErrorPopup)
-function showGlobalErrorPopup(message) {
-    const existingPopups = document.querySelectorAll('.error-popup');
-    existingPopups.forEach(popup => document.body.removeChild(popup));
-
-    const popup = document.createElement('div');
-    popup.className = 'error-popup fixed top-4 left-1/2 transform -translate-x-1/2 px-6 py-4 rounded shadow-lg';
-    popup.style.backgroundColor = '#ef4444';
-    popup.style.color = 'white';
-    popup.style.zIndex = '50';
-    popup.innerHTML = message;
-
-    setTimeout(() => {
-        if (document.body.contains(popup)) {
-            document.body.removeChild(popup);
-        }
-    }, 5000);
-
-    document.body.appendChild(popup);
-}
-
-
-        
-
-function showSuccessPopup(message) {
-    const existingPopups = document.querySelectorAll('.success-popup');
-    existingPopups.forEach(popup => document.body.removeChild(popup));
-
-    const popup = document.createElement('div');
-    popup.className = 'success-popup fixed top-4 left-1/2 transform -translate-x-1/2 px-6 py-4 rounded shadow-lg';
-    popup.style.backgroundColor = '#22c55e';
-    popup.style.color = 'white';
-    popup.style.zIndex = '50';
-    popup.innerHTML = message;
-
-    setTimeout(() => {
-        if (document.body.contains(popup)) {
-            document.body.removeChild(popup);
-        }
-    }, 5000);
-
-    document.body.appendChild(popup);
-}
-
-function showLoadingOverlay() {
-    const overlay = document.createElement('div');
-    overlay.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
-    overlay.id = 'loadingOverlay';
-    
-    const spinner = document.createElement('div');
-    spinner.className = 'bg-white p-5 rounded-lg flex flex-col items-center';
-    spinner.innerHTML = `
-        <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500 mb-3"></div>
-        <div class="text-white font-medium">Invio donazione in corso...</div>
-    `;
-    
-    overlay.appendChild(spinner);
-    document.body.appendChild(overlay);
-}
-
-function removeLoadingOverlay() {
-    const overlay = document.getElementById('loadingOverlay');
-    if (overlay) {
-        overlay.remove();
-    }
-}
-
-
-        
-
-        
+        // Initialize EmailJS
+        (function() {
+            emailjs.init(config.emailjs.publicKey);
+        })();
 
         let bookCount = 0;
 
-        
+        function showGlobalErrorPopup(message) {
+            const existingPopups = document.querySelectorAll('.error-popup');
+            existingPopups.forEach(popup => document.body.removeChild(popup));
 
-// Update the validateField function to handle email validation
-function validateField(input, showErrors = true) {
-    const value = input.value.trim();
-    let isValid = true;
+            const popup = document.createElement('div');
+            popup.className = 'error-popup';
+            popup.innerHTML = message;
 
-    // Non mostrare errori se il campo è focused
-    if (input.matches(':focus')) {
-        hideError(input);
-        return true;
-    }
-
-    // Handle required fields except email (handled separately)
-    if (input.hasAttribute('required') && !value && input.id !== 'email') {
-        if (showErrors) {
-            showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
-        }
-        isValid = false;
-    } else {
-        switch (input.id) {
-            case 'telefono':
-                if (value && !/^[0-9]{6,15}$/.test(value)) {
-                    if (showErrors) {
-                        showError(input, 'Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)');
-                    }
-                    isValid = false;
+            setTimeout(() => {
+                if (document.body.contains(popup)) {
+                    document.body.removeChild(popup);
                 }
-                break;
-            case 'email':
-                if (value && !emailValidator.validateSyntax(value)) {
-                    if (showErrors) {
-                        showError(input, 'Formato email non valido');
-                    }
-                    isValid = false;
-                } else if (!value && input.hasAttribute('required')) {
-                    if (showErrors) {
-                        showError(input, 'L\'email è obbligatoria');
-                    }
-                    isValid = false;
+            }, 5000);
+
+            document.body.appendChild(popup);
+        }
+
+        function showSuccessPopup(message) {
+            const existingPopups = document.querySelectorAll('.success-popup');
+            existingPopups.forEach(popup => document.body.removeChild(popup));
+
+            const popup = document.createElement('div');
+            popup.className = 'success-popup';
+            popup.innerHTML = message;
+
+            setTimeout(() => {
+                if (document.body.contains(popup)) {
+                    document.body.removeChild(popup);
                 }
-                break;
+            }, 5000);
+
+            document.body.appendChild(popup);
         }
-    }
 
-    if (isValid) {
-        hideError(input);
-    }
-    return isValid;
-}
-	
+        function showLoadingOverlay() {
+            const overlay = document.createElement('div');
+            overlay.id = 'loadingOverlay';
+            overlay.style.cssText = 'position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 50;';
+            
+            const spinner = document.createElement('div');
+            spinner.style.cssText = 'background-color: white; padding: 1.25rem; border-radius: 0.5rem; display: flex; flex-direction: column; align-items: center;';
+            spinner.innerHTML = `
+                <div style="width: 2.5rem; height: 2.5rem; border: 2px solid #3b82f6; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 0.75rem;"></div>
+                <div style="color: #334155; font-weight: 500;">Invio donazione in corso...</div>
+            `;
+            
+            overlay.appendChild(spinner);
+            document.body.appendChild(overlay);
 
-// Add event listeners for email field focus handling
-document.addEventListener('DOMContentLoaded', function() {
-    const emailInput = document.getElementById('email');
-    
-    if (emailInput) {
-        // Hide error when field receives focus
-        emailInput.addEventListener('focus', function() {
-            hideError(this);
-        });
-
-        // Validate when field loses focus
-        emailInput.addEventListener('blur', function() {
-            validateField(this);
-        });
-
-        // Optional: validate on input change while not focused
-        emailInput.addEventListener('input', function() {
-            if (!this.matches(':focus')) {
-                validateField(this);
-            }
-        });
-    }
-});
-
-// AGGIUNGI QUESTA NUOVA FUNZIONE QUI
-function validateISBN(input) {
-    const value = input.value.trim();
-    const errorElement = input.parentElement.querySelector('.error-message');
-    
-    // Clear any existing errors first
-    hideError(input);
-    
-    // Only validate if there's a value and the field isn't focused
-    if (!input.matches(':focus') && value.length > 0) {
-        // Check if it's the correct length
-        if (!/^(?:\d{10}|\d{13})$/.test(value)) {
-            showError(input, 'ISBN deve essere di 10 o 13 cifre');
-            // Ensure error message is red
-            errorElement.classList.remove('text-gray-500');
-            errorElement.classList.add('text-red-500');
-            return false;
-        }
-        
-        // If it's ISBN-13, check the prefix
-        if (value.length === 13 && !value.startsWith('978') && !value.startsWith('979')) {
-            showError(input, 'ISBN-13 deve iniziare con 978 o 979');
-            // Ensure error message is red
-            errorElement.classList.remove('text-gray-500');
-            errorElement.classList.add('text-red-500');
-            return false;
-        }
-    }
-    
-    return true;
-}
-
-// Update the existing handleISBNInput function
-function handleISBNInput(input) {
-    // Remove non-numeric characters
-    input.value = input.value.replace(/\D/g, '');
-    
-    // Limit to 13 characters
-    if (input.value.length > 13) {
-        input.value = input.value.slice(0, 13);
-    }
-    
-    // Validate the ISBN and ensure error is red
-    const errorElement = input.parentElement.querySelector('.error-message');
-    if (errorElement && !errorElement.classList.contains('hidden')) {
-        errorElement.classList.remove('text-gray-500');
-        errorElement.classList.add('text-red-500');
-    }
-    
-    validateISBN(input);
-}
-
-// Update the showError function to ensure error is always red
-function showError(input, message) {
-    const errorElement = input.parentElement.querySelector('.error-message');
-    if (errorElement) {
-        errorElement.textContent = message;
-        errorElement.classList.remove('hidden', 'text-gray-500');
-        errorElement.classList.add('text-red-500');
-        input.classList.add('border-red-500');
-        input.classList.remove('border-gray-300', 'focus:border-blue-500');
-    }
-}
-
-// Add event listeners for ISBN fields
-document.addEventListener('DOMContentLoaded', function() {
-    document.addEventListener('blur', function(e) {
-        if (e.target.classList.contains('book-isbn')) {
-            validateISBN(e.target);
-        }
-    });
-    
-    document.addEventListener('input', function(e) {
-        if (e.target.classList.contains('book-isbn')) {
-            handleISBNInput(e.target);
-        }
-    });
-});
-        
-
-// Aggiorna la funzione validateBookField
-function validateBookField(input, showErrors = true) {
-    const value = input.value.trim();
-    let isValid = true;
-
-    // Non mostrare errori se il campo è focused
-    if (input.matches(':focus')) {
-        hideError(input);
-        return true;
-    }
-
-    if (input.hasAttribute('required') && !value) {
-        if (showErrors) {
-            if (input.classList.contains('book-title')) {
-                showError(input, 'Il campo Titolo* è obbligatorio');
-            } else {
-                showError(input, 'Questo campo è obbligatorio');
+            // Add keyframes for spinner animation
+            if (!document.getElementById('spinnerKeyframes')) {
+                const style = document.createElement('style');
+                style.id = 'spinnerKeyframes';
+                style.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
+                document.head.appendChild(style);
             }
         }
-        isValid = false;
-    } else if (input.classList.contains('book-year')) {
-        const currentYear = new Date().getFullYear();
-        if (value) {
-            if (value.length !== 4 || !Number.isInteger(Number(value)) || Number(value) < 1900 || Number(value) > currentYear) {
+
+        function removeLoadingOverlay() {
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay) {
+                overlay.remove();
+            }
+        }
+
+        function validateField(input, showErrors = true) {
+            const value = input.value.trim();
+            let isValid = true;
+
+            if (input.matches(':focus')) {
+                hideError(input);
+                return true;
+            }
+
+            if (input.hasAttribute('required') && !value && input.id !== 'email') {
                 if (showErrors) {
-                    showError(input, `L'anno deve essere compreso tra 1900 e ${currentYear}`);
+                    showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
                 }
                 isValid = false;
-            }
-        }
-    } else if (input.classList.contains('book-isbn')) {
-        if (value && !/^(?:\d{10}|\d{13})$/.test(value)) {
-            if (showErrors) {
-                showError(input, 'ISBN deve essere di 10 o 13 cifre');
-            }
-            isValid = false;
-        }
-    }
-
-    if (isValid) {
-        hideError(input);
-    }
-    return isValid;
-}
-
-// MANTIENI QUESTI EVENT LISTENER ESISTENTI PER IL CAMPO ANNO
-document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('book-year')) {
-        hideError(e.target);
-    }
-});
-
-document.addEventListener('blur', function(e) {
-    if (e.target.classList.contains('book-year')) {
-        validateBookField(e.target);
-    }
-});
-
-// AGGIUNGI QUESTO NUOVO EVENT LISTENER PER L'ISBN
-document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('book-isbn')) {
-        e.target.addEventListener('input', function() {
-            handleISBNInput(this);
-        });
-        
-        e.target.addEventListener('blur', function() {
-            handleISBNInput(this);
-        });
-        
-        e.target.addEventListener('focus', function() {
-            handleISBNInput(this);
-            if (this.value.length > 0 && this.value.length !== 10 && this.value.length !== 13) {
-                const errorElement = this.nextElementSibling;
-                errorElement.textContent = 'ISBN deve essere di 10 o 13 cifre';
-                errorElement.classList.remove('hidden', 'text-red-500');
-                errorElement.classList.add('text-gray-500');
-            }
-        });
-    }
-});
-
-// AGGIORNA LO STILE ESISTENTE AGGIUNGENDO LE REGOLE PER L'ISBN
-const style = document.createElement('style');
-style.textContent = `
-    input[type="number"].book-year::-webkit-inner-spin-button,
-    input[type="number"].book-year::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-    input[type="number"].book-year {
-        -moz-appearance: textfield;
-    }
-    input[type="tel"].book-isbn::-webkit-inner-spin-button,
-    input[type="tel"].book-isbn::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-    input[type="tel"].book-isbn {
-        -moz-appearance: textfield;
-    }
-`;
-document.head.appendChild(style);        
-
-function validateCheckbox(checkbox) {
-    const errorElement = checkbox.parentElement.nextElementSibling;
-    
-    if (!checkbox.checked) {
-        // Usando border invece di outline per evitare lo spazio
-        checkbox.style.border = '2px solid #ef4444';
-        
-        if (errorElement && errorElement.classList.contains('error-message')) {
-            errorElement.classList.remove('hidden');
-            errorElement.textContent = 'Devi accettare i termini e le condizioni';
-        }
-        return false;
-    } else {
-        // Rimuoviamo lo stile del bordo rosso quando la checkbox è selezionata
-        checkbox.style.border = '';
-        
-        if (errorElement && errorElement.classList.contains('error-message')) {
-            errorElement.classList.add('hidden');
-        }
-        return true;
-    }
-}
-
-        
-// Aggiungere questa funzione per gestire la duplicazione
-window.duplicateBook = function(button) {
-    const originalEntry = button.closest('.book-entry');
-    const newEntry = originalEntry.cloneNode(true);
-    
-    // Incrementa il contatore globale dei libri
-    bookCount++;
-    
-    // Aggiorna il numero del nuovo libro
-    const counter = newEntry.querySelector('.book-counter');
-    if (counter) {
-        counter.textContent = bookCount;
-    }
-    
-    // Resetta la sezione di ricerca
-    const searchSection = newEntry.querySelector('.mb-5:has(.quick-search)');
-    if (searchSection) {
-        const searchInput = searchSection.querySelector('.quick-search');
-        if (searchInput) {
-            searchInput.value = '';
-        }
-        const searchResults = searchSection.querySelector('.search-results');
-        if (searchResults) {
-            searchResults.classList.add('hidden');
-        }
-        searchSection.style.display = ''; // Mostra di nuovo la sezione di ricerca
-    }
-    
-    // Reinizializza gli event listener per la nuova entry
-    const inputs = newEntry.querySelectorAll('input');
-    inputs.forEach(input => {
-        if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
-            input.addEventListener('input', () => validateBookField(input));
-            input.addEventListener('blur', () => validateBookField(input));
-        }
-    });
-    
-    // Inserisci la nuova entry dopo quella originale
-    originalEntry.after(newEntry);
-    updateBookCounters();
-};	
-        
-// Modifica la funzione createBookEntry per aggiungere il pulsante duplica
-window.createBookEntry = function() {
-    const bookDiv = document.createElement('div');
-    bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
-    bookCount++;
-
-    bookDiv.innerHTML = `
-        <div class="flex justify-between items-center mb-4">
-            <span class="book-counter flex items-center justify-center w-6 h-6 rounded-full text-white font-semibold text-sm" style="background-color: rgb(34, 197, 94)">${bookCount}</span>
-            <div class="flex gap-2">
-                ${bookCount > 1 ? `
-                    <button type="button" class="duplicate-book-btn text-green-500 hover:text-green-700" title="Duplica libro" onclick="duplicateBook(this)">
-                        <i class="fas fa-copy"></i>
-                    </button>
-                    <button type="button" class="reset-book-btn text-blue-500 hover:text-blue-700" title="Azzera campi" onclick="resetBookFields(this)">
-                        <i class="fas fa-undo"></i>
-                    </button>
-                    <button type="button" class="remove-book-btn text-red-500 hover:text-red-700" title="Rimuovi libro" onclick="removeBook(this)">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                ` : `
-                    <button type="button" class="duplicate-book-btn text-green-500 hover:text-green-700" title="Duplica libro" onclick="duplicateBook(this)">
-                        <i class="fas fa-copy"></i>
-                    </button>
-                    <button type="button" class="reset-book-btn text-blue-500 hover:text-blue-700" title="Azzera campi" onclick="resetBookFields(this)">
-                        <i class="fas fa-undo"></i>
-                    </button>
-                `}
-            </div>
-        </div>
-
-
-
- 
-
-<div class="mb-5">
-  <div class="flex items-center gap-2 mb-2">
-    <label class="flex items-center gap-2">
-      <i class="fas fa-book-open text-lg text-blue-600 transition-all duration-200"></i>
-      <span class="text-blue-600 font-medium transition-all duration-200">
-        Search & click 
-        <span class="text-gray-500 text-sm font-normal">(opzionale)</span>
-      </span>
-      <span class="group relative cursor-help">
-        <i class="fas fa-info-circle text-gray-500 hover:text-gray-700 transition-all duration-200"></i>
-        <div class="invisible group-hover:visible absolute left-1/2 -translate-x-1/2 top-6 w-72 p-3 bg-white border border-gray-200 text-gray-500 text-sm rounded-lg shadow-lg z-10">
-          Cerca, seleziona e... boom! La scheda si completa al volo! Se preferisci, puoi inserire i dati manualmente.
-        </div>
-      </span>
-    </label>
-  </div>
-</div>
-
-
-
-            <div class="flex gap-2">
-                <input type="text" 
-                    class="quick-search w-full px-3 py-2 border-2 border-gray-300 rounded-l focus:border-blue-500 focus:outline-none text-base" 
-                    placeholder="Cerca per titolo, autore o ISBN...">
-                <button type="button" 
-                    class="search-btn bg-blue-500 text-white px-4 rounded-r hover:bg-blue-600 transition-colors">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-            <div class="search-results hidden mt-2 bg-white border border-gray-200 rounded-lg max-h-60 overflow-y-auto shadow-lg"></div>
-        </div>
-                
-       <!-- Modified book entry template in createBookEntry() function -->
-<div class="mb-5">
-    <label class="block mb-1 text-slate-700 font-medium">Titolo<span class="required-asterisk">*</span></label>
-    <input type="text" class="book-title w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" required>
-    <p class="hidden error-message text-sm text-red-500 mt-1">Il titolo è obbligatorio</p>
-</div>
-        <div class="mb-5">
-            <label class="block mb-1 text-slate-700 font-medium">Autore</label>
-            <input type="text" class="book-author w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-        </div>
-        <div class="mb-5">
-            <label class="block mb-1 text-slate-700 font-medium">Editore</label>
-            <input type="text" class="book-publisher w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-        </div>
-        <div class="mb-5">
-            <label class="block mb-1 text-slate-700 font-medium">Anno</label>
-            <input type="number" min="1400" max="2024" class="book-year w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-            <p class="hidden error-message text-sm text-red-500 mt-1">Anno non valido</p>
-        </div>
-
-<div class="mb-5">
-    <div class="flex items-center gap-1">
-        <label class="block text-slate-700 font-medium">ISBN <span class="text-gray-500 font-normal">(raccomandato)</span></label>
-        <div class="relative group -mt-1">
-            <i class="fa-solid fa-circle-info text-gray-500 hover:text-gray-700 transition-colors text-sm"></i>
-            <div class="invisible group-hover:visible absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-white border border-gray-200 text-gray-700 text-sm rounded-lg w-64 shadow-lg z-10">
-                <div class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full w-0 h-0 border-8 border-transparent border-t-white"></div>
-                <div class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full w-0 h-0 border-[9px] border-transparent border-t-gray-200"></div>
-                Lo trovi sul retro del libro sopra al codice a barre o nella pagina del copyright.
-            </div>
-        </div>
-    </div>
-    <div class="flex gap-2">
-        <input type="tel" inputmode="numeric" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" maxlength="13" placeholder="Inserisci un numero di 10 o 13 cifre senza trattini">
-        <button type="button" class="scan-isbn-btn bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors flex items-center gap-2" title="Scansiona codice a barre">
-            <i class="fas fa-barcode"></i>
-            <span class="hidden sm:inline">Scansiona</span>
-        </button>
-    </div>
-    <p class="hidden error-message text-sm text-red-500 mt-1">ISBN non valido</p>
-    
-    <!-- Scanner modal -->
-    <div class="isbn-scanner-modal hidden fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-lg max-w-md w-full p-6">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-semibold text-slate-700">Scansiona il codice a barre</h3>
-                <button type="button" class="close-scanner text-gray-500 hover:text-gray-700 text-2xl leading-none">&times;</button>
-            </div>
-            <div class="isbn-scanner-reader w-full"></div>
-            <p class="text-sm text-gray-600 mt-3 text-center">Posiziona il codice a barre del libro davanti alla fotocamera</p>
-        </div>
-    </div>
-</div>
-        
-        <button type="button" class="add-book-btn" onclick="createBookEntry()">+ Aggiungi Libro</button>
-    `;
-
-
-
-
-	
-// Add search functionality with debounce
-const searchInput = bookDiv.querySelector('.quick-search');
-const searchBtn = bookDiv.querySelector('.search-btn');
-const resultsDiv = bookDiv.querySelector('.search-results');
-
-let debounceTimer;
-let selectedIndex = -1;
-let searchResults = [];
-
-const highlightResult = (index) => {
-    // Remove previous highlight
-    resultsDiv.querySelectorAll('.search-result').forEach(result => {
-        result.classList.remove('bg-gray-100');
-        result.setAttribute('aria-selected', 'false');
-    });
-    
-    // Add new highlight
-    if (index >= 0 && index < searchResults.length) {
-        const resultElement = resultsDiv.querySelectorAll('.search-result')[index];
-        resultElement.classList.add('bg-gray-100');
-        resultElement.setAttribute('aria-selected', 'true');
-        resultElement.scrollIntoView({ block: 'nearest' });
-    }
-};
-
-const clearSearchState = () => {
-    searchInput.value = '';
-    resultsDiv.classList.add('hidden');
-    selectedIndex = -1;
-    searchResults = [];
-};
-
-const performSearch = async () => {
-    const query = searchInput.value.trim();
-    if (!query) {
-        resultsDiv.classList.add('hidden');
-        selectedIndex = -1;
-        searchResults = [];
-        return;
-    }
-    
-    try {
-        const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&key=${config.googleBooks.apiKey}&maxResults=5`);
-        const data = await response.json();
-        
-        if (data.items && data.items.length > 0) {
-            searchResults = data.items;
-            resultsDiv.innerHTML = searchResults.map((book, index) => {
-                const info = book.volumeInfo;
-                const bookData = {
-                    title: info.title || '',
-                    authors: info.authors ? info.authors.join(', ') : '',
-                    publisher: info.publisher || '',
-                    year: info.publishedDate ? info.publishedDate.substring(0, 4) : '',
-                    isbn: info.industryIdentifiers ? info.industryIdentifiers.find(id => id.type === 'ISBN_13')?.identifier || info.industryIdentifiers.find(id => id.type === 'ISBN_10')?.identifier || '' : ''
-                };
-                
-                return `
-                    <div class="search-result p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0 transition-colors duration-150"
-                         role="option"
-                         aria-selected="false"
-                         tabindex="-1"
-                         data-index="${index}"
-                         onclick="selectBookAndClear(this, ${JSON.stringify(bookData).replace(/"/g, '&quot;')})">
-                        <div class="font-medium text-blue-600">${info.title || 'Titolo sconosciuto'}</div>
-                        <div class="text-sm text-gray-600">
-                            ${info.authors ? info.authors.join(', ') : 'Autore sconosciuto'}
-                            ${info.publishedDate ? `(${info.publishedDate.substring(0, 4)})` : ''}
-                        </div>
-                    </div>
-                `;
-            }).join('');
-            
-            resultsDiv.classList.remove('hidden');
-            selectedIndex = -1; // Reset selection
-            
-            // Add role for accessibility
-            resultsDiv.setAttribute('role', 'listbox');
-            resultsDiv.setAttribute('aria-label', 'Risultati ricerca libri');
-        } else {
-            resultsDiv.innerHTML = '<div class="p-3 text-gray-600">Nessun risultato trovato</div>';
-            resultsDiv.classList.remove('hidden');
-            searchResults = [];
-            selectedIndex = -1;
-        }
-    } catch (error) {
-        console.error('Error searching Google Books:', error);
-        resultsDiv.innerHTML = '<div class="p-3 text-red-600">Errore durante la ricerca</div>';
-        resultsDiv.classList.remove('hidden');
-        searchResults = [];
-        selectedIndex = -1;
-    }
-};
-
-const handleKeyNavigation = (e) => {
-    if (!searchResults.length || resultsDiv.classList.contains('hidden')) {
-        return;
-    }
-
-    switch (e.key) {
-        case 'ArrowDown':
-            e.preventDefault();
-            selectedIndex = Math.min(selectedIndex + 1, searchResults.length - 1);
-            highlightResult(selectedIndex);
-            break;
-            
-        case 'ArrowUp':
-            e.preventDefault();
-            selectedIndex = Math.max(selectedIndex - 1, 0);
-            highlightResult(selectedIndex);
-            break;
-            
-        case 'Enter':
-            e.preventDefault();
-            if (selectedIndex >= 0 && selectedIndex < searchResults.length) {
-                const selectedResult = resultsDiv.querySelectorAll('.search-result')[selectedIndex];
-                selectedResult.click();
-            }
-            break;
-            
-        case 'Escape':
-            e.preventDefault();
-            clearSearchState();
-            searchInput.blur();
-            break;
-    }
-};
-
-// Define the selectBookAndClear function (make sure it's accessible globally)
-window.selectBookAndClear = function(element, bookData) {
-    selectBook(element, bookData);
-    clearSearchState();
-};
-
-// Event Listeners
-searchInput.addEventListener('input', () => {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(performSearch, 600);
-});
-
-searchInput.addEventListener('keydown', handleKeyNavigation);
-searchBtn.addEventListener('click', performSearch);
-
-// Close results when clicking outside
-document.addEventListener('click', (e) => {
-    if (!resultsDiv.contains(e.target) && e.target !== searchInput) {
-        resultsDiv.classList.add('hidden');
-        selectedIndex = -1;
-    }
-});
-
-	
-
-
-	
-
-
-	
-const inputs = bookDiv.querySelectorAll('input');
-    inputs.forEach(input => {
-        if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
-            input.addEventListener('input', () => validateBookField(input));
-            input.addEventListener('blur', () => validateBookField(input));
-        }
-    });
-
-    // AGGIUNGI QUI IL CODICE DELLO SCANNER
-    // Barcode scanner functionality
-    // Barcode scanner functionality
-// Barcode scanner functionality with QuaggaJS
-const scanBtn = bookDiv.querySelector('.scan-isbn-btn');
-const scannerModal = bookDiv.querySelector('.isbn-scanner-modal');
-const closeScanner = bookDiv.querySelector('.close-scanner');
-const isbnInput = bookDiv.querySelector('.book-isbn');
-const scannerReader = bookDiv.querySelector('.isbn-scanner-reader');
-
-// Create unique ID for each scanner
-const scannerId = 'isbn-scanner-' + bookCount;
-scannerReader.id = scannerId;
-
-let isScanning = false;
-
-scanBtn.addEventListener('click', async () => {
-    if (isScanning) return;
-    
-    scannerModal.classList.remove('hidden');
-    isScanning = true;
-    
-    // Add a small delay to ensure modal is visible
-    setTimeout(() => {
-        Quagga.init({
-            inputStream: {
-                name: "Live",
-                type: "LiveStream",
-                target: `#${scannerId}`,
-                constraints: {
-                    width: { min: 640 },
-                    height: { min: 480 },
-                    facingMode: "environment",
-                    aspectRatio: { min: 1, max: 2 }
-                },
-            },
-            locator: {
-                patchSize: "medium",
-                halfSample: true
-            },
-            numOfWorkers: 2,
-            frequency: 10,
-            decoder: {
-                readers: [
-                    "ean_reader",
-                    "ean_8_reader",
-                    "code_128_reader",
-                    "code_39_reader",
-                    "upc_reader",
-                    "upc_e_reader"
-                ]
-            },
-            locate: true
-        }, function(err) {
-            if (err) {
-                console.error("Error initializing Quagga:", err);
-                alert("Impossibile avviare la fotocamera. Assicurati di aver dato i permessi necessari.");
-                stopScanner();
-                return;
-            }
-            Quagga.start();
-        });
-
-        // Handle detected barcodes
-        Quagga.onDetected(function(result) {
-            if (result && result.codeResult && result.codeResult.code) {
-                const code = result.codeResult.code;
-                const numbers = code.replace(/\D/g, '');
-                
-                // Check if it's a valid ISBN length
-                if (numbers.length === 10 || numbers.length === 13) {
-                    // Add visual feedback
-                    scannerReader.style.border = "3px solid #22c55e";
-                    
-                    // Beep sound (optional)
-                    const beep = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIGGS57OihUBELTKXh8bllHgU2jdXty3MpBSl+zPLaizsIFmm98OypWBQLSKLf8sFuJAUufMzy2Ik2CBhku+zooVARC0yl4fG5ZR4FN43V7ct0KQUpfszy2os7CBVpvfDtqVkUC0ii3/LBbiQFL3zM8tiJNggYZLvs6KFQEQtMpeHxuWUeBTaN1e3LdCkFKX7M8tqLOwgVab3w7alZFAtIot/ywW4kBS98zPLYiTYIGGS77OihUBELTKXh8bllHgU2jdXty3QpBSl+zPLaizsIFWm98O2pWRQLSKLf8sFuJAUvfMzy2Ik2CBhku+zooVARC0yl4fG5ZR4FNo3V7ct0KQUpfszy2os7CBVpvfDtqVkUC0ii3/LBbiQFL3zM8tiJNggYZLvs6KFQEQtMpeHxuWUeBTaN1e3LdCkFKX7M8tqLOwgVab3w7alZFAtIot/ywW4kBS98zPLYiTYIGGS77OihUBELTKXh8bllHgU2jdXty3QpBSl+zPLaizsIFWm98O2pWRQLSKLf8sFuJAUvfMzy2Ik2CBhku+zoo==');
-                    beep.play().catch(e => console.log('Audio play failed:', e));
-                    
-                    setTimeout(() => {
-                        isbnInput.value = numbers;
-                        validateISBN(isbnInput);
-                        stopScanner();
-                    }, 500);
+            } else {
+                switch (input.id) {
+                    case 'telefono':
+                        if (value && !/^[0-9]{6,15}$/.test(value)) {
+                            if (showErrors) {
+                                showError(input, 'Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)');
+                            }
+                            isValid = false;
+                        }
+                        break;
+                    case 'email':
+                        if (value && !emailValidator.validateSyntax(value)) {
+                            if (showErrors) {
+                                showError(input, 'Formato email non valido');
+                            }
+                            isValid = false;
+                        } else if (!value && input.hasAttribute('required')) {
+                            if (showErrors) {
+                                showError(input, "L'email è obbligatoria");
+                            }
+                            isValid = false;
+                        }
+                        break;
                 }
             }
-        });
-    }, 100);
-});
 
-const stopScanner = () => {
-    if (isScanning) {
-        Quagga.stop();
-        isScanning = false;
-    }
-    scannerModal.classList.add('hidden');
-    scannerReader.style.border = "";
-};
+            if (isValid) {
+                hideError(input);
+            }
 
-closeScanner.addEventListener('click', stopScanner);
+            return isValid;
+        }
 
-// Close scanner when clicking outside the modal content
-scannerModal.addEventListener('click', (e) => {
-    if (e.target === scannerModal) {
-        stopScanner();
-    }
-});
-    // FINE CODICE SCANNER
+        function validateISBN(input) {
+            const value = input.value.trim();
+            const errorElement = input.parentElement.querySelector('.error-message');
 
-    document.getElementById('bookList').appendChild(bookDiv);
-    updateBookCounters();
-}
-
-	    
-
-
-
-	    
-
-// Modified selectBook function
-window.selectBook = function(element, bookData) {
-    const bookEntry = element.closest('.book-entry');
-    bookEntry.querySelector('.book-title').value = bookData.title;
-    bookEntry.querySelector('.book-author').value = bookData.authors;
-    bookEntry.querySelector('.book-publisher').value = bookData.publisher;
-    bookEntry.querySelector('.book-year').value = bookData.year;
-    bookEntry.querySelector('.book-isbn').value = bookData.isbn;
-    bookEntry.querySelector('.search-results').classList.add('hidden');
-    
-    // Hide the quick search section
-    const quickSearchSection = bookEntry.querySelector('.mb-5:has(.quick-search)');
-    if (quickSearchSection) {
-        quickSearchSection.style.display = 'none';
-    }
-};
-
-
-	    
-// Rendi globali anche le altre funzioni utilizzate nei click handler
-window.removeBook = function(button) {
-    const bookEntry = button.closest('.book-entry');
-    if (bookEntry) {
-        bookEntry.remove();
-        bookCount--;
-        updateBookCounters();
-    }
-};
-
-window.resetBookFields = function(button) {
-    const bookEntry = button.closest('.book-entry');
-    if (bookEntry) {
-        // Reset all input fields
-        const inputs = bookEntry.querySelectorAll('input');
-        inputs.forEach(input => {
-            input.value = '';
             hideError(input);
-        });
-        
-        // Reset quick search
-        const quickSearch = bookEntry.querySelector('.quick-search');
-        if (quickSearch) {
-            quickSearch.value = '';
+
+            if (!input.matches(':focus') && value.length > 0) {
+                if (!/^(?:\d{10}|\d{13})$/.test(value)) {
+                    showError(input, 'ISBN deve essere di 10 o 13 cifre');
+                    if (errorElement) {
+                        errorElement.classList.remove('text-gray-500');
+                        errorElement.classList.add('text-red-500');
+                    }
+                    return false;
+                }
+
+                if (value.length === 13 && !value.startsWith('978') && !value.startsWith('979')) {
+                    showError(input, 'ISBN-13 deve iniziare con 978 o 979');
+                    if (errorElement) {
+                        errorElement.classList.remove('text-gray-500');
+                        errorElement.classList.add('text-red-500');
+                    }
+                    return false;
+                }
+            }
+
+            return true;
         }
-        
-        // Hide search results if visible
-        const searchResults = bookEntry.querySelector('.search-results');
-        if (searchResults) {
-            searchResults.classList.add('hidden');
+
+        function handleISBNInput(input) {
+            input.value = input.value.replace(/\D/g, '');
+
+            if (input.value.length > 13) {
+                input.value = input.value.slice(0, 13);
+            }
+
+            const errorElement = input.parentElement.querySelector('.error-message');
+            if (errorElement && !errorElement.classList.contains('hidden')) {
+                errorElement.classList.remove('text-gray-500');
+                errorElement.classList.add('text-red-500');
+            }
+
+            validateISBN(input);
         }
-    }
-};
 
+        function validateBookField(input, showErrors = true) {
+            const value = input.value.trim();
+            let isValid = true;
 
+            if (input.matches(':focus')) {
+                hideError(input);
+                return true;
+            }
 
+            if (input.hasAttribute('required') && !value) {
+                if (showErrors) {
+                    if (input.classList.contains('book-title')) {
+                        showError(input, 'Il campo Titolo* è obbligatorio');
+                    } else {
+                        showError(input, 'Questo campo è obbligatorio');
+                    }
+                }
+                isValid = false;
+            } else if (input.classList.contains('book-year')) {
+                const currentYear = new Date().getFullYear();
+                if (value) {
+                    if (value.length !== 4 || !Number.isInteger(Number(value)) || Number(value) < 1900 || Number(value) > currentYear) {
+                        if (showErrors) {
+                            showError(input, `L'anno deve essere compreso tra 1900 e ${currentYear}`);
+                        }
+                        isValid = false;
+                    }
+                }
+            } else if (input.classList.contains('book-isbn')) {
+                if (value && !/^(?:\d{10}|\d{13})$/.test(value)) {
+                    if (showErrors) {
+                        showError(input, 'ISBN deve essere di 10 o 13 cifre');
+                    }
+                    isValid = false;
+                }
+            }
 
+            if (isValid) {
+                hideError(input);
+            }
 
-	    
+            return isValid;
+        }
+
+        function validateCheckbox(checkbox) {
+            const errorElement = checkbox.parentElement.nextElementSibling;
+            if (!checkbox.checked) {
+                checkbox.style.border = '2px solid #ef4444';
+                if (errorElement && errorElement.classList.contains('error-message')) {
+                    errorElement.classList.remove('hidden');
+                    errorElement.textContent = 'Devi accettare i termini e le condizioni';
+                }
+                return false;
+            } else {
+                checkbox.style.border = '';
+                if (errorElement && errorElement.classList.contains('error-message')) {
+                    errorElement.classList.add('hidden');
+                }
+                return true;
+            }
+        }
+
+        window.duplicateBook = function(button) {
+            const originalEntry = button.closest('.book-entry');
+            const newEntry = originalEntry.cloneNode(true);
+
+            bookCount++;
+
+            const counter = newEntry.querySelector('.book-counter');
+            if (counter) {
+                counter.textContent = bookCount;
+            }
+
+            const searchSection = newEntry.querySelector('.mb-5:has(.quick-search)');
+            if (searchSection) {
+                const searchInput = searchSection.querySelector('.quick-search');
+                if (searchInput) {
+                    searchInput.value = '';
+                }
+                const searchResults = searchSection.querySelector('.search-results');
+                if (searchResults) {
+                    searchResults.classList.add('hidden');
+                }
+                searchSection.style.display = '';
+            }
+
+            const inputs = newEntry.querySelectorAll('input');
+            inputs.forEach(input => {
+                if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
+                    input.addEventListener('input', () => validateBookField(input));
+                    input.addEventListener('blur', () => validateBookField(input));
+                }
+            });
+
+            originalEntry.after(newEntry);
+            updateBookCounters();
+        };
+
+        window.removeBook = function(button) {
+            const bookEntry = button.closest('.book-entry');
+            if (bookEntry) {
+                bookEntry.remove();
+                bookCount--;
+                updateBookCounters();
+            }
+        };
+
+        window.resetBookFields = function(button) {
+            const bookEntry = button.closest('.book-entry');
+            if (bookEntry) {
+                const inputs = bookEntry.querySelectorAll('input');
+                inputs.forEach(input => {
+                    input.value = '';
+                    hideError(input);
+                });
+
+                const quickSearch = bookEntry.querySelector('.quick-search');
+                if (quickSearch) {
+                    quickSearch.value = '';
+                }
+
+                const searchResults = bookEntry.querySelector('.search-results');
+                if (searchResults) {
+                    searchResults.classList.add('hidden');
+                }
+            }
+        };
+
+        window.selectBookAndClear = function(element, bookData) {
+            selectBook(element, bookData);
+            const bookEntry = element.closest('.book-entry');
+            const searchInput = bookEntry.querySelector('.quick-search');
+            const resultsDiv = bookEntry.querySelector('.search-results');
+            
+            if (searchInput) searchInput.value = '';
+            if (resultsDiv) resultsDiv.classList.add('hidden');
+        };
+
+        window.selectBook = function(element, bookData) {
+            const bookEntry = element.closest('.book-entry');
+            bookEntry.querySelector('.book-title').value = bookData.title;
+            bookEntry.querySelector('.book-author').value = bookData.authors;
+            bookEntry.querySelector('.book-publisher').value = bookData.publisher;
+            bookEntry.querySelector('.book-year').value = bookData.year;
+            bookEntry.querySelector('.book-isbn').value = bookData.isbn;
+            bookEntry.querySelector('.search-results').classList.add('hidden');
+
+            const quickSearchSection = bookEntry.querySelector('.mb-5:has(.quick-search)');
+            if (quickSearchSection) {
+                quickSearchSection.style.display = 'none';
+            }
+        };
+
         function updateBookCounters() {
             const bookEntries = document.querySelectorAll('.book-entry');
             bookEntries.forEach((entry, index) => {
@@ -1782,8 +1140,390 @@ window.resetBookFields = function(button) {
             });
         }
 
+        window.createBookEntry = function() {
+            const bookDiv = document.createElement('div');
+            bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5';
+            bookCount++;
+
+            bookDiv.innerHTML = `
+                <div class="flex justify-between items-center mb-4">
+                    <span class="book-counter">${bookCount}</span>
+                    <div class="flex gap-2">
+                        ${bookCount > 1 ? `
+                            <button type="button" class="text-green-500" style="background: none; border: none; cursor: pointer; font-size: 1rem; padding: 0.25rem;" title="Duplica libro" onclick="duplicateBook(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <button type="button" class="text-blue-500" style="background: none; border: none; cursor: pointer; font-size: 1rem; padding: 0.25rem;" title="Azzera campi" onclick="resetBookFields(this)">
+                                <i class="fas fa-undo"></i>
+                            </button>
+                            <button type="button" class="text-red-500" style="background: none; border: none; cursor: pointer; font-size: 1rem; padding: 0.25rem;" title="Rimuovi libro" onclick="removeBook(this)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        ` : `
+                            <button type="button" class="text-green-500" style="background: none; border: none; cursor: pointer; font-size: 1rem; padding: 0.25rem;" title="Duplica libro" onclick="duplicateBook(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <button type="button" class="text-blue-500" style="background: none; border: none; cursor: pointer; font-size: 1rem; padding: 0.25rem;" title="Azzera campi" onclick="resetBookFields(this)">
+                                <i class="fas fa-undo"></i>
+                            </button>
+                        `}
+                    </div>
+                </div>
+
+                <div class="mb-5">
+                    <div class="flex items-center gap-2 mb-2">
+                        <label class="flex items-center gap-2">
+                            <i class="fas fa-book-open text-lg text-blue-600"></i>
+                            <span class="text-blue-600 font-medium">
+                                Search & click <span class="text-gray-500 text-sm font-normal">(opzionale)</span>
+                            </span>
+                            <span class="group relative" style="cursor: help;">
+                                <i class="fas fa-info-circle text-gray-500"></i>
+                                <div class="tooltip group-hover-visible">
+                                    Cerca, seleziona e... boom! La scheda si completa al volo! Se preferisci, puoi inserire i dati manualmente.
+                                </div>
+                            </span>
+                        </label>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" class="quick-search w-full px-3 py-2 border-2 border-gray-300 rounded-l text-base" placeholder="Cerca per titolo, autore o ISBN...">
+                        <button type="button" class="search-btn px-4 rounded-r text-white" style="background-color: #3b82f6; border: none; cursor: pointer; transition: background-color 0.3s;">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    <div class="search-results hidden mt-2 bg-white border border-gray-200 rounded-lg" style="max-height: 15rem; overflow-y: auto; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);"></div>
+                </div>
+
+                <div class="mb-5">
+                    <label class="block mb-1 text-slate-700 font-medium">Titolo<span class="required-asterisk">*</span></label>
+                    <input type="text" class="book-title w-full px-3 py-2 border-2 border-gray-300 rounded text-base" required>
+                    <p class="hidden error-message text-sm text-red-500 mt-1">Il titolo è obbligatorio</p>
+                </div>
+
+                <div class="mb-5">
+                    <label class="block mb-1 text-slate-700 font-medium">Autore</label>
+                    <input type="text" class="book-author w-full px-3 py-2 border-2 border-gray-300 rounded text-base">
+                </div>
+
+                <div class="mb-5">
+                    <label class="block mb-1 text-slate-700 font-medium">Editore</label>
+                    <input type="text" class="book-publisher w-full px-3 py-2 border-2 border-gray-300 rounded text-base">
+                </div>
+
+                <div class="mb-5">
+                    <label class="block mb-1 text-slate-700 font-medium">Anno</label>
+                    <input type="number" min="1400" max="2024" class="book-year w-full px-3 py-2 border-2 border-gray-300 rounded text-base">
+                    <p class="hidden error-message text-sm text-red-500 mt-1">Anno non valido</p>
+                </div>
+
+                <div class="mb-5">
+                    <div class="flex items-center gap-1">
+                        <label class="block text-slate-700 font-medium">ISBN <span class="text-gray-500 font-normal">(raccomandato)</span></label>
+                        <div class="relative group" style="margin-top: -4px;">
+                            <i class="fa-solid fa-circle-info text-gray-500 text-sm" style="cursor: help;"></i>
+                            <div class="tooltip group-hover-visible" style="width: 16rem; bottom: 100%; top: auto; margin-bottom: 0.5rem;">
+                                Lo trovi sul retro del libro sopra al codice a barre o nella pagina del copyright.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="tel" inputmode="numeric" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded text-base" maxlength="13" placeholder="Inserisci un numero di 10 o 13 cifre senza trattini">
+                        <button type="button" class="scan-isbn-btn px-4 py-2 rounded text-white flex items-center gap-2" style="background-color: #22c55e; border: none; cursor: pointer; transition: background-color 0.3s;" title="Scansiona codice a barre">
+                            <i class="fas fa-barcode"></i>
+                            <span class="hidden sm:inline">Scansiona</span>
+                        </button>
+                    </div>
+                    <p class="hidden error-message text-sm text-red-500 mt-1">ISBN non valido</p>
+                    
+                    <div class="isbn-scanner-modal hidden" style="position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.75); z-index: 50; display: flex; align-items: center; justify-content: center; padding: 1rem;">
+                        <div class="bg-white rounded-lg p-6" style="max-width: 28rem; width: 100%;">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-semibold text-slate-700">Scansiona il codice a barre</h3>
+                                <button type="button" class="close-scanner text-gray-500" style="background: none; border: none; font-size: 2rem; line-height: 1; cursor: pointer; padding: 0;">&times;</button>
+                            </div>
+                            <div class="isbn-scanner-reader w-full"></div>
+                            <p class="text-sm text-gray-600 mt-3" style="text-align: center;">Posiziona il codice a barre del libro davanti alla fotocamera</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="add-book-btn" onclick="createBookEntry()">+ Aggiungi Libro</button>
+            `;
+
+            // Search functionality
+            const searchInput = bookDiv.querySelector('.quick-search');
+            const searchBtn = bookDiv.querySelector('.search-btn');
+            const resultsDiv = bookDiv.querySelector('.search-results');
+            let debounceTimer;
+            let selectedIndex = -1;
+            let searchResults = [];
+
+            const highlightResult = (index) => {
+                resultsDiv.querySelectorAll('.search-result').forEach(result => {
+                    result.classList.remove('bg-gray-100');
+                    result.setAttribute('aria-selected', 'false');
+                });
+
+                if (index >= 0 && index < searchResults.length) {
+                    const resultElement = resultsDiv.querySelectorAll('.search-result')[index];
+                    resultElement.classList.add('bg-gray-100');
+                    resultElement.setAttribute('aria-selected', 'true');
+                    resultElement.scrollIntoView({ block: 'nearest' });
+                }
+            };
+
+            const clearSearchState = () => {
+                searchInput.value = '';
+                resultsDiv.classList.add('hidden');
+                selectedIndex = -1;
+                searchResults = [];
+            };
+
+            const performSearch = async () => {
+                const query = searchInput.value.trim();
+                if (!query) {
+                    resultsDiv.classList.add('hidden');
+                    selectedIndex = -1;
+                    searchResults = [];
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&key=${config.googleBooks.apiKey}&maxResults=5`);
+                    const data = await response.json();
+
+                    if (data.items && data.items.length > 0) {
+                        searchResults = data.items;
+                        resultsDiv.innerHTML = searchResults.map((book, index) => {
+                            const info = book.volumeInfo;
+                            const bookData = {
+                                title: info.title || '',
+                                authors: info.authors ? info.authors.join(', ') : '',
+                                publisher: info.publisher || '',
+                                year: info.publishedDate ? info.publishedDate.substring(0, 4) : '',
+                                isbn: info.industryIdentifiers ? info.industryIdentifiers.find(id => id.type === 'ISBN_13')?.identifier || info.industryIdentifiers.find(id => id.type === 'ISBN_10')?.identifier || '' : ''
+                            };
+
+                            return `
+                                <div class="search-result" role="option" aria-selected="false" tabindex="-1" data-index="${index}" onclick="selectBookAndClear(this, ${JSON.stringify(bookData).replace(/"/g, '&quot;')})">
+                                    <div class="font-medium text-blue-600">${info.title || 'Titolo sconosciuto'}</div>
+                                    <div class="text-sm text-gray-600">
+                                        ${info.authors ? info.authors.join(', ') : 'Autore sconosciuto'}
+                                        ${info.publishedDate ? `(${info.publishedDate.substring(0, 4)})` : ''}
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+                        resultsDiv.classList.remove('hidden');
+                        selectedIndex = -1;
+                        resultsDiv.setAttribute('role', 'listbox');
+                        resultsDiv.setAttribute('aria-label', 'Risultati ricerca libri');
+                    } else {
+                        resultsDiv.innerHTML = '<div class="p-3 text-gray-600">Nessun risultato trovato</div>';
+                        resultsDiv.classList.remove('hidden');
+                        searchResults = [];
+                        selectedIndex = -1;
+                    }
+                } catch (error) {
+                    console.error('Error searching Google Books:', error);
+                    resultsDiv.innerHTML = '<div class="p-3 text-red-600">Errore durante la ricerca</div>';
+                    resultsDiv.classList.remove('hidden');
+                    searchResults = [];
+                    selectedIndex = -1;
+                }
+            };
+
+            const handleKeyNavigation = (e) => {
+                if (!searchResults.length || resultsDiv.classList.contains('hidden')) {
+                    return;
+                }
+
+                switch (e.key) {
+                    case 'ArrowDown':
+                        e.preventDefault();
+                        selectedIndex = Math.min(selectedIndex + 1, searchResults.length - 1);
+                        highlightResult(selectedIndex);
+                        break;
+                    case 'ArrowUp':
+                        e.preventDefault();
+                        selectedIndex = Math.max(selectedIndex - 1, 0);
+                        highlightResult(selectedIndex);
+                        break;
+                    case 'Enter':
+                        e.preventDefault();
+                        if (selectedIndex >= 0 && selectedIndex < searchResults.length) {
+                            const selectedResult = resultsDiv.querySelectorAll('.search-result')[selectedIndex];
+                            selectedResult.click();
+                        }
+                        break;
+                    case 'Escape':
+                        e.preventDefault();
+                        clearSearchState();
+                        searchInput.blur();
+                        break;
+                }
+            };
+
+            searchInput.addEventListener('input', () => {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(performSearch, 600);
+            });
+
+            searchInput.addEventListener('keydown', handleKeyNavigation);
+            searchBtn.addEventListener('click', performSearch);
+
+            document.addEventListener('click', (e) => {
+                if (!resultsDiv.contains(e.target) && e.target !== searchInput) {
+                    resultsDiv.classList.add('hidden');
+                    selectedIndex = -1;
+                }
+            });
+
+            // ISBN Scanner functionality
+            const scanBtn = bookDiv.querySelector('.scan-isbn-btn');
+            const scannerModal = bookDiv.querySelector('.isbn-scanner-modal');
+            const closeScanner = bookDiv.querySelector('.close-scanner');
+            const isbnInput = bookDiv.querySelector('.book-isbn');
+            const scannerReader = bookDiv.querySelector('.isbn-scanner-reader');
+
+            const scannerId = 'isbn-scanner-' + bookCount;
+            scannerReader.id = scannerId;
+            let isScanning = false;
+
+            scanBtn.addEventListener('click', async () => {
+                if (isScanning) return;
+
+                scannerModal.classList.remove('hidden');
+                isScanning = true;
+
+                setTimeout(() => {
+                    Quagga.init({
+                        inputStream: {
+                            name: "Live",
+                            type: "LiveStream",
+                            target: `#${scannerId}`,
+                            constraints: {
+                                width: { min: 640 },
+                                height: { min: 480 },
+                                facingMode: "environment",
+                                aspectRatio: { min: 1, max: 2 }
+                            },
+                        },
+                        locator: {
+                            patchSize: "medium",
+                            halfSample: true
+                        },
+                        numOfWorkers: 2,
+                        frequency: 10,
+                        decoder: {
+                            readers: [
+                                "ean_reader",
+                                "ean_8_reader",
+                                "code_128_reader",
+                                "code_39_reader",
+                                "upc_reader",
+                                "upc_e_reader"
+                            ]
+                        },
+                        locate: true
+                    }, function(err) {
+                        if (err) {
+                            console.error("Error initializing Quagga:", err);
+                            alert("Impossibile avviare la fotocamera. Assicurati di aver dato i permessi necessari.");
+                            stopScanner();
+                            return;
+                        }
+                        Quagga.start();
+                    });
+
+                    Quagga.onDetected(function(result) {
+                        if (result && result.codeResult && result.codeResult.code) {
+                            const code = result.codeResult.code;
+                            const numbers = code.replace(/\D/g, '');
+
+                            if (numbers.length === 10 || numbers.length === 13) {
+                                scannerReader.style.border = "3px solid #22c55e";
+
+                                const beep = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIGGS57OihUBELTKXh8bllHgU2jdXty3MpBSl+zPLaizsIFmm98OypWBQLSKLf8sFuJAUufMzy2Ik2CBhku+zooVARC0yl4fG5ZR4FN43V7ct0KQUpfszy2os7CBVpvfDtqVkUC0ii3/LBbiQFL3zM8tiJNggYZLvs6KFQEQtMpeHxuWUeBTaN1e3LdCkFKX7M8tqLOwgVab3w7alZFAtIot/ywW4kBS98zPLYiTYIGGS77OihUBELTKXh8bllHgU2jdXty3QpBSl+zPLaizsIFWm98O2pWRQLSKLf8sFuJAUvfMzy2Ik2CBhku+zooVARC0yl4fG5ZR4FNo3V7ct0KQUpfszy2os7CBVpvfDtqVkUC0ii3/LBbiQFL3zM8tiJNggYZLvs6KFQEQtMpeHxuWUeBTaN1e3LdCkFKX7M8tqLOwgVab3w7alZFAtIot/ywW4kBS98zPLYiTYIGGS77OihUBELTKXh8bllHgU2jdXty3QpBSl+zPLaizsIFWm98O2pWRQLSKLf8sFuJAUvfMzy2Ik2CBhku+zoo==');
+                                beep.play().catch(e => console.log('Audio play failed:', e));
+
+                                setTimeout(() => {
+                                    isbnInput.value = numbers;
+                                    validateISBN(isbnInput);
+                                    stopScanner();
+                                }, 500);
+                            }
+                        }
+                    });
+                }, 100);
+            });
+
+            const stopScanner = () => {
+                if (isScanning) {
+                    Quagga.stop();
+                    isScanning = false;
+                }
+                scannerModal.classList.add('hidden');
+                scannerReader.style.border = "";
+            };
+
+            closeScanner.addEventListener('click', stopScanner);
+
+            scannerModal.addEventListener('click', (e) => {
+                if (e.target === scannerModal) {
+                    stopScanner();
+                }
+            });
+
+            // Add hover effect for search button
+            searchBtn.addEventListener('mouseenter', () => {
+                searchBtn.style.backgroundColor = '#2563eb';
+            });
+            searchBtn.addEventListener('mouseleave', () => {
+                searchBtn.style.backgroundColor = '#3b82f6';
+            });
+
+            // Add hover effect for scan button
+            scanBtn.addEventListener('mouseenter', () => {
+                scanBtn.style.backgroundColor = '#16a34a';
+            });
+            scanBtn.addEventListener('mouseleave', () => {
+                scanBtn.style.backgroundColor = '#22c55e';
+            });
+
+            // Add validation event listeners
+            const inputs = bookDiv.querySelectorAll('input');
+            inputs.forEach(input => {
+                if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
+                    input.addEventListener('input', () => validateBookField(input));
+                    input.addEventListener('blur', () => validateBookField(input));
+                }
+            });
+
+            document.getElementById('bookList').appendChild(bookDiv);
+            updateBookCounters();
+        };
+
+        // Event listeners
         document.addEventListener('DOMContentLoaded', () => {
             createBookEntry();
+
+            const emailInput = document.getElementById('email');
+            if (emailInput) {
+                emailInput.addEventListener('focus', function() {
+                    hideError(this);
+                });
+
+                emailInput.addEventListener('blur', function() {
+                    validateField(this);
+                });
+
+                emailInput.addEventListener('input', function() {
+                    if (!this.matches(':focus')) {
+                        validateField(this);
+                    }
+                });
+            }
 
             const inputs = document.querySelectorAll('input');
             inputs.forEach(input => {
@@ -1792,252 +1532,204 @@ window.resetBookFields = function(button) {
                     input.addEventListener('blur', () => validateField(input));
                 }
             });
+
+            document.getElementById('accept').addEventListener('change', function() {
+                validateCheckbox(this);
+            });
+
+            // Character counter for notes
+            const textarea = document.getElementById('notes');
+            const charCount = document.getElementById('charCount');
+            const maxLength = textarea.getAttribute('maxlength');
+            let manualHeight = null;
+
+            const autoResize = () => {
+                if (manualHeight) {
+                    textarea.style.height = `${Math.max(manualHeight, textarea.scrollHeight)}px`;
+                } else {
+                    textarea.style.height = 'auto';
+                    textarea.style.height = `${Math.max(75, textarea.scrollHeight)}px`;
+                }
+            };
+
+            const updateCharCount = () => {
+                const remaining = maxLength - textarea.value.length;
+                if (textarea.value.length > 0) {
+                    charCount.textContent = `${remaining} caratteri rimanenti`;
+                    if (remaining <= 50) {
+                        charCount.classList.remove('text-gray-500');
+                        charCount.style.color = '#d97706';
+                    } else {
+                        charCount.style.color = '#6b7280';
+                        charCount.classList.add('text-gray-500');
+                    }
+                    charCount.style.display = 'block';
+                } else {
+                    charCount.style.display = 'none';
+                }
+            };
+
+            textarea.addEventListener('mouseup', () => {
+                manualHeight = textarea.offsetHeight;
+            });
+
+            textarea.addEventListener('input', () => {
+                updateCharCount();
+                if (textarea.scrollHeight > manualHeight) {
+                    autoResize();
+                }
+            });
+
+            charCount.style.display = 'none';
+
+            if (textarea.value.length > 0) {
+                autoResize();
+                updateCharCount();
+            }
         });
 
+        // Form submission
+        document.getElementById('donationForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
 
-
-
-// Add this to your existing JavaScript
-    document.addEventListener('DOMContentLoaded', () => {
-    const textarea = document.getElementById('notes');
-    const charCount = document.getElementById('charCount');
-    const maxLength = textarea.getAttribute('maxlength');
-    let manualHeight = null; // Track manual height
-
-    // Function to auto-resize textarea
-    const autoResize = () => {
-        // If user has manually resized, respect that height as minimum
-        if (manualHeight) {
-            textarea.style.height = `${Math.max(manualHeight, textarea.scrollHeight)}px`;
-        } else {
-            textarea.style.height = 'auto';
-            textarea.style.height = `${Math.max(75, textarea.scrollHeight)}px`;
-        }
-    };
-
-    const updateCharCount = () => {
-        const remaining = maxLength - textarea.value.length;
-        
-        if (textarea.value.length > 0) {
-            charCount.textContent = `${remaining} caratteri rimanenti`;
-            
-            if (remaining <= 50) {
-                charCount.classList.remove('text-gray-500');
-                charCount.classList.add('text-amber-600');
-            } else {
-                charCount.classList.remove('text-amber-600');
-                charCount.classList.add('text-gray-500');
+            if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+                return;
             }
-            charCount.style.display = 'block';
-        } else {
-            charCount.style.display = 'none';
-        }
-    };
 
-    // Initial setup
-    textarea.style.minHeight = '75px';
-    textarea.style.resize = 'vertical';
+            let isValid = true;
 
-    // Track manual resize
-    textarea.addEventListener('mouseup', () => {
-        manualHeight = textarea.offsetHeight;
-    });
+            const requiredFields = event.target.querySelectorAll('[required]');
+            requiredFields.forEach(field => {
+                if (!validateField(field, true)) {
+                    isValid = false;
+                }
+            });
 
-    // Handle input without losing manual height
-    textarea.addEventListener('input', () => {
-        updateCharCount();
-        if (textarea.scrollHeight > manualHeight) {
-            autoResize();
-        }
-    });
+            const bookEntries = document.querySelectorAll('.book-entry');
+            bookEntries.forEach(entry => {
+                const inputs = entry.querySelectorAll('input');
+                inputs.forEach(input => {
+                    if (!validateBookField(input, true)) {
+                        isValid = false;
+                    }
+                });
+            });
 
-    // Initial state
-    charCount.style.display = 'none';
-    
-    // Set initial height if there's content
-    if (textarea.value.length > 0) {
-        autoResize();
-        updateCharCount();
-    }
-});
-
-	    
-
-	    
-
-
-// Aggiorna il listener del form submit
-document.getElementById('donationForm').addEventListener('submit', async (event) => {
-    event.preventDefault();
-
-    // Se c'è un campo focused, non fare nulla
-    if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
-        return;
-    }
-
-    let isValid = true;
-    
-    // Validate required fields
-    const requiredFields = event.target.querySelectorAll('[required]');
-    requiredFields.forEach(field => {
-        if (!validateField(field, true)) {
-            isValid = false;
-        }
-    });
-
-    // Validate books
-    const bookEntries = document.querySelectorAll('.book-entry');
-    bookEntries.forEach(entry => {
-        const inputs = entry.querySelectorAll('input');
-        inputs.forEach(input => {
-            if (!validateBookField(input, true)) {
+            const acceptCheckbox = document.getElementById('accept');
+            if (!validateCheckbox(acceptCheckbox)) {
                 isValid = false;
             }
+
+            if (!isValid) {
+                showGlobalErrorPopup('Per favore, compila correttamente tutti i campi obbligatori.');
+                return;
+            }
+
+            const nome = document.getElementById('nome').value.trim();
+            const cognome = document.getElementById('cognome').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const tessera = document.getElementById('tessera').value.trim();
+            const telefono = document.getElementById('telefono').value.trim();
+
+            const books = [];
+            bookEntries.forEach(entry => {
+                const book = {
+                    title: entry.querySelector('.book-title').value.trim() || 'Non specificato',
+                    author: entry.querySelector('.book-author').value.trim() || 'Non specificato',
+                    publisher: entry.querySelector('.book-publisher').value.trim() || 'Non specificato',
+                    year: entry.querySelector('.book-year').value.trim() || 'Non specificato',
+                    isbn: entry.querySelector('.book-isbn').value.trim() || 'Non specificato'
+                };
+                books.push(book);
+            });
+
+            const formattedBooks = books.map((book, index) => `<tr>
+                <td>${index + 1}</td>
+                <td>${book.title}</td>
+                <td>${book.author}</td>
+                <td>${book.publisher}</td>
+                <td>${book.year}</td>
+                <td>${book.isbn}</td>
+            </tr>`).join('');
+
+            showLoadingOverlay();
+
+            try {
+                const response = await emailjs.send(
+                    config.emailjs.serviceId,
+                    config.emailjs.templateId,
+                    {
+                        to_email: config.library.email,
+                        from_name: `${nome} ${cognome}`,
+                        from_email: email,
+                        reply_to: email,
+                        tessera: tessera || 'Non specificata',
+                        telefono: telefono || 'Non specificato',
+                        books_table: formattedBooks,
+                        notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
+                    },
+                    config.emailjs.publicKey
+                );
+
+                removeLoadingOverlay();
+                showSuccessPopup('La tua donazione è stata inviata con successo!');
+
+                event.target.reset();
+                document.getElementById('bookList').innerHTML = '';
+                bookCount = 0;
+                createBookEntry();
+
+                const errorMessages = document.querySelectorAll('.error-message');
+                errorMessages.forEach(msg => {
+                    msg.classList.add('hidden');
+                });
+            } catch (error) {
+                console.error('Error:', error);
+                removeLoadingOverlay();
+                showGlobalErrorPopup("Si è verificato un errore durante l'invio. Riprova più tardi.");
+            }
         });
-    });
 
-    // Validate terms checkbox
-    const acceptCheckbox = document.getElementById('accept');
-    if (!validateCheckbox(acceptCheckbox)) {
-        isValid = false;
-    }
+        // Event delegation for dynamically created elements
+        document.addEventListener('blur', function(e) {
+            if (e.target.classList.contains('book-isbn')) {
+                validateISBN(e.target);
+            }
+            if (e.target.classList.contains('book-year')) {
+                validateBookField(e.target);
+            }
+        }, true);
 
-    if (!isValid) {
-        showGlobalErrorPopup('Per favore, compila correttamente tutti i campi obbligatori.');
-        return;
-    }
+        document.addEventListener('input', function(e) {
+            if (e.target.classList.contains('book-isbn')) {
+                handleISBNInput(e.target);
+            }
+        }, true);
 
-	
- 
-    // Get form data
-    const nome = document.getElementById('nome').value.trim();
-    const cognome = document.getElementById('cognome').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const tessera = document.getElementById('tessera').value.trim();
-    const telefono = document.getElementById('telefono').value.trim();
-
-    // Get books data
-    const books = [];
-    bookEntries.forEach(entry => {
-        const book = {
-            title: entry.querySelector('.book-title').value.trim() || 'Non specificato',
-            author: entry.querySelector('.book-author').value.trim() || 'Non specificato',
-            publisher: entry.querySelector('.book-publisher').value.trim() || 'Non specificato',
-            year: entry.querySelector('.book-year').value.trim() || 'Non specificato',
-            isbn: entry.querySelector('.book-isbn').value.trim() || 'Non specificato'
-        };
-        books.push(book);
-    });
-
-    
-    // Format books as table rows for email
-    const formattedBooks = books.map((book, index) => 
-        `<tr>
-            <td>${index + 1}</td>
-            <td>${book.title}</td>
-            <td>${book.author}</td>
-            <td>${book.publisher}</td>
-            <td>${book.year}</td>
-            <td>${book.isbn}</td>
-        </tr>`
-    ).join('');
-
-    showLoadingOverlay();
-
-    try {
-        const response = await emailjs.send(
-            config.emailjs.serviceId,
-            config.emailjs.templateId,
-            {
-                to_email: config.library.email,
-                from_name: `${nome} ${cognome}`,
-                from_email: email,
-                reply_to: email,
-                tessera: tessera || 'Non specificata',
-                telefono: telefono || 'Non specificato',
-                books_table: formattedBooks,
-                notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
-            },
-            config.emailjs.publicKey
-        );
-
-        removeLoadingOverlay();
-        showSuccessPopup('La tua donazione è stata inviata con successo!');
-        
-        // Reset form
-        event.target.reset();
-        document.getElementById('bookList').innerHTML = '';
-        bookCount = 0;
-        createBookEntry();
-
-        // Reset errors
-        const errorMessages = document.querySelectorAll('.error-message');
-        errorMessages.forEach(msg => {
-            msg.classList.add('hidden');
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('book-year')) {
+                hideError(e.target);
+            }
+            if (e.target.classList.contains('book-isbn')) {
+                e.target.addEventListener('input', function() {
+                    handleISBNInput(this);
+                });
+                e.target.addEventListener('blur', function() {
+                    handleISBNInput(this);
+                });
+                e.target.addEventListener('focus', function() {
+                    handleISBNInput(this);
+                    if (this.value.length > 0 && this.value.length !== 10 && this.value.length !== 13) {
+                        const errorElement = this.nextElementSibling;
+                        if (errorElement && errorElement.classList.contains('error-message')) {
+                            errorElement.textContent = 'ISBN deve essere di 10 o 13 cifre';
+                            errorElement.classList.remove('hidden', 'text-red-500');
+                            errorElement.style.color = '#6b7280';
+                        }
+                    }
+                });
+            }
         });
-   } catch (error) {
-    console.error('Error:', error);
-    removeLoadingOverlay();
-    showGlobalErrorPopup('Si è verificato un errore durante l\'invio. Riprova più tardi.');
-} finally {
-    removeLoadingOverlay();
-}
-});
-        
     </script>
-
-
-
-
-
-
-
-<footer class="bg-[#970a2c] text-white mt-16 py-8">
-  <div class="container mx-auto px-4 md:px-6 flex flex-col sm:flex-row md:flex-col lg:flex-row items-center justify-between">
-    <div class="mb-4 md:mb-6 lg:mb-0">
-      <img src="footermorante.png" alt="Logo Biblioteca Morante" class="h-8 md:h-10" style="cursor: pointer;" onclick="window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');">
-    </div>
-    <div class="flex flex-col sm:flex-row md:flex-row lg:flex-row space-x-0 sm:space-x-8 md:space-x-8 lg:space-x-8 space-y-2 sm:space-y-0 text-center sm:text-left text-sm">
-
-
-<div class="flex items-center justify-center space-x-2">
-    <a href="https://bibliotecamorante.github.io/mappa/" target="_blank" style="text-decoration: none; color: inherit;">
-        <i class="fas fa-location-dot w-4"></i>
-    </a>
-    <a href="https://bibliotecamorante.github.io/mappa/" target="_blank" style="text-decoration: none; color: inherit;" title="Apri mappa biblioteche di Roma">
-        <span class="flex flex-col">
-            <span>Porto turistico di Roma</span>
-            <span>Municipio X, 00121 Roma</span>
-        </span>
-    </a>
-</div>
-
-      <div class="flex items-center justify-center space-x-4">
-        <div class="flex items-center space-x-2">
-          <a href="tel:+390645460481" style="text-decoration: none; color: inherit;">
-            <i class="fas fa-phone w-4"></i>
-          </a>
-          <span>
-            <a href="tel:+390645460481" style="text-decoration: none; color: inherit;"> 06 4546 0481 </a> / 
-            <a href="tel:+390645460483" style="text-decoration: none; color: inherit;"> 0483 </a>
-          </span>
-        </div>
-        <div class="flex items-center space-x-2">
-          <i class="fas fa-clock w-4"></i>
-          <span class="flex flex-col">
-            <span>Lunedì-Venerdì 09:00-18:30</span>
-            <span>Sabato 09:00-13:00</span>
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
-</footer>
-
-
-
-    
-
-    
 </body>
 </html>
