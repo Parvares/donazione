@@ -304,6 +304,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .roma-logo {
@@ -338,10 +340,14 @@
             position: relative;
             flex-direction: column;
             text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
         }
 
         .container-header {
             max-width: 1200px;
+            width: 100%;
             margin: 0 auto;
             padding: 0 2rem;
             display: flex;
@@ -350,6 +356,7 @@
             text-align: center;
             flex-wrap: wrap;
             gap: 1rem;
+            box-sizing: border-box;
         }
 
         .content-wrapper {
@@ -404,6 +411,9 @@
             margin-top: 4rem;
             padding: 2rem 0;
             box-shadow: 0 -2px 4px -1px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
         }
 
         input[type="checkbox"] {
@@ -570,11 +580,16 @@
 
         @media (max-width: 768px) {
             .text-3xl {
-                font-size: 1.5rem;
+                font-size: 2rem;
+            }
+
+            .text-4xl {
+                font-size: 2.25rem;
             }
 
             header {
                 height: 130px;
+                padding: 1rem 0;
             }
 
             .container-header img[src="logomorante.png"] {
@@ -590,6 +605,14 @@
                 min-height: 40px;
             }
 
+            .roma-logo {
+                height: 30px;
+            }
+
+            .social-icons a {
+                font-size: 1.25rem;
+            }
+
             .nav-icons {
                 position: relative;
                 left: 0;
@@ -602,10 +625,24 @@
 
             .content-wrapper {
                 margin-top: -0.25rem;
+                padding: 0 0.5rem;
             }
 
             footer .container {
                 text-align: center;
+            }
+
+            .flex-col {
+                width: 100%;
+            }
+
+            .px-4 {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .max-w-4xl {
+                padding: 1rem;
             }
         }
 
@@ -703,8 +740,8 @@
         </div>
 
         <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg mt-2">
-            <div class="flex-col mb-10 text-left px-4" style="display: flex; gap: 1rem;">
-                <div class="flex items-center gap-2 mb-2">
+            <div style="display: flex; flex-direction: column; margin-bottom: 2.5rem; text-align: left; gap: 0.5rem; padding: 0 1rem;">
+                <div class="flex items-center gap-2">
                     <a href="https://bibliotecamorante.github.io/mappa/" target="_blank" title="Visualizza la posizione sulla mappa">
                         <img alt="Posizione" src="location.svg" class="location-icon" style="height: 20px; width: 20px;">
                     </a>
@@ -712,7 +749,7 @@
                         Biblioteca Elsa Morante
                     </a>
                 </div>
-                <h1 class="text-3xl text-slate-700 font-bold" style="line-height: 1.2;">
+                <h1 style="font-size: 2.25rem; color: #334155; font-weight: 700; line-height: 1.2; margin: 0;">
                     Donazione di libri
                 </h1>
             </div>
