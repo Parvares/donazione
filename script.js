@@ -417,10 +417,11 @@ function handleNotesInput(e) {
     counter.textContent = `${max - current} caratteri rimanenti`;
 }
 
+
 async function handleFormSubmit(e) {
     e.preventDefault();
     
-    // Validazione Finale
+    // 1. Validazione Campi
     let isValid = true;
     document.querySelectorAll('input[required]').forEach(input => {
         if (!validateField(input)) isValid = false;
@@ -437,44 +438,55 @@ async function handleFormSubmit(e) {
         return;
     }
 
+    // 2. Feedback utente (bottone disabilitato)
     const btn = e.target.querySelector('button[type="submit"]');
     const originalText = btn.textContent;
     btn.disabled = true;
     btn.textContent = "Invio in corso...";
 
     try {
-        // Costruisci oggetto libri
+        // 3. Raccolta dati libri
         const books = [];
         document.querySelectorAll('.book-entry').forEach(entry => {
             books.push({
-                title: entry.querySelector('.book-title').value,
-                author: entry.querySelector('.book-author').value,
-                isbn: entry.querySelector('.book-isbn').value
+                title: entry.querySelector('.book-title').value.trim() || '-',
+                author: entry.querySelector('.book-author').value.trim() || '-',
+                publisher: entry.querySelector('.book-publisher').value.trim() || '-',
+                year: entry.querySelector('.book-year').value.trim() || '-',
+                isbn: entry.querySelector('.book-isbn').value.trim() || '-'
             });
         });
 
-        // Prepara tabella HTML per email
-        const booksTable = books.map((b, i) => 
-            `${i+1}. ${b.title} - ${b.author} [${b.isbn}]`
-        ).join('\n');
+        // 4. Creazione Tabella HTML per EmailJS
+        const formattedBooksTable = books.map((book, index) => `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${book.title}</td>
+                <td>${book.author}</td>
+                <td>${book.publisher}</td>
+                <td>${book.year}</td>
+                <td>${book.isbn}</td>
+            </tr>
+        `).join('');
 
+        // 5. Invio effettivo
         await emailjs.send(
             config.emailjs.serviceId,
             config.emailjs.templateId,
             {
                 from_name: document.getElementById('nome').value + ' ' + document.getElementById('cognome').value,
                 from_email: document.getElementById('email').value,
-                telefono: document.getElementById('telefono').value,
-                tessera: document.getElementById('tessera').value,
-                books_table: booksTable,
-                notes: document.getElementById('notes').value
+                telefono: document.getElementById('telefono').value || 'Non specificato',
+                tessera: document.getElementById('tessera').value || 'Non specificata',
+                books_table: formattedBooksTable, 
+                notes: document.getElementById('notes').value.trim() || 'Nessuna nota'
             }
         );
 
         showPopup("Donazione inviata con successo!", "success");
         e.target.reset();
-        document.getElementById('bookList').innerHTML = ''; // Pulisci libri
-        createBookEntry(); // Ricrea il primo vuoto
+        document.getElementById('bookList').innerHTML = ''; 
+        createBookEntry(); 
 
     } catch (err) {
         console.error(err);
@@ -484,6 +496,9 @@ async function handleFormSubmit(e) {
         btn.textContent = originalText;
     }
 }
+
+
+
 
 function showPopup(msg, type) {
     const div = document.createElement('div');
