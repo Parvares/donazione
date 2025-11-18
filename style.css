@@ -285,3 +285,95 @@ footer {
 }
 @media (max-width: 1400px) { .nav-icons { transform: translateX(calc(-50% - 300px)); } }
 @media (max-width: 1200px) { .nav-icons { transform: translateX(calc(-50% - 200px)); } }
+
+/* =========================================
+   CORREZIONI FINALI (Incolla in fondo al CSS)
+   ========================================= */
+
+/* 1. Fix per evitare lo scorrimento orizzontale (fascia bianca) */
+html, body {
+    overflow-x: hidden !important;
+    position: relative;
+    width: 100%;
+    max-width: 100vw;
+}
+
+/* 2. Fix Icone non visibili (FontAwesome) */
+.fas, .fab, .fa, .fa-solid {
+    display: inline-block !important;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+}
+
+/* Assicura che le icone input non siano coperte */
+.scan-isbn-btn i, 
+.search-btn i {
+    position: relative;
+    z-index: 10;
+}
+
+/* 3. Fix Footer Tagliato e non centrato */
+footer .container, 
+.footer-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    overflow: hidden; /* Taglia eventuale contenuto in eccesso */
+}
+
+.footer-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
+
+.footer-info > div {
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+}
+
+/* 4. Fix Specifici per Mobile */
+@media (max-width: 768px) {
+    /* Ingrandisce il logo Biblioteche di Roma nell'header rosso */
+    .logo-white {
+        height: 55px !important; /* Era 35px, ora più grande */
+        width: auto;
+    }
+
+    /* Sistema le icone navigazione (casa e freccia indietro) */
+    .nav-icons {
+        width: 100%;
+        justify-content: center;
+        left: 0 !important;
+        transform: none !important;
+        padding: 10px 0;
+        position: relative;
+        top: 0;
+    }
+
+    /* Rimuove margini negativi che creano la fascia bianca */
+    .content-wrapper {
+        margin-top: 0;
+        padding: 0 15px;
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    /* Sistema il footer su mobile */
+    .footer-link {
+        justify-content: center;
+        text-align: center;
+    }
+    
+    /* Forza il testo footer a stare dentro */
+    .footer-info span {
+        white-space: normal;
+    }
+}
+
