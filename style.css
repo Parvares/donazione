@@ -485,23 +485,20 @@ button i,
 
 
 /* =========================================
-   FIX ALLINEAMENTO LENTE (SEARCH.SVG)
+   FIX FINALE: ALLINEAMENTO SENZA LINEETTE
    ========================================= */
 
-/* 1. Metodo Flessibile (Consigliato) */
-/* Rende tutti i link della barra social dei contenitori flessibili */
-/* Questo centra automaticamente sia le immagini svg che le icone font */
 .social-icons a {
-    display: flex !important;
-    align-items: center !important;
+    display: flex !important;          /* Mantiene l'allineamento centrato */
+    align-items: center !important;    /* Centra verticalmente icone e immagini */
     justify-content: center !important;
-    height: 100%; /* Assicura che occupino lo spazio verticale disponibile */
+    text-decoration: none !important;  /* FONDAMENTALE: Rimuove la sottolineatura */
+    border: none !important;           /* Rimuove eventuali bordi inferiori */
+    outline: none !important;          /* Rimuove il contorno al click */
 }
 
-/* 2. Aggiustamento specifico per la lente */
-/* Se il metodo sopra non basta, questo spinge giù SOLO la lente */
-.icon-svg {
-    position: relative;
-    top: 2px; /* Aumenta questo numero se vuoi scenderla di più */
-    display: block; /* Rimuove lo spazio fantasma sotto l'immagine */
+/* Assicuriamoci che anche al passaggio del mouse non appaiano */
+.social-icons a:hover {
+    text-decoration: none !important;
+    border: none !important;
 }
