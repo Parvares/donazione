@@ -472,3 +472,14 @@ footer a[href^="tel:"] {
         display: none;
     }
 }
+
+/* FIX DEFINITIVO ICONE */
+/* Forza il font corretto dentro i bottoni di ricerca e scanner */
+button i, 
+.search-btn i, 
+.scan-isbn-btn i {
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 900 !important; /* Essenziale per le icone solide */
+    font-style: normal;
+}
+
