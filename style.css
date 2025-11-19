@@ -433,19 +433,57 @@ footer .container, .footer-container {
 
 /* Mobile Breakpoint */
 @media (max-width: 768px) {
+    /* Fix fascia bianca top: altezza ridotta e allineamento */
+    .top-banner {
+        padding: 0.4rem 1rem;
+        height: 48px;
+        align-items: center;
+    }
+    
+    /* Logo Roma allineato alle icone social */
+    .roma-logo {
+        height: 32px;
+    }
+    
+    /* Social icons allineate */
+    .social-icons {
+        height: 32px;
+        gap: 0.75rem;
+    }
+    
+    .social-icons a {
+        height: 24px;
+        width: 24px;
+        font-size: 1.3rem;
+    }
+    
+    /* Header amaranto */
     header { height: 130px; padding: 1rem 0; }
     .logo-morante { display: none; }
     
     /* Logo Biblioteche PIÙ GRANDE su mobile */
     .logo-white { height: 80px !important; width: auto; }
     
+    /* Bottoni left e home: sinistra e distanziati dall'header */
     .nav-icons {
-        position: relative; top: 0; left: 0; transform: none;
-        justify-content: center; padding: 10px 0; margin-bottom: -0.5rem;
+        position: relative;
+        top: 0;
+        left: 0;
+        transform: none;
+        justify-content: flex-start;
+        padding: 15px 0;
+        padding-left: 15px;
+        margin-bottom: 0;
+        margin-top: 15px;
         width: 100%;
     }
     
-    .content-wrapper { margin-top: 0; width: 100%; padding: 0 15px; overflow-x: hidden; }
+    .content-wrapper { 
+        margin-top: 0; 
+        width: 100%; 
+        padding: 0 15px; 
+        overflow-x: hidden; 
+    }
     
     /* Gestione Testo Banner e Spaziature */
     .title-container { margin-bottom: 1rem !important; }
