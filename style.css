@@ -484,21 +484,3 @@ button i,
 }
 
 
-/* =========================================
-   FIX FINALE: ALLINEAMENTO SENZA LINEETTE
-   ========================================= */
-
-.social-icons a {
-    display: flex !important;          /* Mantiene l'allineamento centrato */
-    align-items: center !important;    /* Centra verticalmente icone e immagini */
-    justify-content: center !important;
-    text-decoration: none !important;  /* FONDAMENTALE: Rimuove la sottolineatura */
-    border: none !important;           /* Rimuove eventuali bordi inferiori */
-    outline: none !important;          /* Rimuove il contorno al click */
-}
-
-/* Assicuriamoci che anche al passaggio del mouse non appaiano */
-.social-icons a:hover {
-    text-decoration: none !important;
-    border: none !important;
-}
