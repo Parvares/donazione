@@ -97,8 +97,11 @@ body {
    3. ICONE (Gestione Globale)
    ========================================= */
 /* Fix per FontAwesome Solid (search, barcode, etc) */
-.fas, .fa, .fa-solid, 
-button i, .search-btn i, .scan-isbn-btn i {
+.fas, .fa-solid,
+button i.fas, .search-btn i, .scan-isbn-btn i,
+.fa-search, .fa-barcode, .fa-book-open, .fa-info-circle,
+.fa-copy, .fa-undo, .fa-trash, .fa-circle-notch, .fa-spin,
+.fa-location-dot, .fa-phone, .fa-clock {
     font-family: "Font Awesome 6 Free" !important;
     font-weight: 900 !important;
     display: inline-block;
@@ -106,14 +109,21 @@ button i, .search-btn i, .scan-isbn-btn i {
     font-variant: normal;
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     line-height: 1;
 }
 
 /* Fix per FontAwesome Brands (Facebook, Instagram...) */
-.fab, .fa-brands {
+.fab, .fa-brands,
+.fa-facebook, .fa-instagram, .fa-x-twitter, .fa-youtube {
     font-family: "Font Awesome 6 Brands" !important;
     font-weight: 400 !important;
     display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* Immagini SVG usate come icone */
@@ -139,20 +149,33 @@ button i, .search-btn i, .scan-isbn-btn i {
 
 .roma-logo { height: 40px; }
 
-.social-icons { display: flex; gap: 1rem; align-items: center; }
+.social-icons { 
+    display: flex; 
+    gap: 1rem; 
+    align-items: center;
+    height: 40px;
+}
 .social-icons a { 
     color: var(--primary); 
     font-size: 1.5rem; 
     transition: transform 0.3s;
-    /* Fix allineamento e rimozione sottolineatura */
-    display: flex !important;
+    display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     text-decoration: none !important;
     border: none !important;
-    height: 100%;
+    height: 26px;
+    width: 26px;
+    line-height: 1;
 }
 .social-icons a:hover { transform: scale(1.2); }
+
+/* Fix specifico per icone FontAwesome in social-icons */
+.social-icons a i {
+    display: block;
+    line-height: 1;
+    vertical-align: middle;
+}
 
 header {
     background-color: var(--primary);
@@ -288,9 +311,21 @@ header {
     width: max-content; pointer-events: none; z-index: 10;
     white-space: normal; line-height: 1.4;
 }
+
+/* Fix icone nei bottoni di ricerca e scanner */
+.search-btn, .scan-isbn-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+.search-btn i, .scan-isbn-btn i { 
+    font-size: 1rem;
+    line-height: 1;
+}
+
 .search-result { padding: 0.75rem; cursor: pointer; border-bottom: 1px solid var(--gray-border); }
 .search-result:hover, .search-result.active { background-color: #f3f4f6; }
-.scan-isbn-btn i, .search-btn i { position: relative; z-index: 10; }
 
 /* Scanner Video */
 .isbn-scanner-reader video { width: 100%; height: auto; border-radius: 0.5rem; }
