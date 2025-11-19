@@ -421,7 +421,7 @@ footer .container, .footer-container {
 .footer-info { 
     display: flex; 
     flex-wrap: wrap; 
-    gap: 2rem; 
+    gap: 4rem;
     justify-content: center; 
     align-items: flex-start;
     font-size: 0.875rem;
@@ -527,7 +527,7 @@ footer .container, .footer-container {
     .bg-blue-50 { margin-top: 0 !important; margin-bottom: 1.5rem !important; }
     .desktop-text { display: none; }
     
-    /* Footer Mobile */
+    /* Footer Mobile - gap ridotto per mobile */
     .footer-info { 
         flex-direction: column; 
         gap: 1rem; 
