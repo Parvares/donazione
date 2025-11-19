@@ -1,4 +1,6 @@
-/* Reset & Variabili */
+/* =========================================
+   1. RESET & VARIABILI
+   ========================================= */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
@@ -13,15 +15,22 @@
     --gray-border: #e5e7eb;
 }
 
+html, body {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden !important;
+    position: relative;
+}
+
 body {
     font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     line-height: 1.6;
     color: var(--gray-text);
-    overflow-x: hidden;
-    width: 100%;
 }
 
-/* Utility Classes (Mini Framework) */
+/* =========================================
+   2. UTILITY CLASSES
+   ========================================= */
 .hidden { display: none !important; }
 .flex { display: flex; }
 .flex-col { flex-direction: column; }
@@ -84,9 +93,41 @@ body {
 .cursor-help { cursor: help; }
 .underline { text-decoration: underline; }
 
-/* Componenti Specifici */
+/* =========================================
+   3. ICONE (Gestione Globale)
+   ========================================= */
+/* Fix per FontAwesome Solid (search, barcode, etc) */
+.fas, .fa, .fa-solid, 
+button i, .search-btn i, .scan-isbn-btn i {
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 900 !important;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1;
+}
 
-/* Header e Banner */
+/* Fix per FontAwesome Brands (Facebook, Instagram...) */
+.fab, .fa-brands {
+    font-family: "Font Awesome 6 Brands" !important;
+    font-weight: 400 !important;
+    display: inline-block;
+}
+
+/* Immagini SVG usate come icone */
+.icon-svg { height: 26px; width: 26px; display: block; position: relative; top: 2px; }
+.location-icon {
+    height: 20px; width: 20px;
+    transition: all 0.3s ease;
+    filter: invert(9%) sepia(38%) saturate(6611%) hue-rotate(345deg) brightness(63%) contrast(99%);
+}
+.location-icon:hover { transform: scale(1.1); }
+
+/* =========================================
+   4. HEADER & NAVIGAZIONE
+   ========================================= */
 .top-banner {
     background-color: white;
     padding: 0.8rem 2rem;
@@ -95,11 +136,23 @@ body {
     align-items: center;
     width: 100%;
 }
+
 .roma-logo { height: 40px; }
+
 .social-icons { display: flex; gap: 1rem; align-items: center; }
-.social-icons a { color: var(--primary); font-size: 1.5rem; transition: transform 0.3s; }
+.social-icons a { 
+    color: var(--primary); 
+    font-size: 1.5rem; 
+    transition: transform 0.3s;
+    /* Fix allineamento e rimozione sottolineatura */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-decoration: none !important;
+    border: none !important;
+    height: 100%;
+}
 .social-icons a:hover { transform: scale(1.2); }
-.icon-svg { height: 26px; width: 26px; }
 
 header {
     background-color: var(--primary);
@@ -109,17 +162,26 @@ header {
     align-items: center;
     text-align: center;
 }
+
 .container-header {
     max-width: 1200px;
     display: flex;
     justify-content: center;
+    align-items: center; /* Centratura verticale loghi */
     gap: 1rem;
     flex-wrap: wrap;
 }
+/* Fix allineamento loghi header */
+.container-header a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
 .logo-white { height: 70px; max-width: 100%; }
 .logo-morante { height: 180px; max-width: 100%; }
 
-/* Navigazione */
 .content-wrapper {
     max-width: 900px;
     margin: 2rem auto;
@@ -127,6 +189,7 @@ header {
     position: relative;
     margin-top: 60px;
 }
+
 .nav-icons {
     position: absolute;
     top: -60px;
@@ -136,23 +199,16 @@ header {
     gap: 3rem;
     padding-top: 20px;
 }
-.nav-icons a {
-    color: var(--primary);
-    transition: transform 0.3s;
-}
+.nav-icons a { color: var(--primary); transition: transform 0.3s; }
 .nav-icons a:hover { transform: scale(1.1); }
 .icon-nav { height: 22px; width: 22px; }
 
-/* Main Title */
+/* =========================================
+   5. CONTENUTO E FORM
+   ========================================= */
 .title-container {
     display: flex; flex-direction: column; margin-bottom: 2.5rem; text-align: left; padding: 0 1rem;
 }
-.location-icon {
-    height: 20px; width: 20px;
-    transition: all 0.3s ease;
-    filter: invert(9%) sepia(38%) saturate(6611%) hue-rotate(345deg) brightness(63%) contrast(99%);
-}
-.location-icon:hover { transform: scale(1.1); }
 .biblioteca-link { color: var(--primary); text-decoration: none; transition: color 0.3s; }
 .biblioteca-link:hover { color: #e06b8e; }
 .main-title {
@@ -167,7 +223,6 @@ header {
     border-bottom: 2px solid var(--primary);
 }
 
-/* Form Elements */
 .form-input {
     padding: 0.5rem 0.75rem;
     border: 2px solid #d1d5db;
@@ -184,6 +239,7 @@ header {
 .checkbox-label {
     cursor: pointer; font-family: inherit; font-size: 1rem; color: var(--gray-text);
 }
+
 .submit-btn {
     background-color: var(--blue-dark);
     color: white;
@@ -209,9 +265,8 @@ header {
     display: flex; align-items: center; justify-content: center;
     border-radius: 50%; color: white; font-weight: 600; font-size: 0.875rem;
 }
-.btn-action {
-    background: none; border: none; cursor: pointer; font-size: 1rem; padding: 0.25rem;
-}
+.btn-action { background: none; border: none; cursor: pointer; font-size: 1rem; padding: 0.25rem; }
+
 .add-book-btn {
     width: 100%; padding: 0.75rem 1rem;
     background: linear-gradient(to bottom right, #34d399, #10b981);
@@ -223,10 +278,8 @@ header {
     transform: translateY(-2px); background: linear-gradient(to bottom right, #10b981, #059669);
 }
 
-/* Tooltip & Search */
-.group:hover .group-hover-visible {
-    visibility: visible; opacity: 1;
-}
+/* Search & Scanner */
+.group:hover .group-hover-visible { visibility: visible; opacity: 1; }
 .tooltip {
     visibility: hidden; opacity: 0; transition: opacity 0.2s;
     position: absolute; top: -25px; left: 50%; transform: translateX(-50%);
@@ -235,12 +288,11 @@ header {
     width: max-content; pointer-events: none; z-index: 10;
     white-space: normal; line-height: 1.4;
 }
-.search-result {
-    padding: 0.75rem; cursor: pointer; border-bottom: 1px solid var(--gray-border);
-}
+.search-result { padding: 0.75rem; cursor: pointer; border-bottom: 1px solid var(--gray-border); }
 .search-result:hover, .search-result.active { background-color: #f3f4f6; }
+.scan-isbn-btn i, .search-btn i { position: relative; z-index: 10; }
 
-/* Scanner */
+/* Scanner Video */
 .isbn-scanner-reader video { width: 100%; height: auto; border-radius: 0.5rem; }
 .isbn-scanner-reader canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
@@ -252,235 +304,82 @@ header {
 }
 .bg-success { background-color: var(--green-success); }
 .bg-error { background-color: var(--red-error); }
-
 @keyframes slideDown {
     from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
     to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
-/* Footer */
+/* =========================================
+   6. FOOTER
+   ========================================= */
 footer {
     background-color: var(--primary); color: white;
     margin-top: 4rem; padding: 2rem 0;
     box-shadow: 0 -2px 4px -1px rgba(0, 0, 0, 0.1);
 }
-.footer-container {
+
+/* Fix Overflow e Padding */
+footer .container, .footer-container {
     display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 1rem;
-}
-.footer-logo { height: 2.5rem; cursor: pointer; }
-.footer-info { display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; font-size: 0.875rem; }
-.footer-link { text-decoration: none; color: inherit; display: flex; align-items: center; gap: 0.5rem; }
-
-/* Media Queries */
-@media (max-width: 768px) {
-    header { height: 130px; padding: 1rem 0; }
-    .logo-morante { display: none; }
-    .logo-white { height: 35px; }
-    .nav-icons {
-        position: relative; top: 0; left: 0; transform: none;
-        justify-content: flex-start; padding: 0.75rem 0.5rem; margin-bottom: -0.5rem;
-    }
-    .content-wrapper { margin-top: 0; width: 100%; padding: 0 0.5rem; }
-    .footer-info { flex-direction: column; gap: 1rem; text-align: center; }
-}
-@media (max-width: 1400px) { .nav-icons { transform: translateX(calc(-50% - 300px)); } }
-@media (max-width: 1200px) { .nav-icons { transform: translateX(calc(-50% - 200px)); } }
-
-/* =========================================
-   CORREZIONI FINALI (Incolla in fondo al CSS)
-   ========================================= */
-
-/* 1. Fix per evitare lo scorrimento orizzontale (fascia bianca) */
-html, body {
-    overflow-x: hidden !important;
-    position: relative;
-    width: 100%;
-    max-width: 100vw;
-}
-
-/* 2. Fix Icone non visibili (FontAwesome) */
-.fas, .fab, .fa, .fa-solid {
-    display: inline-block !important;
-    font-style: normal;
-    font-variant: normal;
-    text-rendering: auto;
-    line-height: 1;
-}
-
-/* Assicura che le icone input non siano coperte */
-.scan-isbn-btn i, 
-.search-btn i {
-    position: relative;
-    z-index: 10;
-}
-
-/* 3. Fix Footer Tagliato e non centrato */
-footer .container, 
-.footer-container {
     width: 100% !important;
     max-width: 100% !important;
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-    overflow: hidden; /* Taglia eventuale contenuto in eccesso */
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    overflow: visible !important;
 }
 
-.footer-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    width: 100%;
-}
-
-.footer-info > div {
-    justify-content: center;
-    text-align: center;
-    width: 100%;
-}
-
-/* 4. Fix Specifici per Mobile */
-@media (max-width: 768px) {
-    /* Ingrandisce il logo Biblioteche di Roma nell'header rosso */
-    .logo-white {
-        height: 55px !important; /* Era 35px, ora più grande */
-        width: auto;
-    }
-
-    /* Sistema le icone navigazione (casa e freccia indietro) */
-    .nav-icons {
-        width: 100%;
-        justify-content: center;
-        left: 0 !important;
-        transform: none !important;
-        padding: 10px 0;
-        position: relative;
-        top: 0;
-    }
-
-    /* Rimuove margini negativi che creano la fascia bianca */
-    .content-wrapper {
-        margin-top: 0;
-        padding: 0 15px;
-        width: 100%;
-        overflow-x: hidden;
-    }
-
-    /* Sistema il footer su mobile */
-    .footer-link {
-        justify-content: center;
-        text-align: center;
-    }
-    
-    /* Forza il testo footer a stare dentro */
-    .footer-info span {
-        white-space: normal;
-    }
-}
-
-/* =========================================
-   FIX ICONE, FOOTER E HEADER
-   ========================================= */
-
-/* 1. FIX ICONE (Search & Click, ISBN) */
-/* Forza il font corretto per le icone, sovrascrivendo quello globale */
-.fas, .fa, .fa-solid {
-    font-family: "Font Awesome 6 Free" !important;
-    font-weight: 900;
-}
-.fab, .fa-brands {
-    font-family: "Font Awesome 6 Brands" !important;
-    font-weight: 400;
-}
-
-/* 2. FIX FOOTER MOBILE (Immagine tagliata) */
-/* Rende l'immagine responsive in modo che non esca dallo schermo */
-.footer-logo {
+/* Fix Immagine Footer */
+.footer-logo { 
+    height: 2.5rem; 
+    cursor: pointer; 
     max-width: 100% !important;
-    height: auto !important; 
+    height: auto !important;
     object-fit: contain;
 }
 
-/* Rimuove il taglio (overflow) che nascondeva i bordi laterali */
-footer .container, 
-.footer-container {
-    overflow: visible !important;
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
+.footer-info { 
+    display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; font-size: 0.875rem;
+    width: 100%; 
+    text-align: center;
 }
+.footer-info > div { justify-content: center; width: 100%; }
 
-/* 3. FIX HEADER DESKTOP (Allineamento) */
-/* Rende i link dei contenitori flessibili per centrare perfettamente le immagini */
-.container-header a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
+/* Fix Colore Link Footer (Numeri telefono bianchi) */
+.footer-link, footer a, footer a:hover, footer a:visited, footer a[href^="tel:"] { 
+    text-decoration: none !important; 
+    color: #ffffff !important; 
+    display: flex; align-items: center; gap: 0.5rem;
 }
-
-/* Opzionale: Assicura che l'header abbia spazio sufficiente */
-.container-header {
-    align-items: center; /* Centra verticalmente i due loghi */
-}
-
 
 /* =========================================
-   FIX DEFINITIVI (ICONE, FOOTER, MOBILE)
+   7. MEDIA QUERIES (MOBILE & RESPONSIVE)
    ========================================= */
+@media (max-width: 1400px) { .nav-icons { transform: translateX(calc(-50% - 300px)); } }
+@media (max-width: 1200px) { .nav-icons { transform: translateX(calc(-50% - 200px)); } }
 
-/* 1. FIX ICONE (Rettangolini) */
-/* È fondamentale impostare il font-family E il font-weight corretti */
-.fas, .fa-solid, .fa {
-    font-family: "Font Awesome 6 Free" !important;
-    font-weight: 900 !important; /* Senza 900, le icone solid diventano rettangoli */
-    display: inline-block;
-    font-style: normal;
-    font-variant: normal;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-}
-
-.fab, .fa-brands {
-    font-family: "Font Awesome 6 Brands" !important;
-    font-weight: 400 !important;
-}
-
-/* 2. FIX TELEFONI BLU NEL FOOTER */
-/* Forza il colore bianco su tutti i link dentro il footer, inclusi i numeri di telefono */
-footer a, 
-footer a:hover, 
-footer a:visited, 
-footer a[href^="tel:"] {
-    color: #ffffff !important;
-    text-decoration: none !important;
-}
-
-/* 3. FIX SPAZIATURA TITOLO SU MOBILE */
+/* Mobile Breakpoint */
 @media (max-width: 768px) {
-    /* Avvicina il titolo "Donazione di libri" al banner azzurro */
-    .title-container {
-        margin-bottom: 1rem !important; /* Era 2.5rem */
+    header { height: 130px; padding: 1rem 0; }
+    .logo-morante { display: none; }
+    
+    /* Logo Biblioteche più grande su mobile */
+    .logo-white { height: 55px !important; width: auto; }
+    
+    .nav-icons {
+        position: relative; top: 0; left: 0; transform: none;
+        justify-content: center; padding: 10px 0; margin-bottom: -0.5rem;
+        width: 100%;
     }
     
-    /* Riduci anche il margine del banner stesso se serve */
-    .top-alert-box {
-        margin-bottom: 1rem !important;
-    }
-
-    /* 4. FIX TESTO TAGLIATO SU MOBILE */
-    /* Nasconde la frase aggiuntiva su schermi piccoli */
-    .desktop-text {
-        display: none;
-    }
+    .content-wrapper { margin-top: 0; width: 100%; padding: 0 15px; overflow-x: hidden; }
+    
+    /* Gestione Testo Banner e Spaziature */
+    .title-container { margin-bottom: 1rem !important; } /* Avvicina titolo */
+    .bg-blue-50 { margin-top: 0 !important; margin-bottom: 1.5rem !important; }
+    .desktop-text { display: none; } /* Nasconde testo lungo */
+    
+    /* Footer Mobile */
+    .footer-info { flex-direction: column; gap: 1rem; }
+    .footer-link { justify-content: center; }
+    .footer-info span { white-space: normal; }
 }
-
-/* FIX DEFINITIVO ICONE */
-/* Forza il font corretto dentro i bottoni di ricerca e scanner */
-button i, 
-.search-btn i, 
-.scan-isbn-btn i {
-    font-family: "Font Awesome 6 Free" !important;
-    font-weight: 900 !important; /* Essenziale per le icone solide */
-    font-style: normal;
-}
-
-
