@@ -377,3 +377,48 @@ footer .container,
     }
 }
 
+/* =========================================
+   FIX ICONE, FOOTER E HEADER
+   ========================================= */
+
+/* 1. FIX ICONE (Search & Click, ISBN) */
+/* Forza il font corretto per le icone, sovrascrivendo quello globale */
+.fas, .fa, .fa-solid {
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 900;
+}
+.fab, .fa-brands {
+    font-family: "Font Awesome 6 Brands" !important;
+    font-weight: 400;
+}
+
+/* 2. FIX FOOTER MOBILE (Immagine tagliata) */
+/* Rende l'immagine responsive in modo che non esca dallo schermo */
+.footer-logo {
+    max-width: 100% !important;
+    height: auto !important; 
+    object-fit: contain;
+}
+
+/* Rimuove il taglio (overflow) che nascondeva i bordi laterali */
+footer .container, 
+.footer-container {
+    overflow: visible !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+}
+
+/* 3. FIX HEADER DESKTOP (Allineamento) */
+/* Rende i link dei contenitori flessibili per centrare perfettamente le immagini */
+.container-header a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+/* Opzionale: Assicura che l'header abbia spazio sufficiente */
+.container-header {
+    align-items: center; /* Centra verticalmente i due loghi */
+}
+
