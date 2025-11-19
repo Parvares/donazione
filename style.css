@@ -96,38 +96,49 @@ body {
 /* =========================================
    3. ICONE (Gestione Globale)
    ========================================= */
-/* Fix per FontAwesome Solid (search, barcode, etc) */
+/* CRITICAL FIX: Forza il rendering corretto delle icone FontAwesome */
+i[class^="fa-"], i[class*=" fa-"],
+.fa, .fas, .far, .fal, .fab, 
+.fa-solid, .fa-regular, .fa-light, .fa-brands {
+    display: inline-block !important;
+    font-style: normal !important;
+    font-variant: normal !important;
+    text-rendering: auto !important;
+    line-height: 1 !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+}
+
+/* FontAwesome Solid Icons - Specifica TUTTE le classi usate */
 .fas, .fa-solid,
-button i.fas, .search-btn i, .scan-isbn-btn i,
-.fa-search, .fa-barcode, .fa-book-open, .fa-info-circle,
-.fa-copy, .fa-undo, .fa-trash, .fa-circle-notch, .fa-spin,
+.fa-search, .fa-barcode, .fa-book-open, 
+.fa-info-circle, .fa-circle-info,
+.fa-copy, .fa-undo, .fa-trash, 
+.fa-circle-notch, .fa-spin,
 .fa-location-dot, .fa-phone, .fa-clock {
     font-family: "Font Awesome 6 Free" !important;
     font-weight: 900 !important;
-    display: inline-block;
-    font-style: normal;
-    font-variant: normal;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    line-height: 1;
 }
 
-/* Fix per FontAwesome Brands (Facebook, Instagram...) */
+/* FontAwesome Brands Icons */
 .fab, .fa-brands,
 .fa-facebook, .fa-instagram, .fa-x-twitter, .fa-youtube {
     font-family: "Font Awesome 6 Brands" !important;
     font-weight: 400 !important;
-    display: inline-block;
-    font-style: normal;
-    font-variant: normal;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Fix per bottoni con icone */
+button i[class^="fa"], 
+.search-btn i, 
+.scan-isbn-btn i,
+.btn-action i {
+    pointer-events: none;
+    vertical-align: middle;
 }
 
 /* Immagini SVG usate come icone */
 .icon-svg { height: 26px; width: 26px; display: block; position: relative; top: 2px; }
+.icon-small { height: 20px; width: 20px; }
 .location-icon {
     height: 20px; width: 20px;
     transition: all 0.3s ease;
@@ -190,11 +201,11 @@ header {
     max-width: 1200px;
     display: flex;
     justify-content: center;
-    align-items: center; /* Centratura verticale loghi */
+    align-items: center;
     gap: 1rem;
     flex-wrap: wrap;
 }
-/* Fix allineamento loghi header */
+
 .container-header a {
     display: flex;
     align-items: center;
@@ -302,6 +313,10 @@ header {
 }
 
 /* Search & Scanner */
+.search-section {
+    position: relative;
+}
+
 .group:hover .group-hover-visible { visibility: visible; opacity: 1; }
 .tooltip {
     visibility: hidden; opacity: 0; transition: opacity 0.2s;
@@ -318,7 +333,31 @@ header {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
+    padding: 0.5rem 1rem;
 }
+
+.search-btn {
+    background-color: var(--blue-primary);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.search-btn:hover {
+    background-color: #2563eb;
+}
+
+.scan-isbn-btn {
+    background-color: var(--green-success);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.scan-isbn-btn:hover {
+    background-color: #16a34a;
+}
+
 .search-btn i, .scan-isbn-btn i { 
     font-size: 1rem;
     line-height: 1;
@@ -397,8 +436,8 @@ footer .container, .footer-container {
     header { height: 130px; padding: 1rem 0; }
     .logo-morante { display: none; }
     
-    /* Logo Biblioteche più grande su mobile */
-    .logo-white { height: 55px !important; width: auto; }
+    /* Logo Biblioteche PIÙ GRANDE su mobile */
+    .logo-white { height: 80px !important; width: auto; }
     
     .nav-icons {
         position: relative; top: 0; left: 0; transform: none;
@@ -409,9 +448,9 @@ footer .container, .footer-container {
     .content-wrapper { margin-top: 0; width: 100%; padding: 0 15px; overflow-x: hidden; }
     
     /* Gestione Testo Banner e Spaziature */
-    .title-container { margin-bottom: 1rem !important; } /* Avvicina titolo */
+    .title-container { margin-bottom: 1rem !important; }
     .bg-blue-50 { margin-top: 0 !important; margin-bottom: 1.5rem !important; }
-    .desktop-text { display: none; } /* Nasconde testo lungo */
+    .desktop-text { display: none; }
     
     /* Footer Mobile */
     .footer-info { flex-direction: column; gap: 1rem; }
