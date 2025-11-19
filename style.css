@@ -151,11 +151,12 @@ button i[class^="fa"],
    ========================================= */
 .top-banner {
     background-color: white;
-    padding: 0.8rem 2rem;
+    padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    min-height: 56px;
 }
 
 .roma-logo { height: 40px; }
@@ -433,28 +434,39 @@ footer .container, .footer-container {
 
 /* Mobile Breakpoint */
 @media (max-width: 768px) {
-    /* Fix fascia bianca top: altezza ridotta e allineamento */
+    /* Fix fascia bianca top: altezza leggermente aumentata e allineamento perfetto */
     .top-banner {
-        padding: 0.4rem 1rem;
-        height: 48px;
+        padding: 0.6rem 1rem;
+        min-height: 52px;
+        display: flex;
         align-items: center;
     }
     
-    /* Logo Roma allineato alle icone social */
+    /* Logo Roma perfettamente allineato alle icone social */
     .roma-logo {
         height: 32px;
+        display: block;
     }
     
-    /* Social icons allineate */
+    /* Social icons perfettamente allineate */
     .social-icons {
         height: 32px;
         gap: 0.75rem;
+        display: flex;
+        align-items: center;
     }
     
     .social-icons a {
-        height: 24px;
-        width: 24px;
+        height: 32px;
+        width: 32px;
         font-size: 1.3rem;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
+    .social-icons a i {
+        line-height: 32px;
     }
     
     /* Header amaranto */
