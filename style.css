@@ -422,3 +422,53 @@ footer .container,
     align-items: center; /* Centra verticalmente i due loghi */
 }
 
+
+/* =========================================
+   FIX DEFINITIVI (ICONE, FOOTER, MOBILE)
+   ========================================= */
+
+/* 1. FIX ICONE (Rettangolini) */
+/* È fondamentale impostare il font-family E il font-weight corretti */
+.fas, .fa-solid, .fa {
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 900 !important; /* Senza 900, le icone solid diventano rettangoli */
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+
+.fab, .fa-brands {
+    font-family: "Font Awesome 6 Brands" !important;
+    font-weight: 400 !important;
+}
+
+/* 2. FIX TELEFONI BLU NEL FOOTER */
+/* Forza il colore bianco su tutti i link dentro il footer, inclusi i numeri di telefono */
+footer a, 
+footer a:hover, 
+footer a:visited, 
+footer a[href^="tel:"] {
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+
+/* 3. FIX SPAZIATURA TITOLO SU MOBILE */
+@media (max-width: 768px) {
+    /* Avvicina il titolo "Donazione di libri" al banner azzurro */
+    .title-container {
+        margin-bottom: 1rem !important; /* Era 2.5rem */
+    }
+    
+    /* Riduci anche il margine del banner stesso se serve */
+    .top-alert-box {
+        margin-bottom: 1rem !important;
+    }
+
+    /* 4. FIX TESTO TAGLIATO SU MOBILE */
+    /* Nasconde la frase aggiuntiva su schermi piccoli */
+    .desktop-text {
+        display: none;
+    }
+}
