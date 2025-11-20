@@ -541,3 +541,13 @@ footer .container, .footer-container {
     }
     .footer-info span { white-space: normal; }
 }
+
+/* Aggiungi questo al file CSS */
+footer .flex.flex-col span {
+    white-space: nowrap;
+    line-height: 1.2;
+}
+
+
+
+
