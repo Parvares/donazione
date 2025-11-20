@@ -548,6 +548,11 @@ footer .flex.flex-col span {
     line-height: 1.2;
 }
 
+footer .fa-phone + span {
+  display: inline-flex;
+  flex-direction: row;
+  gap: 0.25rem;
+}
 
 
 
