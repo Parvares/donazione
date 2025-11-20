@@ -1,5 +1,5 @@
 /* =========================================
-   RESET & VARIABILI
+   1. RESET & VARIABILI
    ========================================= */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -15,9 +15,6 @@
     --gray-border: #e5e7eb;
 }
 
-/* =========================================
-   BASE
-   ========================================= */
 html, body {
     width: 100%;
     max-width: 100vw;
@@ -29,40 +26,118 @@ body {
     font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     line-height: 1.6;
     color: var(--gray-text);
-    background-color: #f3f4f6;
 }
 
 /* =========================================
-   TIPOGRAFIA
+   2. UTILITY CLASSES
    ========================================= */
-h1.text-3xl {
-    font-size: 32px !important;
-    font-weight: 400 !important;
-    color: var(--primary);
-}
-h1.font-bold { font-weight: 400 !important; }
-.section-header {
-    font-size: 1.5rem; font-weight: 600; color: var(--primary);
-    margin-top: 1.5rem; margin-bottom: 1rem; padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--primary);
-}
-.required-asterisk { color: var(--primary); font-size: 1.25em; margin-left: 4px; }
+.hidden { display: none !important; }
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.gap-1 { gap: 0.25rem; }
+.gap-2 { gap: 0.5rem; }
+.gap-3 { gap: 0.75rem; }
+.gap-4 { gap: 1rem; }
+.w-full { width: 100%; }
+.max-w-4xl { max-width: 56rem; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.mb-1 { margin-bottom: 0.25rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-3 { margin-bottom: 0.75rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-5 { margin-bottom: 1.25rem; }
+.mb-6 { margin-bottom: 1.5rem; }
+.mt-1 { margin-top: 0.25rem; }
+.mt-2 { margin-top: 0.5rem; }
+.p-4 { padding: 1rem; }
+.p-5 { padding: 1.25rem; }
+.p-6 { padding: 1.5rem; }
+.p-8 { padding: 2rem; }
+.px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+.py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+.rounded { border-radius: 0.25rem; }
+.rounded-lg { border-radius: 0.5rem; }
+.rounded-r { border-radius: 0 0.25rem 0.25rem 0; }
+.rounded-l { border-radius: 0.25rem 0 0 0.25rem; }
+.border { border: 1px solid var(--gray-border); }
+.border-2 { border: 2px solid; }
+.border-l-4 { border-left-width: 4px; }
+.border-blue-500 { border-color: var(--blue-primary); }
+.border-red-500 { border-color: var(--red-error); }
+.border-gray-300 { border-color: #d1d5db; }
+.bg-white { background-color: white; }
+.bg-gray-50 { background-color: #f9fafb; }
+.bg-blue-50 { background-color: #eff6ff; }
+.text-sm { font-size: 0.875rem; }
+.text-base { font-size: 1rem; }
+.text-lg { font-size: 1.125rem; }
+.text-white { color: white; }
+.text-red-500 { color: var(--red-error); }
+.text-blue-500 { color: var(--blue-primary); }
+.text-blue-600 { color: #2563eb; }
+.text-green-500 { color: var(--green-success); }
+.text-gray-500 { color: #6b7280; }
+.text-slate-700 { color: var(--gray-text); }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+.inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+.z-50 { z-index: 50; }
+.shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+.cursor-help { cursor: help; }
+.underline { text-decoration: underline; }
 
 /* =========================================
-   ICONE
+   3. ICONE (Gestione Globale)
    ========================================= */
+/* CRITICAL FIX: Forza il rendering corretto delle icone FontAwesome */
 i[class^="fa-"], i[class*=" fa-"],
-.fa, .fas, .far, .fal, .fab {
+.fa, .fas, .far, .fal, .fab, 
+.fa-solid, .fa-regular, .fa-light, .fa-brands {
     display: inline-block !important;
     font-style: normal !important;
+    font-variant: normal !important;
     text-rendering: auto !important;
     line-height: 1 !important;
     -webkit-font-smoothing: antialiased !important;
     -moz-osx-font-smoothing: grayscale !important;
 }
-.fas, .fa-solid { font-family: "Font Awesome 6 Free" !important; font-weight: 900 !important; }
-.fab, .fa-brands { font-family: "Font Awesome 6 Brands" !important; font-weight: 400 !important; }
-.icon-svg { height: 26px; width: 26px; }
+
+/* FontAwesome Solid Icons - Specifica TUTTE le classi usate */
+.fas, .fa-solid,
+.fa-search, .fa-barcode, .fa-book-open, 
+.fa-info-circle, .fa-circle-info,
+.fa-copy, .fa-undo, .fa-trash, 
+.fa-circle-notch, .fa-spin,
+.fa-location-dot, .fa-phone, .fa-clock {
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 900 !important;
+}
+
+/* FontAwesome Brands Icons */
+.fab, .fa-brands,
+.fa-facebook, .fa-instagram, .fa-x-twitter, .fa-youtube {
+    font-family: "Font Awesome 6 Brands" !important;
+    font-weight: 400 !important;
+}
+
+/* Fix per bottoni con icone */
+button i[class^="fa"], 
+.search-btn i, 
+.scan-isbn-btn i,
+.btn-action i {
+    pointer-events: none;
+    vertical-align: middle;
+}
+
+/* Immagini SVG usate come icone */
+.icon-svg { height: 26px; width: 26px; display: block; position: relative; top: 2px; }
 .icon-small { height: 20px; width: 20px; }
 .location-icon {
     height: 20px; width: 20px;
@@ -72,103 +147,412 @@ i[class^="fa-"], i[class*=" fa-"],
 .location-icon:hover { transform: scale(1.1); }
 
 /* =========================================
-   TOP BANNER & SOCIAL
+   4. HEADER & NAVIGAZIONE
    ========================================= */
 .top-banner {
     background-color: white;
-    padding: 0.8rem 2rem;
+    padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    min-height: 56px;
 }
-.logo--roma { height: 40px; }
-.social-icons {
-    display: flex; gap: 1rem; align-items: center;
+
+.roma-logo { height: 40px; }
+
+.social-icons { 
+    display: flex; 
+    gap: 1rem; 
+    align-items: center;
+    height: 40px;
 }
-.social-icons a {
-    color: var(--primary);
-    font-size: 1.5rem;
-    transition: transform 0.3s ease;
-    display: inline-flex; align-items: center; justify-content: center;
+.social-icons a { 
+    color: var(--primary); 
+    font-size: 1.5rem; 
+    transition: transform 0.3s;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-decoration: none !important;
+    border: none !important;
+    height: 26px;
+    width: 26px;
+    line-height: 1;
 }
 .social-icons a:hover { transform: scale(1.2); }
 
-/* =========================================
-   HEADER
-   ========================================= */
+/* Fix specifico per icone FontAwesome in social-icons */
+.social-icons a i {
+    display: block;
+    line-height: 1;
+    vertical-align: middle;
+}
+
 header {
     background-color: var(--primary);
-    color: #fff;
     padding: 2rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
 }
+
 .container-header {
     max-width: 1200px;
-    margin: 0 auto;
-    display: flex; justify-content: center; align-items: center;
-    flex-wrap: wrap; gap: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
-.logo--white { height: 70px; max-width: 100%; }
-.logo--morante { height: 180px; max-width: 100%; }
 
-/* =========================================
-   NAV ICONS
-   ========================================= */
+.container-header a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.logo-white { height: 70px; max-width: 100%; }
+.logo-morante { height: 180px; max-width: 100%; }
+
+.content-wrapper {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    position: relative;
+    margin-top: 60px;
+}
+
 .nav-icons {
     position: absolute;
     top: -60px;
     left: 50%;
     transform: translateX(calc(-50% - 400px));
-    display: flex; gap: 1.5rem;
+    display: flex;
+    gap: 3rem;
+    padding-top: 20px;
 }
-.nav-icons a { color: var(--primary); transition: transform 0.3s ease; }
+.nav-icons a { color: var(--primary); transition: transform 0.3s; }
 .nav-icons a:hover { transform: scale(1.1); }
 .icon-nav { height: 22px; width: 22px; }
 
 /* =========================================
-   FOOTER
+   5. CONTENUTO E FORM
+   ========================================= */
+.title-container {
+    display: flex; flex-direction: column; margin-bottom: 2.5rem; text-align: left; padding: 0 1rem;
+}
+.biblioteca-link { color: var(--primary); text-decoration: none; transition: color 0.3s; }
+.biblioteca-link:hover { color: #e06b8e; }
+.main-title {
+    font-size: 2.25rem; color: var(--gray-text); font-weight: 700; line-height: 1.2; margin: 0;
+}
+.required-asterisk {
+    color: var(--primary); font-size: 1.25em; display: inline-block; margin-left: 4px; vertical-align: middle;
+}
+.section-header {
+    font-size: 1.5rem; font-weight: 600; color: var(--primary);
+    margin-top: 1.5rem; margin-bottom: 1rem; padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary);
+}
+
+.form-input {
+    padding: 0.5rem 0.75rem;
+    border: 2px solid #d1d5db;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+.form-input:focus {
+    outline: none;
+    border-color: var(--blue-dark);
+    box-shadow: 0 0 0 2px rgba(0, 120, 215, 0.1);
+}
+.notes-area { resize: vertical; min-height: 75px; font-family: inherit; }
+.checkbox-label {
+    cursor: pointer; font-family: inherit; font-size: 1rem; color: var(--gray-text);
+}
+
+.submit-btn {
+    background-color: var(--blue-dark);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    max-width: 32rem;
+    margin: 0 auto;
+    display: block;
+}
+.submit-btn:hover { background-color: #00457a; }
+
+/* Libri */
+.book-entry { transition: transform 0.3s ease; }
+.book-entry:hover { transform: translateY(-2px); }
+.book-counter {
+    background: linear-gradient(to bottom right, #34d399, #10b981);
+    width: 1.5rem; height: 1.5rem;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; color: white; font-weight: 600; font-size: 0.875rem;
+}
+.btn-action { background: none; border: none; cursor: pointer; font-size: 1rem; padding: 0.25rem; }
+
+.add-book-btn {
+    width: 100%; padding: 0.75rem 1rem;
+    background: linear-gradient(to bottom right, #34d399, #10b981);
+    color: white; border: none; border-radius: 0.375rem;
+    transition: all 0.3s ease; margin-top: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); cursor: pointer;
+}
+.add-book-btn:hover {
+    transform: translateY(-2px); background: linear-gradient(to bottom right, #10b981, #059669);
+}
+
+/* Search & Scanner */
+.search-section {
+    position: relative;
+}
+
+.group:hover .group-hover-visible { visibility: visible; opacity: 1; }
+.tooltip {
+    visibility: hidden; opacity: 0; transition: opacity 0.2s;
+    position: absolute; top: -25px; left: 50%; transform: translateX(-50%);
+    background-color: white; color: black; border: 1px solid #ddd;
+    padding: 5px 10px; font-size: 12px; border-radius: 5px;
+    width: max-content; pointer-events: none; z-index: 10;
+    white-space: normal; line-height: 1.4;
+}
+
+/* Fix icone nei bottoni di ricerca e scanner */
+.search-btn, .scan-isbn-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+}
+
+.search-btn {
+    background-color: var(--blue-primary);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.search-btn:hover {
+    background-color: #2563eb;
+}
+
+.scan-isbn-btn {
+    background-color: var(--green-success);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.scan-isbn-btn:hover {
+    background-color: #16a34a;
+}
+
+.search-btn i, .scan-isbn-btn i { 
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.search-result { padding: 0.75rem; cursor: pointer; border-bottom: 1px solid var(--gray-border); }
+.search-result:hover, .search-result.active { background-color: #f3f4f6; }
+
+/* Scanner Video */
+.isbn-scanner-reader video { width: 100%; height: auto; border-radius: 0.5rem; }
+.isbn-scanner-reader canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+/* Popup */
+.popup-msg {
+    position: fixed; top: 1rem; left: 50%; transform: translateX(-50%);
+    padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+    color: white; z-index: 100; animation: slideDown 0.5s ease-out;
+}
+.bg-success { background-color: var(--green-success); }
+.bg-error { background-color: var(--red-error); }
+@keyframes slideDown {
+    from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* =========================================
+   6. FOOTER
    ========================================= */
 footer {
-    background-color: var(--primary);
+    background-color: var(--primary); 
     color: white;
-    text-align: center;
-    padding: 2rem 1rem;
-    margin-top: 2rem;
+    margin-top: 4rem; 
+    padding: 2rem 0;
+    box-shadow: 0 -2px 4px -1px rgba(0, 0, 0, 0.1);
 }
-.footer-logo { height: 2.5rem; cursor: pointer; }
-.footer-info {
-    display: flex; flex-wrap: wrap; gap: 4rem;
-    justify-content: center; align-items: flex-start;
+
+/* Fix Overflow e Padding */
+footer .container, .footer-container {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: space-between; 
+    gap: 1rem;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    overflow: visible !important;
+}
+
+/* Fix Immagine Footer */
+.footer-logo { 
+    height: 2.5rem; 
+    cursor: pointer; 
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: contain;
+}
+
+.footer-info { 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 4rem;
+    justify-content: center; 
+    align-items: flex-start;
     font-size: 0.875rem;
+    width: 100%; 
+    text-align: center;
 }
-.footer-link, footer a { color: white !important; text-decoration: none !important; }
+
+/* Allineamento perfetto per indirizzo, telefono e orari */
+.footer-info > div { 
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+/* Fix per le icone nel footer - allineate in alto */
+.footer-info i {
+    margin-top: 0.15rem;
+    flex-shrink: 0;
+}
+
+/* Fix Colore Link Footer (Numeri telefono bianchi) */
+.footer-link, footer a, footer a:hover, footer a:visited, footer a[href^="tel:"] { 
+    text-decoration: none !important; 
+    color: #ffffff !important; 
+    display: flex; 
+    align-items: flex-start;
+    gap: 0.5rem;
+}
 
 /* =========================================
-   RESPONSIVE
+   7. MEDIA QUERIES (MOBILE & RESPONSIVE)
    ========================================= */
+@media (max-width: 1400px) { .nav-icons { transform: translateX(calc(-50% - 300px)); } }
+@media (max-width: 1200px) { .nav-icons { transform: translateX(calc(-50% - 200px)); } }
+
+/* Mobile Breakpoint */
 @media (max-width: 768px) {
-    .top-banner { padding: 0.6rem 1rem; }
-    .logo--roma { height: 32px; }
-    .social-icons a { font-size: 1.3rem; }
-    header { height: 130px; }
-    .logo--morante { display: none; }
-    .logo--white { height: 80px !important; }
-    .nav-icons { position: relative; transform: none; justify-content: flex-start; }
-    .footer-info { flex-direction: column; gap: 1rem; }
+    /* Fix fascia bianca top: altezza leggermente aumentata e allineamento perfetto */
+    .top-banner {
+        padding: 0.6rem 1rem;
+        min-height: 52px;
+        display: flex;
+        align-items: center;
+    }
+    
+    /* Logo Roma perfettamente allineato alle icone social */
+    .roma-logo {
+        height: 32px;
+        display: block;
+    }
+    
+    /* Social icons perfettamente allineate */
+    .social-icons {
+        height: 32px;
+        gap: 0.75rem;
+        display: flex;
+        align-items: center;
+    }
+    
+    .social-icons a {
+        height: 32px;
+        width: 32px;
+        font-size: 1.3rem;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
+    .social-icons a i {
+        line-height: 32px;
+    }
+    
+    /* Header amaranto */
+    header { height: 130px; padding: 1rem 0; }
+    .logo-morante { display: none; }
+    
+    /* Logo Biblioteche PIÙ GRANDE su mobile */
+    .logo-white { height: 80px !important; width: auto; }
+    
+    /* Bottoni left e home: sinistra e distanziati dall'header */
+    .nav-icons {
+        position: relative;
+        top: 0;
+        left: 0;
+        transform: none;
+        justify-content: flex-start;
+        padding: 15px 0;
+        padding-left: 15px;
+        margin-bottom: 0;
+        margin-top: 15px;
+        width: 100%;
+    }
+    
+    .content-wrapper { 
+        margin-top: 0; 
+        width: 100%; 
+        padding: 0 15px; 
+        overflow-x: hidden; 
+    }
+    
+    /* Gestione Testo Banner e Spaziature */
+    .title-container { margin-bottom: 1rem !important; }
+    .bg-blue-50 { margin-top: 0 !important; margin-bottom: 1.5rem !important; }
+    .desktop-text { display: none; }
+    
+    /* Footer Mobile - gap ridotto per mobile */
+    .footer-info { 
+        flex-direction: column; 
+        gap: 1rem; 
+        align-items: center;
+    }
+    .footer-link { 
+        justify-content: center; 
+    }
+    .footer-info > div {
+        justify-content: center;
+    }
+    .footer-info span { white-space: normal; }
 }
 
-/* =========================================
-   PRINT
-   ========================================= */
-@media print {
-    body { background: white; font-size: 9pt; color: black; }
-    .top-banner, .nav-icons, .social-icons, footer, header { display: none !important; }
-    h1.text-3xl { font-size: 14pt !important; font-weight: bold !important; }
-    a[href]::after { content: " (" attr(href) ")"; font-size: 10pt; font-style: italic; }
-    a[href^="https://www.bibliotechediroma.it"]::after,
-    a[href^="https://www.facebook.com"]::after,
-    a[href^="https://www.instagram.com"]::after,
-    a[href^="https://x.com"]::after,
-    a[href^="https://www.youtube.com"]::after { content: ""; }
+/* Aggiungi questo al file CSS */
+footer .flex.flex-col span {
+    white-space: nowrap;
+    line-height: 1.2;
 }
+
+footer .fa-phone + span {
+  display: inline-flex;
+  flex-direction: row;
+  gap: 0.25rem;
+}
+
+
+
